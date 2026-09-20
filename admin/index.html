@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Админ-панель — Математика в клетку</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#14213d;--muted:#5b6478;--line:#dfe4ef;--blue:#2a4bd7;--green:#1a8a4a;--red:#c0392b;--gold:#b7791f}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1420;--card:#171e2e;--ink:#e8ecf6;--muted:#9aa5bd;--line:#2a344a;--blue:#7f9bff;--green:#4cc985;--red:#ff7b6b;--gold:#e5b567}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header b{font-size:17px} header .sp{flex:1}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+h2{margin:0 0 10px;font-size:18px}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button:disabled{opacity:.5;cursor:default}
+input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:7px 8px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;border-top:0}
+.pin{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;letter-spacing:2px}
+.muted{color:var(--muted)} .small{font-size:13px}
+.tag{display:inline-block;border-radius:99px;padding:1px 9px;font-size:12px;border:1px solid var(--line)}
+.tag.new{color:var(--gold);border-color:var(--gold)} .tag.done{color:var(--green);border-color:var(--green)}
+.tag.pin{color:var(--red);border-color:var(--red)}
+.fam{border-top:1px solid var(--line);padding:12px 0} .fam:first-child{border-top:0}
+.famh{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+.msg{white-space:pre-wrap;margin:4px 0}
+.item{border-top:1px solid var(--line);padding:10px 0}.item:first-child{border-top:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#login{max-width:340px;margin:12vh auto}
+.scroll{overflow-x:auto}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;display:none}
+</style>
+</head>
+<body>
+<header><b>Математика в клетку · админ</b><span class="sp"></span><span id="who" class="muted small"></span><button id="out" style="display:none">Выйти</button></header>
+<main id="app"></main>
+<div id="toast"></div>
+<script>
+var app=document.getElementById('app');
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function toast(t){var e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display='none'},2600)}
+function dt(ts){if(!ts)return '—';var d=new Date(ts);return d.toLocaleDateString('ru-RU')+' '+d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}
+function api(path,method,body){
+  return fetch('/api/admin/'+path,{method:method||'GET',credentials:'same-origin',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined})
+    .then(function(r){return r.json().catch(function(){return {ok:false,error:'Ответ не JSON'}}).then(function(j){j._status=r.status;return j})});
+}
+function showLogin(msg){
+  document.getElementById('out').style.display='none';document.getElementById('who').textContent='';
+  app.innerHTML='<div class="card" id="login"><h2>Вход администратора</h2><p class="muted small">Мастер-пароль, который вы задали в переменной ADMIN_PASSWORD в Cloudflare.</p>'
+    +'<form id="lf"><input type="password" id="pw" placeholder="Пароль" autocomplete="current-password" style="width:100%" autofocus>'
+    +(msg?'<p style="color:var(--red)">'+esc(msg)+'</p>':'')+'<p><button class="primary" style="width:100%">Войти</button></p></form></div>';
+  document.getElementById('lf').onsubmit=function(e){e.preventDefault();
+    api('login','POST',{password:document.getElementById('pw').value}).then(function(j){ if(j.ok) load(); else showLogin(j.error||'Не удалось войти'); });};
+}
+var DATA={fams:[],items:[]};
+function load(){
+  Promise.all([api('overview'),api('support')]).then(function(r){
+    if(r[0]._status===401||r[1]._status===401) return showLogin();
+    if(!r[0].ok) { app.innerHTML='<div class="card"><h2>Ошибка</h2><p>'+esc(r[0].error||'')+'</p></div>'; return; }
+    DATA.fams=r[0].families||[]; DATA.items=r[1].items||[]; draw();
+  }).catch(function(){ app.innerHTML='<div class="card"><h2>Нет связи с сервером</h2></div>'; });
+}
+var FILTER='new', Q='';
+function draw(){
+  document.getElementById('out').style.display='';document.getElementById('who').textContent='Семей: '+DATA.fams.length;
+  var kidsN=DATA.fams.reduce(function(a,f){return a+f.kids.length},0), newN=DATA.items.filter(function(i){return i.status==='new'}).length;
+  var h='<div class="card"><div class="row"><b>Семей: '+DATA.fams.length+'</b><span class="muted">·</span><b>детей: '+kidsN+'</b><span class="muted">·</span><b>новых обращений: '+newN+'</b>'
+    +'<span style="flex:1"></span><button id="reload">Обновить</button></div></div>';
+  // support
+  var items=DATA.items.filter(function(i){return FILTER==='all'||i.status===FILTER});
+  h+='<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="margin:0">Обращения в поддержку</h2><span style="flex:1"></span>'
+    +'<button data-f="new"'+(FILTER==='new'?' class="primary"':'')+'>Новые</button><button data-f="done"'+(FILTER==='done'?' class="primary"':'')+'>Закрытые</button><button data-f="all"'+(FILTER==='all'?' class="primary"':'')+'>Все</button></div>';
+  if(!items.length) h+='<p class="muted">Ничего нет.</p>';
+  h+=items.map(function(i){
+    var fam=DATA.fams.filter(function(f){return f.id===i.family_id})[0];
+    var m=i.meta||{}, label={question:'вопрос',idea:'предложение',bug:'ошибка',pin:'запрос PIN'}[i.kind]||i.kind;
+    var to=i.email||'';
+    return '<div class="item"><div class="row"><span class="tag '+(i.kind==='pin'?'pin':i.status)+'">'+esc(label)+'</span><b>'+esc(to||m.contact||'аноним')+'</b><span class="muted small">'+dt(i.created_at)+'</span>'
+      +(i.emailed?'':'<span class="muted small">(письмо не ушло — смотрите только здесь)</span>')+'<span style="flex:1"></span>'
+      +(fam&&i.kind==='pin'?'<button data-pins="'+esc(fam.id)+'" class="primary">Отправить PIN родителю</button>':'')
+      +(to?'<a class="btn" href="mailto:'+esc(to)+'?subject='+encodeURIComponent('Re: Математика в клетку')+'">Ответить</a>':'')
+      +'<button data-st="'+i.id+'" data-to="'+(i.status==='new'?'done':'new')+'">'+(i.status==='new'?'Закрыть':'Вернуть')+'</button></div>'
+      +'<div class="msg">'+esc(i.message)+'</div><div class="muted small">'+esc([m.kid&&'ребёнок: '+m.kid,m.screen&&'экран: '+m.screen,m.version&&'версия '+m.version].filter(Boolean).join(' · '))+'</div></div>';
+  }).join('')+'</div>';
+  // families
+  h+='<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="margin:0">Семьи, дети и пароли</h2><span style="flex:1"></span><input id="q" placeholder="Поиск: почта или имя" value="'+esc(Q)+'"></div>';
+  var q=Q.trim().toLowerCase();
+  var fams=DATA.fams.filter(function(f){return !q||f.email.toLowerCase().indexOf(q)>=0||f.kids.some(function(k){return (k.name||'').toLowerCase().indexOf(q)>=0||(k.email||'').toLowerCase().indexOf(q)>=0})});
+  if(!fams.length) h+='<p class="muted">Пока никого нет.</p>';
+  h+=fams.map(function(f){
+    return '<div class="fam"><div class="famh"><b>'+esc(f.email)+'</b><span class="muted small">создана '+dt(f.createdAt)+' · вход '+dt(f.lastLogin)+'</span><span style="flex:1"></span>'
+      +'<span>пароль родителя: <span class="pin">'+esc(f.parentPass||'не задан')+'</span></span><button data-pins="'+esc(f.id)+'">Отправить PIN на почту родителя</button></div>'
+      +(f.kids.length?'<div class="scroll"><table><thead><tr><th>Ребёнок</th><th>Класс</th><th>PIN</th><th>Gmail ребёнка</th><th>Освоено тем</th><th>Тестов</th><th>Диагностика</th><th>Активность</th></tr></thead><tbody>'
+        +f.kids.map(function(k){return '<tr><td><b>'+esc(k.name)+'</b></td><td>'+esc(k.grade||'—')+'</td><td class="pin">'+esc(k.pin)+'</td><td>'+esc(k.email||'—')+'</td><td>'+k.topics+'</td><td>'+k.tests+'</td><td>'+(k.diag?'пройдена':'нет')+'</td><td class="muted small">'+dt(k.lastTs)+'</td></tr>'}).join('')
+        +'</tbody></table></div>':'<p class="muted small" style="margin:0">детей пока нет</p>')+'</div>';
+  }).join('')+'</div>';
+  app.innerHTML=h;
+  document.getElementById('reload').onclick=load;
+  var qi=document.getElementById('q'); qi.oninput=function(){Q=qi.value;var pos=qi.selectionStart;draw();var n=document.getElementById('q');n.focus();n.setSelectionRange(pos,pos)};
+}
+app.addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.f){FILTER=b.dataset.f;draw();return}
+  if(b.dataset.st){api('support','POST',{id:+b.dataset.st,status:b.dataset.to}).then(load);return}
+  if(b.dataset.pins){
+    if(!confirm('Отправить PIN-коды детей и пароль кабинета на Gmail родителя?')) return;
+    b.disabled=true;
+    api('send-pins','POST',{familyId:b.dataset.pins}).then(function(j){b.disabled=false;toast(j.ok?('Отправлено: '+j.to):'Письмо не ушло (проверьте Resend). Отправьте PIN вручную — он виден в таблице.')});
+  }
+});
+document.getElementById('out').onclick=function(){api('logout','POST',{}).then(function(){showLogin()})};
+load();
+</script>
+</body>
+</html>
