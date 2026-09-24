@@ -6710,10 +6710,18 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.1.0';
+var APP_VERSION = '2.1.1';
 var CHANGELOG = {
- "current": "2.1.0",
+ "current": "2.1.1",
  "versions": [
+  {
+   "v": "2.1.1",
+   "date": "2026-09-24",
+   "title": "Админ-панель: отключение семьи и ребёнка",
+   "items": [
+    "В админ-панели теперь можно отключить семью целиком или одного ребёнка. Отключённые не видны в приложении и не могут войти, но их данные — прогресс, PIN, история — никуда не исчезают, и включить обратно можно в любой момент."
+   ]
+  },
   {
    "v": "2.1.0",
    "date": "2026-09-23",
@@ -6793,6 +6801,9 @@ var CHANGELOG = {
   ],
   "later": [
    "9 класс: квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия.",
+   "Английский язык — интерфейс и часть заданий.",
+   "Шпаргалки (короткие памятки по формулам и правилам) для некоторых классов.",
+   "Кнопка «Скачать всё» — все книги и шпаргалки одним архивом.",
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента.",
    "Работа без интернета (установка на телефон как приложение)."
   ]
@@ -6815,7 +6826,7 @@ async function cloudInit(){
       if(/json/.test(r.headers.get('content-type')||'')){
         var j=await r.json();
         if(r.ok&&j.ok){ CLOUD.on=true; CLOUD.support=true; CLOUD.me=j; }
-        else if(j.configured){ CLOUD.support=true; if(j.google){ CLOUD.on=true; CLOUD.me=null; } }
+        else if(j.configured){ CLOUD.support=true; if(j.google){ CLOUD.on=true; CLOUD.me=null; } if(j.disabled) CLOUD.err='disabled'; }
       }
     }
   }catch(e){}
@@ -6977,7 +6988,7 @@ function pinRequestBtn(){
 }
 
 /* ---- Страница входа ---- */
-var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Google не подтвердил вход — попробуйте ещё раз.',claims:'Google не подтвердил адрес почты.',not_configured:'Вход ещё не настроен.'};
+var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Google не подтвердил вход — попробуйте ещё раз.',claims:'Google не подтвердил адрес почты.',not_configured:'Вход ещё не настроен.',disabled:'Эта семья отключена администратором. Если это ошибка — напишите в поддержку.'};
 function viewLanding(){
   return '<div class="kidwrap"><div class="kidbox sheet landing">'
     +'<p class="kick hand" style="margin:0">Тетрадь открыта — начнём</p>'
@@ -7040,7 +7051,7 @@ function saveKidsLocal(){try{localStorage.setItem(LS_KIDS,JSON.stringify(KIDS))}
 KIDS=loadKidsLocal();
 try{activeKid=localStorage.getItem(LS_ACTIVE)||null}catch(e){}
 try{parentUnlocked=sessionStorage.getItem(LS_PARENT_OK)==='1'}catch(e){}
-if(activeKid && !KIDS.some(function(k){return k.id===activeKid})) activeKid=null;
+if(activeKid && !visibleKids().some(function(k){return k.id===activeKid})) activeKid=null;
 
 var remoteProgressCache={}; // kidId -> normalized state, filled from db for parent view across devices
 function loadStateLocal(kidId){
@@ -7130,7 +7141,7 @@ function hydrateKids(remote){
   if(!list) return;
   if(JSON.stringify(list)===JSON.stringify(KIDS)) return;
   KIDS=list; saveKidsLocal();
-  if(activeKid && !KIDS.some(function(k){return k.id===activeKid})) activeKid=null;
+  if(activeKid && !visibleKids().some(function(k){return k.id===activeKid})) activeKid=null;
   if(view.name==='pickkid'||view.name==='parent') render();
 }
 function selectKid(kidId){
@@ -7202,6 +7213,9 @@ function statPill(id){
 
 /* ======================= ВЕРХНЯЯ ПАНЕЛЬ ======================= */
 function kidName(id){var k=KIDS.filter(function(x){return x.id===id})[0]; return k?k.name:''}
+/* Ребёнок, отключённый администратором (k.active===false), остаётся в данных семьи,
+   но нигде не показывается и не выбирается — это «мягкое» отключение, а не удаление. */
+function visibleKids(){return KIDS.filter(function(k){return k.active!==false})}
 function paintBar(){
   if(view.name==='pickkid'||view.name==='landing'||(view.name==='versions'&&!activeKid)){
     $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='landing'?'landing':'pickkid')+'"><span class="hand">Математика</span><b>в клетку</b></button>'
@@ -7300,7 +7314,7 @@ function viewPickKid(){
     });
   }
   // list
-  var cards=KIDS.map(function(k){
+  var cards=visibleKids().map(function(k){
     return '<button class="kidcard" data-pk-open="'+k.id+'"><span class="kidavatar">'+esc((k.name||'?').charAt(0).toUpperCase())+'</span><b>'+esc(k.name)+'</b><span class="prog">'+kidGrade(k.id)+' класс · '+kidProgressBrief(k.id)+'</span></button>';
   }).join('');
   var isKid=CLOUD.on&&CLOUD.me&&CLOUD.me.role==='kid';
@@ -7342,7 +7356,7 @@ function pkKey(k){
 }
 function pkSubmit(){
   if(pick.mode==='pin'){
-    var k=KIDS.filter(function(x){return x.id===pick.kidId})[0];
+    var k=visibleKids().filter(function(x){return x.id===pick.kidId})[0];
     if(k && k.pin===pick.pin){ pkReset(); selectKid(k.id); }
     else{ pick.err='Неверный PIN. Попробуй ещё раз.'; pick.pin=''; render(); }
     return;
@@ -7638,18 +7652,19 @@ function viewParentGate(){
 }
 function viewParent(){
   if(!parentUnlocked) return viewParentGate();
-  if(KIDS.length===0) return '<div class="sheet"><h1>Кабинет родителя</h1><p class="goal">Пока нет ни одного профиля ребёнка. Создай первый на экране выбора профиля.</p><div class="cta" style="margin-top:12px"><button class="btn primary" data-nav="pickkid">К профилям</button></div></div>';
-  var kidId=view.parentKid && KIDS.some(function(k){return k.id===view.parentKid}) ? view.parentKid : KIDS[0].id;
+  var vk=visibleKids();
+  if(vk.length===0) return '<div class="sheet"><h1>Кабинет родителя</h1><p class="goal">Пока нет ни одного профиля ребёнка. Создай первый на экране выбора профиля.</p><div class="cta" style="margin-top:12px"><button class="btn primary" data-nav="pickkid">К профилям</button></div></div>';
+  var kidId=view.parentKid && vk.some(function(k){return k.id===view.parentKid}) ? view.parentKid : vk[0].id;
   var kSt=loadStateLocal(kidId);
   var d=kSt.diag, fullTopics=ALL.filter(avail);
-  var switcher='<div class="cta" style="margin-bottom:4px">'+KIDS.map(function(k){
+  var switcher='<div class="cta" style="margin-bottom:4px">'+vk.map(function(k){
     return '<button class="btn small'+(k.id===kidId?' primary':' ghost')+'" data-parent-switch="'+k.id+'">'+esc(k.name)+'</button>';
   }).join('')+'<button class="btn small ghost" style="margin-left:auto" data-parent-lock="1">Выйти</button></div>';
   var h='<div class="sheet">'+switcher+'<h1>Кабинет родителя — '+esc(kidName(kidId))+'</h1><p class="goal">Здесь видно, что сделано, где ошибки и что повторять. Отчёты о тестах также можно получить письмом — кнопка внизу каждого теста.</p>'
     +'<div class="cta" style="margin-top:6px;flex-wrap:wrap"><span class="legend" style="margin:0">Класс:</span>'+[4,5,6,7,8,9].map(function(g){return '<button class="btn small'+(kidGrade(kidId)===g?' primary':' ghost')+'" data-parent-grade="'+g+'">'+g+'</button>'}).join('')+'<span class="legend" style="margin:0">диагностика подбирается за два предыдущих класса</span></div></div>';
   if(CLOUD.on&&CLOUD.me&&CLOUD.me.role==='parent'){
     h+='<div class="sheet"><h2>Вход детей через Gmail</h2><p class="goal">Впишите Gmail ребёнка — и он сможет заходить на страницу семьи со своей почты. Затем ему нужно нажать на свой значок и ввести PIN.</p>'
-      +KIDS.map(function(k){return '<div class="cta" style="margin:8px 0;flex-wrap:wrap"><b style="min-width:90px">'+esc(k.name)+'</b><input id="km-'+k.id+'" type="email" class="txt" style="padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--sheet);min-width:220px" placeholder="name@gmail.com" value="'+esc(k.email||'')+'"><button class="btn small" data-kidmail="'+k.id+'">Сохранить</button><span class="legend" id="kmst-'+k.id+'" style="margin:0"></span></div>'}).join('')
+      +vk.map(function(k){return '<div class="cta" style="margin:8px 0;flex-wrap:wrap"><b style="min-width:90px">'+esc(k.name)+'</b><input id="km-'+k.id+'" type="email" class="txt" style="padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--sheet);min-width:220px" placeholder="name@gmail.com" value="'+esc(k.email||'')+'"><button class="btn small" data-kidmail="'+k.id+'">Сохранить</button><span class="legend" id="kmst-'+k.id+'" style="margin:0"></span></div>'}).join('')
       +'<div style="margin-top:10px">'+pinRequestBtn()+'</div></div>';
   }
   h+='<div class="sheet"><h2>Диагностика</h2>';

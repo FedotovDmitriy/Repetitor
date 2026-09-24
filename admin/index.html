@@ -17,6 +17,7 @@ main{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
 h2{margin:0 0 10px;font-size:18px}
 button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
 button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button.danger{color:var(--red);border-color:var(--red)}
 button:disabled{opacity:.5;cursor:default}
 input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
 table{width:100%;border-collapse:collapse}
@@ -94,10 +95,19 @@ function draw(){
   var fams=DATA.fams.filter(function(f){return !q||f.email.toLowerCase().indexOf(q)>=0||f.kids.some(function(k){return (k.name||'').toLowerCase().indexOf(q)>=0||(k.email||'').toLowerCase().indexOf(q)>=0})});
   if(!fams.length) h+='<p class="muted">Пока никого нет.</p>';
   h+=fams.map(function(f){
-    return '<div class="fam"><div class="famh"><b>'+esc(f.email)+'</b><span class="muted small">создана '+dt(f.createdAt)+' · вход '+dt(f.lastLogin)+'</span><span style="flex:1"></span>'
-      +'<span>пароль родителя: <span class="pin">'+esc(f.parentPass||'не задан')+'</span></span><button data-pins="'+esc(f.id)+'">Отправить PIN на почту родителя</button></div>'
-      +(f.kids.length?'<div class="scroll"><table><thead><tr><th>Ребёнок</th><th>Класс</th><th>PIN</th><th>Gmail ребёнка</th><th>Освоено тем</th><th>Тестов</th><th>Диагностика</th><th>Активность</th></tr></thead><tbody>'
-        +f.kids.map(function(k){return '<tr><td><b>'+esc(k.name)+'</b></td><td>'+esc(k.grade||'—')+'</td><td class="pin">'+esc(k.pin)+'</td><td>'+esc(k.email||'—')+'</td><td>'+k.topics+'</td><td>'+k.tests+'</td><td>'+(k.diag?'пройдена':'нет')+'</td><td class="muted small">'+dt(k.lastTs)+'</td></tr>'}).join('')
+    return '<div class="fam"><div class="famh"><b>'+esc(f.email)+'</b>'
+      +(f.active?'':'<span class="tag pin">отключена</span>')
+      +'<span class="muted small">создана '+dt(f.createdAt)+' · вход '+dt(f.lastLogin)+'</span><span style="flex:1"></span>'
+      +'<span>пароль родителя: <span class="pin">'+esc(f.parentPass||'не задан')+'</span></span><button data-pins="'+esc(f.id)+'">Отправить PIN на почту родителя</button>'
+      +(f.active
+        ?'<button class="danger" data-famtoggle="'+esc(f.id)+'" data-to="0" data-famname="'+esc(f.email)+'">Отключить семью</button>'
+        :'<button data-famtoggle="'+esc(f.id)+'" data-to="1" data-famname="'+esc(f.email)+'">Включить семью</button>')+'</div>'
+      +(f.kids.length?'<div class="scroll"><table><thead><tr><th>Ребёнок</th><th>Класс</th><th>PIN</th><th>Gmail ребёнка</th><th>Освоено тем</th><th>Тестов</th><th>Диагностика</th><th>Активность</th><th>Статус</th><th></th></tr></thead><tbody>'
+        +f.kids.map(function(k){return '<tr'+(k.active?'':' style="opacity:.55"')+'><td><b>'+esc(k.name)+'</b></td><td>'+esc(k.grade||'—')+'</td><td class="pin">'+esc(k.pin)+'</td><td>'+esc(k.email||'—')+'</td><td>'+k.topics+'</td><td>'+k.tests+'</td><td>'+(k.diag?'пройдена':'нет')+'</td><td class="muted small">'+dt(k.lastTs)+'</td><td>'+(k.active?'активен':'<span class="tag pin">отключён</span>')+'</td><td>'
+          +(k.active
+            ?'<button class="danger" data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="0" data-kidname="'+esc(k.name)+'">Отключить</button>'
+            :'<button data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="1" data-kidname="'+esc(k.name)+'">Включить</button>')
+          +'</td></tr>'}).join('')
         +'</tbody></table></div>':'<p class="muted small" style="margin:0">детей пока нет</p>')+'</div>';
   }).join('')+'</div>';
   app.innerHTML=h;
@@ -112,6 +122,25 @@ app.addEventListener('click',function(e){
     if(!confirm('Отправить PIN-коды детей и пароль кабинета на Gmail родителя?')) return;
     b.disabled=true;
     api('send-pins','POST',{familyId:b.dataset.pins}).then(function(j){b.disabled=false;toast(j.ok?('Отправлено: '+j.to):'Письмо не ушло (проверьте Resend). Отправьте PIN вручную — он виден в таблице.')});
+    return;
+  }
+  if(b.dataset.famtoggle){
+    var toOn=b.dataset.to==='1';
+    var msg=toOn?('Включить семью «'+b.dataset.famname+'»? Она снова сможет входить на сайт.')
+                :('Отключить семью «'+b.dataset.famname+'»? Она не сможет войти на сайт, но все дети, прогресс и PIN-коды сохранятся — семью можно включить обратно в любой момент.');
+    if(!confirm(msg)) return;
+    b.disabled=true;
+    api('set-family-active','POST',{familyId:b.dataset.famtoggle,active:toOn?1:0}).then(function(j){ if(j.ok){toast(toOn?'Семья включена':'Семья отключена'); load();} else {b.disabled=false; toast(j.error||'Не удалось сохранить');} });
+    return;
+  }
+  if(b.dataset.kidtoggle){
+    var toOn2=b.dataset.to==='1';
+    var msg2=toOn2?('Включить ребёнка «'+b.dataset.kidname+'»? Он снова появится в списке профилей.')
+                  :('Отключить ребёнка «'+b.dataset.kidname+'»? Профиль исчезнет из приложения, но прогресс сохранится — ребёнка можно включить обратно в любой момент.');
+    if(!confirm(msg2)) return;
+    b.disabled=true;
+    api('set-kid-active','POST',{familyId:b.dataset.kidtoggle,kidId:b.dataset.kidid,active:toOn2?1:0}).then(function(j){ if(j.ok){toast(toOn2?'Ребёнок включён':'Ребёнок отключён'); load();} else {b.disabled=false; toast(j.error||'Не удалось сохранить');} });
+    return;
   }
 });
 document.getElementById('out').onclick=function(){api('logout','POST',{}).then(function(){showLogin()})};

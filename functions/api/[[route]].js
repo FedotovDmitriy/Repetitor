@@ -88,6 +88,13 @@ async function isAdmin(req, env) {
   return !!(p && p.a === 1);
 }
 
+/* Семья, отключённая администратором (families.active = 0), не может входить и
+   синхронизировать данные — но ничего не удаляется, это обратимо из /admin. */
+async function familyActive(env, familyId) {
+  const f = await env.DB.prepare('SELECT active FROM families WHERE id = ?').bind(familyId).first();
+  return !f || f.active !== 0; // семьи из старых версий без колонки active — активны
+}
+
 /* ---------- почта (Resend) ---------- */
 async function sendMail(env, { to, subject, html, replyTo }) {
   if (!env.RESEND_API_KEY) return false;
@@ -186,6 +193,7 @@ async function authCallback(req, env, url) {
   if (claims.aud !== env.GOOGLE_CLIENT_ID || !/^(https:\/\/)?accounts\.google\.com$/.test(claims.iss || '') ||
       !claims.email || claims.email_verified !== true || (claims.exp || 0) < Date.now() / 1000) return back('claims');
   const who = await loginByEmail(env, claims.email);
+  if (!(await familyActive(env, who.f))) return back('disabled');
   const token = await sign({ e: claims.email.toLowerCase(), f: who.f, r: who.r, exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
   const h = new Headers({ location: '/' });
   h.append('set-cookie', setCookie('mvk_sid', token, SESSION_TTL));
@@ -201,6 +209,7 @@ async function me(req, env) {
   if (!env.DB) return json({ ok: false, configured: false }, 401);
   const s = await getSession(req, env);
   if (!s) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID }, 401);
+  if (!(await familyActive(env, s.f))) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID, disabled: true }, 401);
   return json({ ok: true, email: s.e, role: s.r, familyId: s.f });
 }
 
@@ -208,6 +217,7 @@ async function me(req, env) {
 async function docRoute(req, env, url) {
   const s = await getSession(req, env);
   if (!s) return bad(401, 'Нужно войти');
+  if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
   const path = url.searchParams.get('path') || '';
   if (!DOC_PATH.test(path)) return bad(400, 'Неверный путь');
   if (req.method === 'GET') {
@@ -337,7 +347,7 @@ function progressSummary(p) {
 }
 
 async function adminOverview(env) {
-  const fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login FROM families ORDER BY created_at DESC').all()).results || [];
+  const fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login, active FROM families ORDER BY created_at DESC').all()).results || [];
   const docs = (await env.DB.prepare('SELECT family_id, path, data FROM docs').all()).results || [];
   const byFam = {};
   docs.forEach(d => { (byFam[d.family_id] = byFam[d.family_id] || {})[d.path] = d.data; });
@@ -346,9 +356,9 @@ async function adminOverview(env) {
     let list = { kids: [], parentPass: '' }; try { if (dd['kids/list']) list = JSON.parse(dd['kids/list']); } catch (e) {}
     const kids = (list.kids || []).map(k => {
       let p = null; try { if (dd['progress/' + k.id]) p = JSON.parse(dd['progress/' + k.id]); } catch (e) {}
-      return { id: k.id, name: k.name, pin: k.pin, grade: k.grade || null, email: k.email || '', ...progressSummary(p) };
+      return { id: k.id, name: k.name, pin: k.pin, grade: k.grade || null, email: k.email || '', active: k.active !== false, ...progressSummary(p) };
     });
-    return { id: f.id, email: f.owner_email, createdAt: f.created_at, lastLogin: f.last_login, parentPass: list.parentPass || '', kids };
+    return { id: f.id, email: f.owner_email, createdAt: f.created_at, lastLogin: f.last_login, active: f.active !== 0, parentPass: list.parentPass || '', kids };
   });
   return json({ ok: true, families: out });
 }
@@ -375,6 +385,33 @@ async function adminRoute(req, env, url, parts) {
     if (!f) return bad(404, 'Семья не найдена');
     const ok = await pinMail(env, f.owner_email, f.id);
     return json({ ok, to: f.owner_email });
+  }
+  /* «Удаление» семьи или ребёнка — это отключение (active=false), а не стирание
+     данных: прогресс, PIN и вся история остаются в базе, и админ может включить
+     их обратно в любой момент. Отключённая семья не может войти на сайт;
+     отключённый ребёнок просто не показывается в приложении. */
+  if (sub === 'set-family-active' && req.method === 'POST') {
+    const b = await req.json().catch(() => ({}));
+    const famId = String(b.familyId || '');
+    const active = b.active ? 1 : 0;
+    const f = await env.DB.prepare('SELECT id FROM families WHERE id = ?').bind(famId).first();
+    if (!f) return bad(404, 'Семья не найдена');
+    await env.DB.prepare('UPDATE families SET active = ? WHERE id = ?').bind(active, famId).run();
+    return json({ ok: true, active: !!active });
+  }
+  if (sub === 'set-kid-active' && req.method === 'POST') {
+    const b = await req.json().catch(() => ({}));
+    const famId = String(b.familyId || ''), kidId = String(b.kidId || '');
+    const active = !!b.active;
+    if (!famId || !kidId) return bad(400, 'Не хватает данных');
+    const list = await readKids(env, famId);
+    const kid = (list.kids || []).find(k => k.id === kidId);
+    if (!kid) return bad(404, 'Ребёнок не найден');
+    kid.active = active;
+    await env.DB.prepare(
+      'INSERT INTO docs (family_id, path, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
+    ).bind(famId, 'kids/list', JSON.stringify(list), Date.now()).run();
+    return json({ ok: true, active });
   }
   return bad(404, 'Нет такого адреса');
 }

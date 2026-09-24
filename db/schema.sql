@@ -3,12 +3,17 @@
 -- (или вставить содержимое в консоль D1 в панели Cloudflare)
 
 -- Семья = один родитель, вошедший через Gmail. owner_email — его адрес.
+-- active = 0 — семья отключена администратором (см. /admin): войти нельзя,
+-- но данные (дети, прогресс, PIN) сохраняются и админ может включить её обратно.
 CREATE TABLE IF NOT EXISTS families (
   id          TEXT PRIMARY KEY,
   owner_email TEXT UNIQUE NOT NULL,
   created_at  INTEGER NOT NULL,
-  last_login  INTEGER
+  last_login  INTEGER,
+  active      INTEGER NOT NULL DEFAULT 1
 );
+-- Если база уже создана раньше (до версии 2.1.1), выполните один раз в консоли D1:
+--   ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1;
 
 -- Gmail ребёнка -> семья. Заполняется автоматически, когда родитель
 -- вписывает адрес ребёнка в кабинете родителя (см. PUT /api/doc kids/list).
@@ -18,7 +23,9 @@ CREATE TABLE IF NOT EXISTS kid_emails (
 );
 
 -- Данные семьи в виде документов:
---   kids/list        — список детей {id,name,pin,grade,email}, пароль родителя
+--   kids/list        — список детей {id,name,pin,grade,email,active}, пароль родителя.
+--                       active:false у ребёнка — он отключён администратором (см. /admin):
+--                       не виден и не выбирается в приложении, но прогресс не стирается.
 --   progress/<kidId> — прогресс одного ребёнка (практика, тесты, диагностика)
 CREATE TABLE IF NOT EXISTS docs (
   family_id  TEXT NOT NULL,
