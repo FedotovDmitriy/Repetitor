@@ -102,20 +102,31 @@ async function familyActive(env, familyId) {
   }
 }
 
-/* Новые таблицы и колонки создаются сами при первом запросе — ручные миграции не нужны. */
+/* Новые таблицы и колонки создаются сами при первом запросе — ручные миграции не нужны.
+   schemaFailedAt — если проверка схемы недавно упала (например, D1 временно
+   недоступна или исчерпан дневной лимит запросов), не долбим базу повторно на
+   каждый следующий запрос — ждём небольшой «остыв», иначе каждый визит на сайт
+   только тратит и без того исчерпанную квоту и продлевает недоступность. */
 let schemaReady = null;
+let schemaFailedAt = 0;
+const SCHEMA_RETRY_COOLDOWN = 60 * 1000;
 function ensureSchema(env) {
-  if (!schemaReady) schemaReady = (async () => {
-    const stmts = [
-      `CREATE TABLE IF NOT EXISTS join_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, kid_email TEXT NOT NULL, family_id TEXT NOT NULL, name TEXT NOT NULL, grade INTEGER, pin TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', decided_at INTEGER)`,
-      `CREATE INDEX IF NOT EXISTS join_requests_family ON join_requests(family_id, status)`,
-      `CREATE INDEX IF NOT EXISTS join_requests_kid ON join_requests(kid_email)`,
-      `CREATE TABLE IF NOT EXISTS consents (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, email TEXT NOT NULL, family_id TEXT, role TEXT NOT NULL, doc_version TEXT NOT NULL, ip TEXT, ua TEXT)`,
-      `CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role)`,
-    ];
-    for (const q of stmts) await env.DB.prepare(q).run();
-    try { await env.DB.prepare('ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1').run(); } catch (e) { /* колонка уже есть */ }
-  })().catch(e => { schemaReady = null; throw e; });
+  if (!schemaReady) {
+    if (schemaFailedAt && Date.now() - schemaFailedAt < SCHEMA_RETRY_COOLDOWN) {
+      return Promise.reject(new Error('Схема временно недоступна (повтор через минуту)'));
+    }
+    schemaReady = (async () => {
+      const stmts = [
+        `CREATE TABLE IF NOT EXISTS join_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, kid_email TEXT NOT NULL, family_id TEXT NOT NULL, name TEXT NOT NULL, grade INTEGER, pin TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', decided_at INTEGER)`,
+        `CREATE INDEX IF NOT EXISTS join_requests_family ON join_requests(family_id, status)`,
+        `CREATE INDEX IF NOT EXISTS join_requests_kid ON join_requests(kid_email)`,
+        `CREATE TABLE IF NOT EXISTS consents (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, email TEXT NOT NULL, family_id TEXT, role TEXT NOT NULL, doc_version TEXT NOT NULL, ip TEXT, ua TEXT)`,
+        `CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role)`,
+      ];
+      for (const q of stmts) await env.DB.prepare(q).run();
+      try { await env.DB.prepare('ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1').run(); } catch (e) { /* колонка уже есть */ }
+    })().catch(e => { schemaReady = null; schemaFailedAt = Date.now(); throw e; });
+  }
   return schemaReady;
 }
 
@@ -620,8 +631,10 @@ export async function onRequest(context) {
     if (route === 'admin') return adminRoute(req, env, url, parts);
     return bad(404, 'Нет такого адреса');
   } catch (e) {
-    // ВРЕМЕННО (диагностика 2026-09-24): показываем текст ошибки в ответе,
-    // чтобы понять причину 500 без доступа к логам Cloudflare. Убрать после починки.
-    return bad(500, 'Внутренняя ошибка: ' + (e && (e.stack || e.message) ? String(e.stack || e.message).slice(0, 500) : String(e)));
+    const msg = String((e && e.message) || e || '');
+    if (/D1_ERROR.*limit|exceeded.*limit/i.test(msg)) {
+      return bad(503, 'База данных временно перегружена (дневной лимит Cloudflare D1) — подождите немного и попробуйте снова.');
+    }
+    return bad(500, 'Внутренняя ошибка');
   }
 }
