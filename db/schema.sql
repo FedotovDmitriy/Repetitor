@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS families (
   last_login  INTEGER,
   active      INTEGER NOT NULL DEFAULT 1
 );
--- Если база уже создана раньше (до версии 2.1.1), выполните один раз в консоли D1:
---   ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1;
+-- С версии 2.2.0 сервер сам добавляет колонку active и таблицы join_requests/consents
+-- при первом запросе (ensureSchema в functions/api/[[route]].js) — вручную ничего делать не нужно.
 
 -- Gmail ребёнка -> семья. Заполняется автоматически, когда родитель
 -- вписывает адрес ребёнка в кабинете родителя (см. PUT /api/doc kids/list).
@@ -54,3 +54,34 @@ CREATE TABLE IF NOT EXISTS attempts (
   ts INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS attempts_k ON attempts(k, ts);
+
+-- Запросы ученика на вступление в семью (ученик входит со своей почтой, указывает
+-- почту родителя, имя, класс и PIN; родитель одобряет или отклоняет в кабинете).
+-- status: pending | approved | rejected | cancelled
+CREATE TABLE IF NOT EXISTS join_requests (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at  INTEGER NOT NULL,
+  kid_email   TEXT NOT NULL,
+  family_id   TEXT NOT NULL,
+  name        TEXT NOT NULL,
+  grade       INTEGER,
+  pin         TEXT NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'pending',
+  decided_at  INTEGER
+);
+CREATE INDEX IF NOT EXISTS join_requests_family ON join_requests(family_id, status);
+CREATE INDEX IF NOT EXISTS join_requests_kid ON join_requests(kid_email);
+
+-- Принятие пользовательского соглашения (родитель — за семью; ученик — правила для ученика).
+-- doc_version = TERMS_VERSION на момент согласия; ip и браузер — как доказательство согласия.
+CREATE TABLE IF NOT EXISTS consents (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at  INTEGER NOT NULL,
+  email       TEXT NOT NULL,
+  family_id   TEXT,
+  role        TEXT NOT NULL,          -- parent | kid
+  doc_version TEXT NOT NULL,
+  ip          TEXT,
+  ua          TEXT
+);
+CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role);

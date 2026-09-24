@@ -21,6 +21,9 @@ const ADMIN_TTL = 12 * 3600;             // сессия админа: 12 час
 const DOC_MAX = 400 * 1024;              // максимум на один документ
 const DOC_PATH = /^(kids\/list|progress\/[A-Za-z0-9_-]{1,40})$/;
 const EMAIL_RE = /^[^\s@<>"]{1,64}@[^\s@<>"]{1,190}\.[^\s@<>"]{2,}$/;
+// Версия пользовательского соглашения. Когда текст в /legal/ меняется существенно —
+// меняем дату здесь и в index.html (TERMS_VERSION): родители примут условия заново.
+const TERMS_VERSION = '2026-09-24';
 
 /* ---------- ответы ---------- */
 function json(obj, status = 200, headers = {}) {
@@ -99,6 +102,23 @@ async function familyActive(env, familyId) {
   }
 }
 
+/* Новые таблицы и колонки создаются сами при первом запросе — ручные миграции не нужны. */
+let schemaReady = null;
+function ensureSchema(env) {
+  if (!schemaReady) schemaReady = (async () => {
+    const stmts = [
+      `CREATE TABLE IF NOT EXISTS join_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, kid_email TEXT NOT NULL, family_id TEXT NOT NULL, name TEXT NOT NULL, grade INTEGER, pin TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', decided_at INTEGER)`,
+      `CREATE INDEX IF NOT EXISTS join_requests_family ON join_requests(family_id, status)`,
+      `CREATE INDEX IF NOT EXISTS join_requests_kid ON join_requests(kid_email)`,
+      `CREATE TABLE IF NOT EXISTS consents (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, email TEXT NOT NULL, family_id TEXT, role TEXT NOT NULL, doc_version TEXT NOT NULL, ip TEXT, ua TEXT)`,
+      `CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role)`,
+    ];
+    for (const q of stmts) await env.DB.prepare(q).run();
+    try { await env.DB.prepare('ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1').run(); } catch (e) { /* колонка уже есть */ }
+  })().catch(e => { schemaReady = null; throw e; });
+  return schemaReady;
+}
+
 /* ---------- почта (Resend) ---------- */
 async function sendMail(env, { to, subject, html, replyTo }) {
   if (!env.RESEND_API_KEY) return false;
@@ -128,19 +148,47 @@ const clientIp = req => req.headers.get('cf-connecting-ip') || 'ip?';
 /* ---------- утилиты семьи ---------- */
 const newId = () => 'f' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
 
-async function loginByEmail(env, email) {
+/* Кто этот адрес: владелец семьи (родитель), ребёнок из семьи — или ещё никто. */
+async function resolveEmail(env, email, touch) {
   email = email.toLowerCase();
-  const now = Date.now();
-  let fam = await env.DB.prepare('SELECT id FROM families WHERE owner_email = ?').bind(email).first();
+  const fam = await env.DB.prepare('SELECT id FROM families WHERE owner_email = ?').bind(email).first();
   if (fam) {
-    await env.DB.prepare('UPDATE families SET last_login = ? WHERE id = ?').bind(now, fam.id).run();
+    if (touch) await env.DB.prepare('UPDATE families SET last_login = ? WHERE id = ?').bind(Date.now(), fam.id).run();
     return { f: fam.id, r: 'parent' };
   }
   const kid = await env.DB.prepare('SELECT family_id FROM kid_emails WHERE email = ?').bind(email).first();
   if (kid) return { f: kid.family_id, r: 'kid' };
-  const id = newId();
-  await env.DB.prepare('INSERT INTO families (id, owner_email, created_at, last_login) VALUES (?, ?, ?, ?)').bind(id, email, now, now).run();
-  return { f: id, r: 'parent' };
+  return null;
+}
+
+/* Новый адрес больше не создаёт семью автоматически: человек сначала выбирает,
+   кто он — родитель (создаёт семью и принимает условия) или ученик (просит
+   родителя принять его в семью). До этого у сессии роль «new» и нет семьи. */
+async function loginByEmail(env, email) {
+  return (await resolveEmail(env, email, true)) || { f: null, r: 'new' };
+}
+
+async function sessionCookie(env, s) {
+  const token = await sign({ e: s.e, f: s.f || null, r: s.r, exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
+  return setCookie('mvk_sid', token, SESSION_TTL);
+}
+
+async function hasConsent(env, familyId) {
+  if (!familyId) return false;
+  const row = await env.DB.prepare("SELECT 1 AS x FROM consents WHERE family_id = ? AND role = 'parent' AND doc_version = ? LIMIT 1").bind(familyId, TERMS_VERSION).first();
+  return !!row;
+}
+
+async function recordConsent(env, req, { email, familyId, role }) {
+  await env.DB.prepare('INSERT INTO consents (created_at, email, family_id, role, doc_version, ip, ua) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .bind(Date.now(), email, familyId || null, role, TERMS_VERSION, clientIp(req), (req.headers.get('user-agent') || '').slice(0, 200)).run();
+}
+
+async function lastJoinRequest(env, email) {
+  const r = await env.DB.prepare(
+    'SELECT j.id, j.status, j.name, j.grade, j.created_at, f.owner_email AS parent_email FROM join_requests j LEFT JOIN families f ON f.id = j.family_id WHERE j.kid_email = ? ORDER BY j.id DESC LIMIT 1'
+  ).bind(email).first();
+  return r ? { id: r.id, status: r.status, name: r.name, grade: r.grade, parentEmail: r.parent_email || '', createdAt: r.created_at } : null;
 }
 
 async function readKids(env, familyId) {
@@ -197,7 +245,7 @@ async function authCallback(req, env, url) {
   if (claims.aud !== env.GOOGLE_CLIENT_ID || !/^(https:\/\/)?accounts\.google\.com$/.test(claims.iss || '') ||
       !claims.email || claims.email_verified !== true || (claims.exp || 0) < Date.now() / 1000) return back('claims');
   const who = await loginByEmail(env, claims.email);
-  if (!(await familyActive(env, who.f))) return back('disabled');
+  if (who.f && !(await familyActive(env, who.f))) return back('disabled');
   const token = await sign({ e: claims.email.toLowerCase(), f: who.f, r: who.r, exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
   const h = new Headers({ location: '/' });
   h.append('set-cookie', setCookie('mvk_sid', token, SESSION_TTL));
@@ -211,16 +259,135 @@ function logout() {
 
 async function me(req, env) {
   if (!env.DB) return json({ ok: false, configured: false }, 401);
-  const s = await getSession(req, env);
+  let s = await getSession(req, env);
   if (!s) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID }, 401);
-  if (!(await familyActive(env, s.f))) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID, disabled: true }, 401);
-  return json({ ok: true, email: s.e, role: s.r, familyId: s.f });
+  let cookie = null;
+  if (s.r === 'new' || !s.f) {
+    // пока человек ждал, родитель мог одобрить запрос — тогда он уже ребёнок из семьи
+    const who = await resolveEmail(env, s.e, false);
+    if (who) { s = { ...s, f: who.f, r: who.r }; cookie = await sessionCookie(env, s); }
+  }
+  if (s.f && !(await familyActive(env, s.f))) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID, disabled: true }, 401);
+  const out = { ok: true, email: s.e, role: s.r, familyId: s.f || null, termsVersion: TERMS_VERSION };
+  if (s.r === 'parent' || s.r === 'kid') out.consent = await hasConsent(env, s.f); // для ребёнка — принял ли условия его родитель
+  if (s.r === 'new') out.joinRequest = await lastJoinRequest(env, s.e);
+  return json(out, 200, cookie ? { 'set-cookie': cookie } : {});
+}
+
+/* --- первый вход: родитель создаёт семью, принимая условия --- */
+async function onboardParent(req, env) {
+  if (req.method !== 'POST') return bad(405, 'Только POST');
+  const s = await getSession(req, env);
+  if (!s) return bad(401, 'Нужно войти через Gmail');
+  const b = await req.json().catch(() => ({}));
+  if (b.accept !== true) return bad(400, 'Нужно принять условия');
+  const existing = await resolveEmail(env, s.e, false);
+  if (existing && existing.r === 'kid') return bad(409, 'Этот адрес уже добавлен в семью как адрес ребёнка');
+  let famId = existing ? existing.f : null;
+  if (!famId) {
+    famId = newId();
+    const now = Date.now();
+    await env.DB.prepare('INSERT INTO families (id, owner_email, created_at, last_login) VALUES (?, ?, ?, ?)').bind(famId, s.e, now, now).run();
+  }
+  await recordConsent(env, req, { email: s.e, familyId: famId, role: 'parent' });
+  // если этот человек раньше отправлял запрос как ученик — закрываем его
+  await env.DB.prepare("UPDATE join_requests SET status = 'cancelled', decided_at = ? WHERE kid_email = ? AND status = 'pending'").bind(Date.now(), s.e).run();
+  return json({ ok: true }, 200, { 'set-cookie': await sessionCookie(env, { e: s.e, f: famId, r: 'parent' }) });
+}
+
+/* --- родитель уже есть, но условия (новой версии) ещё не приняты --- */
+async function consentRoute(req, env) {
+  if (req.method !== 'POST') return bad(405, 'Только POST');
+  const s = await getSession(req, env);
+  if (!s || s.r !== 'parent' || !s.f) return bad(403, 'Условия принимает родитель');
+  const b = await req.json().catch(() => ({}));
+  if (b.accept !== true) return bad(400, 'Нужно принять условия');
+  await recordConsent(env, req, { email: s.e, familyId: s.f, role: 'parent' });
+  return json({ ok: true });
+}
+
+/* --- ученик просит родителя принять его в семью --- */
+async function joinRoute(req, env, parts) {
+  const sub = parts[1] || '';
+  const s = await getSession(req, env);
+  if (!s) return bad(401, 'Нужно войти через Gmail');
+
+  if (sub === 'request' && req.method === 'POST') {
+    if (s.r !== 'new') return bad(409, 'Вы уже состоите в семье');
+    const b = await req.json().catch(() => ({}));
+    const parentEmail = String(b.parentEmail || '').trim().toLowerCase();
+    const name = String(b.name || '').trim().replace(/\s+/g, ' ').slice(0, 20);
+    const grade = +b.grade, pin = String(b.pin || '');
+    if (b.accept !== true) return bad(400, 'Нужно согласиться с правилами');
+    if (!EMAIL_RE.test(parentEmail)) return bad(400, 'Проверьте почту родителя');
+    if (parentEmail === s.e) return bad(400, 'Это ваша собственная почта — нужна почта родителя');
+    if (name.length < 1) return bad(400, 'Напишите своё имя');
+    if (!(grade >= 4 && grade <= 9)) return bad(400, 'Выберите класс');
+    if (!/^\d{4}$/.test(pin)) return bad(400, 'PIN — ровно 4 цифры');
+    const key = 'join:' + s.e;
+    if (await tooMany(env, key, 5, 24 * 3600)) return bad(429, 'Сегодня уже отправлено много запросов — попробуйте завтра');
+    await noteAttempt(env, key);
+    const fam = await env.DB.prepare('SELECT id, active FROM families WHERE owner_email = ?').bind(parentEmail).first();
+    if (!fam || fam.active === 0) return bad(404, 'Семья с такой почтой не найдена. Попросите родителя сначала войти на сайт со своей почтой и создать семью.');
+    const now = Date.now();
+    await env.DB.prepare("UPDATE join_requests SET status = 'cancelled', decided_at = ? WHERE kid_email = ? AND status = 'pending'").bind(now, s.e).run();
+    await env.DB.prepare('INSERT INTO join_requests (created_at, kid_email, family_id, name, grade, pin, status) VALUES (?, ?, ?, ?, ?, ?, ?)')
+      .bind(now, s.e, fam.id, name, grade, pin, 'pending').run();
+    await recordConsent(env, req, { email: s.e, familyId: fam.id, role: 'kid' });
+    await sendMail(env, {
+      to: parentEmail,
+      subject: 'Математика в клетку — ' + name + ' просит добавить его в семью',
+      html: `<p>${esc(name)} (${grade} класс, почта ${esc(s.e)}) хочет заниматься на сайте «Математика в клетку» и просит добавить его в вашу семью.</p>` +
+        `<p>Чтобы подтвердить или отклонить запрос, войдите на сайт со своей почты и откройте <b>Кабинет родителя</b>.</p>` +
+        `<p style="color:#666;font-size:13px">Если вы не знаете этого человека — просто отклоните запрос.</p>`,
+    });
+    return json({ ok: true, request: await lastJoinRequest(env, s.e) });
+  }
+
+  if (sub === 'status' && req.method === 'GET') {
+    return json({ ok: true, request: await lastJoinRequest(env, s.e) });
+  }
+
+  if (sub === 'pending' && req.method === 'GET') {
+    if (s.r !== 'parent' || !s.f) return bad(403, 'Только для родителя');
+    const rows = (await env.DB.prepare("SELECT id, created_at, kid_email, name, grade FROM join_requests WHERE family_id = ? AND status = 'pending' ORDER BY id").bind(s.f).all()).results || [];
+    return json({ ok: true, items: rows.map(r => ({ id: r.id, createdAt: r.created_at, email: r.kid_email, name: r.name, grade: r.grade })) });
+  }
+
+  if (sub === 'decide' && req.method === 'POST') {
+    if (s.r !== 'parent' || !s.f) return bad(403, 'Только для родителя');
+    if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
+    const b = await req.json().catch(() => ({}));
+    const j = await env.DB.prepare("SELECT * FROM join_requests WHERE id = ? AND family_id = ? AND status = 'pending'").bind(+b.id || 0, s.f).first();
+    if (!j) return bad(404, 'Запрос не найден или уже рассмотрен');
+    const now = Date.now();
+    if (!b.approve) {
+      await env.DB.prepare("UPDATE join_requests SET status = 'rejected', decided_at = ? WHERE id = ?").bind(now, j.id).run();
+      return json({ ok: true });
+    }
+    if (!(await hasConsent(env, s.f))) return bad(403, 'Сначала примите условия использования');
+    const list = await readKids(env, s.f);
+    list.kids = Array.isArray(list.kids) ? list.kids : [];
+    let name = j.name, n = 2;
+    while (list.kids.some(k => String(k.name || '').toLowerCase() === name.toLowerCase())) name = j.name + ' ' + (n++);
+    const kid = { id: 'k' + now.toString(36) + crypto.randomUUID().replace(/-/g, '').slice(0, 5), name, pin: j.pin, grade: j.grade || 7, email: j.kid_email, active: true };
+    list.kids.push(kid);
+    await env.DB.prepare(
+      'INSERT INTO docs (family_id, path, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
+    ).bind(s.f, 'kids/list', JSON.stringify(list), now).run();
+    const own = await env.DB.prepare('SELECT 1 AS x FROM families WHERE owner_email = ?').bind(j.kid_email).first();
+    if (!own) await env.DB.prepare('INSERT OR REPLACE INTO kid_emails (email, family_id) VALUES (?, ?)').bind(j.kid_email, s.f).run();
+    await env.DB.prepare("UPDATE join_requests SET status = 'approved', decided_at = ? WHERE id = ?").bind(now, j.id).run();
+    return json({ ok: true, kid, kids: list.kids, parentPass: list.parentPass || '' });
+  }
+  return bad(404, 'Нет такого адреса');
 }
 
 /* --- документы семьи --- */
 async function docRoute(req, env, url) {
   const s = await getSession(req, env);
   if (!s) return bad(401, 'Нужно войти');
+  if (!s.f) return bad(403, 'Сначала создайте семью или дождитесь, пока родитель примет вас в семью');
   if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
   const path = url.searchParams.get('path') || '';
   if (!DOC_PATH.test(path)) return bad(400, 'Неверный путь');
@@ -358,6 +525,9 @@ async function adminOverview(env) {
     fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login FROM families ORDER BY created_at DESC').all()).results || [];
   }
   const docs = (await env.DB.prepare('SELECT family_id, path, data FROM docs').all()).results || [];
+  const cons = (await env.DB.prepare("SELECT family_id, doc_version, created_at FROM consents WHERE role = 'parent' ORDER BY created_at").all()).results || [];
+  const consBy = {}; cons.forEach(c => { consBy[c.family_id] = { at: c.created_at, version: c.doc_version }; });
+  const joins = (await env.DB.prepare('SELECT id, created_at, kid_email, family_id, name, grade, status, decided_at FROM join_requests ORDER BY id DESC LIMIT 200').all()).results || [];
   const byFam = {};
   docs.forEach(d => { (byFam[d.family_id] = byFam[d.family_id] || {})[d.path] = d.data; });
   const out = fams.map(f => {
@@ -367,9 +537,12 @@ async function adminOverview(env) {
       let p = null; try { if (dd['progress/' + k.id]) p = JSON.parse(dd['progress/' + k.id]); } catch (e) {}
       return { id: k.id, name: k.name, pin: k.pin, grade: k.grade || null, email: k.email || '', active: k.active !== false, ...progressSummary(p) };
     });
-    return { id: f.id, email: f.owner_email, createdAt: f.created_at, lastLogin: f.last_login, active: f.active !== 0, parentPass: list.parentPass || '', kids };
+    const c = consBy[f.id] || null;
+    return { id: f.id, email: f.owner_email, createdAt: f.created_at, lastLogin: f.last_login, active: f.active !== 0, parentPass: list.parentPass || '', kids,
+      consentAt: c ? c.at : 0, consentVersion: c ? c.version : '', consentCurrent: !!(c && c.version === TERMS_VERSION) };
   });
-  return json({ ok: true, families: out });
+  return json({ ok: true, families: out, termsVersion: TERMS_VERSION,
+    joins: joins.map(j => ({ id: j.id, createdAt: j.created_at, email: j.kid_email, familyId: j.family_id, name: j.name, grade: j.grade, status: j.status, decidedAt: j.decided_at })) });
 }
 
 async function adminRoute(req, env, url, parts) {
@@ -433,7 +606,11 @@ export async function onRequest(context) {
   const route = parts[0] || '';
   try {
     if (!env.DB) return json({ ok: false, configured: false, error: 'База данных D1 не подключена' }, route === 'me' ? 401 : 503);
+    await ensureSchema(env);
     if (route === 'me') return me(req, env);
+    if (route === 'onboard' && parts[1] === 'parent') return onboardParent(req, env);
+    if (route === 'consent') return consentRoute(req, env);
+    if (route === 'join') return joinRoute(req, env, parts);
     if (route === 'auth' && parts[1] === 'google') return authGoogle(req, env, url);
     if (route === 'auth' && parts[1] === 'callback') return authCallback(req, env, url);
     if (route === 'auth' && parts[1] === 'logout' && req.method === 'POST') return logout();
