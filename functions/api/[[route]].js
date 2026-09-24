@@ -91,8 +91,12 @@ async function isAdmin(req, env) {
 /* Семья, отключённая администратором (families.active = 0), не может входить и
    синхронизировать данные — но ничего не удаляется, это обратимо из /admin. */
 async function familyActive(env, familyId) {
-  const f = await env.DB.prepare('SELECT active FROM families WHERE id = ?').bind(familyId).first();
-  return !f || f.active !== 0; // семьи из старых версий без колонки active — активны
+  try {
+    const f = await env.DB.prepare('SELECT active FROM families WHERE id = ?').bind(familyId).first();
+    return !f || f.active !== 0;
+  } catch (e) {
+    return true; // колонки active ещё нет (миграция не выполнена) — считаем всех активными
+  }
 }
 
 /* ---------- почта (Resend) ---------- */
@@ -347,7 +351,12 @@ function progressSummary(p) {
 }
 
 async function adminOverview(env) {
-  const fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login, active FROM families ORDER BY created_at DESC').all()).results || [];
+  let fams;
+  try {
+    fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login, active FROM families ORDER BY created_at DESC').all()).results || [];
+  } catch (e) { // миграция с колонкой active ещё не выполнена
+    fams = (await env.DB.prepare('SELECT id, owner_email, created_at, last_login FROM families ORDER BY created_at DESC').all()).results || [];
+  }
   const docs = (await env.DB.prepare('SELECT family_id, path, data FROM docs').all()).results || [];
   const byFam = {};
   docs.forEach(d => { (byFam[d.family_id] = byFam[d.family_id] || {})[d.path] = d.data; });
