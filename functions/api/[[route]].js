@@ -620,6 +620,8 @@ export async function onRequest(context) {
     if (route === 'admin') return adminRoute(req, env, url, parts);
     return bad(404, 'Нет такого адреса');
   } catch (e) {
-    return bad(500, 'Внутренняя ошибка');
+    // ВРЕМЕННО (диагностика 2026-09-24): показываем текст ошибки в ответе,
+    // чтобы понять причину 500 без доступа к логам Cloudflare. Убрать после починки.
+    return bad(500, 'Внутренняя ошибка: ' + (e && (e.stack || e.message) ? String(e.stack || e.message).slice(0, 500) : String(e)));
   }
 }
