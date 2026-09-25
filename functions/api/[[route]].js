@@ -206,6 +206,28 @@ async function readKids(env, familyId) {
   const row = await env.DB.prepare("SELECT data FROM docs WHERE family_id = ? AND path = 'kids/list'").bind(familyId).first();
   try { return row ? JSON.parse(row.data) : { kids: [], parentPass: '' }; } catch (e) { return { kids: [], parentPass: '' }; }
 }
+function kidsUpsert(env, familyId, list, now) {
+  return env.DB.prepare(
+    'INSERT INTO docs (family_id, path, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
+  ).bind(familyId, 'kids/list', JSON.stringify(list), now);
+}
+/* Ребёнок, переведённый администратором в другую семью, остаётся в старой семье
+   «следом» (movedTo = id новой семьи, active = false): данные не удаляются никогда. */
+const isMovedOut = k => !!(k && k.movedTo);
+
+/* Защита списка детей от перезаписи устаревшей вкладкой браузера:
+   — ребёнок, которого нет во входящем списке, но есть на сервере, сохраняется
+     (детей не удаляют — только отключают);
+   — «след» переведённого ребёнка нельзя вернуть обратно из приложения. */
+function mergeKidsList(incoming, stored) {
+  const inKids = Array.isArray(incoming.kids) ? incoming.kids.filter(k => k && typeof k === 'object' && k.id) : [];
+  const stKids = Array.isArray(stored && stored.kids) ? stored.kids : [];
+  const byId = {}; stKids.forEach(k => { if (k && k.id) byId[k.id] = k; });
+  const seen = {};
+  const out = inKids.map(k => { seen[k.id] = 1; return isMovedOut(byId[k.id]) ? byId[k.id] : k; });
+  stKids.forEach(k => { if (k && k.id && !seen[k.id]) out.push(k); });
+  return { ...incoming, kids: out };
+}
 
 /* ============================ МАРШРУТЫ ============================ */
 
@@ -273,10 +295,11 @@ async function me(req, env) {
   let s = await getSession(req, env);
   if (!s) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID }, 401);
   let cookie = null;
-  if (s.r === 'new' || !s.f) {
-    // пока человек ждал, родитель мог одобрить запрос — тогда он уже ребёнок из семьи
+  if (s.r === 'new' || !s.f || s.r === 'kid') {
+    // пока человек ждал, родитель мог одобрить запрос — тогда он уже ребёнок из семьи;
+    // а ребёнка администратор мог перевести в другую семью — тогда обновляем сессию
     const who = await resolveEmail(env, s.e, false);
-    if (who) { s = { ...s, f: who.f, r: who.r }; cookie = await sessionCookie(env, s); }
+    if (who && (who.f !== s.f || who.r !== s.r)) { s = { ...s, f: who.f, r: who.r }; cookie = await sessionCookie(env, s); }
   }
   if (s.f && !(await familyActive(env, s.f))) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID, disabled: true }, 401);
   const out = { ok: true, email: s.e, role: s.r, familyId: s.f || null, termsVersion: TERMS_VERSION };
@@ -400,6 +423,11 @@ async function docRoute(req, env, url) {
   if (!s) return bad(401, 'Нужно войти');
   if (!s.f) return bad(403, 'Сначала создайте семью или дождитесь, пока родитель примет вас в семью');
   if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
+  if (s.r === 'kid') {
+    // ребёнка могли перевести в другую семью — старая сессия не должна писать в прежнюю
+    const who = await resolveEmail(env, s.e, false);
+    if (who && who.f !== s.f) return json({ ok: false, familyChanged: true, error: 'Семья изменилась — обновите страницу' }, 409);
+  }
   const path = url.searchParams.get('path') || '';
   if (!DOC_PATH.test(path)) return bad(400, 'Неверный путь');
   if (req.method === 'GET') {
@@ -414,6 +442,7 @@ async function docRoute(req, env, url) {
     if (text.length > DOC_MAX) return bad(413, 'Слишком большой документ');
     let data; try { data = JSON.parse(text); } catch (e) { return bad(400, 'Не JSON'); }
     if (!data || typeof data !== 'object') return bad(400, 'Ожидался объект');
+    if (path === 'kids/list') data = mergeKidsList(data, await readKids(env, s.f));
     await env.DB.prepare(
       'INSERT INTO docs (family_id, path, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
     ).bind(s.f, path, JSON.stringify(data), Date.now()).run();
@@ -421,6 +450,7 @@ async function docRoute(req, env, url) {
       // обновляем «Gmail ребёнка -> семья»
       await env.DB.prepare('DELETE FROM kid_emails WHERE family_id = ?').bind(s.f).run();
       for (const k of (Array.isArray(data.kids) ? data.kids : [])) {
+        if (isMovedOut(k)) continue;
         const em = String((k && k.email) || '').trim().toLowerCase();
         if (EMAIL_RE.test(em)) {
           const own = await env.DB.prepare('SELECT 1 AS x FROM families WHERE owner_email = ?').bind(em).first();
@@ -472,7 +502,7 @@ async function supportRoute(req, env) {
 /* --- запрос PIN / пароля: только родитель, вошедший через Gmail --- */
 async function pinMail(env, ownerEmail, famId) {
   const d = await readKids(env, famId);
-  const rows = (d.kids || []).map(k => `<tr><td style="padding:4px 12px 4px 0">${esc(k.name)}</td><td><b style="font-size:18px;letter-spacing:2px">${esc(k.pin)}</b></td></tr>`).join('');
+  const rows = (d.kids || []).filter(k => !isMovedOut(k)).map(k => `<tr><td style="padding:4px 12px 4px 0">${esc(k.name)}</td><td><b style="font-size:18px;letter-spacing:2px">${esc(k.pin)}</b></td></tr>`).join('');
   return sendMail(env, {
     to: ownerEmail,
     subject: 'Математика в клетку — ваши PIN-коды',
@@ -546,7 +576,8 @@ async function adminOverview(env) {
     let list = { kids: [], parentPass: '' }; try { if (dd['kids/list']) list = JSON.parse(dd['kids/list']); } catch (e) {}
     const kids = (list.kids || []).map(k => {
       let p = null; try { if (dd['progress/' + k.id]) p = JSON.parse(dd['progress/' + k.id]); } catch (e) {}
-      return { id: k.id, name: k.name, pin: k.pin, grade: k.grade || null, email: k.email || '', active: k.active !== false, ...progressSummary(p) };
+      return { id: k.id, name: k.name, pin: k.pin, grade: k.grade || null, email: k.email || '', active: k.active !== false,
+        movedTo: k.movedTo || '', movedFrom: k.movedFrom || '', movedAt: k.movedAt || 0, ...progressSummary(p) };
     });
     const c = consBy[f.id] || null;
     return { id: f.id, email: f.owner_email, createdAt: f.created_at, lastLogin: f.last_login, active: f.active !== 0, parentPass: list.parentPass || '', kids,
@@ -600,11 +631,58 @@ async function adminRoute(req, env, url, parts) {
     const list = await readKids(env, famId);
     const kid = (list.kids || []).find(k => k.id === kidId);
     if (!kid) return bad(404, 'Ребёнок не найден');
+    if (isMovedOut(kid)) return bad(409, 'Ребёнок переведён в другую семью — включайте его там');
     kid.active = active;
-    await env.DB.prepare(
-      'INSERT INTO docs (family_id, path, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
-    ).bind(famId, 'kids/list', JSON.stringify(list), Date.now()).run();
+    await kidsUpsert(env, famId, list, Date.now()).run();
     return json({ ok: true, active });
+  }
+  /* Перевод ребёнка в другую семью. Ничего не удаляется:
+     — в старой семье остаётся «след» (active=false, movedTo), прогресс там тоже остаётся копией;
+     — в новую семью переносятся профиль (имя, PIN, класс, Gmail) и копия прогресса;
+     — Gmail ребёнка теперь ведёт в новую семью.
+     Все записи — одной транзакцией (D1 batch). */
+  if (sub === 'move-kid' && req.method === 'POST') {
+    const b = await req.json().catch(() => ({}));
+    const fromId = String(b.fromFamilyId || ''), toId = String(b.toFamilyId || ''), kidId = String(b.kidId || '');
+    if (!fromId || !toId || !kidId) return bad(400, 'Не хватает данных');
+    if (fromId === toId) return bad(400, 'Ребёнок уже в этой семье');
+    const fams = (await env.DB.prepare('SELECT id, owner_email, active FROM families WHERE id IN (?, ?)').bind(fromId, toId).all()).results || [];
+    const from = fams.find(f => f.id === fromId), to = fams.find(f => f.id === toId);
+    if (!from || !to) return bad(404, 'Семья не найдена');
+    if (to.active === 0) return bad(409, 'Новая семья отключена — сначала включите её');
+    const fromList = await readKids(env, fromId), toList = await readKids(env, toId);
+    fromList.kids = Array.isArray(fromList.kids) ? fromList.kids : [];
+    toList.kids = Array.isArray(toList.kids) ? toList.kids : [];
+    const idx = fromList.kids.findIndex(k => k && k.id === kidId);
+    if (idx < 0) return bad(404, 'Ребёнок не найден');
+    const kid = fromList.kids[idx];
+    if (isMovedOut(kid)) return bad(409, 'Этот ребёнок уже переведён в другую семью');
+    const now = Date.now();
+    // в новой семье: имя не должно совпадать с уже существующим ребёнком
+    const others = toList.kids.filter(k => k && k.id !== kidId && !isMovedOut(k));
+    let name = String(kid.name || 'Ученик'), n = 2;
+    while (others.some(k => String(k.name || '').toLowerCase() === name.toLowerCase())) name = String(kid.name || 'Ученик') + ' ' + (n++);
+    const moved = { ...kid, name, movedFrom: fromId, movedAt: now };
+    delete moved.movedTo;
+    const j = toList.kids.findIndex(k => k && k.id === kidId);   // ребёнка возвращают туда, где он уже был
+    if (j >= 0) toList.kids[j] = moved; else toList.kids.push(moved);
+    fromList.kids[idx] = { ...kid, active: false, movedTo: toId, movedAt: now };
+    const stmts = [
+      kidsUpsert(env, fromId, fromList, now),
+      kidsUpsert(env, toId, toList, now),
+      env.DB.prepare(
+        'INSERT INTO docs (family_id, path, data, updated_at) SELECT ?, path, data, ? FROM docs WHERE family_id = ? AND path = ? ' +
+        'ON CONFLICT(family_id, path) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at'
+      ).bind(toId, now, fromId, 'progress/' + kidId),
+    ];
+    const em = String(kid.email || '').trim().toLowerCase();
+    let emailMoved = false;
+    if (EMAIL_RE.test(em)) {
+      const own = await env.DB.prepare('SELECT 1 AS x FROM families WHERE owner_email = ?').bind(em).first();
+      if (!own) { stmts.push(env.DB.prepare('INSERT OR REPLACE INTO kid_emails (email, family_id) VALUES (?, ?)').bind(em, toId)); emailMoved = true; }
+    }
+    await env.DB.batch(stmts);
+    return json({ ok: true, name, renamed: name !== kid.name, emailMoved, to: to.owner_email });
   }
   return bad(404, 'Нет такого адреса');
 }

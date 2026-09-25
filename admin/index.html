@@ -19,7 +19,7 @@ button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);col
 button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
 button.danger{color:var(--red);border-color:var(--red)}
 button:disabled{opacity:.5;cursor:default}
-input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
+input,select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
 table{width:100%;border-collapse:collapse}
 th,td{text-align:left;padding:7px 8px;border-top:1px solid var(--line);vertical-align:top}
 th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;border-top:0}
@@ -67,10 +67,29 @@ function load(){
     DATA.fams=r[0].families||[]; DATA.items=r[1].items||[]; draw();
   }).catch(function(){ app.innerHTML='<div class="card"><h2>Нет связи с сервером</h2></div>'; });
 }
-var FILTER='new', Q='';
+var FILTER='new', Q='', MOVE=null; // MOVE = {f: id семьи, k: id ребёнка} — открыт выбор новой семьи
+function famEmail(id){var f=DATA.fams.filter(function(x){return x.id===id})[0]; return f?f.email:'(семья не найдена)'}
+function kidActions(f,k){
+  if(k.movedTo) return '';
+  if(MOVE&&MOVE.f===f.id&&MOVE.k===k.id){
+    var opts=DATA.fams.filter(function(x){return x.id!==f.id}).map(function(x){
+      return '<option value="'+esc(x.id)+'"'+(x.active?'':' disabled')+'>'+esc(x.email)+(x.active?'':' (отключена)')+'</option>'}).join('');
+    if(!opts) return '<span class="muted small">других семей нет</span> <button data-movecancel="1">Отмена</button>';
+    return '<div class="row"><select id="movesel"><option value="">— новая семья —</option>'+opts+'</select>'
+      +'<button class="primary" data-movego="1" data-kidname="'+esc(k.name)+'">Перевести</button><button data-movecancel="1">Отмена</button></div>';
+  }
+  return '<div class="row">'+(k.active
+      ?'<button class="danger" data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="0" data-kidname="'+esc(k.name)+'">Отключить</button>'
+      :'<button data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="1" data-kidname="'+esc(k.name)+'">Включить</button>')
+    +'<button data-moveopen="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'">Сменить семью</button></div>';
+}
+function kidStatus(k){
+  if(k.movedTo) return '<span class="tag">переведён</span><div class="muted small">в '+esc(famEmail(k.movedTo))+'<br>'+dt(k.movedAt)+'</div>';
+  return k.active?'активен':'<span class="tag pin">отключён</span>';
+}
 function draw(){
   document.getElementById('out').style.display='';document.getElementById('who').textContent='Семей: '+DATA.fams.length;
-  var kidsN=DATA.fams.reduce(function(a,f){return a+f.kids.length},0), newN=DATA.items.filter(function(i){return i.status==='new'}).length;
+  var kidsN=DATA.fams.reduce(function(a,f){return a+f.kids.filter(function(k){return !k.movedTo}).length},0), newN=DATA.items.filter(function(i){return i.status==='new'}).length;
   var h='<div class="card"><div class="row"><b>Семей: '+DATA.fams.length+'</b><span class="muted">·</span><b>детей: '+kidsN+'</b><span class="muted">·</span><b>новых обращений: '+newN+'</b>'
     +'<span style="flex:1"></span><button id="reload">Обновить</button></div></div>';
   // support
@@ -103,10 +122,10 @@ function draw(){
         ?'<button class="danger" data-famtoggle="'+esc(f.id)+'" data-to="0" data-famname="'+esc(f.email)+'">Отключить семью</button>'
         :'<button data-famtoggle="'+esc(f.id)+'" data-to="1" data-famname="'+esc(f.email)+'">Включить семью</button>')+'</div>'
       +(f.kids.length?'<div class="scroll"><table><thead><tr><th>Ребёнок</th><th>Класс</th><th>PIN</th><th>Gmail ребёнка</th><th>Освоено тем</th><th>Тестов</th><th>Диагностика</th><th>Активность</th><th>Статус</th><th></th></tr></thead><tbody>'
-        +f.kids.map(function(k){return '<tr'+(k.active?'':' style="opacity:.55"')+'><td><b>'+esc(k.name)+'</b></td><td>'+esc(k.grade||'—')+'</td><td class="pin">'+esc(k.pin)+'</td><td>'+esc(k.email||'—')+'</td><td>'+k.topics+'</td><td>'+k.tests+'</td><td>'+(k.diag?'пройдена':'нет')+'</td><td class="muted small">'+dt(k.lastTs)+'</td><td>'+(k.active?'активен':'<span class="tag pin">отключён</span>')+'</td><td>'
-          +(k.active
-            ?'<button class="danger" data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="0" data-kidname="'+esc(k.name)+'">Отключить</button>'
-            :'<button data-kidtoggle="'+esc(f.id)+'" data-kidid="'+esc(k.id)+'" data-to="1" data-kidname="'+esc(k.name)+'">Включить</button>')
+        +f.kids.map(function(k){return '<tr'+(k.active&&!k.movedTo?'':' style="opacity:.55"')+'><td><b>'+esc(k.name)+'</b>'
+          +(k.movedFrom&&!k.movedTo?'<div class="muted small">переведён из '+esc(famEmail(k.movedFrom))+', '+dt(k.movedAt)+'</div>':'')
+          +'</td><td>'+esc(k.grade||'—')+'</td><td class="pin">'+esc(k.pin)+'</td><td>'+esc(k.email||'—')+'</td><td>'+k.topics+'</td><td>'+k.tests+'</td><td>'+(k.diag?'пройдена':'нет')+'</td><td class="muted small">'+dt(k.lastTs)+'</td><td>'+kidStatus(k)+'</td><td>'
+          +kidActions(f,k)
           +'</td></tr>'}).join('')
         +'</tbody></table></div>':'<p class="muted small" style="margin:0">детей пока нет</p>')+'</div>';
   }).join('')+'</div>';
@@ -131,6 +150,22 @@ app.addEventListener('click',function(e){
     if(!confirm(msg)) return;
     b.disabled=true;
     api('set-family-active','POST',{familyId:b.dataset.famtoggle,active:toOn?1:0}).then(function(j){ if(j.ok){toast(toOn?'Семья включена':'Семья отключена'); load();} else {b.disabled=false; toast(j.error||'Не удалось сохранить');} });
+    return;
+  }
+  if(b.dataset.moveopen){MOVE={f:b.dataset.moveopen,k:b.dataset.kidid};draw();return}
+  if(b.dataset.movecancel){MOVE=null;draw();return}
+  if(b.dataset.movego&&MOVE){
+    var sel=document.getElementById('movesel'), toId=sel&&sel.value;
+    if(!toId){toast('Выберите новую семью');return}
+    var fromE=famEmail(MOVE.f), toE=famEmail(toId);
+    if(!confirm('Перевести «'+b.dataset.kidname+'» из семьи '+fromE+' в семью '+toE+'?\n\n'
+      +'В новую семью перейдут профиль (имя, PIN, класс, Gmail) и весь прогресс. В старой семье ребёнок исчезнет из списка профилей, '
+      +'но его данные там сохранятся. Перевести обратно можно так же, кнопкой «Сменить семью».')) return;
+    b.disabled=true;
+    api('move-kid','POST',{fromFamilyId:MOVE.f,toFamilyId:toId,kidId:MOVE.k}).then(function(j){
+      if(j.ok){MOVE=null;toast('Переведён в '+j.to+(j.renamed?' под именем «'+j.name+'» (имя было занято)':''));load();}
+      else{b.disabled=false;toast(j.error||'Не удалось перевести');}
+    });
     return;
   }
   if(b.dataset.kidtoggle){
