@@ -716,6 +716,22 @@ async function adminRoute(req, env, url, parts) {
 }
 
 /* ============================ ВХОД ============================ */
+/* Если D1 вдруг «подвисает» (не отвечает и не бросает ошибку — редкий сбой на
+   стороне Cloudflare), запрос раньше зависал навсегда и вся страница
+   оставалась пустой без единого сообщения. Теперь у каждого запроса есть
+   жёсткий потолок по времени: если ответ не готов за REQUEST_TIMEOUT_MS,
+   клиент получает понятную ошибку вместо вечного ожидания. Сам «зависший»
+   запрос к D1 при этом не отменяется (это невозможно), но пользователю
+   больше не нужно ждать бесконечно. */
+const REQUEST_TIMEOUT_MS = 10000;
+function withTimeout(promise) {
+  let timer;
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => resolve(bad(504, 'Сервер сейчас отвечает слишком медленно (возможен временный сбой базы данных) — подождите немного и попробуйте снова.')), REQUEST_TIMEOUT_MS);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 export async function onRequest(context) {
   const { request: req, env } = context;
   const url = new URL(req.url);
@@ -723,19 +739,21 @@ export async function onRequest(context) {
   const route = parts[0] || '';
   try {
     if (!env.DB) return json({ ok: false, configured: false, error: 'База данных D1 не подключена' }, route === 'me' ? 401 : 503);
-    await ensureSchema(env);
-    if (route === 'me') return me(req, env);
-    if (route === 'onboard' && parts[1] === 'parent') return onboardParent(req, env);
-    if (route === 'consent') return consentRoute(req, env);
-    if (route === 'join') return joinRoute(req, env, parts);
-    if (route === 'auth' && parts[1] === 'google') return authGoogle(req, env, url);
-    if (route === 'auth' && parts[1] === 'callback') return authCallback(req, env, url);
-    if (route === 'auth' && parts[1] === 'logout' && req.method === 'POST') return logout();
-    if (route === 'doc') return docRoute(req, env, url);
-    if (route === 'support') return supportRoute(req, env);
-    if (route === 'pin-request') return pinRequest(req, env);
-    if (route === 'admin') return adminRoute(req, env, url, parts);
-    return bad(404, 'Нет такого адреса');
+    return await withTimeout((async () => {
+      await ensureSchema(env);
+      if (route === 'me') return me(req, env);
+      if (route === 'onboard' && parts[1] === 'parent') return onboardParent(req, env);
+      if (route === 'consent') return consentRoute(req, env);
+      if (route === 'join') return joinRoute(req, env, parts);
+      if (route === 'auth' && parts[1] === 'google') return authGoogle(req, env, url);
+      if (route === 'auth' && parts[1] === 'callback') return authCallback(req, env, url);
+      if (route === 'auth' && parts[1] === 'logout' && req.method === 'POST') return logout();
+      if (route === 'doc') return docRoute(req, env, url);
+      if (route === 'support') return supportRoute(req, env);
+      if (route === 'pin-request') return pinRequest(req, env);
+      if (route === 'admin') return adminRoute(req, env, url, parts);
+      return bad(404, 'Нет такого адреса');
+    })());
   } catch (e) {
     const msg = String((e && e.message) || e || '');
     if (/D1_ERROR.*limit|exceeded.*limit/i.test(msg)) {
