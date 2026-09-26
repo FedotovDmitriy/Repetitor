@@ -156,6 +156,20 @@ async function tooMany(env, key, limit, windowSec) {
 const noteAttempt = (env, key) => env.DB.prepare('INSERT INTO attempts (k, ts) VALUES (?, ?)').bind(key, Date.now()).run();
 const clientIp = req => req.headers.get('cf-connecting-ip') || 'ip?';
 
+/* ---------- защита от спама (в. 2.5.0) ----------
+   Общий потолок писем в сутки: если кто-то всё же прорвётся через ограничения, он не сможет
+   израсходовать лимит Resend и завалить почту — обращения при этом всё равно сохраняются в базе
+   и видны в /admin. */
+const MAIL_DAY_CAP = 150;
+async function sendMailCapped(env, msg) {
+  if (await tooMany(env, 'mail:day', MAIL_DAY_CAP, 24 * 3600)) return false;
+  const ok = await sendMail(env, msg);
+  if (ok) await noteAttempt(env, 'mail:day');
+  return ok;
+}
+const LINK_RE = /(https?:\/\/|www\.)/gi;
+const tooManyLinks = (text, max) => ((String(text).match(LINK_RE) || []).length > max);
+
 /* ---------- утилиты семьи ---------- */
 const newId = () => 'f' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
 
@@ -319,6 +333,9 @@ async function onboardParent(req, env) {
   if (existing && existing.r === 'kid') return bad(409, 'Этот адрес уже добавлен в семью как адрес ребёнка');
   let famId = existing ? existing.f : null;
   if (!famId) {
+    const fk = 'fam:' + clientIp(req);
+    if (await tooMany(env, fk, 5, 24 * 3600)) return bad(429, 'С этого адреса сегодня уже создано много семей — попробуйте завтра');
+    await noteAttempt(env, fk);
     famId = newId();
     const now = Date.now();
     await env.DB.prepare('INSERT INTO families (id, owner_email, created_at, last_login) VALUES (?, ?, ?, ?)').bind(famId, s.e, now, now).run();
@@ -358,17 +375,20 @@ async function joinRoute(req, env, parts) {
     if (name.length < 1) return bad(400, 'Напишите своё имя');
     if (!(grade >= 4 && grade <= 9)) return bad(400, 'Выберите класс');
     if (!/^\d{4}$/.test(pin)) return bad(400, 'PIN — ровно 4 цифры');
-    const key = 'join:' + s.e;
-    if (await tooMany(env, key, 5, 24 * 3600)) return bad(429, 'Сегодня уже отправлено много запросов — попробуйте завтра');
-    await noteAttempt(env, key);
+    const key = 'join:' + s.e, ipKey = 'joinip:' + clientIp(req);
+    if (await tooMany(env, key, 5, 24 * 3600) || await tooMany(env, ipKey, 10, 24 * 3600)) return bad(429, 'Сегодня уже отправлено много запросов — попробуйте завтра');
+    await noteAttempt(env, key); await noteAttempt(env, ipKey);
     const fam = await env.DB.prepare('SELECT id, active FROM families WHERE owner_email = ?').bind(parentEmail).first();
     if (!fam || fam.active === 0) return bad(404, 'Семья с такой почтой не найдена. Попросите родителя сначала войти на сайт со своей почтой и создать семью.');
     const now = Date.now();
+    // не даём завалить родителя запросами: не больше 5 новых запросов в одну семью за сутки
+    const toFam = await env.DB.prepare('SELECT COUNT(*) AS n FROM join_requests WHERE family_id = ? AND created_at > ?').bind(fam.id, now - 24 * 3600 * 1000).first();
+    if (toFam && toFam.n >= 5) return bad(429, 'Этой семье сегодня уже отправили много запросов — попробуйте завтра');
     await env.DB.prepare("UPDATE join_requests SET status = 'cancelled', decided_at = ? WHERE kid_email = ? AND status = 'pending'").bind(now, s.e).run();
     await env.DB.prepare('INSERT INTO join_requests (created_at, kid_email, family_id, name, grade, pin, status) VALUES (?, ?, ?, ?, ?, ?, ?)')
       .bind(now, s.e, fam.id, name, grade, pin, 'pending').run();
     await recordConsent(env, req, { email: s.e, familyId: fam.id, role: 'kid' });
-    await sendMail(env, {
+    await sendMailCapped(env, {
       to: parentEmail,
       subject: 'Математика в клетку — ' + name + ' просит добавить его в семью',
       html: `<p>${esc(name)} (${grade} класс, почта ${esc(s.e)}) хочет заниматься на сайте «Математика в клетку» и просит добавить его в вашу семью.</p>` +
@@ -469,16 +489,24 @@ const KINDS = { question: 'Вопрос', idea: 'Предложение', bug: '
 async function supportRoute(req, env) {
   if (req.method !== 'POST') return bad(405, 'Только POST');
   let b; try { b = await req.json(); } catch (e) { return bad(400, 'Не JSON'); }
-  if (b.website) return json({ ok: true });                           // ловушка для ботов
+  if (b.website) return json({ ok: true });                           // ловушка для ботов: невидимое поле заполнено
+  if (typeof b.t === 'number' && b.t >= 0 && b.t < 2500) return json({ ok: true });  // форму «заполнили» быстрее, чем за 2,5 с — бот
   const message = String(b.message || '').trim().slice(0, 3000);
   if (message.length < 3) return bad(400, 'Напишите хотя бы пару слов');
+  if (tooManyLinks(message, 2)) return bad(400, 'В сообщении слишком много ссылок — оставьте не больше двух');
+  const ip = clientIp(req);
+  const ipKey = 'supip:' + ip;                                        // ограничение по адресу, которое не обойти сменой почты
+  if (await tooMany(env, ipKey, 8, 3600) || await tooMany(env, ipKey, 30, 24 * 3600)) return bad(429, 'Слишком много сообщений подряд, попробуйте позже');
   const kind = KINDS[b.kind] && b.kind !== 'pin' ? b.kind : 'question';
   const s = await getSession(req, env);
   const contact = String(b.contact || '').trim().slice(0, 200);
   const email = (s && s.e) || (EMAIL_RE.test(contact) ? contact : '');
-  const key = 'sup:' + (email || clientIp(req));
+  const key = 'sup:' + (email || ip);
   if (await tooMany(env, key, 5, 3600)) return bad(429, 'Слишком много сообщений подряд, попробуйте позже');
-  await noteAttempt(env, key);
+  await noteAttempt(env, key); await noteAttempt(env, ipKey);
+  // одинаковое сообщение повторно за час — не дублируем ни в базе, ни в почте
+  const dup = await env.DB.prepare('SELECT 1 AS x FROM support WHERE message = ? AND created_at > ? LIMIT 1').bind(message, Date.now() - 3600 * 1000).first();
+  if (dup) return json({ ok: true, emailed: false });
   const meta = JSON.stringify({
     version: String(b.version || '').slice(0, 20), screen: String(b.screen || '').slice(0, 60),
     kid: String(b.kid || '').slice(0, 40), ua: (req.headers.get('user-agent') || '').slice(0, 200), contact,
@@ -487,7 +515,7 @@ async function supportRoute(req, env) {
     .bind(Date.now(), s ? s.f : null, email, kind, message, meta).run();
   const id = res.meta && res.meta.last_row_id;
   const m = JSON.parse(meta);
-  const sent = await sendMail(env, {
+  const sent = await sendMailCapped(env, {
     to: env.SUPPORT_TO || DEFAULT_TO,
     subject: `[Математика в клетку] ${KINDS[kind]}${email ? ' от ' + email : ''}`,
     replyTo: email,
@@ -526,7 +554,7 @@ async function pinRequest(req, env) {
   const message = 'Родитель просит прислать PIN-коды детей и/или пароль кабинета родителя.' + (what ? '\nКомментарий: ' + what : '');
   const ins = await env.DB.prepare('INSERT INTO support (created_at, family_id, email, kind, message, meta) VALUES (?, ?, ?, ?, ?, ?)')
     .bind(Date.now(), s.f, s.e, 'pin', message, JSON.stringify({ ua: (req.headers.get('user-agent') || '').slice(0, 200) })).run();
-  const sent = await sendMail(env, {
+  const sent = await sendMailCapped(env, {
     to: env.SUPPORT_TO || DEFAULT_TO, replyTo: s.e,
     subject: `[Математика в клетку] Запрос PIN от ${s.e}`,
     html: `<p>${esc(message)}</p><p>Родитель (подтверждён Gmail): <b>${esc(s.e)}</b>.<br>Отправить PIN можно из панели /admin.</p>`,
