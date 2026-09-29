@@ -209,6 +209,14 @@ sup{font-size:.7em;line-height:0}
 .opt i{font-style:normal;font-weight:700;color:var(--muted);width:20px}
 .prog-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font-size:14.5px;color:var(--muted)}
 
+/* мини-игры (в. 2.9.0) */
+.ginvite{background:var(--sheet2)}
+.gamebox .ghead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.gamebox .gtitle{font-weight:700}
+.gamebox .gtimer{font-family:Caveat,cursive;font-weight:700;font-size:28px;line-height:1;color:var(--blue)}
+.gamebox .gscore{color:var(--muted);font-size:14.5px}
+.gamebox .q{font-size:17px}
+
 /* results */
 .score{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .score .big{font-family:Caveat,cursive;font-weight:700;font-size:64px;line-height:1;color:var(--blue)}
@@ -2765,8 +2773,8 @@ CONTENT.n4 = {
   + '<p>Сначала смотрим на количество цифр: чем больше цифр, тем больше число (99 999 меньше 100 000). Если цифр поровну, сравниваем цифры слева направо, начиная со старшего разряда, до первого различия. Возьмём 6 205 371 и 6 250 137: миллионы 6 = 6, сотни тысяч 2 = 2, десятки тысяч 0 и 5 — уже различие, а 0 < 5, значит, 6 205 371 < 6 250 137.</p>'
   + '<p>Числа-«соседи» отличаются на 1. Следующее число больше на 1, предыдущее — меньше на 1. Соседи числа 300 000 — это 299 999 и 300 001. Наибольшее пятизначное число — 99 999, наименьшее шестизначное — 100 000.</p>'
   + '<h3>Сложение и вычитание столбиком</h3>'
-  + '<p>Записываем числа так, чтобы разряд был под разрядом: единицы под единицами, десятки под десятками. Действуем справа налево. Если сумма в разряде получилась 10 или больше, записываем единицы, а десяток «переносим» в следующий разряд и прибавляем к нему.</p>'
-  + '<div class="figure">__SVG_N4_ADD__</div>'
+  + '<p>Записываем числа так, чтобы разряд был под разрядом. Если сумма в разряде получилась 10 или больше, десяток «переносим» в следующий разряд. Смотри, как это работает:</p>'
+  + '<div class="figure">__SVG_N4_ADD_ANIM__</div>'
   + '<p>Вычитаем тоже справа налево. Если сверху цифра меньше, «занимаем» единицу у соседнего старшего разряда. Особенно внимательно, когда там стоят нули. Найдём 7 003 − 2 458. Единицы: 3 меньше 8, а десятков и сотен нет — занимаем у тысяч: 7 тысяч → 6 тысяч, в сотнях станет 9, в десятках 9, а в единицах 13. Теперь 13 − 8 = 5, 9 − 5 = 4, 9 − 4 = 5, 6 − 2 = 4. Ответ: 4 545. Проверка сложением: 4 545 + 2 458 = 7 003.</p>'
   + '<div class="note"><span class="hand">Запомни</span>Проверка сложения — вычитание, проверка вычитания — сложение: если 7 003 − 2 458 = 4 545, то 4 545 + 2 458 должно снова дать 7 003.</div>'
   + '<h3>Округление</h3>'
@@ -2839,8 +2847,8 @@ CONTENT.mul4 = {
   + '<p>Свойства помогают считать удобно. Переместительное: a · b = b · a. Сочетательное: (a · b) · c = a · (b · c). Например, 25 · 48 = 25 · 4 · 12 = 100 · 12 = 1 200. Распределительное: 7 · 104 = 7 · 100 + 7 · 4 = 728.</p>'
   + '<h3>Деление уголком на однозначное число</h3>'
   + '<p>Записываем делимое, справа «уголок» и делитель. Берём первую цифру делимого; если она меньше делителя, берём первые две. Это первое неполное делимое: делим его, пишем цифру в частном, умножаем её на делитель, вычитаем, «сносим» следующую цифру — и снова делим. Так повторяем, пока не «снесём» все цифры. Число цифр в частном определяется тем, сколько раз мы делили.</p>'
-  + '<div class="figure">__SVG_MUL4_LONGDIV__</div>'
-  + '<p>3 618 : 6. Первое неполное делимое 36: 36 : 6 = 6. Сносим 1, но 1 меньше 6 — значит, в частном пишем 0. Сносим 8 и делим 18 : 6 = 3. Частное 603.</p>'
+  + '<div class="figure">__SVG_MUL4_LONGDIV_ANIM__</div>'
+  + '<p>3 618 : 6 = 603 — смотри, как это считается, в анимации выше.</p>'
   + '<div class="note"><span class="hand">Запомни</span>Каждый раз, когда снесённая цифра образует число меньше делителя, в частном пишем 0 и сносим следующую цифру. Нули в частном нельзя пропускать: 603 и 63 — разные числа!</div>'
   + '<h3>Деление с остатком и проверка</h3>'
   + '<p>Не всегда получается разделить нацело. В конце может остаться <b>остаток</b> — число, которое уже нельзя разделить на делитель. Остаток всегда <b>меньше делителя</b>. Например, 1 000 : 7: 7 · 142 = 994, остаток 1 000 − 994 = 6. Записываем 1 000 : 7 = 142 (ост. 6). Проверка: <b>делитель · частное + остаток = делимое</b>: 7 · 142 + 6 = 1 000.</p>'
@@ -2919,8 +2927,8 @@ CONTENT.val4 = {
   + '<p>Обрати внимание: у единиц площади каждая ступенька — это <b>×100</b>, а не ×10. Поэтому 3 м² 40 дм² = 300 дм² + 40 дм² = 340 дм².</p>'
   + '<h3>Время</h3>'
   + '<p>Со временем всё устроено иначе, чем с метрами: 1 ч = 60 мин, 1 мин = 60 с, 1 сутки = 24 ч, 1 неделя = 7 суток. Месяцев в году 12, а суток в году 365 (а в високосном 366). В месяце 28, 29, 30 или 31 сутки. Ещё есть большая единица — <b>век</b>: 1 век = 100 лет. Например, 1961 год — это XX век (годы с 1901 по 2000).</p>'
-  + '<p><b>Сколько времени прошло?</b> Удобно двигаться «прыжками» по круглым отметкам. От 14:35 до 17:10: сначала до 15:00 — это 25 минут; потом до 17:00 — ещё 2 часа; потом до 17:10 — ещё 10 минут. Всего 25 мин + 2 ч + 10 мин = 2 ч 35 мин.</p>'
-  + '<div class="figure">__SVG_VAL4_CLOCK__</div>'
+  + '<p><b>Сколько времени прошло?</b> Удобно двигаться «прыжками» по круглым отметкам. Смотри, как это работает:</p>'
+  + '<div class="figure">__SVG_VAL4_CLOCK_ANIM__</div>'
   + '<p><b>Который час будет?</b> Прибавляем время частями. Фильм начался в 18:25 и идёт 1 ч 50 мин. К 18:25 прибавим час: 19:25. Ещё 50 минут: до 20:00 нужно 35 минут, остаётся 15 минут, значит, фильм закончится в 20:15. Если надо перейти через полночь, помни: в сутках 24 часа, после 23:59 наступает 0:00.</p>'
   + '<p>Наконец, <b>сравнивать</b> можно только значения в одинаковых единицах. Что больше: 3 км 50 м или 3500 м? Переведём: 3 км 50 м = 3050 м. А 3050 м меньше 3500 м, значит, 3 км 50 м &lt; 3500 м.</p>',
   examples: [
@@ -2983,8 +2991,8 @@ CONTENT.word4 = {
   + '<li><b>4. Составь план</b>: какое действие можно сделать первым и что оно даёт.</li>'
   + '<li><b>5. Реши, проверь и запиши ответ.</b></li></ul>'
   + '<h3>Цена, количество, стоимость</h3>'
-  + '<p><b>Цена</b> — сколько стоит одна штука (или 1 кг, 1 метр). <b>Количество</b> — сколько штук купили. <b>Стоимость</b> — сколько заплатили за всё. Если 6 тетрадей по 24 рубля, то стоимость: 24 · 6 = 144 рубля. Все три величины связаны одним «треугольником»: стоимость = цена · количество. Отсюда цена = стоимость : количество, а количество = стоимость : цена.</p>'
-  + '<div class="figure">__SVG_WORD4_TRIANGLE__</div>'
+  + '<p><b>Цена</b> — сколько стоит одна штука (или 1 кг, 1 метр). <b>Количество</b> — сколько штук купили. <b>Стоимость</b> — сколько заплатили за всё. Все три величины связаны одним «треугольником»: стоимость = цена · количество. Отсюда цена = стоимость : количество, а количество = стоимость : цена. Смотри, как это работает:</p>'
+  + '<div class="figure">__SVG_WORD4_TRIANGLE_ANIM__</div>'
   + '<p>Точно так же устроены две другие связи из схемы. <b>Движение:</b> путь = скорость · время. Велосипедист едет 3 часа со скоростью 14 км/ч, значит, проедет 14 · 3 = 42 км. <b>Работа:</b> всего = (сколько делают за 1 час) · (число часов). Если мастер за час делает 9 деталей, то за 8 часов он сделает 9 · 8 = 72 детали. Число «сколько делают за 1 час» называют <b>производительностью</b>.</p>'
   + '<div class="note"><span class="hand">Запомни</span>Во всех трёх задачах работает одна идея: <b>«за одну единицу» · «число единиц» = «всё вместе»</b>. Если «всё вместе» известно, а ищем одну из частей — делим.</div>'
   + '<h3>Встречное движение и вдогонку</h3>'
@@ -3061,8 +3069,8 @@ CONTENT.geo4 = {
   + '<p>1 см² — это квадрат со стороной 1 см. А 1 дм² — квадрат со стороной 1 дм = 10 см. В нём 10 рядов по 10 квадратиков, то есть <b>1 дм² = 100 см²</b>. Точно так же 1 м² — квадрат со стороной 10 дм, в нём 10 · 10 = 100 дм². Значит, <b>1 м² = 100 дм²</b>. (А в 1 м² сантиметровых квадратов 100 · 100 = 10 000.) Поэтому 3 дм² = 300 см², а 500 дм² = 5 м².</p>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>Думают, что в 1 дм² десять см², потому что в 1 дм десять см. Это верно для длины, а для площади единицы «в квадрате»: 10 · 10 = 100. Ещё ошибка — перемножать величины в разных единицах: сначала переведи всё в одну единицу (3 дм · 20 см = 30 см · 20 см = 600 см²).</div>'
   + '<h3>Сложные фигуры из прямоугольников</h3>'
-  + '<p>Если фигура похожа на букву Г, её можно разрезать на два прямоугольника, найти площадь каждого и сложить. Есть и второй путь: дополнить фигуру до большого прямоугольника, найти его площадь и вычесть «лишний» кусок. Оба пути должны дать один и тот же ответ — это хорошая проверка.</p>'
-  + '<div class="figure">__SVG_GEO4_COMPOSITE__</div>'
+  + '<p>Если фигура похожа на букву Г, её можно разрезать на два прямоугольника и сложить их площади. Смотри, как это работает:</p>'
+  + '<div class="figure">__SVG_GEO4_COMPOSITE_ANIM__</div>'
   + '<h3>Если площадь или периметр известны</h3>'
   + '<p>Площадь — это a · b, значит, неизвестную сторону находим делением: <b>b = S : a</b>. Например, площадь 84 см², одна сторона 12 см, тогда вторая 84 : 12 = 7 см. С периметром так: сначала находим сумму двух соседних сторон, P : 2, а потом вычитаем известную. Периметр 40 см, одна сторона 14 см: 40 : 2 = 20, 20 − 14 = 6 см.</p>'
   + '<h3>Виды углов</h3>'
@@ -3145,9 +3153,9 @@ CONTENT.frac4 = {
   + '<p>Складывать восьмые с восьмыми так же легко, как яблоки с яблоками: {2|9} + {5|9} = {7|9}. Мы взяли 2 девятых и ещё 5 девятых, всего 7 девятых. Вычитание тоже просто: {7|8} − {3|8} = {4|8}. Знаменатель не меняется — размер долей тот же, меняется только их количество. Если в сумме получилось столько частей, сколько во всём целом, то это целое число: {3|7} + {4|7} = {7|7} = 1.</p>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>Складывают и знаменатели: {2|9} + {5|9} = {7|18}. Так делать нельзя! Ты же не пересчитываешь заново, на сколько частей разрезан пирог, ты лишь считаешь, сколько кусков у тебя стало. Знаменатель остаётся 9.</div>'
   + '<h3>Доля от числа и число по доле</h3>'
-  + '<p>Как найти {1|5} от 45? Разделим 45 на 5 равных частей: 45 : 5 = 9. Значит, одна пятая от 45 равна 9. А чтобы найти {3|5} от 20, сначала найдём одну пятую: 20 : 5 = 4, а потом возьмём таких частей три: 4 · 3 = 12.</p>'
+  + '<p>Как найти {1|5} от 45? Разделим 45 на 5 равных частей: 45 : 5 = 9. Значит, одна пятая от 45 равна 9. А как найти {3|5} от 20 — смотри на схеме:</p>'
   + '<p>Бывает и наоборот: известна часть, а нужно найти всё число. Если {1|4} числа равна 12, то всего таких частей 4, значит, число равно 12 · 4 = 48.</p>'
-  + '<div class="figure">__SVG_FRAC4_OF_NUMBER__</div>'
+  + '<div class="figure">__SVG_FRAC4_OF_NUMBER_ANIM__</div>'
   + '<p>Правило: <b>чтобы найти долю от числа, надо число разделить на знаменатель</b> (получится одна доля), <b>а затем умножить на числитель</b>. Чтобы найти число по его доле, надо, наоборот, известную часть разделить на числитель, а потом умножить на знаменатель.</p>'
   + '<h3>Правильные и неправильные дроби, числовой луч</h3>'
   + '<p>Дробь, которая меньше целого, называют <b>правильной</b>: у неё числитель меньше знаменателя, например {2|5} или {7|9}. Дробь, у которой числитель равен знаменателю или больше его, называют <b>неправильной</b>: {5|5}, {7|5}, {9|4}. Она равна 1 или больше 1. Этого названия достаточно запомнить, действий с ними пока не будет.</p>'
@@ -9193,7 +9201,218 @@ SVG_LIB.QUADR_MIDLINE_ANIM = function(){
     label:'Анимация: трапеция с нижним основанием a=10 и верхним основанием b=6; отмечаем середины боковых сторон и проводим через них среднюю линию; её длина m равна полусумме оснований: (10+6):2=8, ровно посередине между 10 и 6'});
 };
 
-var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1};
+/* ---------- N4_ADD_ANIM — «Многозначные числа»: 48 764 + 35 693 = 84 457 столбиком, с переносом ---------- */
+SVG_LIB.N4_ADD_ANIM = function(){
+  var XS=[165,213,261,309,357];               // дт, т, с, д, е (десятки тысяч ... единицы)
+  var LABEL_Y=28, CARRY_Y=54, ROW1_Y=80, ROW2_Y=122, LINE_Y=140, SUM_Y=182;
+  var ROW1=['4','8','7','6','4'], ROW2=['3','5','6','9','3'], SUM=['8','4','4','5','7'];
+  var LBL=['дт','т','с','д','е'];
+  function D(x,y,s,attrs,fill){ return AN.t(x,y,s,{size:24,weight:700,fill:fill||'var(--ink)',attrs:attrs}); }
+  var b='';
+  var i;
+  for(i=0;i<5;i++) b+=AN.t(XS[i],LABEL_Y,LBL[i],{size:12,fill:'var(--muted)'});
+  // подсветка текущего разряда (единицы -> десятки -> сотни)
+  b+='<rect x="'+(XS[4]-24)+'" y="56" width="48" height="146" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="1" data-out="2"/>';
+  b+='<rect x="'+(XS[3]-24)+'" y="56" width="48" height="146" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="2" data-out="3"/>';
+  b+='<rect x="'+(XS[2]-24)+'" y="56" width="48" height="146" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="3" data-out="4"/>';
+  for(i=0;i<5;i++) b+=D(XS[i],ROW1_Y,ROW1[i]);
+  for(i=0;i<5;i++) b+=D(XS[i],ROW2_Y,ROW2[i]);
+  b+=AN.t(100,ROW2_Y,'+',{size:26,weight:700});
+  b+='<line x1="90" y1="'+LINE_Y+'" x2="386" y2="'+LINE_Y+'" stroke="var(--ink)" stroke-width="2"/>';
+  // перенесённые единицы (переносы)
+  b+=AN.t(XS[2],CARRY_Y,'1',{size:15,weight:700,fill:'var(--red)',attrs:'data-in="2" data-dim="3" data-pop'});
+  b+=AN.t(XS[1],CARRY_Y,'1',{size:15,weight:700,fill:'var(--red)',attrs:'data-in="3" data-dim="4" data-pop'});
+  // сумма по разрядам, справа налево
+  b+=D(XS[4],SUM_Y,SUM[4],'data-in="1" data-hl="5" data-hl-fill="var(--green)"');
+  b+=D(XS[3],SUM_Y,SUM[3],'data-in="2" data-hl="5" data-hl-fill="var(--green)"');
+  b+=D(XS[2],SUM_Y,SUM[2],'data-in="3" data-hl="5" data-hl-fill="var(--green)"');
+  b+=D(XS[1],SUM_Y,SUM[1],'data-in="4" data-hl="5" data-hl-fill="var(--green)"');
+  b+=D(XS[0],SUM_Y,SUM[0],'data-in="4" data-hl="5" data-hl-fill="var(--green)"');
+  b+=AN.cap(0,'Разряд под разрядом. Считаем справа налево.',{y:225});
+  b+=AN.cap(1,'Единицы: 4 + 3 = 7.',{y:225});
+  b+=AN.cap(2,'Десятки: 6 + 9 = 15 — пишем 5, 1 в перенос.',{y:225});
+  b+=AN.cap(3,'Сотни: 7 + 6 + 1 = 14 — пишем 4, 1 переносим.',{y:225});
+  b+=AN.cap(4,'Тысячи и десятки тысяч — так же, с переносом.',{y:225});
+  b+=AN.cap(5,'48 764 + 35 693 = 84 457',{y:225,size:18,weight:700,last:true});
+  return animFigure(b,{w:520,h:250,steps:6,dur:'3800,4000,4200,4200,3600',
+    label:'Анимация: сложение столбиком 48 764 и 35 693; единицы 4+3=7 без переноса, десятки 6+9=15 — пишем 5, переносим 1 в сотни, сотни 7+6+1=14 — пишем 4, переносим 1 в тысячи, тысячи и десятки тысяч считаются так же; ответ 84 457'});
+};
+
+/* ---------- MUL4_LONGDIV_ANIM — «Умножение и деление»: 3 618 : 6 = 603 уголком, с нулём в частном ---------- */
+SVG_LIB.MUL4_LONGDIV_ANIM = function(){
+  var DX=[190,224,258,292], DIG=['3','6','1','8'];   // цифры делимого
+  var ROW_Y=64, BOX_Y=40, BOX_H=36;
+  var CORNER_X=325, DIV_X=348, LINE_Y=80, QY=106, QX=[340,358,376];
+  var SX=250, WORK_Y=152, NOTE_Y=180;
+  function D(x,y,s,size,fill,attrs){ return AN.t(x,y,s,{size:size,weight:700,fill:fill||'var(--ink)',attrs:attrs}); }
+  var b='';
+  // подсветка «взятых» цифр делимого (появляется по мере того, как мы их используем)
+  b+='<rect x="174" y="'+BOX_Y+'" width="66" height="'+BOX_H+'" rx="8" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2" data-in="1"/>';
+  b+='<rect x="242" y="'+BOX_Y+'" width="32" height="'+BOX_H+'" rx="8" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2" data-in="2"/>';
+  b+='<rect x="276" y="'+BOX_Y+'" width="32" height="'+BOX_H+'" rx="8" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2" data-in="3"/>';
+  // делимое
+  var i; for(i=0;i<4;i++) b+=D(DX[i],ROW_Y,DIG[i],26);
+  // уголок (вертикальная + верхняя горизонтальная линии) и делитель
+  b+='<line x1="'+CORNER_X+'" y1="35" x2="'+CORNER_X+'" y2="100" stroke="var(--ink)" stroke-width="2"/>';
+  b+='<line x1="'+CORNER_X+'" y1="35" x2="'+(CORNER_X+55)+'" y2="35" stroke="var(--ink)" stroke-width="2"/>';
+  b+=D(DIV_X,ROW_Y,'6',24);
+  b+='<line x1="328" y1="'+LINE_Y+'" x2="380" y2="'+LINE_Y+'" stroke="var(--ink)" stroke-width="2"/>';
+  // частное — появляется по цифре за раз (зелёное, это ответ)
+  b+=D(QX[0],QY,'6',22,'var(--green)','data-in="1" data-pop');
+  b+=D(QX[1],QY,'0',22,'var(--green)','data-in="2" data-pop');
+  b+=D(QX[2],QY,'3',22,'var(--green)','data-in="4" data-pop');
+  b+='<rect x="334" y="88" width="48" height="28" rx="6" fill="none" stroke="var(--green)" stroke-width="2" data-in="5" data-pop/>';
+  // рабочая область: текущее неполное делимое и его судьба
+  b+=D(SX,WORK_Y,'36',26,'var(--blue)','data-in="1" data-out="2" data-pop');
+  b+=AN.t(SX,NOTE_Y,'36 − 36 = 0',{size:15,fill:'var(--muted)',attrs:'data-in="1" data-out="2"'});
+  b+=D(SX,WORK_Y,'1',26,'var(--red)','data-in="2" data-out="3" data-pop');
+  b+=AN.t(SX,NOTE_Y,'1 меньше 6!',{size:16,weight:700,fill:'var(--red)',attrs:'data-in="2" data-out="3"'});
+  b+=D(SX,WORK_Y,'18',26,'var(--blue)','data-in="3" data-out="5" data-pop');
+  b+=AN.t(SX,NOTE_Y,'18 − 18 = 0',{size:15,fill:'var(--muted)',attrs:'data-in="4" data-out="5"'});
+  b+=AN.cap(0,'3 618 : 6 — уголком, разряд за разрядом.',{y:222});
+  b+=AN.cap(1,'36 : 6 = 6 — первая цифра частного.',{y:222});
+  b+=AN.cap(2,'Сносим 1. Оно меньше 6 — пишем в частном 0!',{y:222});
+  b+=AN.cap(3,'Сносим ещё 8: получилось 18.',{y:222});
+  b+=AN.cap(4,'18 : 6 = 3, остатка нет.',{y:222});
+  b+=AN.cap(5,'3 618 : 6 = 603',{y:222,size:19,weight:700,last:true});
+  return animFigure(b,{w:520,h:248,steps:6,dur:'3800,4200,3800,3600,3800',
+    label:'Анимация: деление уголком 3618 на 6; 36:6=6 — первая цифра частного; сносим 1, оно меньше 6, поэтому в частном пишут 0; сносим 8, получают 18; 18:6=3; частное 603'});
+};
+
+/* ---------- VAL4_CLOCK_ANIM — «Величины: время»: сколько прошло с 14:35 до 17:10, прыжки по круглым отметкам ---------- */
+SVG_LIB.VAL4_CLOCK_ANIM = function(){
+  var Y=120, xs=[50,190,340,470];
+  var labs=['14:35','15:00','17:00','17:10'];
+  var subs=['начало','круглый час','круглый час','конец'];
+  var cols=['var(--red)','var(--gold)','var(--gold)','var(--green)'];
+  var softs=['var(--red-soft)','var(--gold-soft)','var(--gold-soft)','var(--green-soft)'];
+  var b='';
+  b+='<line x1="20" y1="'+Y+'" x2="500" y2="'+Y+'" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>';
+  b+='<path d="M492,'+(Y-7)+' L506,'+Y+' L492,'+(Y+7)+'" fill="var(--ink)"/>';
+  function point(i,attrs){
+    return AN.g(attrs, '<circle cx="'+xs[i]+'" cy="'+Y+'" r="8" fill="'+softs[i]+'" stroke="'+cols[i]+'" stroke-width="3"/>'
+      +AN.t(xs[i],Y+34,labs[i],{size:18,weight:700,fill:cols[i]})
+      +AN.t(xs[i],Y+54,subs[i],{size:13,fill:'var(--muted)'}));
+  }
+  b+=point(0,'data-in="0"');
+  b+=point(1,'data-in="1" data-pop');
+  b+=point(2,'data-in="2" data-pop');
+  b+=point(3,'data-in="3" data-pop');
+  function jump(k,i1,i2,txt){
+    var x1=xs[i1]+8, x2=xs[i2]-8, mx=(x1+x2)/2;
+    return AN.g('data-in="'+k+'"','<path d="M'+x1+','+(Y-10)+' Q'+mx+','+(Y-64)+' '+x2+','+(Y-10)+'" fill="none" stroke="var(--blue)" stroke-width="2.5"/>'
+      +AN.t(mx,Y-48,txt,{size:16,weight:700,fill:'var(--blue)'}));
+  }
+  b+=jump(1,0,1,'+ 25 мин');
+  b+=jump(2,1,2,'+ 2 ч');
+  b+=jump(3,2,3,'+ 10 мин');
+  b+=AN.g('data-in="4" data-pop','<rect x="30" y="196" width="460" height="50" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>'
+    +AN.t(260,220,'25 мин + 2 ч + 10 мин = 2 ч 35 мин',{size:17,weight:700,fill:'var(--green)'})
+    +AN.t(260,239,'Прошло от 14:35 до 17:10',{size:13,fill:'var(--ink)'}));
+  b+=AN.cap(0,'Начало: 14:35. Идём прыжками до круглых отметок.',{y:278});
+  b+=AN.cap(1,'Прыжок 1: до 15:00 — это 25 минут.',{y:278});
+  b+=AN.cap(2,'Прыжок 2: до 17:00 — ещё целых 2 часа.',{y:278});
+  b+=AN.cap(3,'Прыжок 3: до 17:10 — ещё 10 минут.',{y:278});
+  b+=AN.cap(4,'Всего прошло 2 ч 35 мин',{y:278,size:18,weight:700,last:true});
+  return animFigure(b,{w:520,h:296,steps:5,dur:'3800,3800,3800,4200',
+    label:'Анимация: линия времени от 14:35 до 17:10 с тремя прыжками до круглых отметок — 25 минут, 2 часа и 10 минут; всего проходит 2 часа 35 минут'});
+};
+
+/* ---------- WORD4_TRIANGLE_ANIM — «Текстовые задачи»: треугольник цена–количество–стоимость, 24 руб · 6 = 144 руб ---------- */
+SVG_LIB.WORD4_TRIANGLE_ANIM = function(){
+  var CX=260, APEX_Y=22, HH=196, HW=175, DIV_Y=APEX_Y+104;
+  var top=[[CX,APEX_Y],[CX-90,DIV_Y],[CX+90,DIV_Y]];
+  var b='';
+  b+=AN.g('data-in="0"', '<path d="M'+CX+','+APEX_Y+' L'+(CX-HW)+','+(APEX_Y+HH)+' L'+(CX+HW)+','+(APEX_Y+HH)+' Z" fill="var(--sheet2)" stroke="var(--ink)" stroke-width="2.5"/>'
+    +'<line x1="'+top[1][0]+'" y1="'+top[1][1]+'" x2="'+top[2][0]+'" y2="'+top[2][1]+'" stroke="var(--ink)" stroke-width="2"/>'
+    +'<line x1="'+CX+'" y1="'+DIV_Y+'" x2="'+CX+'" y2="'+(APEX_Y+HH)+'" stroke="var(--ink)" stroke-width="2"/>');
+  function cover(fill,stroke,attrs){
+    return AN.g(attrs,'<path d="M'+top[0][0]+','+top[0][1]+' L'+top[1][0]+','+top[1][1]+' L'+top[2][0]+','+top[2][1]+' Z" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5"/>');
+  }
+  b+=cover('var(--gold-soft)','var(--gold)','data-in="1" data-out="4"');
+  b+=cover('var(--green-soft)','var(--green)','data-in="4" data-pop');
+  b+=AN.t(CX,APEX_Y+62,'стоимость',{size:14,weight:700,fill:'var(--green)'});
+  b+=AN.g('data-in="0" data-out="1"', AN.t(CX,APEX_Y+92,'?',{size:26,weight:700,fill:'var(--muted)'}));
+  b+=AN.g('data-in="4" data-pop', AN.t(CX,APEX_Y+96,'144 руб',{size:20,weight:700,fill:'var(--green)'}));
+  b+=AN.t(CX-75,DIV_Y+52,'цена',{size:14,weight:700,fill:'var(--blue)'});
+  b+=AN.t(CX-75,DIV_Y+82,'24 руб',{size:18,weight:700,fill:'var(--blue)'});
+  b+=AN.t(CX+75,DIV_Y+52,'количество',{size:14,weight:700,fill:'var(--gold)'});
+  b+=AN.t(CX+75,DIV_Y+82,'6',{size:18,weight:700,fill:'var(--gold)'});
+  var FY=252;
+  b+=AN.g('data-in="2" data-out="3"', AN.t(CX,FY,'стоимость = цена · количество',{size:16,weight:700}));
+  b+=AN.g('data-in="3" data-out="4"', AN.t(CX,FY,'24 · 6 = ?',{size:19,weight:700,fill:'var(--ink)'}));
+  b+=AN.g('data-in="4" data-pop', AN.t(CX,FY,'24 · 6 = 144',{size:20,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,'Треугольник: стоимость сверху, цена и количество снизу.',{y:280});
+  b+=AN.cap(1,'Закрываем «стоимость» — именно её мы ищем.',{y:280});
+  b+=AN.cap(2,'Остались цена и количество — их умножаем.',{y:280});
+  b+=AN.cap(3,'Подставляем числа: 24 · 6.',{y:280});
+  b+=AN.cap(4,'Стоимость = 144 рубля!',{y:280,size:18,weight:700,last:true});
+  return animFigure(b,{w:520,h:296,steps:5,dur:'3800,3600,3800,4000',
+    label:'Анимация: треугольник цена-количество-стоимость; закрываем ячейку стоимость, остаются цена 24 рубля и количество 6 — их перемножаем, 24 умножить на 6 равно 144, значит, стоимость 144 рубля'});
+};
+
+/* ---------- GEO4_COMPOSITE_ANIM — «Составные фигуры»: Г-фигура = прямоугольник 9×6 см без уголка 5×2 см, площадь 44 см² ---------- */
+SVG_LIB.GEO4_COMPOSITE_ANIM = function(){
+  var X0=150, Y0=40, X1=366, XN=246, Y1=136, Y2=184; // outer 9×6 (216×144 px), уголок 5×2 (120×48 px), 24px = 1 см
+  var PTS = X0+','+Y0+' '+X1+','+Y0+' '+X1+','+Y1+' '+XN+','+Y1+' '+XN+','+Y2+' '+X0+','+Y2;
+  var b='';
+  b+='<polygon points="'+PTS+'" fill="var(--sheet2)" stroke="none"/>';
+  b+='<rect data-in="2" x="'+X0+'" y="'+Y0+'" width="'+(X1-X0)+'" height="'+(Y1-Y0)+'" fill="var(--blue-soft)"/>';
+  b+='<rect data-in="3" x="'+X0+'" y="'+Y1+'" width="'+(XN-X0)+'" height="'+(Y2-Y1)+'" fill="var(--gold-soft)"/>';
+  b+='<polygon points="'+PTS+'" fill="none" stroke="var(--ink)" stroke-width="2.5"/>';
+  b+='<line data-in="1" x1="'+X0+'" y1="'+Y1+'" x2="'+XN+'" y2="'+Y1+'" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5,5"/>';
+  b+=AN.t((X0+X1)/2,Y0-12,'9 см',{size:16,weight:700});
+  b+=AN.t(X0-14,(Y0+Y2)/2+5,'6 см',{size:16,weight:700,anchor:'end'});
+  b+=AN.t((XN+X1)/2,Y1+20,'5 см',{size:14,weight:700,fill:'var(--muted)'});
+  b+=AN.t(X1+14,(Y1+Y2)/2+5,'2 см',{size:14,weight:700,fill:'var(--muted)',anchor:'start'});
+  b+=AN.g('data-in="2"',AN.t((X0+X1)/2,(Y0+Y1)/2+6,'9 · 4 = 36',{size:16,weight:700,fill:'var(--blue)'}));
+  b+=AN.g('data-in="3"',AN.t((X0+XN)/2,(Y1+Y2)/2+6,'4 · 2 = 8',{size:13,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="4" data-pop',AN.t((X0+X1)/2,220,'36 + 8 = 44 см²',{size:22,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,'Г-фигура: прямоугольник 9×6 см без уголка 5×2 см.',{y:260});
+  b+=AN.cap(1,'Разрежем фигуру на два прямоугольника.',{y:260});
+  b+=AN.cap(2,'Первый прямоугольник: 9 · 4 = 36 см².',{y:260});
+  b+=AN.cap(3,'Второй прямоугольник: 4 · 2 = 8 см².',{y:260});
+  b+=AN.cap(4,'Площадь фигуры: 36 + 8 = 44 см²',{y:260,size:17,weight:700,last:true});
+  return animFigure(b,{w:520,h:290,steps:5,dur:'3800,3800,3800,4000',
+    label:'Анимация: Г-образная фигура — прямоугольник 9 на 6 см с вырезанным уголком 5 на 2 см; фигуру режут на два прямоугольника: 9 на 4 (36 квадратных сантиметров) и 4 на 2 (8 квадратных сантиметров); площадь фигуры равна 36 плюс 8, то есть 44 квадратных сантиметра'});
+};
+
+/* ---------- FRAC4_OF_NUMBER_ANIM — «Доля от числа»: 3/5 от 20 = 12 (20 предметов, 5 групп по 4) ---------- */
+SVG_LIB.FRAC4_OF_NUMBER_ANIM = function(){
+  var CY=110, OFF=13, R=9;
+  var GROUPS=[
+    {cx:70,  hl:2, dim:0},
+    {cx:170, hl:3, dim:0},
+    {cx:270, hl:3, dim:0},
+    {cx:370, hl:0, dim:3},
+    {cx:470, hl:0, dim:3}
+  ];
+  function dot(cx,cy,attrs){ return '<circle '+(attrs||'')+' cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.5"/>'; }
+  var b='';
+  for (var i=0;i<GROUPS.length;i++){
+    var g=GROUPS[i], cx=g.cx;
+    var da = g.dim ? ' data-dim="'+g.dim+'"' : '';
+    var ha = g.hl ? ' data-hl="'+g.hl+'" data-hl-fill="var(--gold-soft)" data-hl-stroke="var(--gold)"' : '';
+    b+='<rect data-in="1"'+da+' x="'+(cx-32)+'" y="'+(CY-34)+'" width="64" height="68" rx="10" fill="none" stroke="var(--line)" stroke-width="2"/>';
+    b+=dot(cx-OFF,CY-OFF,'data-in="0"'+da+ha);
+    b+=dot(cx+OFF,CY-OFF,'data-in="0"'+da+ha);
+    b+=dot(cx-OFF,CY+OFF,'data-in="0"'+da+ha);
+    b+=dot(cx+OFF,CY+OFF,'data-in="0"'+da+ha);
+    b+=AN.g('data-in="1"'+da, AN.t(cx,CY+50,'4',{size:13,weight:700,fill:'var(--muted)'}));
+  }
+  b+=AN.g('data-in="2"',AN.t(70,58,'1 группа = 4',{size:15,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="3"',AN.t(170,190,'4 · 3 = 12',{size:18,weight:700,fill:'var(--green)'}));
+  b+=AN.g('data-in="4" data-pop',AN.t(260,225,'3/5 от 20 = 12',{size:22,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,'У нас 20 предметов. Найдём 3/5 от 20.',{y:262});
+  b+=AN.cap(1,'Разделим их на 5 равных групп — по 4 в каждой.',{y:262});
+  b+=AN.cap(2,'Одна группа — это 1/5 от 20, то есть 4.',{y:262});
+  b+=AN.cap(3,'Возьмём 3 такие группы: 4 · 3 = 12.',{y:262});
+  b+=AN.cap(4,'3/5 от 20 равно 12',{y:262,size:17,weight:700,last:true});
+  return animFigure(b,{w:520,h:300,steps:5,dur:'3600,3800,4000,3800',
+    label:'Анимация: 20 кружков делят на 5 равных групп по 4; сначала выделяется золотым одна группа — это одна пятая, то есть 4; затем выделяются золотым ещё две группы, всего три группы — 4 умножить на 3 равно 12; вывод: три пятых от 20 равно 12'});
+};
+
+var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1, "N4_ADD_ANIM": 1, "MUL4_LONGDIV_ANIM": 1, "VAL4_CLOCK_ANIM": 1, "WORD4_TRIANGLE_ANIM": 1, "GEO4_COMPOSITE_ANIM": 1, "FRAC4_OF_NUMBER_ANIM": 1};
 function renderSvgMarkers(html){
   return String(html).replace(/__SVG_(\w+)__/g, function(_,name){
     var fn = SVG_LIB[name];
@@ -9206,12 +9425,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.8.0';
+var APP_VERSION = '2.9.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.8.0",
+ "current": "2.9.0",
  "versions": [
+  {
+   "v": "2.9.0",
+   "date": "2026-09-29",
+   "title": "Мини-игры и анимации 4 класса",
+   "items": [
+    "Мини-игры прямо в практике: «Раунд на время» (60 секунд, задачи из этой же темы, ошибки не останавливают раунд) и «Цепочка» (время на вопрос понемногу сокращается с каждым верным ответом подряд, но одна ошибка заканчивает игру). Предлагаются ненавязчиво — кнопкой прямо в практике, а не отдельным пугающим разделом. Личный рекорд по каждой теме и режиму сохраняется и сравнивается только с прошлым результатом самого ребёнка, как и другие рекорды в приложении.",
+    "Анимированные объяснения во всех 6 темах 4 класса: сложение в столбик с переносом разряда, деление уголком (включая «ловушку с нулём» в частном), сколько времени прошло — прыжками по круглым отметкам на линии времени, треугольник «цена–количество–стоимость» в текстовых задачах, составная фигура из прямоугольников, доля от числа. Длинные абзацы, которые теперь показывает анимация, сокращены."
+   ]
+  },
   {
    "v": "2.8.0",
    "date": "2026-09-29",
@@ -9381,17 +9609,17 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.9.0",
-  "title": "Мини-игры",
+  "v": "2.10.0",
+  "title": "Статусность",
   "when": "в планах",
   "items": [
-   "Общий игровой движок с 2–3 форматами (например, раунд на время и «выбери верный ответ» с растущей сложностью по цепочке правильных ответов), который берёт задания из уже существующего банка 1300+ задач — работает сразу для всех тем всех классов, без ручного создания отдельной игры под каждую тему.",
-   "Предлагается «невзначай» посреди обычной практики, а не отдельным пугающим разделом."
+   "Разблокировки (темы оформления, значки, элементы карты) за прогресс.",
+   "Кастомизация аватара и внешнего вида приложения.",
+   "«Уровни мастерства» по каждой теме (от «знакомлюсь» до «уверенно») — поверх данных о сериях и мини-играх из 2.8.0–2.9.0."
   ],
   "later": [
-   "2.10.0 — Статусность: разблокировки (темы оформления, значки, элементы карты) за прогресс, кастомизация аватара и внешнего вида приложения, «уровни мастерства» по каждой теме (от «знакомлюсь» до «уверенно») — поверх данных о сериях и мини-играх из 2.8.0–2.9.0.",
    "2.11.0 — Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев. Плюс пасхалка: если в ответе задания есть число 67 (целиком или как часть ответа) — на секунду на весь экран выводится мигающее разноцветное «67» в молодёжном стиле под короткий звук «six seven»; не чаще раза за занятие и никогда во время теста или диагностики, чтобы не отвлекать в серьёзный момент.",
-   "Анимации 6 и 4 класса — по одному классу в версии (2.12.0, 2.13.0), продолжение начатого в 2.5.0–2.7.0 (5, 7, 8 классы уже готовы).",
+   "Анимации 6 класса — последний из оставшихся классов, продолжение начатого в 2.5.0–2.9.0 (4, 5, 7 и 8 классы уже готовы).",
    "Ограничение на сообщения в поддержку: не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет).",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
@@ -9813,7 +10041,9 @@ function normalize(o){return {
   /* в. 2.8.0 — «сравнение с собой»: серия дней подряд с занятиями (никогда не сравнивается с другими детьми) */
   streak:(o&&o.streak&&typeof o.streak==='object')?{count:+o.streak.count||0,last:o.streak.last||null,best:+o.streak.best||0}:{count:0,last:null,best:0},
   /* в. 2.8.0 — автономия: выбранный ребёнком уровень сложности в практике (сам решает, что показывать первым) */
-  prefs:(o&&o.prefs&&typeof o.prefs==='object')?{challenge:!!o.prefs.challenge}:{challenge:false}
+  prefs:(o&&o.prefs&&typeof o.prefs==='object')?{challenge:!!o.prefs.challenge}:{challenge:false},
+  /* в. 2.9.0 — личные рекорды в мини-играх по темам: {topicId:{round:{best,ts}, chain:{best,ts}}}, сравнение только с собой */
+  games:(o&&o.games&&typeof o.games==='object')?o.games:{}
 }}
 /* Ключ дня для серии — локальная календарная дата (YYYY-M-D), без сравнения с другими детьми. */
 function dayKey(ts){var d=new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
@@ -10047,7 +10277,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.8.0', note:'Новое в версии 2.8.0', topics:[], books:[]};
+var NEW_IN={v:'2.9.0', note:'Новое в версии 2.9.0', topics:['n4','mul4','val4','word4','geo4','frac4'], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10105,8 +10335,10 @@ function render(){
   else if(view.name==='report') h=viewReport();
   $('#app').innerHTML=h;
   initAnims($('#app'));
+  if(GAME && !GAME.ended){ var gi=$('#gameAnsInput'); if(gi) gi.focus(); } // фокус на поле ответа после каждого перерисовывания во время игры
 }
 function go(name,extra){
+  if(GAME){ clearInterval(GAME_TIMER); GAME_TIMER=null; GAME=null; } // навигация прерывает мини-игру, чтобы таймер не тикал в фоне
   var gate=needsGate();
   if(gate && name!=='versions'){ view={name:gate}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
   if(name!=='pickkid' && name!=='parent' && name!=='versions' && name!=='landing' && !activeKid){ view={name:'pickkid'}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
@@ -10362,6 +10594,7 @@ function difficultyPickHTML(){
     +'<button class="btn small'+(chal?' primary':'')+'" data-difficulty="challenge">Сразу посложнее</button></div></div>';
 }
 function tabPractice(id){
+  if(GAME && GAME.topic===id) return gameHTML();
   var C=CONTENT[id];
   var chal=!!(S.prefs&&S.prefs.challenge);
   var mainHTML=C.tasks.slice(0,MAIN_TASKS).map(function(t,i){return taskHTML(id,i,t,false)}).join('');
@@ -10369,7 +10602,8 @@ function tabPractice(id){
     ?'<div class="extra-set"><div class="extra-h"><span class="etag">Экстра</span><span class="legend">Дополнительные задачи — для тех, кто хочет потренироваться ещё.</span></div>'
       +C.tasks.slice(MAIN_TASKS).map(function(t,j){return taskHTML(id,MAIN_TASKS+j,t,false)}).join('')+'</div>'
     :'';
-  return '<p class="legend">Дроби пиши через косую черту (например, 3/4), десятичные — через запятую, отрицательные — с минусом (−3). Если дробь нужно сократить, ответ должен быть несократимым.</p>'
+  return gameInviteHTML(id)
+    +'<p class="legend">Дроби пиши через косую черту (например, 3/4), десятичные — через запятую, отрицательные — с минусом (−3). Если дробь нужно сократить, ответ должен быть несократимым.</p>'
     +(extraHTML?difficultyPickHTML():'')
     +'<div class="prog-line"><span>Решено верно: <b id="solved">'+solvedCount(id)+'</b> из '+C.tasks.length+'</span></div>'
     +(chal?extraHTML+mainHTML:mainHTML+extraHTML)
@@ -10688,6 +10922,19 @@ document.addEventListener('click',function(ev){
   var diffPick=t.getAttribute('data-difficulty');
   if(diffPick){ S.prefs=S.prefs||{challenge:false}; S.prefs.challenge=(diffPick==='challenge'); scheduleSave(); render(); return; }
   if(t.hasAttribute('data-theme-toggle')){ cycleTheme(); return; }
+  /* --- мини-игры (в. 2.9.0) --- */
+  var gStart=t.getAttribute('data-game-start');
+  if(gStart){ var gp=gStart.split(':'); startGame(gp[0],gp[1]); return; }
+  if(t.hasAttribute('data-game-exit')){ gameExit(); return; }
+  if(t.hasAttribute('data-game-again')){ if(GAME) startGame(GAME.topic,GAME.mode); return; }
+  if(t.hasAttribute('data-game-check')){
+    var gi=$('#gameAnsInput'); if(!gi) return;
+    var gv=gi.value.trim();
+    if(gv===''){ var gfb=$('#gamefb'); if(gfb){ gfb.textContent='Введи ответ.'; gfb.className='fb bad'; } return; }
+    gameSubmit(gv); return;
+  }
+  var gOpt=t.getAttribute('data-game-opt');
+  if(gOpt!==null){ gameSubmit(null,+gOpt); return; }
   var optPick=t.getAttribute('data-pick');
   if(optPick!==null){
     $$('.opt',t.parentNode).forEach(function(o){o.classList.remove('sel')});
@@ -10720,6 +10967,11 @@ document.addEventListener('keydown',function(ev){
   }
   if(ev.key==='Enter'&&ev.target.matches&&ev.target.matches('.task[data-topic] input.in')){
     var task=ev.target.closest('.task'); checkTask(task,task.getAttribute('data-topic'),task.getAttribute('data-i'));
+  }
+  if(ev.key==='Enter'&&ev.target&&ev.target.id==='gameAnsInput'){
+    var gv2=ev.target.value.trim();
+    if(gv2===''){ var gfb2=$('#gamefb'); if(gfb2){ gfb2.textContent='Введи ответ.'; gfb2.className='fb bad'; } return; }
+    gameSubmit(gv2);
   }
 });
 function itemFor(id,key){return key==='b'?CONTENT[id].bonus:CONTENT[id].tasks[+key]}
@@ -10783,6 +11035,124 @@ function showExtra(task,kind,id,key){
   else{
     out.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'<br><span style="color:var(--muted)">Теперь реши похожую задачу сам и введи ответ.</span></div>';
   }
+}
+
+/* ======================= МИНИ-ИГРЫ (в. 2.9.0) =======================
+   Общий движок поверх банка задач темы (CONTENT[id].tasks) — без отдельного контента и без
+   автогенерации вариантов ответа (это риск для числовых/дробных ответов): просто перемешиваем
+   существующие задачи темы и используем ту же проверку, что и в обычной практике (gradeNum/opts).
+   Два формата:
+   — «Раунд на время»: 60 секунд, ошибки не останавливают раунд — просто следующий вопрос.
+   — «Цепочка»: время на вопрос уменьшается по мере роста серии; любая ошибка или просрочка
+     заканчивает игру. И здесь личный рекорд сравнивается только с собственным прошлым результатом. */
+var GAME=null;       // {topic,mode:'round'|'chain', pool:[...], idx, score, streak, ended, newRecord, prevBest, deadline, qDeadline, qTime, flashBad}
+var GAME_TIMER=null;
+function ruPlural(n,one,few,many){ n=Math.abs(n)%100; var n1=n%10; if(n>10&&n<20) return many; if(n1===1) return one; if(n1>1&&n1<5) return few; return many; }
+function gamePool(id){
+  var arr=CONTENT[id].tasks.slice();
+  for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp; }
+  return arr;
+}
+function gameCurTask(){
+  if(!GAME) return null;
+  if(GAME.idx>=GAME.pool.length){ GAME.pool=gamePool(GAME.topic); GAME.idx=0; }
+  return GAME.pool[GAME.idx];
+}
+/* время на один вопрос в «Цепочке»: стартуем с 12 секунд, за каждый верный ответ серии срезаем
+   немного, но не меньше 4 секунд — так игра постепенно ускоряется, а не становится невозможной. */
+function qTime(streak){ return Math.max(4, 12-0.5*streak); }
+function startGame(id,mode){
+  clearInterval(GAME_TIMER); GAME_TIMER=null;
+  GAME={topic:id, mode:mode, pool:gamePool(id), idx:0, score:0, streak:0, ended:false, flashBad:false};
+  if(mode==='chain'){ GAME.qTimeNow=qTime(0); GAME.qDeadline=Date.now()+GAME.qTimeNow*1000; }
+  else { GAME.deadline=Date.now()+60000; }
+  GAME_TIMER=setInterval(gameTick,200);
+  render();
+}
+function gameTick(){
+  if(!GAME || GAME.ended) return;
+  if(GAME.mode==='round'){
+    var left=Math.max(0,Math.ceil((GAME.deadline-Date.now())/1000));
+    paintGameTimer(left+' с');
+    if(Date.now()>=GAME.deadline) endGame();
+  } else {
+    var leftS=Math.max(0,(GAME.qDeadline-Date.now())/1000);
+    paintGameTimer(leftS.toFixed(1)+' с');
+    if(Date.now()>=GAME.qDeadline) endGame();
+  }
+}
+function paintGameTimer(text){ var el=$('#gtimer'); if(el) el.textContent=text; }
+function gameSubmit(given,optIdx){
+  if(!GAME || GAME.ended) return;
+  var it=gameCurTask(); if(!it) return;
+  var ok = it.opts ? (optIdx===it.ans) : gradeNum(it,given);
+  if(ok){
+    GAME.score++; GAME.streak++; GAME.idx++; GAME.flashBad=false;
+    if(GAME.mode==='chain'){ GAME.qTimeNow=qTime(GAME.streak); GAME.qDeadline=Date.now()+GAME.qTimeNow*1000; render(); }
+    else render();
+  } else {
+    if(GAME.mode==='chain'){ endGame(); }
+    else { GAME.streak=0; GAME.idx++; GAME.flashBad=true; render(); }
+  }
+}
+function endGame(){
+  if(!GAME || GAME.ended) return;
+  clearInterval(GAME_TIMER); GAME_TIMER=null;
+  GAME.ended=true;
+  var id=GAME.topic, mode=GAME.mode, score=GAME.score;
+  S.games=S.games||{};
+  var g=S.games[id]=S.games[id]||{};
+  var prev=g[mode]&&typeof g[mode].best==='number'?g[mode].best:null;
+  var isRecord=(prev===null)||score>prev;
+  g[mode]={best:isRecord?score:prev,ts:Date.now()};
+  GAME.prevBest=prev; GAME.newRecord=isRecord;
+  if(score>0) touchStreak();
+  scheduleSave();
+  render();
+}
+function gameExit(){ clearInterval(GAME_TIMER); GAME_TIMER=null; GAME=null; render(); }
+function gameHTML(){
+  if(GAME.ended) return gameResultHTML();
+  var it=gameCurTask();
+  if(!it){ endGame(); return gameResultHTML(); }
+  var modeLabel=GAME.mode==='round'?'Раунд на время':'Цепочка';
+  var timerNow=GAME.mode==='round'?Math.max(0,Math.ceil((GAME.deadline-Date.now())/1000))+' с':Math.max(0,(GAME.qDeadline-Date.now())/1000).toFixed(1)+' с';
+  var body='<div class="q">'+fmt(it.q)+'</div>';
+  if(it.opts){
+    body+='<div class="opts">'+it.opts.map(function(o,k){return '<button class="opt" data-game-opt="'+k+'"><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
+  } else {
+    body+='<div class="ans-row"><input class="in" id="gameAnsInput" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ">'
+      +'<button class="btn small primary" data-game-check>Проверить</button></div>';
+  }
+  return '<div class="gamebox sheet" data-mode="'+GAME.mode+'">'
+    +'<div class="ghead"><span class="gtitle">'+modeLabel+'</span><span class="gtimer" id="gtimer">'+timerNow+'</span><span class="gscore">Счёт: '+GAME.score+'</span>'
+    +'<button class="btn ghost small" style="margin-left:auto" data-game-exit>Выйти</button></div>'
+    +body
+    +'<div class="fb'+(GAME.flashBad?' bad':'')+'" id="gamefb">'+(GAME.flashBad?'Пока не так — а вот и следующий вопрос!':'')+'</div>'
+    +'</div>';
+}
+function gameResultHTML(){
+  var modeLabel=GAME.mode==='round'?'Раунд на время':'Цепочка';
+  var h='<div class="gamebox sheet"><div class="score"><div class="big">'+GAME.score+'</div><div><h2>'+modeLabel+' — игра окончена</h2>'
+    +'<p style="margin:4px 0 0;color:var(--muted)">Решено верно: '+GAME.score+'</p></div></div>';
+  /* в. 2.9.0 — «сравнение с собой», как и в тестах: сравниваем только с прежним результатом самого ребёнка */
+  if(GAME.newRecord && GAME.prevBest!==null) h+='<p class="legend" style="margin-top:2px">🏆 Новый личный рекорд! Раньше лучший результат в этом режиме был '+GAME.prevBest+', теперь — '+GAME.score+'.</p>';
+  else if(GAME.newRecord) h+='<p class="legend" style="margin-top:2px">Это первая игра в этом режиме — есть с чем сравнивать в следующий раз.</p>';
+  else h+='<p class="legend" style="margin-top:2px">Личный рекорд в этом режиме пока '+GAME.prevBest+' — можно попробовать побить его в другой раз.</p>';
+  h+='<div class="cta" style="margin-top:12px"><button class="btn primary" data-game-again>Играть ещё раз</button><button class="btn" data-game-exit>Вернуться к практике</button></div>';
+  h+='</div>';
+  return h;
+}
+function gameInviteHTML(id){
+  var g=(S.games&&S.games[id])||{};
+  var rb=g.round&&typeof g.round.best==='number'?g.round.best:null;
+  var cb=g.chain&&typeof g.chain.best==='number'?g.chain.best:null;
+  return '<div class="ginvite sheet" style="margin-bottom:14px">'
+    +'<span class="legend" style="margin:0">Устал(а) от обычных задач? Есть мини-игра на этих же задачах:</span>'
+    +'<div class="cta" style="margin-top:8px;flex-wrap:wrap">'
+    +'<button class="btn small" data-game-start="'+id+':round">Раунд на время'+(rb!==null?' · рекорд '+rb:'')+'</button>'
+    +'<button class="btn small" data-game-start="'+id+':chain">Цепочка'+(cb!==null?' · рекорд '+cb:'')+'</button>'
+    +'</div></div>';
 }
 document.addEventListener('input',function(ev){
   if(ev.target.id==='supText') SUP.text=ev.target.value;
