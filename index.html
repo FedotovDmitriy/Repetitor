@@ -6,6 +6,7 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
+<script>(function(){try{var t=localStorage.getItem('mvk-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Математика в клетку</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9205,12 +9206,23 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.7.0';
+var APP_VERSION = '2.8.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.7.0",
+ "current": "2.8.0",
  "versions": [
+  {
+   "v": "2.8.0",
+   "date": "2026-09-29",
+   "title": "Мотивационный фундамент",
+   "items": [
+    "Отклик после решённой задачи теперь хвалит стратегию и усилие («хорошая стратегия», «получилось разобраться»), а не то, какой ребёнок умный — это называется «установка на рост» и особенно помогает, когда в теме есть пробелы: наверстать можно, и это нормальная часть учёбы.",
+    "После нескольких решённых подряд задач появляется мягкая подсказка сделать паузу — с подсказкой, что интересного ждёт в следующий раз. Решать, продолжать или остановиться на сегодня, — всегда сам ребёнок.",
+    "Немного автономии: тема оформления — светлая, тёмная или как на устройстве (кнопка в шапке страницы); в практике можно выбрать «сначала основные задачи» или «сразу посложнее»; а на карте тем прямо сказано, что порядок — это лишь подсказка, тему можно выбрать самому.",
+    "«Сравнение с собой»: на карте и после теста видна серия дней подряд с занятиями и личный рекорд по каждой теме — сравнение только с собственными прошлыми результатами, никогда с другими детьми."
+   ]
+  },
   {
    "v": "2.7.0",
    "date": "2026-09-29",
@@ -9369,17 +9381,14 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.8.0",
-  "title": "Мотивационный фундамент",
+  "v": "2.9.0",
+  "title": "Мини-игры",
   "when": "в планах",
   "items": [
-   "Подбадривающая обратная связь за усилие и стратегию, а не за «ты умный» (установка на рост — особенно важно для ребёнка с пробелами: он должен верить, что наверстать можно).",
-   "Короткие занятия с явным финалом и «крючком» на следующий раз — что-то интересное, но не раскрытое до конца (эффект Зейгарник).",
-   "Немного автономии: выбор порядка тем на карте, уровня сложности задач и темы оформления.",
-   "«Сравнение с собой»: личные рекорды по темам и серия дней подряд — без сравнения с другими детьми, только с собственной историей."
+   "Общий игровой движок с 2–3 форматами (например, раунд на время и «выбери верный ответ» с растущей сложностью по цепочке правильных ответов), который берёт задания из уже существующего банка 1300+ задач — работает сразу для всех тем всех классов, без ручного создания отдельной игры под каждую тему.",
+   "Предлагается «невзначай» посреди обычной практики, а не отдельным пугающим разделом."
   ],
   "later": [
-   "2.9.0 — Мини-игры: общий игровой движок с 2–3 форматами (например, раунд на время и «выбери верный ответ» с растущей сложностью по цепочке правильных ответов), который берёт задания из уже существующего банка 1300+ задач — работает сразу для всех тем всех классов, без ручного создания отдельной игры под каждую тему. Предлагается «невзначай» посреди обычной практики, а не отдельным пугающим разделом.",
    "2.10.0 — Статусность: разблокировки (темы оформления, значки, элементы карты) за прогресс, кастомизация аватара и внешнего вида приложения, «уровни мастерства» по каждой теме (от «знакомлюсь» до «уверенно») — поверх данных о сериях и мини-играх из 2.8.0–2.9.0.",
    "2.11.0 — Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев. Плюс пасхалка: если в ответе задания есть число 67 (целиком или как часть ответа) — на секунду на весь экран выводится мигающее разноцветное «67» в молодёжном стиле под короткий звук «six seven»; не чаще раза за занятие и никогда во время теста или диагностики, чтобы не отвлекать в серьёзный момент.",
    "Анимации 6 и 4 класса — по одному классу в версии (2.12.0, 2.13.0), продолжение начатого в 2.5.0–2.7.0 (5, 7, 8 классы уже готовы).",
@@ -9775,6 +9784,15 @@ function setParentPass(v){PARENT_PASS=v; try{localStorage.setItem(LS_PPASS,v)}ca
 var LS_KIDS='mvk-kids-v1';      // локальный кэш списка детей {id,name,pin}
 var LS_ACTIVE='mvk-active-v1';  // id ребёнка, под которым сейчас работаем на этом устройстве
 var LS_PARENT_OK='mvk-parentok-v1'; // временный флаг «родитель уже ввёл пароль в этом браузере»
+/* в. 2.8.0 — автономия: тема оформления (светлая/тёмная/как на устройстве), выбор ребёнка, хранится в браузере устройства */
+var THEME_KEY='mvk-theme';
+function getTheme(){try{var t=localStorage.getItem(THEME_KEY); return (t==='light'||t==='dark')?t:'auto'}catch(e){return 'auto'}}
+function applyTheme(t){if(t==='light'||t==='dark') document.documentElement.setAttribute('data-theme',t); else document.documentElement.removeAttribute('data-theme');}
+function setTheme(t){try{if(t==='auto') localStorage.removeItem(THEME_KEY); else localStorage.setItem(THEME_KEY,t)}catch(e){} applyTheme(t); paintBar();}
+function cycleTheme(){var order=['auto','light','dark'], i=order.indexOf(getTheme()); setTheme(order[(i+1)%3]);}
+function themeIcon(){var t=getTheme(); return t==='light'?'☀️':t==='dark'?'🌙':'🌓'}
+function themeLabel(){var t=getTheme(); return t==='light'?'Светлая тема — нажми, чтобы сменить':t==='dark'?'Тёмная тема — нажми, чтобы сменить':'Тема как на устройстве — нажми, чтобы выбрать свою'}
+
 var LS_PREFIX='mvk-state-v1-';  // + kidId -> прогресс конкретного ребёнка
 
 var KIDS=[];                    // [{id,name,pin}]
@@ -9787,7 +9805,30 @@ var kidsDb=null, kidsSaveTimer=null, kidsSaving=false, kidsDirty=false;
 var parentUnlocked=false;
 
 function uid(){return 'k'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function normalize(o){return {practice:(o&&o.practice)||{},tests:(o&&o.tests)||{},diag:(o&&o.diag)||null,log:(o&&Array.isArray(o.log))?o.log:[]}}
+function normalize(o){return {
+  practice:(o&&o.practice)||{},
+  tests:(o&&o.tests)||{},
+  diag:(o&&o.diag)||null,
+  log:(o&&Array.isArray(o.log))?o.log:[],
+  /* в. 2.8.0 — «сравнение с собой»: серия дней подряд с занятиями (никогда не сравнивается с другими детьми) */
+  streak:(o&&o.streak&&typeof o.streak==='object')?{count:+o.streak.count||0,last:o.streak.last||null,best:+o.streak.best||0}:{count:0,last:null,best:0},
+  /* в. 2.8.0 — автономия: выбранный ребёнком уровень сложности в практике (сам решает, что показывать первым) */
+  prefs:(o&&o.prefs&&typeof o.prefs==='object')?{challenge:!!o.prefs.challenge}:{challenge:false}
+}}
+/* Ключ дня для серии — локальная календарная дата (YYYY-M-D), без сравнения с другими детьми. */
+function dayKey(ts){var d=new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function ruDays(n){n=Math.abs(n)%100; var n1=n%10; if(n>10&&n<20) return 'дней'; if(n1>1&&n1<5) return 'дня'; if(n1===1) return 'день'; return 'дней';}
+/* Отмечает реальное занятие (решённая задача или сданный тест/диагностика) не чаще раза в день — растит серию,
+   если вчера тоже занимались, иначе начинает её заново. Личный рекорд серии хранится отдельно. */
+function touchStreak(){
+  if(!S.streak) S.streak={count:0,last:null,best:0};
+  var t=dayKey(Date.now());
+  if(S.streak.last===t) return;
+  var y=dayKey(Date.now()-86400000);
+  S.streak.count=(S.streak.last===y)?S.streak.count+1:1;
+  S.streak.last=t;
+  if(S.streak.count>S.streak.best) S.streak.best=S.streak.count;
+}
 function loadKidsLocal(){try{var raw=localStorage.getItem(LS_KIDS); if(raw){var a=JSON.parse(raw); if(Array.isArray(a)) return a}}catch(e){} return []}
 function saveKidsLocal(){try{localStorage.setItem(LS_KIDS,JSON.stringify(KIDS))}catch(e){}}
 KIDS=loadKidsLocal();
@@ -10006,7 +10047,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.7.0', note:'Новое: анимация в объяснении', topics:['sqrt','quad','ratf','ineq','pyth','circ8','quadr'], books:[]};
+var NEW_IN={v:'2.8.0', note:'Новое в версии 2.8.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10029,7 +10070,8 @@ function visibleKids(){return KIDS.filter(function(k){return k.active!==false})}
 function paintBar(){
   if(view.name==='pickkid'||view.name==='landing'||view.name==='welcome'||view.name==='terms'||(view.name==='versions'&&!activeKid)){
     $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='landing'?'landing':'pickkid')+'"><span class="hand">Математика</span><b>в клетку</b></button>'
-      +'<button class="btn small ghost" style="margin-left:auto" data-nav="versions">Версии</button>';
+      +'<button class="btn small ghost" style="margin-left:auto" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="Тема оформления">'+themeIcon()+'</button>'
+      +'<button class="btn small ghost" data-nav="versions">Версии</button>';
     return;
   }
   var o=overall();
@@ -10039,8 +10081,9 @@ function paintBar(){
   $('#bar').innerHTML=
     '<button class="brand" data-nav="home"><span class="hand">Математика</span><b>в клетку</b></button>'+
     '<nav class="nav">'+nav.map(function(n){return '<button data-nav="'+n[0]+'"'+(cur===n[0]?' aria-current="page"':'')+'>'+n[1]+'</button>'}).join('')+'</nav>'+
-    (activeKid?'<button class="btn small ghost" data-nav="pickkid" style="margin-left:auto" title="Сменить профиль">'+esc(kidName(activeKid))+' · сменить</button>':'')+
-    '<div class="meter"'+(activeKid?'':' style="margin-left:auto"')+' title="'+esc(sync)+'"><span>Освоено '+o.done+' из '+o.total+'</span><span class="track"><span class="fill" style="display:block;width:'+pct(o.done,o.total)+'%"></span></span></div>';
+    '<button class="btn small ghost" style="margin-left:auto" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="Тема оформления">'+themeIcon()+'</button>'+
+    (activeKid?'<button class="btn small ghost" data-nav="pickkid" title="Сменить профиль">'+esc(kidName(activeKid))+' · сменить</button>':'')+
+    '<div class="meter" title="'+esc(sync)+'"><span>Освоено '+o.done+' из '+o.total+'</span><span class="track"><span class="fill" style="display:block;width:'+pct(o.done,o.total)+'%"></span></span></div>';
 }
 
 /* ======================= ВИДЫ ======================= */
@@ -10217,14 +10260,18 @@ function viewHome(){
   var boost=wids.length?'<section class="sheet" style="margin-bottom:16px"><div class="track-h"><h2>Что подкрепить</h2><span class="hand">по итогам диагностики и тестов</span></div>'
     +'<div class="boost-chips">'+wids.map(function(id){return '<button class="btn small" data-nav="t/'+id+'/explain">'+esc(TOPICS[id].name)+'</button>'}).join('')+'</div>'
     +'<div class="cta" style="margin-top:10px"><button class="btn small ghost" data-nav="report">Подробный отчёт</button><span class="legend" style="margin:0">Сдашь тест по теме — пометка «укрепить» исчезнет.</span></div></section>':'';
+  /* в. 2.8.0 — «сравнение с собой»: серия дней подряд, без сравнения с другими детьми */
+  var streakLine=(S.streak&&S.streak.count>=2)?'<p class="legend" style="margin-top:6px">🔥 Серия: '+S.streak.count+' '+ruDays(S.streak.count)+' подряд с занятиями (личный рекорд — '+S.streak.best+'). Сравниваем только с тобой же вчерашним, не с другими ребятами.</p>':'';
   return '<div class="hero">'
     +'<p class="kick hand">Тетрадь открыта — начнём</p>'
     +'<h1>Заполним пробелы и пойдём дальше '+kidGrade(activeKid)+' класса</h1>'
     +'<p class="lead">Сначала фундамент из предыдущих классов, потом программа '+kidGrade(activeKid)+' класса. В каждой теме: объяснение со схемами, разобранные примеры, не меньше двадцати задач с подсказками, опыты из жизни и тест.</p>'
     +'<div class="cta"><button class="btn primary" data-nav="'+ns.nav+'">'+esc(ns.label)+'</button><span style="color:var(--muted);font-size:14.5px">'+esc(ns.why)+'</span></div>'
+    +'<p class="legend" style="margin-top:6px">Это только подсказка — ниже на карте можно <a href="#maptop">выбрать любую тему самому</a>, в своём порядке.</p>'
+    +streakLine
     +'</div>'
     +boost
-    +'<div class="tracks" style="grid-template-columns:1fr">'
+    +'<div class="tracks" id="maptop" style="grid-template-columns:1fr">'
     +gradeSection(4,1,W)
     +'</div>'
     +'<div class="tracks" style="grid-template-columns:1fr;margin-top:16px">'
@@ -10307,15 +10354,25 @@ function taskHTML(id,i,t,star){
   return h;
 }
 var MAIN_TASKS=16; // первые 16 задач — основные, остальные показываются в рамке «Экстра»
+/* в. 2.8.0 — автономия: ребёнок сам выбирает, с чего начать практику (немного выбора — часть мотивации) */
+function difficultyPickHTML(){
+  var chal=!!(S.prefs&&S.prefs.challenge);
+  return '<div class="diffpick" style="margin-bottom:14px"><span class="legend" style="margin:0">Как тебе интереснее сегодня?</span>'
+    +'<div class="cta" style="margin-top:6px"><button class="btn small'+(chal?'':' primary')+'" data-difficulty="standard">Сначала основные</button>'
+    +'<button class="btn small'+(chal?' primary':'')+'" data-difficulty="challenge">Сразу посложнее</button></div></div>';
+}
 function tabPractice(id){
   var C=CONTENT[id];
+  var chal=!!(S.prefs&&S.prefs.challenge);
+  var mainHTML=C.tasks.slice(0,MAIN_TASKS).map(function(t,i){return taskHTML(id,i,t,false)}).join('');
+  var extraHTML=C.tasks.length>MAIN_TASKS
+    ?'<div class="extra-set"><div class="extra-h"><span class="etag">Экстра</span><span class="legend">Дополнительные задачи — для тех, кто хочет потренироваться ещё.</span></div>'
+      +C.tasks.slice(MAIN_TASKS).map(function(t,j){return taskHTML(id,MAIN_TASKS+j,t,false)}).join('')+'</div>'
+    :'';
   return '<p class="legend">Дроби пиши через косую черту (например, 3/4), десятичные — через запятую, отрицательные — с минусом (−3). Если дробь нужно сократить, ответ должен быть несократимым.</p>'
+    +(extraHTML?difficultyPickHTML():'')
     +'<div class="prog-line"><span>Решено верно: <b id="solved">'+solvedCount(id)+'</b> из '+C.tasks.length+'</span></div>'
-    +C.tasks.slice(0,MAIN_TASKS).map(function(t,i){return taskHTML(id,i,t,false)}).join('')
-    +(C.tasks.length>MAIN_TASKS
-      ?'<div class="extra-set"><div class="extra-h"><span class="etag">Экстра</span><span class="legend">Дополнительные задачи — для тех, кто хочет потренироваться ещё.</span></div>'
-        +C.tasks.slice(MAIN_TASKS).map(function(t,j){return taskHTML(id,MAIN_TASKS+j,t,false)}).join('')+'</div>'
-      :'')
+    +(chal?extraHTML+mainHTML:mainHTML+extraHTML)
     +'<h3 style="margin-top:26px">Задача со звёздочкой</h3><p class="legend" style="margin-top:0">Необязательная. Для тех, кто хочет думать глубже — это тренировка перед олимпиадами.</p>'
     +taskHTML(id,0,C.bonus,true);
 }
@@ -10393,8 +10450,14 @@ function finish(){
     S.diag={ts:now,score:score,total:total,byNode:by,grade:kidGrade(activeKid),miss:miss};
     result.byNode=by;
   }else{
-    var prev=S.tests[topic]; S.tests[topic]={best:prev?Math.max(prev.best,score):score,total:total,ts:now,last:score,tries:(prev?prev.tries:0)+1};
+    var prev=S.tests[topic];
+    var prevBest=prev?prev.best:null;
+    S.tests[topic]={best:prev?Math.max(prev.best,score):score,total:total,ts:now,last:score,tries:(prev?prev.tries:0)+1};
+    /* в. 2.8.0 — «сравнение с собой»: свой же прошлый результат, никогда — с другими детьми */
+    result.prevBest=prevBest;
+    result.newRecord=(prevBest===null)||(score>prevBest);
   }
+  touchStreak();
   S.log.unshift(entry); if(S.log.length>40) S.log.length=40;
   scheduleSave();
   view.result=result;
@@ -10414,6 +10477,12 @@ function resultHTML(res){
   var pc=pct(res.score,res.total), good=pc>=Math.round(PASS*100);
   var head=res.kind==='diag'?'Твоя карта пробелов':(good?'Тема освоена':'Почти, нужно ещё потренироваться');
   var h='<div class="score"><div class="big">'+res.score+'/'+res.total+'</div><div><h2>'+head+'</h2><p style="margin:4px 0 0;color:var(--muted)">'+pc+'% верных ответов'+(res.kind==='diag'?'':(good?'':' · порог '+Math.round(PASS*100)+'%'))+'</p></div></div>';
+  if(res.kind!=='diag'){
+    if(res.newRecord && res.prevBest!==null && res.prevBest!==undefined) h+='<p class="legend" style="margin-top:2px">🏆 Новый личный рекорд по этой теме! Раньше лучший результат был '+res.prevBest+' из '+res.total+', теперь — '+res.score+'.</p>';
+    else if(res.newRecord) h+='<p class="legend" style="margin-top:2px">Это первая попытка по этой теме — отличное начало, есть с чем сравнивать в следующий раз.</p>';
+    else if(res.prevBest!==null && res.prevBest!==undefined) h+='<p class="legend" style="margin-top:2px">Личный рекорд по теме пока '+res.prevBest+' из '+res.total+' — можно попробовать побить его в другой раз.</p>';
+    if(S.streak && S.streak.count>=2) h+='<p class="legend" style="margin-top:2px">🔥 Серия: '+S.streak.count+' '+ruDays(S.streak.count)+' подряд с занятиями (личный рекорд серии — '+S.streak.best+'). Сравниваем только с тобой же вчерашним.</p>';
+  }
   if(res.kind==='diag'){
     h+='<h3>Что показала диагностика</h3><div class="nodes">'+NODE_ORDER.filter(function(n){return res.byNode[n]}).map(function(n){
       var r=res.byNode[n], p=pct(r[0],r[1]), color=p===100?'var(--green)':p>=50?'var(--gold)':'var(--red)';
@@ -10427,6 +10496,8 @@ function resultHTML(res){
     h+='<div class="cta" style="margin-top:12px"><button class="btn primary" data-nav="'+ns.nav+'">'+esc(ns.label)+'</button><button class="btn" data-nav="home">К карте</button></div>';
   }else{
     h+='<div class="cta" style="margin-top:12px"><button class="btn" data-retry>Пройти ещё раз</button>'+(good?'<button class="btn primary" data-nav="home">К карте</button>':'<button class="btn primary" data-nav="t/'+res.topic+'/practice">Ещё потренироваться</button>')+'</div>';
+    /* в. 2.8.0 — явный финал занятия + «крючок» на следующий раз (эффект Зейгарник) */
+    if(good) h+='<p class="legend" style="margin-top:10px">Отличная работа — тема освоена, самое время сделать паузу. В следующий раз можно заглянуть в тему «'+esc(hookTeaser())+'».</p>';
   }
   h+='<h3>Разбор</h3><div class="review">'+res.items.map(function(r,i){
     return '<div class="rv '+(r.ok?'ok':'bad')+'"><b class="m">'+(i+1)+'</b><div><div>'+fmt(r.q)+'</div>'
@@ -10614,6 +10685,9 @@ document.addEventListener('click',function(ev){
   if(t.hasAttribute('data-parent-switch')){ parentSwitchKid(t.getAttribute('data-parent-switch')); return; }
   if(t.hasAttribute('data-parent-lock')){ parentUnlocked=false; try{sessionStorage.removeItem(LS_PARENT_OK)}catch(e){} pkReset(); go('pickkid'); return; }
 
+  var diffPick=t.getAttribute('data-difficulty');
+  if(diffPick){ S.prefs=S.prefs||{challenge:false}; S.prefs.challenge=(diffPick==='challenge'); scheduleSave(); render(); return; }
+  if(t.hasAttribute('data-theme-toggle')){ cycleTheme(); return; }
   var optPick=t.getAttribute('data-pick');
   if(optPick!==null){
     $$('.opt',t.parentNode).forEach(function(o){o.classList.remove('sel')});
@@ -10649,6 +10723,29 @@ document.addEventListener('keydown',function(ev){
   }
 });
 function itemFor(id,key){return key==='b'?CONTENT[id].bonus:CONTENT[id].tasks[+key]}
+/* в. 2.8.0 — установка на рост: хвалим стратегию и усилие, а не «ты умный/умная»; формулировки без указания
+   пола ребёнка (используем безличные обороты вроде «получилось», а не «ты сделал(а)»). */
+var PRAISE_FIRST=['Хорошая стратегия — решение сработало сразу.','Чёткий ход мыслей: шаги были по порядку.','Способ решения выбран верно — так и работай дальше.','Аккуратный расчёт — всё сошлось с первого раза.'];
+var PRAISE_RETRY=['Не сразу — и это нормально: пробовать разные подходы и есть учёба.','Получилось разобраться — вот так и работает обучение, через пробы.','Ошибка в прошлый раз помогла найти верный путь — это тоже результат.','Настойчивость сработала: с каждой попыткой расчёт становился точнее.'];
+function pickPraise(tries){var pool=tries<=1?PRAISE_FIRST:PRAISE_RETRY; return pool[Math.floor(Math.random()*pool.length)];}
+/* в. 2.8.0 — короткие занятия с явным финалом и «крючком» на следующий раз (эффект Зейгарник):
+   после нескольких решённых подряд задач мягко предлагаем паузу и дразним, что дальше — без принуждения,
+   ребёнок сам решает, продолжать или нет. Счётчик — только в памяти, не хранится между заходами. */
+var SESSION_SOLVED=0, SESSION_HOOK_SHOWN=false, SESSION_HOOK_AFTER=8;
+function hookTeaser(){
+  var ns=nextStep();
+  if(ns.nav && ns.nav.indexOf('t/')===0){
+    var id=ns.nav.split('/')[1];
+    if(TOPICS[id]) return TOPICS[id].blurb||TOPICS[id].name;
+  }
+  return 'следующая тема на карте';
+}
+function sessionHookHTML(){
+  if(SESSION_HOOK_SHOWN || SESSION_SOLVED<SESSION_HOOK_AFTER) return '';
+  SESSION_HOOK_SHOWN=true;
+  return '<div class="banner" style="margin-top:10px"><span>Хорошая сессия — '+SESSION_SOLVED+' задач подряд сегодня! Дальше на очереди: '
+    +esc(hookTeaser())+' — интересно будет разобраться. Можно закончить на этом и вернуться в другой раз, а можно продолжить, если есть настроение — решай сам(а).</span></div>';
+}
 function checkTask(task,id,key,optIdx){
   var it=itemFor(id,key), ok, given;
   var pr=S.practice[id]||(S.practice[id]={}); var st=pr[key]||(pr[key]={ok:false,tries:0});
@@ -10659,10 +10756,12 @@ function checkTask(task,id,key,optIdx){
   var fb=$('.fb',task), extra=$('.extra',task);
   if(ok){
     st.ok=true; st.val=it.opts?'':String(given);
-    fb.className='fb ok'; fb.innerHTML=okBadge()+'<span>Верно'+(st.tries===1?' — с первого раза':'')+'!</span>';
+    touchStreak();
+    SESSION_SOLVED++;
+    fb.className='fb ok'; fb.innerHTML=okBadge()+'<span>Верно! '+esc(pickPraise(st.tries))+'</span>';
     if(!it.opts){var inp2=$('input.in',task); inp2.classList.add('ok'); inp2.readOnly=true; $('[data-check]',task).disabled=true}
     else $$('.opt',task).forEach(function(o,k){if(k===it.ans)o.classList.add('ok')});
-    extra.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'</div>';
+    extra.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'</div>'+sessionHookHTML();
     var c=$('#solved'); if(c) c.textContent=solvedCount(id);
     var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
   }else{
@@ -10671,8 +10770,9 @@ function checkTask(task,id,key,optIdx){
     else{ $('input.in',task).classList.add('bad'); fb.textContent='Пока не так. Проверь вычисления'+(it.reduced?' и не забудь сократить дробь':'')+'.'; }
     var btns='';
     btns+='<button class="btn small ghost" data-hint>Подсказка</button> ';
-    if(st.tries>=2) btns+='<button class="btn small ghost" data-sol>Показать решение</button>';
-    extra.innerHTML='<div class="ans-row" style="margin-top:6px">'+btns+'</div><div class="ex-out"></div>';
+    var note='';
+    if(st.tries>=2){ btns+='<button class="btn small ghost" data-sol>Показать решение</button>'; note='<p class="legend" style="margin:6px 0 0">Ошибаться — обычная часть решения задач. Посмотри подсказку, если нужно.</p>'; }
+    extra.innerHTML='<div class="ans-row" style="margin-top:6px">'+btns+'</div>'+note+'<div class="ex-out"></div>';
   }
   scheduleSave();
   paintBar();
