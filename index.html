@@ -351,6 +351,14 @@ textarea.rep{width:100%;min-height:150px;padding:10px;border:1.5px solid var(--l
 .dlg input.txt{width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--sheet);font-size:16px}
 .dlg .kinds{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .dlg .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+/* в. 2.12.0 — пасхалка «67»: короткая (~1 с) весёлая вспышка на весь экран, выше модалок (z-index 90),
+   не мешает вводу (pointer-events:none) и не пугает — не звук сирены, просто цвет и лёгкое «прыг-скок». */
+.e67{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.e67 b{font-size:min(34vw,240px);font-weight:800;line-height:1;animation:e67pop .9s cubic-bezier(.34,1.56,.64,1) forwards,e67hue 1s linear forwards;text-shadow:0 4px 18px rgba(0,0,0,.25)}
+@keyframes e67pop{0%{transform:scale(.2) rotate(-8deg);opacity:0}18%{transform:scale(1.15) rotate(3deg);opacity:1}32%{transform:scale(1) rotate(-2deg)}85%{transform:scale(1) rotate(0);opacity:1}100%{transform:scale(1.05) rotate(0);opacity:0}}
+@keyframes e67hue{0%{color:var(--blue)}20%{color:var(--gold)}40%{color:var(--green)}60%{color:var(--red)}80%{color:var(--blue)}100%{color:var(--gold)}}
+@media (prefers-reduced-motion: reduce){.e67 b{animation:e67fade .9s ease forwards;color:var(--blue)}}
+@keyframes e67fade{0%{opacity:0}15%{opacity:1}85%{opacity:1}100%{opacity:0}}
 .landing{text-align:center}
 .landing .lead{margin-inline:auto;max-width:46ch}
 .gbtn{font-size:18px;padding:13px 24px;margin-top:10px;text-decoration:none}
@@ -9498,12 +9506,20 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.11.0';
+var APP_VERSION = '2.12.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.11.0",
+ "current": "2.12.0",
  "versions": [
+  {
+   "v": "2.12.0",
+   "date": "2026-09-30",
+   "title": "Пасхалка «67»",
+   "items": [
+    "Если в ответе на задачу в практике или в мини-игре встречается число 67 (целиком или как часть ответа, например «67/100») — на секунду на весь экран весёлая мигающая цветная вспышка «67» с коротким голосом «six seven». Не чаще раза за занятие и никогда во время теста или диагностики — там свой отдельный порядок проверки ответов, к которому пасхалка не подключена."
+   ]
+  },
   {
    "v": "2.11.0",
    "date": "2026-09-30",
@@ -9723,15 +9739,14 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.12.0",
-  "title": "Аудио и пасхалка",
+  "v": "2.13.0",
+  "title": "Анимации 6 класса",
   "when": "в планах",
   "items": [
-   "Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев.",
-   "Пасхалка: если в ответе задания есть число 67 (целиком или как часть ответа) — на секунду на весь экран выводится мигающее разноцветное «67» в молодёжном стиле под короткий звук «six seven»; не чаще раза за занятие и никогда во время теста или диагностики, чтобы не отвлекать в серьёзный момент."
+   "Анимации 6 класса — последний из оставшихся классов, продолжение начатого в 2.5.0–2.10.0 (4, 5, 7 и 8 классы уже готовы)."
   ],
   "later": [
-   "Анимации 6 класса — последний из оставшихся классов, продолжение начатого в 2.5.0–2.10.0 (4, 5, 7 и 8 классы уже готовы).",
+   "Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев.",
    "Ограничение на сообщения в поддержку: не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет).",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
@@ -10388,7 +10403,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.11.0', note:'Новое в версии 2.11.0', topics:[], books:[]};
+var NEW_IN={v:'2.12.0', note:'Новое в версии 2.12.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -11301,6 +11316,7 @@ function checkTask(task,id,key,optIdx){
   if(st.ok) return;
   if(it.opts){ given=optIdx; ok=optIdx===it.ans; }
   else{ var inp=$('input.in',task); given=inp.value.trim(); if(given==='') {$('.fb',task).textContent='Введи ответ.'; $('.fb',task).className='fb bad'; return} ok=gradeNum(it,given); }
+  maybeEaster67(it.opts?it.opts[optIdx]:given);
   st.tries++;
   var fb=$('.fb',task), extra=$('.extra',task);
   if(ok){
@@ -11356,6 +11372,39 @@ function markHelped(task,id,key){
   var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
   scheduleSave();
   paintBar();
+}
+
+/* ======================= ПАСХАЛКА «67» (в. 2.12.0) =======================
+   Если в ответе на задачу встречается число 67 (целиком или как часть более длинного ответа —
+   например «67/100» или «x = 67») — на секунду на весь экран весёлая цветная вспышка «67» с коротким
+   «six seven» голосом. Только в практике и мини-играх (checkTask()/gameSubmit()) — эти функции
+   структурно не используются в тесте и диагностике (у них отдельный finish()/gradeAll()), поэтому
+   пасхалка физически не может сработать во время теста или диагностики. Не чаще раза за занятие —
+   флаг только в памяти, сбрасывается при перезагрузке страницы. */
+var EASTER_67_SHOWN=false;
+function has67(text){
+  var toks=String(text==null?'':text).match(/\d+/g);
+  return !!toks && toks.indexOf('67')>=0;
+}
+function maybeEaster67(answerText){
+  if(EASTER_67_SHOWN) return;
+  if(!has67(answerText)) return;
+  EASTER_67_SHOWN=true;
+  showEaster67();
+}
+function showEaster67(){
+  var el=document.createElement('div');
+  el.className='e67'; el.setAttribute('aria-hidden','true');
+  el.innerHTML='<b>67</b>';
+  document.body.appendChild(el);
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 1000);
+  try{
+    if(window.speechSynthesis && window.SpeechSynthesisUtterance){
+      var u=new SpeechSynthesisUtterance('six seven');
+      u.lang='en-US'; u.rate=1.15; u.volume=0.85;
+      window.speechSynthesis.speak(u);
+    }
+  }catch(e){}
 }
 
 /* ======================= МИНИ-ИГРЫ (в. 2.9.0, замедлено и оживлено в 2.9.1) =======================
@@ -11442,6 +11491,7 @@ function gameSubmit(given,optIdx){
   if(!GAME || GAME.phase!=='playing' || GAME.pendingAdvance) return;
   var it=gameCurTask(); if(!it) return;
   var ok = it.opts ? (optIdx===it.ans) : gradeNum(it,given);
+  maybeEaster67(it.opts?it.opts[optIdx]:given);
   GAME.pendingAdvance=true;
   if(ok){
     GAME.score++; GAME.streak++; GAME.flashBad=false; GAME.flashOk=true;
