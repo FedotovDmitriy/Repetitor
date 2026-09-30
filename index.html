@@ -197,15 +197,23 @@ sup{font-size:.7em;line-height:0}
 .in{width:170px;max-width:100%;padding:8px 12px;border:2px solid var(--ink);border-radius:8px;background:var(--sheet);font-size:17px;font-variant-numeric:tabular-nums}
 .in.ok{border-color:var(--green);background:var(--green-soft)}
 .in.bad{border-color:var(--red)}
+.in.helped{border-color:var(--gold);background:var(--gold-soft)}
 .fb{font-size:14.5px;margin-top:8px;display:flex;align-items:center;gap:8px}
 .fb.ok{color:var(--green);font-weight:600}
 .fb.bad{color:var(--red)}
+.fb.helped{color:var(--gold)}
 .okbadge{flex:none;width:26px;height:26px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;animation:okpop .4s cubic-bezier(.34,1.56,.64,1)}
 .okbadge svg{width:15px;height:15px;display:block}
 .okbadge path{fill:none;stroke:var(--onblue,#fff);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:20;stroke-dashoffset:20;animation:okdraw .35s .1s ease-out forwards}
+/* в. 2.10.1 — «разобрано с подсказкой»: отдельная (не зелёная) отметка для задачи, решённой после просмотра
+   решения — чтобы такая задача не оставалась навсегда «не решена», но было видно, что это не самостоятельный успех. */
+.helpbadge{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gold-soft);display:inline-flex;align-items:center;justify-content:center;animation:okpop .4s cubic-bezier(.34,1.56,.64,1)}
+.helpbadge svg{width:15px;height:15px;display:block}
+.helpbadge circle,.helpbadge path{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.opt.helped{border-color:var(--gold);background:var(--gold-soft)}
 @keyframes okpop{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes okdraw{to{stroke-dashoffset:0}}
-@media (prefers-reduced-motion: reduce){.okbadge,.okbadge path{animation:none;stroke-dashoffset:0}}
+@media (prefers-reduced-motion: reduce){.okbadge,.okbadge path,.helpbadge{animation:none;stroke-dashoffset:0}}
 .hintbox,.solbox{margin-top:8px;padding:10px 14px;border-radius:8px;font-size:15px;max-width:68ch}
 .hintbox{background:var(--gold-soft)}
 .solbox{background:var(--sheet2);border-left:3px solid var(--blue)}
@@ -262,6 +270,23 @@ sup{font-size:.7em;line-height:0}
 .skinopt.cur,.avopt.cur{border-color:var(--blue);background:var(--blue-soft)}
 .skinopt.locked,.avopt.locked{opacity:.5;cursor:default}
 .skinopt:disabled,.avopt:disabled{cursor:default}
+
+/* в. 2.11.0 — Шпаргалки: короткие памятки по формулам и правилам, отдельная страница */
+.cheat-grid{display:grid;gap:12px;margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.cheat-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:14px 16px;border-radius:14px;background:var(--sheet2);border:1px solid var(--line);cursor:pointer}
+.cheat-card:hover{border-color:var(--blue)}
+.cheat-card .cheat-icon{font-size:28px}
+.cheat-card .cheat-title{font-weight:700}
+.cheat-card .cheat-sub{font-size:13px;color:var(--muted)}
+.cheat-card .cheat-grade{font-size:11.5px;color:var(--blue);font-weight:600}
+.opword-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-top:14px}
+.opword-card{border-radius:14px;padding:16px;background:var(--cs);border:2px solid var(--c)}
+.opword-sym{font-size:34px;font-weight:800;color:var(--c);line-height:1}
+.opword-name{font-weight:700;margin-top:6px}
+.opword-rule{color:var(--muted);font-size:13.5px}
+.opword-ex{margin-top:10px;font-size:14px}
+.opword-examples{display:flex;flex-direction:column;gap:6px;margin-top:10px;font-size:15px}
+.opword-examples code{background:var(--sheet2);padding:2px 6px;border-radius:6px;font-weight:700}
 
 /* results */
 .score{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
@@ -4313,6 +4338,8 @@ function ruDate(ts){
 }
 function pct(a,b){return b?Math.round(a/b*100):0}
 function okBadge(){return '<span class="okbadge" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 10.5 L8 14.5 L16 5.5"/></svg></span>';}
+/* в. 2.10.1 — значок-«лупа» для задачи, отмеченной разобранной после просмотра решения (не самостоятельный «Верно!»). */
+function helpBadge(){return '<span class="helpbadge" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg></span>';}
 
 /* ======================= SVG-СХЕМЫ ======================= */
 /* Библиотека учебных SVG-схем. Все цвета берутся из CSS custom properties через currentColor/var(),
@@ -9471,12 +9498,30 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.10.0';
+var APP_VERSION = '2.11.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.10.0",
+ "current": "2.11.0",
  "versions": [
+  {
+   "v": "2.11.0",
+   "date": "2026-09-30",
+   "title": "Шпаргалки",
+   "items": [
+    "Новый раздел «Шпаргалки» в верхнем меню — короткие памятки по формулам и правилам, не привязанные к одной теме: если забыл(а) термин или формулу, не нужно искать его в объяснении темы заново.",
+    "Первая шпаргалка: «Слова-действия» — как превратить слово в задаче (сумма, разность, произведение, частное) в знак действия, с примерами и подсказкой, как запомнить."
+   ]
+  },
+  {
+   "v": "2.10.1",
+   "date": "2026-09-30",
+   "title": "Исправление: задача с просмотренным решением больше не висит вечным долгом",
+   "items": [
+    "Если дважды ответить неверно и нажать «Показать решение», задача раньше навсегда оставалась «не решена», пока не ввести верный ответ самому — даже если просто перейти к другим задачам. Теперь рядом с решением есть кнопка «Понял(а) — отметить разобранной»: задача закрывается с отдельной отметкой (значок-лупа вместо зелёной галочки) — это не то же самое, что решить самому, но и не бесконечный долг.",
+    "Отметка «разобрано с подсказкой» учитывается в счётчике решённых задач темы, как и раньше, но не даёт той же похвалы, что самостоятельное решение — установка на рост из 2.8.0 (помощь — это нормально, но не подмена собственного решения) сохранена."
+   ]
+  },
   {
    "v": "2.10.0",
    "date": "2026-09-30",
@@ -9678,7 +9723,7 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.11.0",
+  "v": "2.12.0",
   "title": "Аудио и пасхалка",
   "when": "в планах",
   "items": [
@@ -9693,7 +9738,6 @@ var CHANGELOG = {
    "9 класс: квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия.",
    "Регистрация и вход через Яндекс (в дополнение к входу через Gmail).",
    "Английский язык — интерфейс и часть заданий.",
-   "Шпаргалки (короткие памятки по формулам и правилам) для некоторых классов.",
    "Кнопка «Скачать всё» — все книги и шпаргалки одним архивом.",
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента.",
    "Работа без интернета (установка на телефон как приложение)."
@@ -10344,7 +10388,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.10.0', note:'Новое в версии 2.10.0', topics:[], books:[]};
+var NEW_IN={v:'2.11.0', note:'Новое в версии 2.11.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10478,6 +10522,60 @@ function viewStatus(){
   return h;
 }
 
+/* ======================= ШПАРГАЛКИ (в. 2.11.0) =======================
+   Короткие памятки по формулам и правилам — отдельная страница, не привязанная к одной теме.
+   Каждая шпаргалка — {id, icon, title, blurb, grades, html()} и рендерится как небольшая
+   инфографика (не PDF): статичная HTML/CSS-карточка в цветах приложения, одинаково хорошо
+   смотрится в светлой и тёмной теме (только var()-токены, как и SVG-схемы объяснений). */
+var CHEATSHEETS = [
+  {
+    id: 'op-words',
+    icon: '🧮',
+    title: 'Слова-действия: сумма, разность, произведение, частное',
+    blurb: 'Как превратить слово в задаче в знак действия',
+    grades: [4, 5, 6],
+    html: function(){
+      return '<div class="opword-grid">'
+        +'<div class="opword-card" style="--c:var(--blue);--cs:var(--blue-soft)"><div class="opword-sym">+</div><div class="opword-name">Сумма</div><div class="opword-rule">сложить</div><div class="opword-ex">сумма 7 и 3 → <b>7 + 3</b></div></div>'
+        +'<div class="opword-card" style="--c:var(--red);--cs:var(--red-soft)"><div class="opword-sym">−</div><div class="opword-name">Разность</div><div class="opword-rule">вычесть</div><div class="opword-ex">разность 7 и 3 → <b>7 − 3</b></div></div>'
+        +'<div class="opword-card" style="--c:var(--gold);--cs:var(--gold-soft)"><div class="opword-sym">·</div><div class="opword-name">Произведение</div><div class="opword-rule">умножить</div><div class="opword-ex">произведение 7 и 3 → <b>7 · 3</b></div></div>'
+        +'<div class="opword-card" style="--c:var(--green);--cs:var(--green-soft)"><div class="opword-sym">:</div><div class="opword-name">Частное</div><div class="opword-rule">разделить</div><div class="opword-ex">частное 7 и 3 → <b>7 : 3</b></div></div>'
+        +'</div>'
+        +'<div class="fbox" style="margin-top:16px"><b>Как запомнить:</b><br>Сумма → плюс. Разность → минус. Произведение → умножение. Частное → деление.</div>'
+        +'<h3 style="margin-top:20px">С буквой вместо числа</h3>'
+        +'<div class="opword-examples">'
+        +'<div>сумма числа <b>10</b> и <b>a</b> → <code>10 + a</code></div>'
+        +'<div>разность числа <b>10</b> и <b>a</b> → <code>10 − a</code></div>'
+        +'<div>произведение <b>10</b> и <b>a</b> → <code>10 · a</code></div>'
+        +'<div>частное <b>10</b> и <b>a</b> → <code>10 : a</code></div>'
+        +'</div>';
+    }
+  }
+];
+function cheatGradeLabel(cs){
+  var g=cs.grades||[];
+  if(!g.length) return '';
+  return (g.length>1?(g[0]+'–'+g[g.length-1]):String(g[0]))+' класс';
+}
+function viewCheats(){
+  var cardsHTML=CHEATSHEETS.map(function(cs){
+    return '<button class="cheat-card" data-nav="cheat/'+cs.id+'"><span class="cheat-icon">'+cs.icon+'</span><span class="cheat-title">'+esc(cs.title)+'</span>'
+      +(cheatGradeLabel(cs)?'<span class="cheat-grade">'+esc(cheatGradeLabel(cs))+'</span>':'')
+      +'<span class="cheat-sub">'+esc(cs.blurb)+'</span></button>';
+  }).join('');
+  return '<div class="sheet"><h1>Шпаргалки</h1>'
+    +'<p class="goal">Короткие памятки по формулам и правилам — если забыл(а) термин или формулу, загляни сюда вместо того, чтобы искать в объяснении темы заново.</p>'
+    +'<div class="cheat-grid">'+cardsHTML+'</div></div>';
+}
+function viewCheatsheet(){
+  var cs=CHEATSHEETS.filter(function(c){return c.id===view.id})[0];
+  if(!cs) return viewCheats();
+  return '<div class="sheet"><div class="crumb"><button data-nav="cheats">Шпаргалки</button><span>/</span><span>'+esc(cs.title)+'</span></div>'
+    +'<h1>'+esc(cs.title)+'</h1>'
+    +cs.html()
+    +'</div>';
+}
+
 /* ======================= ВЕРХНЯЯ ПАНЕЛЬ ======================= */
 function kidName(id){var k=KIDS.filter(function(x){return x.id===id})[0]; return k?k.name:''}
 /* Ребёнок, отключённый администратором (k.active===false), остаётся в данных семьи,
@@ -10491,8 +10589,8 @@ function paintBar(){
     return;
   }
   var o=overall();
-  var nav=[['home','Карта'],['diag','Диагностика'],['status','Значки'],['parent','Родителю'],['versions','Версии']];
-  var cur=view.name==='topic'||view.name==='soon'?'home':view.name;
+  var nav=[['home','Карта'],['diag','Диагностика'],['cheats','Шпаргалки'],['status','Значки'],['parent','Родителю'],['versions','Версии']];
+  var cur=view.name==='topic'||view.name==='soon'?'home':(view.name==='cheatsheet'?'cheats':view.name);
   var sync=dbState==='ok'?'сохраняется':dbState==='err'?'не сохранено онлайн':dbState==='off'?'только в этом браузере':'';
   $('#bar').innerHTML=
     '<button class="brand" data-nav="home"><span class="hand">Математика</span><b>в клетку</b></button>'+
@@ -10517,6 +10615,8 @@ function render(){
   else if(view.name==='home') h=viewHome();
   else if(view.name==='diag') h=viewDiag();
   else if(view.name==='status') h=viewStatus();
+  else if(view.name==='cheats') h=viewCheats();
+  else if(view.name==='cheatsheet') h=viewCheatsheet();
   else if(view.name==='parent') h=viewParent();
   else if(view.name==='soon') h=viewSoon();
   else if(view.name==='topic') h=viewTopic();
@@ -10764,12 +10864,12 @@ function taskHTML(id,i,t,star){
   var h='<div class="task'+(star?' star':'')+'" data-topic="'+id+'" data-i="'+key+'"><div class="no">'+(star?'★':(i+1))+'</div><div>'
     +'<div class="q">'+fmt(t.q)+'</div>';
   if(t.opts){
-    h+='<div class="opts">'+t.opts.map(function(o,k){return '<button class="opt'+(st2.ok&&k===t.ans?' ok':'')+'" data-opt="'+k+'"><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
+    h+='<div class="opts">'+t.opts.map(function(o,k){return '<button class="opt'+(st2.ok&&k===t.ans?(st2.helped?' ok helped':' ok'):'')+'" data-opt="'+k+'"><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
   }else{
-    h+='<div class="ans-row"><input class="in'+(st2.ok?' ok':'')+'" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ к задаче '+(star?'со звёздочкой':(i+1))+'" value="'+(st2.ok?esc(st2.val||''):'')+'"'+(st2.ok?' readonly':'')+'>'
+    h+='<div class="ans-row"><input class="in'+(st2.ok?(st2.helped?' helped':' ok'):'')+'" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ к задаче '+(star?'со звёздочкой':(i+1))+'" value="'+(st2.ok?esc(st2.val||''):'')+'"'+(st2.ok?' readonly':'')+'>'
       +'<button class="btn small primary" data-check'+(st2.ok?' disabled':'')+'>Проверить</button></div>';
   }
-  h+='<div class="fb'+(st2.ok?' ok':'')+'">'+(st2.ok?okBadge()+'<span>Верно!</span>':'')+'</div><div class="extra"></div>';
+  h+='<div class="fb'+(st2.ok?(st2.helped?' ok helped':' ok'):'')+'">'+(st2.ok?(st2.helped?helpBadge()+'<span>Разобрано с подсказкой</span>':okBadge()+'<span>Верно!</span>'):'')+'</div><div class="extra"></div>';
   if(st2.ok) h+='';
   h+='</div></div>';
   return h;
@@ -11058,11 +11158,12 @@ document.addEventListener('click',function(ev){
   }
   var nav=t.getAttribute('data-nav');
   if(nav){
-    if(nav==='home'||nav==='diag'||nav==='status'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
+    if(nav==='home'||nav==='diag'||nav==='status'||nav==='cheats'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
     else if(nav==='landing'){ view={name:'landing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
     else if(nav==='pickkid'){ pkReset(); go('pickkid'); }
     else if(nav==='parentgate'){ pkReset(); go('parent'); }
     else if(nav.indexOf('soon/')===0) go('soon',{id:nav.split('/')[1]});
+    else if(nav.indexOf('cheat/')===0) go('cheatsheet',{id:nav.split('/')[1]});
     else if(nav.indexOf('t/')===0){var p=nav.split('/'); go('topic',{id:p[1],tab:p[2]||'explain'})}
     return;
   }
@@ -11142,6 +11243,7 @@ document.addEventListener('click',function(ev){
     else if(t.hasAttribute('data-opt')) checkTask(task,id,key,+t.getAttribute('data-opt'));
     else if(t.hasAttribute('data-hint')) showExtra(task,'hint',id,key);
     else if(t.hasAttribute('data-sol')) showExtra(task,'sol',id,key);
+    else if(t.hasAttribute('data-mark-helped')) markHelped(task,id,key);
   }
 });
 document.addEventListener('keydown',function(ev){
@@ -11228,8 +11330,32 @@ function showExtra(task,kind,id,key){
   var it=itemFor(id,key), out=$('.ex-out',task); if(!out) return;
   if(kind==='hint') out.innerHTML='<div class="hintbox"><b>Подсказка.</b> '+fmt(it.hint||'Разбей задачу на шаги и проверь каждый.')+'</div>';
   else{
-    out.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'<br><span style="color:var(--muted)">Теперь реши похожую задачу сам и введи ответ.</span></div>';
+    /* в. 2.10.1 — раньше после просмотра решения задача навсегда оставалась «не решена», пока ребёнок
+       не вводил верный ответ сам — даже если он просто переходил к следующей задаче. Теперь рядом с
+       решением есть кнопка, которая закрывает задачу с отдельной отметкой «разобрано с подсказкой» —
+       это не заменяет собственное решение (растёт не так, как «Верно!»), но и не виснет вечным долгом. */
+    out.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'<br><span style="color:var(--muted)">Теперь реши похожую задачу сам(а) и введи ответ — а если разобрался(лась) и хочешь идти дальше, можно отметить задачу разобранной.</span></div>'
+      +'<div class="cta" style="margin-top:8px"><button class="btn small ghost" data-mark-helped>Понял(а) — отметить разобранной</button></div>';
   }
+}
+function markHelped(task,id,key){
+  var it=itemFor(id,key);
+  var pr=S.practice[id]||(S.practice[id]={}); var st=pr[key]||(pr[key]={ok:false,tries:0});
+  if(st.ok) return;
+  st.ok=true; st.helped=true; st.val=it.opts?'':'';
+  touchStreak();
+  var fb=$('.fb',task), extra=$('.extra',task);
+  fb.className='fb ok helped'; fb.innerHTML=helpBadge()+'<span>Разобрано с подсказкой — в следующий раз попробуй сначала сам(а).</span>';
+  if(it.opts){ $$('.opt',task).forEach(function(o,k){o.classList.remove('bad'); if(k===it.ans) o.classList.add('helped')}); }
+  else{
+    var inp=$('input.in',task); if(inp){ inp.classList.remove('bad'); inp.classList.add('helped'); inp.readOnly=true; }
+    var chk=$('[data-check]',task); if(chk) chk.disabled=true;
+  }
+  extra.innerHTML='';
+  var c=$('#solved'); if(c) c.textContent=solvedCount(id);
+  var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
+  scheduleSave();
+  paintBar();
 }
 
 /* ======================= МИНИ-ИГРЫ (в. 2.9.0, замедлено и оживлено в 2.9.1) =======================
