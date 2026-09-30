@@ -41,6 +41,19 @@
   --gold:#F2C94C; --gold-soft:#3B3216;
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
 }
+/* разблокируемое оформление (в. 2.10.0) — трогает только акцентный цвет --blue/--blue-soft/--onblue,
+   смысловые --green/--red/--gold (успех/ошибка/предупреждение) не переопределяются */
+:root[data-skin="sunset"]{--blue:#C8492A;--blue-soft:#FBE5DB;--onblue:#FFFFFF}
+:root[data-skin="forest"]{--blue:#0E7C86;--blue-soft:#DCF3F3;--onblue:#FFFFFF}
+:root[data-skin="space"]{--blue:#6D28D9;--blue-soft:#EDE3FC;--onblue:#FFFFFF}
+@media (prefers-color-scheme: dark){
+  :root[data-skin="sunset"]:not([data-theme="light"]){--blue:#FF9466;--blue-soft:#3A2317;--onblue:#1A0F08}
+  :root[data-skin="forest"]:not([data-theme="light"]){--blue:#5FE0D0;--blue-soft:#123333;--onblue:#062020}
+  :root[data-skin="space"]:not([data-theme="light"]){--blue:#C4B5FD;--blue-soft:#2E1F52;--onblue:#170F2B}
+}
+:root[data-skin="sunset"][data-theme="dark"]{--blue:#FF9466;--blue-soft:#3A2317;--onblue:#1A0F08}
+:root[data-skin="forest"][data-theme="dark"]{--blue:#5FE0D0;--blue-soft:#123333;--onblue:#062020}
+:root[data-skin="space"][data-theme="dark"]{--blue:#C4B5FD;--blue-soft:#2E1F52;--onblue:#170F2B}
 *{box-sizing:border-box}
 body{
   margin:0; padding-inline:16px; padding-block:0 48px;
@@ -228,6 +241,27 @@ sup{font-size:.7em;line-height:0}
 .gamebox.g-bad{animation:gshake .4s ease}
 .gfloat{position:absolute;right:20px;top:12px;font-weight:700;color:var(--green);font-size:22px;animation:gfloatup .65s ease forwards;pointer-events:none}
 @media (prefers-reduced-motion: reduce){.gamebox.g-ok,.gamebox.g-bad{animation:none}.gfloat{animation:none;opacity:0}.gbar i{transition:none}}
+
+/* статусность (в. 2.10.0): уровни мастерства на карте/теме, значки, оформление, аватар */
+.rowend{display:flex;align-items:center;gap:8px}
+.mdots{font-size:11px;letter-spacing:2px;color:var(--line)}
+.mdots[data-mastery="learning"]{color:var(--blue)}
+.mdots[data-mastery="reinforcing"]{color:var(--gold)}
+.mdots[data-mastery="confident"]{color:var(--green)}
+.tree-box{display:flex;align-items:center;gap:14px;margin-top:12px;padding:12px 16px;background:var(--sheet2);border-radius:12px}
+.tree-box .tree-icon{font-size:40px;line-height:1}
+.badge-grid{display:grid;gap:10px;margin-top:10px;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.badge{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:10px 6px;border-radius:12px;background:var(--sheet2);opacity:.55}
+.badge.got{opacity:1;background:var(--gold-soft)}
+.badge .bicon{font-size:26px}
+.badge .blabel{font-size:12px;color:var(--muted);line-height:1.25}
+.badge.got .blabel{color:var(--ink);font-weight:600}
+.skin-grid,.avatar-grid{display:grid;gap:10px;margin-top:10px;grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
+.skinopt,.avopt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:2px solid var(--line);background:var(--sheet);cursor:pointer}
+.skinopt .sicon,.avopt .aicon{font-size:26px}
+.skinopt.cur,.avopt.cur{border-color:var(--blue);background:var(--blue-soft)}
+.skinopt.locked,.avopt.locked{opacity:.5;cursor:default}
+.skinopt:disabled,.avopt:disabled{cursor:default}
 
 /* results */
 .score{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
@@ -9437,12 +9471,25 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.9.1';
+var APP_VERSION = '2.10.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.9.1",
+ "current": "2.10.0",
  "versions": [
+  {
+   "v": "2.10.0",
+   "date": "2026-09-30",
+   "title": "Статусность",
+   "items": [
+    "«Уровни мастерства» по каждой теме — знакомлюсь / закрепляю / уверенно — видны прямо на карте рядом с каждой темой и на странице темы. Считаются по уже собираемым данным (лучший результат теста), ничего нового вводить не пришлось.",
+    "Значки за успехи: первая решённая задача, первый тест, первая тема на уровне «уверенно», пять закреплённых тем, весь класс освоен, серии в 3/7/14 дней, мини-игры. Значок нельзя потерять — как и рекорды, он остаётся навсегда. Новая страница «Значки» (в верхнем меню) собирает всё в одном месте.",
+    "Разблокируемое оформление: три дополнительных акцентных цвета приложения — «Закат», «Лес», «Космос» — открываются той же серией дней подряд, что и значки (3/7/14 дней), поверх уже существующего переключателя светлой/тёмной темы.",
+    "Аватар профиля: ребёнок выбирает иконку для своего профиля — часть открыта сразу, часть открывается вместе со значками. Виден в шапке, на экране выбора профиля и в кабинете родителя.",
+    "Растущее дерево на странице «Значки» — декоративный отклик на число тем уровня «уверенно» по всей карте: от семечка до цветущего сада.",
+    "Как и везде в приложении с 2.8.0 — только сравнение с собственными прошлыми результатами, никогда с другими детьми."
+   ]
+  },
   {
    "v": "2.9.1",
    "date": "2026-09-30",
@@ -9631,17 +9678,15 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.10.0",
-  "title": "Статусность",
+  "v": "2.11.0",
+  "title": "Аудио и пасхалка",
   "when": "в планах",
   "items": [
-   "Разблокировки (темы оформления, значки, элементы карты) за прогресс.",
-   "Кастомизация аватара и внешнего вида приложения.",
-   "«Уровни мастерства» по каждой теме (от «знакомлюсь» до «уверенно») — поверх данных о сериях и мини-играх из 2.8.0–2.9.0."
+   "Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев.",
+   "Пасхалка: если в ответе задания есть число 67 (целиком или как часть ответа) — на секунду на весь экран выводится мигающее разноцветное «67» в молодёжном стиле под короткий звук «six seven»; не чаще раза за занятие и никогда во время теста или диагностики, чтобы не отвлекать в серьёзный момент."
   ],
   "later": [
-   "2.11.0 — Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев. Плюс пасхалка: если в ответе задания есть число 67 (целиком или как часть ответа) — на секунду на весь экран выводится мигающее разноцветное «67» в молодёжном стиле под короткий звук «six seven»; не чаще раза за занятие и никогда во время теста или диагностики, чтобы не отвлекать в серьёзный момент.",
-   "Анимации 6 класса — последний из оставшихся классов, продолжение начатого в 2.5.0–2.9.0 (4, 5, 7 и 8 классы уже готовы).",
+   "Анимации 6 класса — последний из оставшихся классов, продолжение начатого в 2.5.0–2.10.0 (4, 5, 7 и 8 классы уже готовы).",
    "Ограничение на сообщения в поддержку: не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет).",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
@@ -10299,7 +10344,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.9.1', note:'Новое в версии 2.9.0–2.9.1', topics:['n4','mul4','val4','word4','geo4','frac4'], books:[]};
+var NEW_IN={v:'2.10.0', note:'Новое в версии 2.10.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10312,6 +10357,125 @@ function statPill(id){
   if(s==='done') return needsReview(id)?'<span class="pill rev">повторить</span>':'<span class="pill done">освоено</span>';
   if(s==='prog'){var t=S.tests[id]; return '<span class="pill prog">'+(t?('тест '+t.best+'/'+t.total):('задач '+solvedCount(id)+'/'+(CONTENT[id]?CONTENT[id].tasks.length:20)))+'</span>'}
   return '<span class="pill">не начато</span>';
+}
+
+/* ======================= СТАТУСНОСТЬ (в. 2.10.0) =======================
+   Уровни мастерства, значки, разблокируемое оформление и аватар — всё построено поверх уже
+   собираемых данных (тесты/практика/серии/мини-игры из 2.8.0–2.9.1), без новых полей состояния,
+   кроме одной настройки-предпочтения S.prefs.skin. Дух тот же, что и в 2.8.0: везде «сравнение
+   с собой», никаких рейтингов между детьми. */
+var MASTERY=[
+  {key:'new', label:'не начато', icon:'○○○'},
+  {key:'learning', label:'знакомлюсь', icon:'●○○'},
+  {key:'reinforcing', label:'закрепляю', icon:'●●○'},
+  {key:'confident', label:'уверенно', icon:'●●●'}
+];
+function masteryInfo(key){ for(var i=0;i<MASTERY.length;i++) if(MASTERY[i].key===key) return MASTERY[i]; return MASTERY[0]; }
+/* Уровень темы — по лучшему результату теста (совпадает с порогом «освоено», плюс более строгий
+   порог 95% для «уверенно»); если тест ещё не сдан, но практика начата — «знакомлюсь». */
+function topicMastery(id,st){
+  st=st||S;
+  var t=(st.tests||{})[id], pr=(st.practice||{})[id]||{};
+  var solved=Object.keys(pr).filter(function(k){return k!=='b'&&pr[k].ok}).length;
+  if(t&&t.total){
+    var ratio=t.best/t.total;
+    if(ratio>=0.95) return 'confident';
+    if(ratio>=PASS) return 'reinforcing';
+  }
+  return solved>0?'learning':'new';
+}
+function masteryDotsHTML(id,st){
+  var key=topicMastery(id,st), info=masteryInfo(key);
+  return '<span class="mdots" data-mastery="'+key+'" title="Уровень мастерства: '+esc(info.label)+'">'+info.icon+'</span>';
+}
+/* Значки — вычисляются на лету из текущего состояния, ничего отдельно не хранится и не может
+   «потеряться»; поэтому же значок нельзя «снять» — он либо уже заслужен, либо ещё нет. */
+var BADGES=[
+  {id:'first_step', icon:'🎯', label:'Первый шаг', desc:'Решил(а) первую задачу в практике.', earn:function(st){return Object.keys(st.practice||{}).some(function(id){return Object.keys(st.practice[id]).some(function(k){return st.practice[id][k].ok});});}},
+  {id:'diag_done', icon:'🧭', label:'Знаю, с чего начать', desc:'Прошёл(ла) входную диагностику.', earn:function(st){return !!st.diag;}},
+  {id:'first_test', icon:'📝', label:'Первый тест', desc:'Сдал(а) первый тест по теме.', earn:function(st){return Object.keys(st.tests||{}).length>0;}},
+  {id:'topic_confident', icon:'🌟', label:'Уверенная тема', desc:'Довёл(а) хотя бы одну тему до уровня «уверенно».', earn:function(st){return ALL.some(function(id){return avail(id)&&topicMastery(id,st)==='confident';});}},
+  {id:'five_done', icon:'🏅', label:'Пять тем', desc:'Закрепил(а) не меньше пяти тем (уровень «закрепляю» и выше).', earn:function(st){return ALL.filter(function(id){var m=avail(id)&&topicMastery(id,st); return m==='reinforcing'||m==='confident';}).length>=5;}},
+  {id:'grade_done', icon:'🎓', label:'Класс освоен', desc:'Закрепил(а) все доступные темы своего класса.', earn:function(st,g){var ids=(BY_GRADE[g]||[]).filter(avail); return ids.length>0&&ids.every(function(id){var m=topicMastery(id,st); return m==='reinforcing'||m==='confident';});}},
+  {id:'streak_3', icon:'🔥', label:'Серия 3 дня', desc:'Занимался(лась) 3 дня подряд.', earn:function(st){return !!(st.streak&&st.streak.best>=3);}},
+  {id:'streak_7', icon:'🔥🔥', label:'Серия 7 дней', desc:'Занимался(лась) неделю подряд.', earn:function(st){return !!(st.streak&&st.streak.best>=7);}},
+  {id:'streak_14', icon:'🔥🔥🔥', label:'Серия 14 дней', desc:'Занимался(лась) две недели подряд.', earn:function(st){return !!(st.streak&&st.streak.best>=14);}},
+  {id:'game_round', icon:'⚡', label:'Раунд сыгран', desc:'Прошёл(ла) мини-игру «Раунд на время» хотя бы раз.', earn:function(st){return !!(st.games&&Object.keys(st.games).some(function(id){return st.games[id].round;}));}},
+  {id:'game_chain', icon:'🔗', label:'Длинная цепочка', desc:'Собрал(а) в мини-игре «Цепочка» серию из 5 верных ответов подряд.', earn:function(st){return !!(st.games&&Object.keys(st.games).some(function(id){return st.games[id].chain&&st.games[id].chain.best>=5;}));}}
+];
+function earnedBadgeIds(st,g){ return BADGES.filter(function(b){ try{ return !!b.earn(st,g); }catch(e){ return false; } }).map(function(b){return b.id;}); }
+/* Разблокируемое оформление — акцентный цвет приложения (только --blue/--blue-soft/--onblue,
+   смысловые зелёный/красный/жёлтый не трогаем), открывается той же серией дней, что и значки. */
+var SKINS=[
+  {key:'ocean', label:'Океан', icon:'🌊', unlock:0},
+  {key:'sunset', label:'Закат', icon:'🌅', unlock:3},
+  {key:'forest', label:'Лес', icon:'🌲', unlock:7},
+  {key:'space', label:'Космос', icon:'🌌', unlock:14}
+];
+function skinUnlocked(key){ var sk=SKINS.filter(function(s){return s.key===key;})[0]; return !!sk&&((S.streak&&S.streak.best)||0)>=sk.unlock; }
+function getSkin(){ return (S.prefs&&S.prefs.skin)||'ocean'; }
+function applySkin(){ var sk=getSkin(); if(sk==='ocean'||!skinUnlocked(sk)) document.documentElement.removeAttribute('data-skin'); else document.documentElement.setAttribute('data-skin',sk); }
+function setSkin(key){ if(!skinUnlocked(key)) return; S.prefs=S.prefs||{challenge:false}; S.prefs.skin=key; applySkin(); scheduleSave(); render(); }
+/* Аватар ребёнка — хранится в профиле (KIDS), не в прогрессе: это черта профиля, как имя. Базовые
+   иконки доступны сразу, часть — открывается вместе с соответствующим значком. */
+var AVATARS=[
+  {key:'fox', icon:'🦊'}, {key:'cat', icon:'🐱'}, {key:'owl', icon:'🦉'}, {key:'panda', icon:'🐼'},
+  {key:'robot', icon:'🤖', badge:'first_step'}, {key:'rocket', icon:'🚀', badge:'game_round'},
+  {key:'star', icon:'🌟', badge:'topic_confident'}, {key:'dragon', icon:'🐉', badge:'streak_7'},
+  {key:'unicorn', icon:'🦄', badge:'streak_14'}, {key:'crown', icon:'👑', badge:'grade_done'}
+];
+function avatarUnlocked(av,earnedIds){ return !av.badge||earnedIds.indexOf(av.badge)>=0; }
+function kidAvatarKey(id){ var k=KIDS.filter(function(x){return x.id===id})[0]; return (k&&k.avatar)||null; }
+function kidAvatarIcon(id){
+  var key=kidAvatarKey(id);
+  if(key){ var av=AVATARS.filter(function(a){return a.key===key;})[0]; if(av) return av.icon; }
+  var k=KIDS.filter(function(x){return x.id===id})[0];
+  return esc((k&&k.name||'?').charAt(0).toUpperCase());
+}
+function setKidAvatar(key){
+  var eIds=earnedBadgeIds(S,kidGrade(activeKid));
+  var av=AVATARS.filter(function(a){return a.key===key;})[0]; if(!av||!avatarUnlocked(av,eIds)) return;
+  var k=KIDS.filter(function(x){return x.id===activeKid;})[0]; if(!k) return;
+  k.avatar=key; saveKidsLocal(); scheduleKidsSave(); render();
+}
+/* Растущее дерево на странице прогресса — декоративный отклик на число тем уровня «уверенно»
+   по всей карте (не по одному классу), тоже чисто на вычисляемых данных. */
+function progressTreeStage(){
+  var n=ALL.filter(function(id){return avail(id)&&topicMastery(id,S)==='confident';}).length;
+  if(n>=10) return {icon:'🌳🌸', label:'Цветущий сад знаний', sub:n+' '+ruPlural(n,'тема','темы','тем')+' на уровне «уверенно»'};
+  if(n>=6) return {icon:'🌳', label:'Крепкое дерево', sub:n+' '+ruPlural(n,'тема','темы','тем')+' на уровне «уверенно»'};
+  if(n>=3) return {icon:'🌿', label:'Растёт стебель', sub:n+' '+ruPlural(n,'тема','темы','тем')+' на уровне «уверенно»'};
+  if(n>=1) return {icon:'🌱', label:'Первый росток', sub:n+' '+ruPlural(n,'тема','темы','тем')+' на уровне «уверенно»'};
+  return {icon:'🌰', label:'Семечко посажено', sub:'начни с практики и теста — росток появится после первой темы «уверенно»'};
+}
+function viewStatus(){
+  var g=kidGrade(activeKid), eIds=earnedBadgeIds(S,g), tree=progressTreeStage();
+  var h='<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>Значки и оформление</span></div>'
+    +'<h1>Твой прогресс</h1>'
+    +'<p class="goal">Здесь — только про тебя: сравниваем нынешние успехи с твоими же прошлыми, а не с другими ребятами.</p>'
+    +'<div class="tree-box"><span class="tree-icon">'+tree.icon+'</span><div><b>'+esc(tree.label)+'</b><span class="legend" style="margin:2px 0 0;display:block">'+esc(tree.sub)+'</span></div></div>'
+    +'</div>';
+  h+='<div class="sheet" style="margin-top:16px"><h2>Значки</h2><p class="legend">Открываются за успехи в занятиях — задачи, тесты, серии дней, мини-игры. Значок нельзя потерять.</p>'
+    +'<div class="badge-grid">'+BADGES.map(function(b){
+      var got=eIds.indexOf(b.id)>=0;
+      return '<div class="badge'+(got?' got':'')+'" title="'+esc(b.desc)+'"><span class="bicon">'+(got?b.icon:'🔒')+'</span><span class="blabel">'+esc(b.label)+'</span></div>';
+    }).join('')+'</div></div>';
+  h+='<div class="sheet" style="margin-top:16px"><h2>Оформление</h2><p class="legend">Разблокируется серией дней подряд с занятиями (личный рекорд серии сейчас — '+((S.streak&&S.streak.best)||0)+').</p>'
+    +'<div class="skin-grid">'+SKINS.map(function(sk){
+      var unlocked=skinUnlocked(sk.key), cur=getSkin()===sk.key;
+      return '<button class="skinopt'+(cur?' cur':'')+(unlocked?'':' locked')+'" data-skin-pick="'+sk.key+'"'+(unlocked?'':' disabled')+'>'
+        +'<span class="sicon">'+(unlocked?sk.icon:'🔒')+'</span><span>'+esc(sk.label)+'</span>'
+        +(unlocked?(cur?'<span class="pill done" style="margin-top:4px">выбрано</span>':''):'<span class="legend" style="margin:4px 0 0">серия '+sk.unlock+'+ дней</span>')
+        +'</button>';
+    }).join('')+'</div></div>';
+  h+='<div class="sheet" style="margin-top:16px"><h2>Аватар</h2><p class="legend">Часть аватаров открывается вместе со значками выше.</p>'
+    +'<div class="avatar-grid">'+AVATARS.map(function(av){
+      var unlocked=avatarUnlocked(av,eIds), cur=kidAvatarKey(activeKid)===av.key;
+      return '<button class="avopt'+(cur?' cur':'')+(unlocked?'':' locked')+'" data-avatar-pick="'+av.key+'"'+(unlocked?'':' disabled')+' aria-label="'+(unlocked?'Выбрать аватар':'Аватар пока заблокирован')+'">'
+        +'<span class="aicon">'+(unlocked?av.icon:'🔒')+'</span></button>';
+    }).join('')+'</div></div>';
+  h+='<p class="legend" style="margin-top:14px">Уровень мастерства по каждой теме ('+MASTERY.map(function(m){return m.icon+' '+m.label;}).join(' · ')+') виден прямо на карте — рядом с каждой темой.</p>';
+  return h;
 }
 
 /* ======================= ВЕРХНЯЯ ПАНЕЛЬ ======================= */
@@ -10327,19 +10491,20 @@ function paintBar(){
     return;
   }
   var o=overall();
-  var nav=[['home','Карта'],['diag','Диагностика'],['parent','Родителю'],['versions','Версии']];
+  var nav=[['home','Карта'],['diag','Диагностика'],['status','Значки'],['parent','Родителю'],['versions','Версии']];
   var cur=view.name==='topic'||view.name==='soon'?'home':view.name;
   var sync=dbState==='ok'?'сохраняется':dbState==='err'?'не сохранено онлайн':dbState==='off'?'только в этом браузере':'';
   $('#bar').innerHTML=
     '<button class="brand" data-nav="home"><span class="hand">Математика</span><b>в клетку</b></button>'+
     '<nav class="nav">'+nav.map(function(n){return '<button data-nav="'+n[0]+'"'+(cur===n[0]?' aria-current="page"':'')+'>'+n[1]+'</button>'}).join('')+'</nav>'+
     '<button class="btn small ghost" style="margin-left:auto" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="Тема оформления">'+themeIcon()+'</button>'+
-    (activeKid?'<button class="btn small ghost" data-nav="pickkid" title="Сменить профиль">'+esc(kidName(activeKid))+' · сменить</button>':'')+
+    (activeKid?'<button class="btn small ghost" data-nav="pickkid" title="Сменить профиль">'+kidAvatarIcon(activeKid)+' '+esc(kidName(activeKid))+' · сменить</button>':'')+
     '<div class="meter" title="'+esc(sync)+'"><span>Освоено '+o.done+' из '+o.total+'</span><span class="track"><span class="fill" style="display:block;width:'+pct(o.done,o.total)+'%"></span></span></div>';
 }
 
 /* ======================= ВИДЫ ======================= */
 function render(){
+  applySkin();
   paintBar();
   var fr=$('#fabRoot'); if(fr&&!fr.firstChild) fr.innerHTML=fabHTML();
   var h='';
@@ -10351,6 +10516,7 @@ function render(){
   else if(view.name==='pickkid') h=viewPickKid();
   else if(view.name==='home') h=viewHome();
   else if(view.name==='diag') h=viewDiag();
+  else if(view.name==='status') h=viewStatus();
   else if(view.name==='parent') h=viewParent();
   else if(view.name==='soon') h=viewSoon();
   else if(view.name==='topic') h=viewTopic();
@@ -10389,7 +10555,7 @@ function rowHTML(id,W){
     +(W&&W[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span>':'')
     +(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span>':'')
     +'<span class="sub">'+esc(T.blurb)+'</span></span>'
-    +statPill(id)+'</button>';
+    +'<span class="rowend">'+(a?masteryDotsHTML(id,S):'')+statPill(id)+'</span></button>';
 }
 
 /* ---- выбор профиля ребёнка ---- */
@@ -10431,7 +10597,7 @@ function viewPickKid(){
   }
   // list
   var cards=visibleKids().map(function(k){
-    return '<button class="kidcard" data-pk-open="'+k.id+'"><span class="kidavatar">'+esc((k.name||'?').charAt(0).toUpperCase())+'</span><b>'+esc(k.name)+'</b><span class="prog">'+kidGrade(k.id)+' класс · '+kidProgressBrief(k.id)+'</span></button>';
+    return '<button class="kidcard" data-pk-open="'+k.id+'"><span class="kidavatar">'+kidAvatarIcon(k.id)+'</span><b>'+esc(k.name)+'</b><span class="prog">'+kidGrade(k.id)+' класс · '+kidProgressBrief(k.id)+'</span></button>';
   }).join('');
   var isKid=CLOUD.on&&CLOUD.me&&CLOUD.me.role==='kid';
   return '<div class="kidwrap"><div class="kidbox">'
@@ -10577,6 +10743,7 @@ function viewTopic(){
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
     +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+'</span></div>'
     +'<h1>'+esc(T.name)+'</h1><p class="goal">'+esc(C.goal)+'</p>'
+    +'<p class="legend" style="margin-top:-4px">Уровень мастерства: <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
     +body
     +'<div class="foot"><div>'+(prev?'<button class="btn ghost small" data-nav="t/'+prev+'/explain">← '+esc(TOPICS[prev].name)+'</button>':'')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
@@ -10818,7 +10985,7 @@ function viewParent(){
   var kSt=loadStateLocal(kidId);
   var d=kSt.diag, fullTopics=ALL.filter(avail);
   var switcher='<div class="cta" style="margin-bottom:4px">'+vk.map(function(k){
-    return '<button class="btn small'+(k.id===kidId?' primary':' ghost')+'" data-parent-switch="'+k.id+'">'+esc(k.name)+'</button>';
+    return '<button class="btn small'+(k.id===kidId?' primary':' ghost')+'" data-parent-switch="'+k.id+'">'+kidAvatarIcon(k.id)+' '+esc(k.name)+'</button>';
   }).join('')+'<button class="btn small ghost" style="margin-left:auto" data-parent-lock="1">Выйти</button></div>';
   var h='<div class="sheet">'+switcher+'<h1>Кабинет родителя — '+esc(kidName(kidId))+'</h1><p class="goal">Здесь видно, что сделано, где ошибки и что повторять. Отчёты о тестах также можно получить письмом — кнопка внизу каждого теста.</p>'
     +'<div class="cta" style="margin-top:6px;flex-wrap:wrap"><span class="legend" style="margin:0">Класс:</span>'+[4,5,6,7,8,9].map(function(g){return '<button class="btn small'+(kidGrade(kidId)===g?' primary':' ghost')+'" data-parent-grade="'+g+'">'+g+'</button>'}).join('')+'<span class="legend" style="margin:0">диагностика подбирается за два предыдущих класса</span></div></div>';
@@ -10891,7 +11058,7 @@ document.addEventListener('click',function(ev){
   }
   var nav=t.getAttribute('data-nav');
   if(nav){
-    if(nav==='home'||nav==='diag'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
+    if(nav==='home'||nav==='diag'||nav==='status'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
     else if(nav==='landing'){ view={name:'landing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
     else if(nav==='pickkid'){ pkReset(); go('pickkid'); }
     else if(nav==='parentgate'){ pkReset(); go('parent'); }
@@ -10958,6 +11125,11 @@ document.addEventListener('click',function(ev){
   }
   var gOpt=t.getAttribute('data-game-opt');
   if(gOpt!==null){ gameSubmit(null,+gOpt); return; }
+  /* --- статусность: оформление и аватар (в. 2.10.0) --- */
+  var skinPick=t.getAttribute('data-skin-pick');
+  if(skinPick){ setSkin(skinPick); return; }
+  var avPick=t.getAttribute('data-avatar-pick');
+  if(avPick){ setKidAvatar(avPick); return; }
   var optPick=t.getAttribute('data-pick');
   if(optPick!==null){
     $$('.opt',t.parentNode).forEach(function(o){o.classList.remove('sel')});
