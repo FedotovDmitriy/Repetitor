@@ -120,6 +120,8 @@ a{color:var(--blue)}
 .btn.small{padding:6px 12px;font-size:14px;border-width:1.5px}
 .btn.ghost{border-color:var(--line);font-weight:500}
 .btn[disabled]{opacity:.5;cursor:default}
+.readbtn{margin-left:8px;vertical-align:middle;white-space:nowrap}
+.readbtn.reading{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
 .tracks{display:grid;gap:16px}
 @media (min-width:820px){.tracks{grid-template-columns:1fr 1fr}}
 .track-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap}
@@ -9839,12 +9841,20 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.13.0';
+var APP_VERSION = '2.14.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.13.0",
+ "current": "2.14.0",
  "versions": [
+  {
+   "v": "2.14.0",
+   "date": "2026-10-01",
+   "title": "Аудио",
+   "items": [
+    "Кнопка «🔊 прочитать» в двух местах — у главной идеи темы (вверху страницы темы) и у каждого блока «Запомни»/«Быстрый приём» на вкладке «Объяснение» — не у всего текста объяснения целиком. Читает вслух через встроенный в браузер синтез речи, без ручной записи аудио. Повторное нажатие на ту же кнопку останавливает чтение; переход на другую страницу тоже останавливает."
+   ]
+  },
   {
    "v": "2.13.0",
    "date": "2026-09-30",
@@ -10080,14 +10090,13 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.14.0",
-  "title": "Аудио",
+  "v": "2.15.0",
+  "title": "Ограничение на сообщения в поддержку",
   "when": "в планах",
   "items": [
-   "Аудио только в самых важных местах: кнопка «прочитать» у блока «Запомни» и у главной идеи темы (не у всего текста объяснения целиком) через встроенный в браузер синтез речи — без ручной записи тысяч абзацев."
+   "Не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет)."
   ],
   "later": [
-   "Ограничение на сообщения в поддержку: не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет).",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
    "9 класс: квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия.",
@@ -10743,7 +10752,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.13.0', note:'Новое в версии 2.13.0', topics:['neg','ratio','coord','alg6','geo','circ6','stat6'], books:[]};
+var NEW_IN={v:'2.14.0', note:'Новое в версии 2.14.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10982,6 +10991,7 @@ function render(){
 }
 function go(name,extra){
   if(GAME){ gameStopTimers(); GAME=null; } // навигация прерывает мини-игру, чтобы таймеры не тикали в фоне
+  stopReading(); // навигация останавливает чтение вслух (в. 2.14.0), чтобы голос не продолжал говорить на новом экране
   var gate=needsGate();
   if(gate && name!=='versions'){ view={name:gate}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
   if(name!=='pickkid' && name!=='parent' && name!=='versions' && name!=='landing' && !activeKid){ view={name:'pickkid'}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
@@ -11197,7 +11207,7 @@ function viewTopic(){
   var nextTab=tabs[tabIdx+1];
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
     +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+'</span></div>'
-    +'<h1>'+esc(T.name)+'</h1><p class="goal">'+esc(C.goal)+'</p>'
+    +'<h1>'+esc(T.name)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
     +'<p class="legend" style="margin-top:-4px">Уровень мастерства: <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
     +body
@@ -11208,7 +11218,7 @@ function viewTopic(){
 }
 function tabExplain(id){
   var C=CONTENT[id];
-  return '<div class="prose">'+renderSvgMarkers(fmt(C.explain))+'</div>'
+  return '<div class="prose">'+renderSvgMarkers(fmt(addReadButtons(C.explain)))+'</div>'
     +'<h3 style="margin-top:28px">Разобранные примеры</h3>'
     +C.examples.map(function(e,i){return '<div class="ex"><div class="t">Пример '+(i+1)+'. '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>'}).join('');
 }
@@ -11567,6 +11577,8 @@ document.addEventListener('click',function(ev){
   var diffPick=t.getAttribute('data-difficulty');
   if(diffPick){ S.prefs=S.prefs||{challenge:false}; S.prefs.challenge=(diffPick==='challenge'); scheduleSave(); render(); return; }
   if(t.hasAttribute('data-theme-toggle')){ cycleTheme(); return; }
+  var readTxt=t.getAttribute('data-read');
+  if(readTxt!==null){ speakRu(readTxt,t); return; }
   /* --- мини-игры (в. 2.9.0, доработано в 2.9.1) --- */
   var gStart=t.getAttribute('data-game-start');
   if(gStart){ var gp=gStart.split(':'); startGame(gp[0],gp[1]); return; }
@@ -11712,6 +11724,48 @@ function markHelped(task,id,key){
   var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
   scheduleSave();
   paintBar();
+}
+
+/* ======================= АУДИО: прочитать вслух (в. 2.14.0) =======================
+   Точечное озвучивание через встроенный в браузер синтез речи (speechSynthesis) — без
+   ручной записи тысяч абзацев. Кнопка «прочитать» только в двух местах: у главной идеи
+   темы (C.goal, на вкладке «Объяснение») и у каждого блока «Запомни»/«Быстрый приём»
+   и т.п. (.note) — НЕ у всего текста объяснения целиком. */
+var READING_BTN=null;
+function speechClean(raw){
+  return String(raw==null?'':raw)
+    .replace(/\{([^{}|]+)\|([^{}|]+)\}/g,'$1 на $2') // {3|4} -> "3 на 4"
+    .replace(/\^(\w+)/g,' в степени $1')              // ^2 -> " в степени 2"
+    .replace(/<[^>]*>/g,' ')                          // убрать теги (<b>, <span class="hand">…</span> и т.п.)
+    .replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')
+    .replace(/\s+/g,' ').trim();
+}
+function stopReading(){
+  try{ if(window.speechSynthesis) window.speechSynthesis.cancel(); }catch(e){}
+  if(READING_BTN){ READING_BTN.classList.remove('reading'); READING_BTN.textContent='🔊 прочитать'; READING_BTN=null; }
+}
+function speakRu(text,btn){
+  var wasBtn=READING_BTN;
+  stopReading();
+  if(wasBtn===btn) return true; // второй клик по той же кнопке — просто остановить
+  try{
+    if(!(window.speechSynthesis && window.SpeechSynthesisUtterance)) return false;
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='ru-RU'; u.rate=0.92;
+    u.onend=function(){ if(READING_BTN===btn) stopReading(); };
+    u.onerror=function(){ if(READING_BTN===btn) stopReading(); };
+    window.speechSynthesis.speak(u);
+    if(btn){ btn.classList.add('reading'); btn.textContent='⏸ стоп'; READING_BTN=btn; }
+    return true;
+  }catch(e){ return false; }
+}
+function readBtn(rawText){
+  return ' <button type="button" class="btn ghost small readbtn" data-read="'+esc(speechClean(rawText))+'" title="Прочитать вслух" aria-label="Прочитать вслух">🔊 прочитать</button>';
+}
+function addReadButtons(explainRaw){
+  return String(explainRaw).replace(/<div class="note">([\s\S]*?)<\/div>/g,function(m,inner){
+    return '<div class="note">'+inner+readBtn(inner)+'</div>';
+  });
 }
 
 /* ======================= ПАСХАЛКА «67» (в. 2.12.0) =======================
