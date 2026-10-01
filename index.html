@@ -147,6 +147,8 @@ a{color:var(--blue)}
 .mk{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.02em;border-radius:99px;padding:1px 8px;margin-left:6px;vertical-align:1px;white-space:nowrap}
 .mk.boost{background:var(--red-soft);color:var(--red)}
 .mk.new{background:var(--blue);color:var(--onblue)}
+.mk.cheat{background:var(--gold-soft);color:var(--gold)}
+.railcheat{margin-left:4px;font-size:12px;vertical-align:1px}
 .boost-list{display:grid;gap:10px;margin-top:8px}
 .boost-card{border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:10px 14px;background:var(--sheet)}
 .boost-card.shaky{border-left-color:var(--gold)}
@@ -9857,12 +9859,22 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.17.0';
+var APP_VERSION = '2.18.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.17.0",
+ "current": "2.18.0",
  "versions": [
+  {
+   "v": "2.18.0",
+   "date": "2026-10-01",
+   "title": "Шпаргалки: первая партия новых карточек + значок у темы",
+   "items": [
+    "12 новых шпаргалок по самым «ходовым» темам: движение (скорость/путь/время), дроби (4 действия и что такое дробь), проценты, правила знаков и модуль, окружность и π, квадратные корни, дискриминант и теорема Виета, теорема Пифагора и тройки, синус/косинус/тангенс, единицы измерения, координатная плоскость.",
+    "Новый раздел «Справочник» на странице «Шпаргалки» — общие таблицы без привязки к одной теме: полная таблица умножения и глоссарий математических символов.",
+    "У темы, для которой есть шпаргалка, теперь виден значок «📄 шпаргалка» — на главной карте, в боковой панели темы и на самой странице темы (там же — кнопка, которая сразу открывает нужную шпаргалку)."
+   ]
+  },
   {
    "v": "2.17.0",
    "date": "2026-10-01",
@@ -10130,11 +10142,11 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.18.0",
-  "title": "Шпаргалки: новые карточки",
+  "v": "2.19.0",
+  "title": "Шпаргалки: ещё карточки",
   "when": "в планах",
   "items": [
-   "Добавить ещё несколько шпаргалок (отдельных карточек-памяток) в раздел «Шпаргалки» — сейчас там только одна, «Слова-действия: сумма, разность, произведение, частное». Новые карточки — по формулам и приёмам, которые дети чаще всего путают."
+   "Продолжение 2.18.0: ещё карточки по оставшимся темам из той же подборки источников (пропорции и масштаб, графики функций, четырёхугольники, вписанная/описанная окружность, системы уравнений, вероятность и статистика и другие) и расширение «Справочника» (таблица кубов, римские цифры)."
   ],
   "later": [
    "Анимации 4 класса: добавить фигур. Сейчас в каждой из 6 тем 4 класса только одна анимированная схема из трёх фигур на тему — и это самый «текстовый» класс в приложении: ни одна тема не опускается ниже ~1100 знаков текста на одну фигуру (для сравнения, у части тем в других классах это 400–900). План — добавить ещё по одной-две анимированные схемы в каждую тему и сократить текст там, где схема теперь объясняет то же самое.",
@@ -10793,7 +10805,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.17.0', note:'Новое в версии 2.17.0', topics:[], books:[]};
+var NEW_IN={v:'2.18.0', note:'Новое в версии 2.18.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -10955,22 +10967,316 @@ var CHEATSHEETS = [
         +'<div>частное <b>10</b> и <b>a</b> → <code>10 : a</code></div>'
         +'</div>';
     }
+  },
+  /* в. 2.18.0 — первая партия карточек из фото-шпаргалок пользователя (CHANGELOG.next 2.18.0).
+     Каждая карточка с полем topics привязана к конкретной теме — у такой темы на карте,
+     в боковой панели и на странице темы появляется значок 📄 (см. cheatsForTopic). */
+  {
+    id: 'speed-triangle',
+    icon: '🚗',
+    title: 'Скорость, путь, время: треугольник-подсказка',
+    blurb: 'Как не перепутать, что на что делить — и три частых типа задач на движение',
+    grades: [5],
+    topics: ['mot'],
+    html: function(){
+      return '<div class="fbox"><b>Главный приём:</b> если закрыть пальцем то, что ищем — останется нужное действие.<br>'
+        +'<b>S</b> (путь) наверху «треугольника», <b>v</b> (скорость) и <b>t</b> (время) — внизу рядом.</div>'
+        +'<table><thead><tr><th>Ищем</th><th>Формула</th><th>Пример</th></tr></thead><tbody>'
+        +'<tr><td>Путь, S</td><td>S = v · t</td><td>60 км/ч, 3 ч → 60·3 = <b>180 км</b></td></tr>'
+        +'<tr><td>Скорость, v</td><td>v = S : t</td><td>150 км, 3 ч → 150:3 = <b>50 км/ч</b></td></tr>'
+        +'<tr><td>Время, t</td><td>t = S : v</td><td>240 км, 80 км/ч → 240:80 = <b>3 ч</b></td></tr>'
+        +'</tbody></table>'
+        +'<h3 style="margin-top:20px">Три частых типа задач</h3>'
+        +'<div class="opword-grid">'
+        +'<div class="opword-card" style="--c:var(--blue);--cs:var(--blue-soft)"><div class="opword-name">Навстречу друг другу</div><div class="opword-rule">скорости складываем</div><div class="opword-ex">70+50=120 км/ч — скорость сближения</div></div>'
+        +'<div class="opword-card" style="--c:var(--red);--cs:var(--red-soft)"><div class="opword-name">Один догоняет другого</div><div class="opword-rule">скорости вычитаем</div><div class="opword-ex">8−5=3 м/мин — скорость сближения</div></div>'
+        +'<div class="opword-card" style="--c:var(--green);--cs:var(--green-soft)"><div class="opword-name">По реке (течение)</div><div class="opword-rule">по течению плюс, против — минус</div><div class="opword-ex">18+2=20 по течению, 18−2=16 против</div></div>'
+        +'</div>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> сначала разберись, что происходит со скоростями (складываются или вычитаются), и только потом считай время или путь.</div>';
+    }
+  },
+  {
+    id: 'frac-ops',
+    icon: '➗',
+    title: 'Дроби: сложение, вычитание, умножение, деление',
+    blurb: 'Все четыре действия с обыкновенными дробями на одном листе',
+    grades: [5],
+    topics: ['frac'],
+    html: function(){
+      return '<table><thead><tr><th>Действие</th><th>Правило</th><th>Пример</th></tr></thead><tbody>'
+        +'<tr><td>Сложение / вычитание,<br>одинаковый знаменатель</td><td>складываем/вычитаем числители, знаменатель тот же</td><td>2/7 + 3/7 = <b>5/7</b></td></tr>'
+        +'<tr><td>Сложение / вычитание,<br>разные знаменатели</td><td>сначала приводим к общему знаменателю</td><td>1/2 + 1/3 = 3/6 + 2/6 = <b>5/6</b></td></tr>'
+        +'<tr><td>Умножение</td><td>числитель на числитель, знаменатель на знаменатель</td><td>2/3 · 4/5 = <b>8/15</b></td></tr>'
+        +'<tr><td>Деление</td><td>умножаем на «перевёрнутую» вторую дробь</td><td>3/4 : 2/5 = 3/4 · 5/2 = <b>15/8</b></td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Частые ошибки:</b> при сложении нельзя складывать знаменатели отдельно (1/2+1/3 ≠ 2/5); при умножении общий знаменатель НЕ нужен; при делении переворачиваем вторую дробь, а не первую; в конце дробь стоит сократить.</div>';
+    }
+  },
+  {
+    id: 'frac-intro',
+    icon: '🍕',
+    title: 'Что такое дробь',
+    blurb: 'Числитель, знаменатель и доля целого — на примере пиццы',
+    grades: [4],
+    topics: ['frac4'],
+    html: function(){
+      return '<p class="goal">Дробь показывает часть целого. Целое разделили на равные части — дробь показывает, сколько частей взяли.</p>'
+        +'<div class="fbox"><b>3/4</b> — числитель (3) показывает, сколько частей взяли; знаменатель (4) — на сколько равных частей разделили целое.</div>'
+        +'<h3 style="margin-top:20px">Пример</h3>'
+        +'<p>Пиццу разделили на 4 равные части. Съели 3 части → съели <b>3/4</b> пиццы.</p>'
+        +'<p>Шоколадку разделили на 6 равных частей. Взяли 2 части → это <b>2/6</b> шоколадки.</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> части должны быть РАВНЫМИ — иначе это не дробь. Числитель — сколько взяли, знаменатель — на сколько разделили.</div>';
+    }
+  },
+  {
+    id: 'percent-tricks',
+    icon: '💯',
+    title: 'Проценты без калькулятора',
+    blurb: 'Как за секунду найти 10%, 1%, 5%, 25% и 50% от числа',
+    grades: [5],
+    topics: ['perc'],
+    html: function(){
+      return '<table><thead><tr><th>Процент</th><th>Что сделать</th><th>Пример (от 800)</th></tr></thead><tbody>'
+        +'<tr><td>10%</td><td>разделить на 10</td><td>800:10 = <b>80</b></td></tr>'
+        +'<tr><td>1%</td><td>разделить на 100</td><td>800:100 = <b>8</b></td></tr>'
+        +'<tr><td>5%</td><td>найти 10%, взять половину</td><td>80:2 = <b>40</b></td></tr>'
+        +'<tr><td>25%</td><td>разделить на 4 (четверть)</td><td>800:4 = <b>200</b></td></tr>'
+        +'<tr><td>50%</td><td>разделить на 2 (половина)</td><td>800:2 = <b>400</b></td></tr>'
+        +'</tbody></table>'
+        +'<h3 style="margin-top:20px">Собираем из частей</h3>'
+        +'<p>15% = 10% + 5%. Например, 15% от 600: 10%=60, 5%=30, вместе <b>90</b>.</p>'
+        +'<p>Скидка 25% на 4000₽: 4000:4=1000₽ скидки → платим <b>3000₽</b>.</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> 1% — всегда «раздели на 100». Любой другой процент можно собрать из 10%, 1%, 25% или 50%.</div>';
+    }
+  },
+  {
+    id: 'sign-rules',
+    icon: '➖',
+    title: 'Все правила знаков на одном листе',
+    blurb: 'Сложение, вычитание, умножение и деление отрицательных чисел — и что такое модуль',
+    grades: [6],
+    topics: ['neg'],
+    html: function(){
+      return '<h3>Сложение и вычитание</h3>'
+        +'<table><thead><tr><th>Случай</th><th>Что делать</th><th>Пример</th></tr></thead><tbody>'
+        +'<tr><td>Одинаковые знаки</td><td>складываем модули, знак тот же</td><td>(−3)+(−4) = <b>−7</b></td></tr>'
+        +'<tr><td>Разные знаки</td><td>вычитаем модули, знак у большего по модулю</td><td>(+8)+(−3) = <b>+5</b></td></tr>'
+        +'<tr><td>Вычитание</td><td>заменяем на сложение: a−b = a+(−b)</td><td>5−(−2) = 5+2 = <b>7</b></td></tr>'
+        +'</tbody></table>'
+        +'<h3 style="margin-top:20px">Умножение и деление</h3>'
+        +'<table><thead><tr><th>Знаки</th><th>Результат</th></tr></thead><tbody>'
+        +'<tr><td>+ и +, − и −</td><td><b>+</b> (одинаковые знаки → плюс)</td></tr>'
+        +'<tr><td>+ и −, − и +</td><td><b>−</b> (разные знаки → минус)</td></tr>'
+        +'</tbody></table>'
+        +'<p style="margin-top:10px">Пример: (−3)·(−2) = <b>6</b>; (−12):3 = <b>−4</b>.</p>'
+        +'<h3 style="margin-top:20px">Модуль числа</h3>'
+        +'<p>Модуль |a| — это расстояние от числа до нуля, оно всегда ≥ 0: |−5| = 5, |5| = 5, |0| = 0.</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Частые ошибки:</b> −2+5 это НЕ −7 (верно 3); −4·(−2) это НЕ −8 (верно 8); |−4| это НЕ −4 (верно 4).</div>';
+    }
+  },
+  {
+    id: 'circle-basics',
+    icon: '⭕',
+    title: 'Окружность и круг: радиус, диаметр, π',
+    blurb: 'Термины окружности и формулы длины окружности и площади круга',
+    grades: [6],
+    topics: ['circ6'],
+    html: function(){
+      return '<table><thead><tr><th>Понятие</th><th>Что это</th></tr></thead><tbody>'
+        +'<tr><td>Радиус, r</td><td>от центра до окружности</td></tr>'
+        +'<tr><td>Диаметр, d</td><td>через центр, от края до края; d = 2r</td></tr>'
+        +'<tr><td>Хорда</td><td>соединяет две точки окружности (диаметр — тоже хорда, но не каждая хорда — диаметр)</td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Число π ≈ 3,14</b> — это во сколько раз длина окружности больше диаметра: π = C : d.</div>'
+        +'<h3 style="margin-top:20px">Формулы</h3>'
+        +'<table><thead><tr><th>Что ищем</th><th>Формула</th><th>Пример (r=3 см)</th></tr></thead><tbody>'
+        +'<tr><td>Длина окружности</td><td>C = 2πr</td><td>2·3,14·3 ≈ <b>18,84 см</b></td></tr>'
+        +'<tr><td>Площадь круга</td><td>S = πr²</td><td>3,14·9 ≈ <b>28,26 см²</b></td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> окружность — это линия (граница), круг — всё, что внутри неё. 2πr — длина ВОКРУГ, πr² — площадь ВНУТРИ, не перепутай.</div>';
+    }
+  },
+  {
+    id: 'sqrt-basics',
+    icon: '√',
+    title: 'Квадратные корни: база',
+    blurb: 'Когда корень существует, его свойства и частые ошибки',
+    grades: [8],
+    topics: ['sqrt'],
+    html: function(){
+      return '<p class="goal">√a — число, которое при возведении в квадрат даёт a. Например, √25 = 5, потому что 5² = 25.</p>'
+        +'<h3>Главные правила</h3>'
+        +'<table><thead><tr><th>Правило</th><th>Пример</th></tr></thead><tbody>'
+        +'<tr><td>√a существует только при a ≥ 0</td><td>√(−9) — не определено</td></tr>'
+        +'<tr><td>√a всегда ≥ 0 (арифметический корень)</td><td>√16 = <b>4</b> (не ±4)</td></tr>'
+        +'<tr><td>(√a)² = a</td><td>(√7)² = <b>7</b></td></tr>'
+        +'<tr><td>√(ab) = √a · √b</td><td>√36 = √9·√4 = 3·2 = <b>6</b></td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Частые ошибки:</b> √16 = ±4 — неверно, арифметический корень даёт только <b>4</b> (±4 бывает при решении уравнения x²=16); √25 = 25 — неверно, верно <b>5</b>.</div>';
+    }
+  },
+  {
+    id: 'quad-discriminant',
+    icon: '🧩',
+    title: 'Дискриминант и теорема Виета',
+    blurb: 'Как быстро понять, сколько корней — и когда их проще подобрать устно',
+    grades: [8],
+    topics: ['quad'],
+    html: function(){
+      return '<p class="goal">Для уравнения ax² + bx + c = 0 дискриминант D = b² − 4ac показывает, сколько у него корней.</p>'
+        +'<table><thead><tr><th>Дискриминант</th><th>Сколько корней</th></tr></thead><tbody>'
+        +'<tr><td>D &gt; 0</td><td><b>2 корня</b></td></tr>'
+        +'<tr><td>D = 0</td><td><b>1 корень</b></td></tr>'
+        +'<tr><td>D &lt; 0</td><td><b>корней нет</b></td></tr>'
+        +'</tbody></table>'
+        +'<p style="margin-top:10px">Пример: x²−5x+6=0 → D=(−5)²−4·1·6=25−24=<b>1</b>, D&gt;0 → 2 корня.</p>'
+        +'<h3 style="margin-top:20px">Теорема Виета — когда можно без дискриминанта</h3>'
+        +'<p>Если уравнение приведённое (x²+bx+c=0), часто быстрее подобрать корни: x₁+x₂ = −b, x₁·x₂ = c.</p>'
+        +'<p>Пример: x²−5x+6=0 → сумма корней 5, произведение 6 → корни <b>2 и 3</b>.</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> уравнение простое и «красивое» — пробуй Виета, корни подбираются быстро; уравнение «неудобное» или не приведённое — сразу считай дискриминант.</div>';
+    }
+  },
+  {
+    id: 'pythagoras',
+    icon: '📐',
+    title: 'Теорема Пифагора и пифагоровы тройки',
+    blurb: 'Формула c² = a² + b² и готовые числа, чтобы не считать с нуля',
+    grades: [8],
+    topics: ['pyth'],
+    html: function(){
+      return '<div class="fbox"><b>В прямоугольном треугольнике</b> квадрат гипотенузы равен сумме квадратов катетов: <b>c² = a² + b²</b> (c — гипотенуза, a и b — катеты).</div>'
+        +'<p style="margin-top:12px">Пример: катеты 3 и 4 → c²=3²+4²=9+16=25 → c=<b>5</b>.</p>'
+        +'<h3 style="margin-top:20px">Готовые тройки — считать не нужно</h3>'
+        +'<table><thead><tr><th>Катеты</th><th>Гипотенуза</th></tr></thead><tbody>'
+        +'<tr><td>3, 4</td><td><b>5</b></td></tr>'
+        +'<tr><td>5, 12</td><td><b>13</b></td></tr>'
+        +'<tr><td>8, 15</td><td><b>17</b></td></tr>'
+        +'<tr><td>7, 24</td><td><b>25</b></td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Лайфхак:</b> если умножить все числа тройки на одно и то же число, получится новая тройка: 3,4,5 ×2 → 6,8,10.</div>';
+    }
+  },
+  {
+    id: 'trig-sincostan',
+    icon: '📏',
+    title: 'Синус, косинус, тангенс: как не путать',
+    blurb: 'Что из них про высоту, что про горизонталь, а что про наклон подъёма',
+    grades: [9],
+    topics: ['trig'],
+    html: function(){
+      return '<p class="goal">Все три — про прямоугольный треугольник: угол α, напротив него катет, рядом с ним катет, и гипотенуза (наклонная сторона).</p>'
+        +'<div class="opword-grid">'
+        +'<div class="opword-card" style="--c:var(--blue);--cs:var(--blue-soft)"><div class="opword-name">sin α</div><div class="opword-rule">противолежащий : гипотенуза</div><div class="opword-ex">про высоту подъёма</div></div>'
+        +'<div class="opword-card" style="--c:var(--green);--cs:var(--green-soft)"><div class="opword-name">cos α</div><div class="opword-rule">прилежащий : гипотенуза</div><div class="opword-ex">про путь по земле</div></div>'
+        +'<div class="opword-card" style="--c:var(--gold);--cs:var(--gold-soft)"><div class="opword-name">tg α</div><div class="opword-rule">противолежащий : прилежащий</div><div class="opword-ex">про крутизну наклона</div></div>'
+        +'</div>'
+        +'<p style="margin-top:14px">Пример: лестница длиной 5 м стоит под углом 30°. Высота = 5 · sin30° = 5 · 0,5 = <b>2,5 м</b>.</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> чем больше угол, тем больше sin и tg, но меньше cos. Есть угол и наклонная длина, а нужна высота — sin; нужно расстояние по земле — cos; сравниваешь высоту и расстояние — tg.</div>';
+    }
+  },
+  {
+    id: 'units-convert',
+    icon: '📏',
+    title: 'Единицы измерения: как переводить',
+    blurb: 'Длина, масса, время, площадь и объём — переводы между единицами',
+    grades: [4, 5],
+    topics: ['val4'],
+    html: function(){
+      return '<div class="fbox"><b>Правило:</b> переходишь к единице помельче — <b>умножай</b>; к единице покрупнее — <b>дели</b>.</div>'
+        +'<h3 style="margin-top:16px">Длина</h3>'
+        +'<p>1 км = 1000 м, 1 м = 100 см = 1000 мм, 1 см = 10 мм, 1 дм = 10 см</p>'
+        +'<p>Пример: 3 км = 3000 м = 300 000 см</p>'
+        +'<h3 style="margin-top:16px">Масса</h3>'
+        +'<p>1 т = 1000 кг, 1 кг = 1000 г, 1 г = 1000 мг</p>'
+        +'<h3 style="margin-top:16px">Время</h3>'
+        +'<p>1 сутки = 24 ч, 1 ч = 60 мин, 1 мин = 60 с</p>'
+        +'<h3 style="margin-top:16px">Площадь</h3>'
+        +'<p>1 м² = 100 дм² = 10 000 см², 1 га = 10 000 м²</p>'
+        +'<h3 style="margin-top:16px">Объём</h3>'
+        +'<p>1 м³ = 1000 дм³, 1 дм³ = 1 л, 1 л = 1000 мл</p>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> мм &lt; см &lt; дм &lt; м &lt; км. Мельче — умножаем, крупнее — делим.</div>';
+    }
+  },
+  {
+    id: 'coord-plane',
+    icon: '🧭',
+    title: 'Координатная плоскость за 5 минут',
+    blurb: 'Оси, начало координат и четыре четверти',
+    grades: [6],
+    topics: ['coord'],
+    html: function(){
+      return '<p class="goal">Горизонтальная ось — x, вертикальная — y. Их пересечение — начало координат, точка O(0;0).</p>'
+        +'<p>Точка записывается как (x;y) — сначала x, потом y. Например, A(2;3): сначала 2 по x, потом 3 по y.</p>'
+        +'<h3 style="margin-top:18px">Четыре четверти</h3>'
+        +'<table><thead><tr><th>Четверть</th><th>Знаки (x;y)</th></tr></thead><tbody>'
+        +'<tr><td>I</td><td>(+;+)</td></tr>'
+        +'<tr><td>II</td><td>(−;+)</td></tr>'
+        +'<tr><td>III</td><td>(−;−)</td></tr>'
+        +'<tr><td>IV</td><td>(+;−)</td></tr>'
+        +'</tbody></table>'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> x вправо — плюс, влево — минус; y вверх — плюс, вниз — минус. Четверти считаются против часовой стрелки, начиная с правой верхней.</div>';
+    }
+  },
+  /* --- Справочник: общие таблицы и памятки без привязки к одной теме (без поля topics) --- */
+  {
+    id: 'mult-table',
+    icon: '🔢',
+    title: 'Таблица умножения',
+    blurb: 'Полная таблица от 1×1 до 10×10 — и самые трудные случаи',
+    grades: [],
+    html: function(){
+      var rows='';
+      for(var i=1;i<=10;i++){
+        var cells='';
+        for(var j=1;j<=10;j++){ cells+='<td'+(i===j?' style="font-weight:700;color:var(--blue)"':'')+'>'+(i*j)+'</td>'; }
+        rows+='<tr><th>'+i+'</th>'+cells+'</tr>';
+      }
+      var head='<th></th>'; for(var k=1;k<=10;k++) head+='<th>'+k+'</th>';
+      return '<div class="scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+rows+'</tbody></table></div>'
+        +'<div class="fbox" style="margin-top:16px"><b>Самые трудные случаи</b> (чаще всего путают): 6×7=42, 7×8=56, 8×9=72. Если быстро вспоминаются именно они — остальная таблица уже не страшна.</div>';
+    }
+  },
+  {
+    id: 'math-symbols',
+    icon: '🔣',
+    title: 'Математические символы',
+    blurb: 'Что означает каждый знак — шпаргалка-глоссарий',
+    grades: [],
+    html: function(){
+      var list=[
+        ['+','плюс (сложение)'],['−','минус (вычитание)'],['×  или ·','умножение'],[':  или ÷','деление'],
+        ['=','равно'],['≠','не равно'],['√','арифметический корень'],['>','больше'],['<','меньше'],
+        ['≥','больше или равно'],['≤','меньше или равно'],['%','процент'],['^','степень'],['°','градус'],
+        ['π','число пи (≈3,14)'],['!','факториал'],['| |','модуль числа'],['≈','приблизительно равно'],
+        ['∠','угол'],['∅','пустое множество']
+      ];
+      return '<table><tbody>'+list.map(function(p){return '<tr><td style="font-weight:700;width:70px">'+p[0]+'</td><td>'+p[1]+'</td></tr>'}).join('')+'</tbody></table>';
+    }
   }
 ];
+function cheatsForTopic(id){
+  return CHEATSHEETS.filter(function(c){ return c.topics && c.topics.indexOf(id)>=0; });
+}
 function cheatGradeLabel(cs){
   var g=cs.grades||[];
   if(!g.length) return '';
   return (g.length>1?(g[0]+'–'+g[g.length-1]):String(g[0]))+' класс';
 }
+function cheatCardHTML(cs){
+  return '<button class="cheat-card" data-nav="cheat/'+cs.id+'"><span class="cheat-icon">'+cs.icon+'</span><span class="cheat-title">'+esc(cs.title)+'</span>'
+    +(cheatGradeLabel(cs)?'<span class="cheat-grade">'+esc(cheatGradeLabel(cs))+'</span>':'')
+    +'<span class="cheat-sub">'+esc(cs.blurb)+'</span></button>';
+}
 function viewCheats(){
-  var cardsHTML=CHEATSHEETS.map(function(cs){
-    return '<button class="cheat-card" data-nav="cheat/'+cs.id+'"><span class="cheat-icon">'+cs.icon+'</span><span class="cheat-title">'+esc(cs.title)+'</span>'
-      +(cheatGradeLabel(cs)?'<span class="cheat-grade">'+esc(cheatGradeLabel(cs))+'</span>':'')
-      +'<span class="cheat-sub">'+esc(cs.blurb)+'</span></button>';
-  }).join('');
+  // в. 2.18.0 — шпаргалки с полем topics (привязаны к конкретной теме) показываем отдельно
+  // от общих справочных таблиц (без topics, не относятся к одной теме программы)
+  var byTopic=CHEATSHEETS.filter(function(cs){return cs.topics&&cs.topics.length});
+  var general=CHEATSHEETS.filter(function(cs){return !(cs.topics&&cs.topics.length)});
   return '<div class="sheet"><h1>Шпаргалки</h1>'
     +'<p class="goal">Короткие памятки по формулам и правилам — если забыл(а) термин или формулу, загляни сюда вместо того, чтобы искать в объяснении темы заново.</p>'
-    +'<div class="cheat-grid">'+cardsHTML+'</div></div>';
+    +'<div class="cheat-grid">'+byTopic.map(cheatCardHTML).join('')+'</div>'
+    +(general.length?'<h2 style="margin-top:26px">Справочник</h2><p class="legend" style="margin-top:-6px">Общие таблицы и памятки — не привязаны к одной теме, пригодятся в любом классе.</p><div class="cheat-grid">'+general.map(cheatCardHTML).join('')+'</div>':'')
+    +'</div>';
 }
 function viewCheatsheet(){
   var cs=CHEATSHEETS.filter(function(c){return c.id===view.id})[0];
@@ -11065,6 +11371,7 @@ function rowHTML(id,W){
     +'<span class="nm">'+esc(T.name)
     +(W&&W[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span>':'')
     +(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span>':'')
+    +(a&&cheatsForTopic(id).length?'<span class="mk cheat" title="Есть шпаргалка по этой теме">📄 шпаргалка</span>':'')
     +'<span class="sub">'+esc(T.blurb)+'</span></span>'
     +'<span class="rowend">'+(a?masteryDotsHTML(id,S):'')+statPill(id)+'</span></button>';
 }
@@ -11231,7 +11538,7 @@ function railHTML(cur){
     if(!ids.length) return '';
     return '<h4>'+title+'</h4>'+ids.map(function(id){
       var a=avail(id), s=tStat(id);
-      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+'</span></button>';
+      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+(a&&cheatsForTopic(id).length?'<span class="railcheat" title="Есть шпаргалка по этой теме">📄</span>':'')+'</span></button>';
     }).join('');
   }
   return '<aside class="rail">'+GRADES.map(function(g){return grp(GRADE_LABEL[g],BY_GRADE[g]);}).join('')+'</aside>';
@@ -11252,7 +11559,7 @@ function viewTopic(){
   var tabIdx=tabs.map(function(t){return t[0]}).indexOf(tab);
   var nextTab=tabs[tabIdx+1];
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
-    +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+'</span></div>'
+    +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+(cheatsForTopic(id).length?' <button class="btn small ghost" data-nav="cheat/'+cheatsForTopic(id)[0].id+'" title="Открыть шпаргалку по этой теме">📄 Шпаргалка</button>':'')+'</span></div>'
     +'<h1>'+esc(T.name)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
     +'<p class="legend" style="margin-top:-4px">Уровень мастерства: <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
