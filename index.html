@@ -10090,9 +10090,42 @@ SVG_LIB.FRAC4_ADDSUB_ANIM = function(){
     label:'Анимация: полоска разделена на 9 равных частей; сначала закрашиваются синим 2 части — это 2/9; затем ещё 5 частей закрашиваются зелёным, итого 7 из 9 частей; знаменатель остаётся 9, складываются только числители: 2 плюс 5 равно 7, получаем 2/9 плюс 5/9 равно 7/9'});
 };
 
-var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1, "N4_ADD_ANIM": 1, "MUL4_LONGDIV_ANIM": 1, "VAL4_CLOCK_ANIM": 1, "WORD4_TRIANGLE_ANIM": 1, "GEO4_COMPOSITE_ANIM": 1, "FRAC4_OF_NUMBER_ANIM": 1, "NEG6_THERMO_ANIM": 1, "RATIO6_PROPORTION_ANIM": 1, "COORD6_SYMMETRY_ANIM": 1, "ALG6_DISTRIB_ANIM": 1, "GEO6_TRISUM_ANIM": 1, "CIRC6_UNROLL_ANIM": 1, "STAT6_MEAN_ANIM": 1, "N4_COMPARE_ANIM": 1, "MUL4_SINGLE_ANIM": 1, "VAL4_CARRY_ANIM": 1, "WORD4_MEET_ANIM": 1, "GEO4_PERIM_AREA_ANIM": 1, "FRAC4_ADDSUB_ANIM": 1};
+/* ---------- TRIG_RATIOS — статичная схема для шпаргалки «Синус, косинус, тангенс» (в. 2.20.0) ----------
+   Тема 'trig' в CONTENT отсутствует (9 класс ещё не реализован), поэтому переиспользовать готовую
+   фигуру неоткуда — это единственная НОВАЯ картинка в версии 2.20.0, остальные карточки «Шпаргалки»
+   переиспользуют уже существующие и проверенные статичные/анимированные фигуры своих тем. */
+SVG_LIB.TRIG_RATIOS = function(){
+  var W=480, H=330;
+  function t(x,y,s,fs,fill,anchor,weight){
+    return '<text x="'+x+'" y="'+y+'" font-size="'+fs+'" fill="'+fill+'" text-anchor="'+(anchor||'middle')+'" font-weight="'+(weight||400)+'">'+s+'</text>';
+  }
+  function ln(x1,y1,x2,y2,stroke,sw){
+    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+stroke+'" stroke-width="'+sw+'" stroke-linecap="round"/>';
+  }
+  var A=[160,228], Bv=[410,228], Cv=[160,56]; // A — прямой угол, Bv — угол α, Cv — верхняя вершина
+  var b='';
+  b+=t(W/2,22,'Прямоугольный треугольник и угол α',15,'var(--ink)','middle',700);
+  b+=ln(A[0],A[1],Bv[0],Bv[1],'var(--green)',5);   // прилежащий катет
+  b+=ln(A[0],A[1],Cv[0],Cv[1],'var(--blue)',5);    // противолежащий катет
+  b+=ln(Bv[0],Bv[1],Cv[0],Cv[1],'var(--gold)',5);  // гипотенуза
+  b+='<rect x="'+A[0]+'" y="'+(A[1]-16)+'" width="16" height="16" fill="none" stroke="var(--ink)" stroke-width="2"/>'; // прямой угол
+  b+='<path d="M '+(Bv[0]-30)+' '+Bv[1]+' A 30 30 0 0 1 '+(Bv[0]-20)+' '+(Bv[1]-23)+'" fill="none" stroke="var(--red)" stroke-width="2.5"/>'; // дуга угла α
+  b+=t(Bv[0]-42,Bv[1]-10,'α',18,'var(--red)','middle',700);
+  b+=t((A[0]+Bv[0])/2,A[1]+26,'прилежащий катет',13,'var(--green)','middle',700);
+  b+=t(A[0]-12,(A[1]+Cv[1])/2-6,'противо-',13,'var(--blue)','end',700);
+  b+=t(A[0]-12,(A[1]+Cv[1])/2+12,'лежащий катет',13,'var(--blue)','end',700);
+  b+=t((Bv[0]+Cv[0])/2+38,(Bv[1]+Cv[1])/2-4,'гипотенуза',13,'var(--gold)','middle',700);
+  b+=ln(40,268,440,268,'var(--line)',1.5);
+  b+=t(W/2,292,'sin α = противолежащий : гипотенуза     cos α = прилежащий : гипотенуза',12,'var(--muted)','middle',400);
+  b+=t(W/2,312,'tg α = противолежащий : прилежащий',12,'var(--muted)','middle',400);
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;display:block;margin:0 auto" role="img" aria-label="Прямоугольный треугольник с углом альфа: прилежащий катет (зелёный) рядом с углом, противолежащий катет (синий) напротив угла, гипотенуза (жёлтый) — самая длинная сторона напротив прямого угла. Синус альфа равно противолежащий делить на гипотенузу, косинус альфа равно прилежащий делить на гипотенузу, тангенс альфа равно противолежащий делить на прилежащий">'+b+'</svg>';
+};
+
+var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1, "N4_ADD_ANIM": 1, "MUL4_LONGDIV_ANIM": 1, "VAL4_CLOCK_ANIM": 1, "WORD4_TRIANGLE_ANIM": 1, "GEO4_COMPOSITE_ANIM": 1, "FRAC4_OF_NUMBER_ANIM": 1, "NEG6_THERMO_ANIM": 1, "RATIO6_PROPORTION_ANIM": 1, "COORD6_SYMMETRY_ANIM": 1, "ALG6_DISTRIB_ANIM": 1, "GEO6_TRISUM_ANIM": 1, "CIRC6_UNROLL_ANIM": 1, "STAT6_MEAN_ANIM": 1, "N4_COMPARE_ANIM": 1, "MUL4_SINGLE_ANIM": 1, "VAL4_CARRY_ANIM": 1, "WORD4_MEET_ANIM": 1, "GEO4_PERIM_AREA_ANIM": 1, "FRAC4_ADDSUB_ANIM": 1, "TRIG_RATIOS": 1};
 function renderSvgMarkers(html){
-  return String(html).replace(/__SVG_(\w+)__/g, function(_,name){
+  // нежадный \w+? — иначе два маркера подряд без разделителя между ними (как в некоторых
+  // карточках «Шпаргалки» с в. 2.20.0) склеиваются в одно совпадение и не находят SVG_LIB[name]
+  return String(html).replace(/__SVG_(\w+?)__/g, function(_,name){
     var fn = SVG_LIB[name];
     return fn ? ('<div class="figure">'+fn()+'</div>') : '';
   });
@@ -10103,12 +10136,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.19.0';
+var APP_VERSION = '2.20.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.19.0",
+ "current": "2.20.0",
  "versions": [
+  {
+   "v": "2.20.0",
+   "date": "2026-10-01",
+   "title": "Шпаргалки с картинками и анимациями",
+   "items": [
+    "Все 12 карточек «Шпаргалки», привязанных к теме (из 2.18.0), теперь показывают наглядную схему, а не только текст и таблицы: скорость/путь/время — картинка трёх типов задач и схема встречного движения в действии; дроби — сложение с разными знаменателями в движении и доли целого; проценты — квадрат из 100 клеток и поиск процента от числа; правила знаков — числовая прямая и термометр; окружность — радиус/диаметр/хорда, разматывание в отрезок и площадь через квадраты; корни — квадрат площадью 25; дискриминант и Виета — обе схемы; теорема Пифагора — квадраты на катетах и лестница у стены; синус/косинус/тангенс — новая схема прямоугольного треугольника с подписанными сторонами (девятого класса с тригонометрией в приложении пока нет, поэтому это единственная совсем новая картинка в версии); единицы измерения — лесенки длины, массы и площади; координатная плоскость — схема четырёх четвертей.",
+    "Картинки и анимации — не новый контент, а переиспользование уже существующих и проверенных схем из объяснений самих тем (11 из 12 карточек), чтобы не плодить дублирующий, потенциально противоречивый визуальный материал. Карточка про шпаргалку «Шпаргалки» теперь прогоняет разметку через тот же renderSvgMarkers(), что и объяснение темы, так что плеер анимации подключается автоматически."
+   ]
+  },
   {
    "v": "2.19.0",
    "date": "2026-10-01",
@@ -10394,14 +10436,13 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.20.0",
-  "title": "Шпаргалки с картинками и анимациями",
+  "v": "2.21.0",
+  "title": "Шпаргалки: ещё карточки",
   "when": "в планах",
   "items": [
-   "Карточки «Шпаргалки» (12 карточек из 2.18.0) сейчас — только текст и таблицы, без единой схемы. Добавить к ним наглядные SVG-картинки и, где уместно, короткие анимации (как в объяснениях тем) — начиная с небольшой партии самых используемых карточек, затем остальные."
+   "Продолжение 2.18.0: ещё карточки по оставшимся темам из той же подборки источников (пропорции и масштаб, графики функций, четырёхугольники, вписанная/описанная окружность, системы уравнений, вероятность и статистика и другие) и расширение «Справочника» (таблица кубов, римские цифры)."
   ],
   "later": [
-   "Шпаргалки: ещё карточки. Продолжение 2.18.0 — карточки по оставшимся темам из той же подборки источников (пропорции и масштаб, графики функций, четырёхугольники, вписанная/описанная окружность, системы уравнений, вероятность и статистика и другие) и расширение «Справочника» (таблица кубов, римские цифры).",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
    "9 класс: квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия.",
@@ -11244,7 +11285,10 @@ var CHEATSHEETS = [
         +'<div class="opword-card" style="--c:var(--red);--cs:var(--red-soft)"><div class="opword-name">Один догоняет другого</div><div class="opword-rule">скорости вычитаем</div><div class="opword-ex">8−5=3 м/мин — скорость сближения</div></div>'
         +'<div class="opword-card" style="--c:var(--green);--cs:var(--green-soft)"><div class="opword-name">По реке (течение)</div><div class="opword-rule">по течению плюс, против — минус</div><div class="opword-ex">18+2=20 по течению, 18−2=16 против</div></div>'
         +'</div>'
-        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> сначала разберись, что происходит со скоростями (складываются или вычитаются), и только потом считай время или путь.</div>';
+        +'__SVG_MOT_CASES__'
+        +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> сначала разберись, что происходит со скоростями (складываются или вычитаются), и только потом считай время или путь.</div>'
+        +'<h3 style="margin-top:20px">Пример навстречу друг другу — в движении</h3>'
+        +'__SVG_MOT_MEET_ANIM__';
     }
   },
   {
@@ -11261,6 +11305,8 @@ var CHEATSHEETS = [
         +'<tr><td>Умножение</td><td>числитель на числитель, знаменатель на знаменатель</td><td>2/3 · 4/5 = <b>8/15</b></td></tr>'
         +'<tr><td>Деление</td><td>умножаем на «перевёрнутую» вторую дробь</td><td>3/4 : 2/5 = 3/4 · 5/2 = <b>15/8</b></td></tr>'
         +'</tbody></table>'
+        +'<h3 style="margin-top:20px">Разные знаменатели — смотри, как это работает</h3>'
+        +'__SVG_FRAC_ADD_ANIM__'
         +'<div class="fbox" style="margin-top:16px"><b>Частые ошибки:</b> при сложении нельзя складывать знаменатели отдельно (1/2+1/3 ≠ 2/5); при умножении общий знаменатель НЕ нужен; при делении переворачиваем вторую дробь, а не первую; в конце дробь стоит сократить.</div>';
     }
   },
@@ -11274,6 +11320,7 @@ var CHEATSHEETS = [
     html: function(){
       return '<p class="goal">Дробь показывает часть целого. Целое разделили на равные части — дробь показывает, сколько частей взяли.</p>'
         +'<div class="fbox"><b>3/4</b> — числитель (3) показывает, сколько частей взяли; знаменатель (4) — на сколько равных частей разделили целое.</div>'
+        +'__SVG_FRAC4_PARTS__'
         +'<h3 style="margin-top:20px">Пример</h3>'
         +'<p>Пиццу разделили на 4 равные части. Съели 3 части → съели <b>3/4</b> пиццы.</p>'
         +'<p>Шоколадку разделили на 6 равных частей. Взяли 2 части → это <b>2/6</b> шоколадки.</p>'
@@ -11288,7 +11335,9 @@ var CHEATSHEETS = [
     grades: [5],
     topics: ['perc'],
     html: function(){
-      return '<table><thead><tr><th>Процент</th><th>Что сделать</th><th>Пример (от 800)</th></tr></thead><tbody>'
+      return '<p class="goal">Процент — это сотая часть. Удобно представить число как квадрат из 100 клеток: сколько клеток закрашено — столько и процентов.</p>'
+        +'__SVG_PERC_GRID__'
+        +'<table><thead><tr><th>Процент</th><th>Что сделать</th><th>Пример (от 800)</th></tr></thead><tbody>'
         +'<tr><td>10%</td><td>разделить на 10</td><td>800:10 = <b>80</b></td></tr>'
         +'<tr><td>1%</td><td>разделить на 100</td><td>800:100 = <b>8</b></td></tr>'
         +'<tr><td>5%</td><td>найти 10%, взять половину</td><td>80:2 = <b>40</b></td></tr>'
@@ -11298,6 +11347,7 @@ var CHEATSHEETS = [
         +'<h3 style="margin-top:20px">Собираем из частей</h3>'
         +'<p>15% = 10% + 5%. Например, 15% от 600: 10%=60, 5%=30, вместе <b>90</b>.</p>'
         +'<p>Скидка 25% на 4000₽: 4000:4=1000₽ скидки → платим <b>3000₽</b>.</p>'
+        +'__SVG_PERC_OF_ANIM__'
         +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> 1% — всегда «раздели на 100». Любой другой процент можно собрать из 10%, 1%, 25% или 50%.</div>';
     }
   },
@@ -11315,6 +11365,8 @@ var CHEATSHEETS = [
         +'<tr><td>Разные знаки</td><td>вычитаем модули, знак у большего по модулю</td><td>(+8)+(−3) = <b>+5</b></td></tr>'
         +'<tr><td>Вычитание</td><td>заменяем на сложение: a−b = a+(−b)</td><td>5−(−2) = 5+2 = <b>7</b></td></tr>'
         +'</tbody></table>'
+        +'__SVG_NEG_MOVES__'
+        +'__SVG_NEG6_THERMO_ANIM__'
         +'<h3 style="margin-top:20px">Умножение и деление</h3>'
         +'<table><thead><tr><th>Знаки</th><th>Результат</th></tr></thead><tbody>'
         +'<tr><td>+ и +, − и −</td><td><b>+</b> (одинаковые знаки → плюс)</td></tr>'
@@ -11339,12 +11391,15 @@ var CHEATSHEETS = [
         +'<tr><td>Диаметр, d</td><td>через центр, от края до края; d = 2r</td></tr>'
         +'<tr><td>Хорда</td><td>соединяет две точки окружности (диаметр — тоже хорда, но не каждая хорда — диаметр)</td></tr>'
         +'</tbody></table>'
+        +'__SVG_CIRC6_PARTS__'
         +'<div class="fbox" style="margin-top:16px"><b>Число π ≈ 3,14</b> — это во сколько раз длина окружности больше диаметра: π = C : d.</div>'
         +'<h3 style="margin-top:20px">Формулы</h3>'
         +'<table><thead><tr><th>Что ищем</th><th>Формула</th><th>Пример (r=3 см)</th></tr></thead><tbody>'
         +'<tr><td>Длина окружности</td><td>C = 2πr</td><td>2·3,14·3 ≈ <b>18,84 см</b></td></tr>'
         +'<tr><td>Площадь круга</td><td>S = πr²</td><td>3,14·9 ≈ <b>28,26 см²</b></td></tr>'
         +'</tbody></table>'
+        +'__SVG_CIRC6_UNROLL_ANIM__'
+        +'__SVG_CIRC6_AREA__'
         +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> окружность — это линия (граница), круг — всё, что внутри неё. 2πr — длина ВОКРУГ, πr² — площадь ВНУТРИ, не перепутай.</div>';
     }
   },
@@ -11357,6 +11412,8 @@ var CHEATSHEETS = [
     topics: ['sqrt'],
     html: function(){
       return '<p class="goal">√a — число, которое при возведении в квадрат даёт a. Например, √25 = 5, потому что 5² = 25.</p>'
+        +'__SVG_SQRT_SQUARE_ANIM__'
+        +'__SVG_SQRT_NUMLINE__'
         +'<h3>Главные правила</h3>'
         +'<table><thead><tr><th>Правило</th><th>Пример</th></tr></thead><tbody>'
         +'<tr><td>√a существует только при a ≥ 0</td><td>√(−9) — не определено</td></tr>'
@@ -11382,9 +11439,11 @@ var CHEATSHEETS = [
         +'<tr><td>D &lt; 0</td><td><b>корней нет</b></td></tr>'
         +'</tbody></table>'
         +'<p style="margin-top:10px">Пример: x²−5x+6=0 → D=(−5)²−4·1·6=25−24=<b>1</b>, D&gt;0 → 2 корня.</p>'
+        +'__SVG_QUAD_DISCRIMINANT_ANIM__'
         +'<h3 style="margin-top:20px">Теорема Виета — когда можно без дискриминанта</h3>'
         +'<p>Если уравнение приведённое (x²+bx+c=0), часто быстрее подобрать корни: x₁+x₂ = −b, x₁·x₂ = c.</p>'
         +'<p>Пример: x²−5x+6=0 → сумма корней 5, произведение 6 → корни <b>2 и 3</b>.</p>'
+        +'__SVG_QUAD_VIETA__'
         +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> уравнение простое и «красивое» — пробуй Виета, корни подбираются быстро; уравнение «неудобное» или не приведённое — сразу считай дискриминант.</div>';
     }
   },
@@ -11398,6 +11457,7 @@ var CHEATSHEETS = [
     html: function(){
       return '<div class="fbox"><b>В прямоугольном треугольнике</b> квадрат гипотенузы равен сумме квадратов катетов: <b>c² = a² + b²</b> (c — гипотенуза, a и b — катеты).</div>'
         +'<p style="margin-top:12px">Пример: катеты 3 и 4 → c²=3²+4²=9+16=25 → c=<b>5</b>.</p>'
+        +'__SVG_PYTH_SQUARES_ANIM__'
         +'<h3 style="margin-top:20px">Готовые тройки — считать не нужно</h3>'
         +'<table><thead><tr><th>Катеты</th><th>Гипотенуза</th></tr></thead><tbody>'
         +'<tr><td>3, 4</td><td><b>5</b></td></tr>'
@@ -11405,6 +11465,7 @@ var CHEATSHEETS = [
         +'<tr><td>8, 15</td><td><b>17</b></td></tr>'
         +'<tr><td>7, 24</td><td><b>25</b></td></tr>'
         +'</tbody></table>'
+        +'__SVG_PYTH_LADDER__'
         +'<div class="fbox" style="margin-top:16px"><b>Лайфхак:</b> если умножить все числа тройки на одно и то же число, получится новая тройка: 3,4,5 ×2 → 6,8,10.</div>';
     }
   },
@@ -11417,6 +11478,7 @@ var CHEATSHEETS = [
     topics: ['trig'],
     html: function(){
       return '<p class="goal">Все три — про прямоугольный треугольник: угол α, напротив него катет, рядом с ним катет, и гипотенуза (наклонная сторона).</p>'
+        +'__SVG_TRIG_RATIOS__'
         +'<div class="opword-grid">'
         +'<div class="opword-card" style="--c:var(--blue);--cs:var(--blue-soft)"><div class="opword-name">sin α</div><div class="opword-rule">противолежащий : гипотенуза</div><div class="opword-ex">про высоту подъёма</div></div>'
         +'<div class="opword-card" style="--c:var(--green);--cs:var(--green-soft)"><div class="opword-name">cos α</div><div class="opword-rule">прилежащий : гипотенуза</div><div class="opword-ex">про путь по земле</div></div>'
@@ -11440,10 +11502,12 @@ var CHEATSHEETS = [
         +'<p>Пример: 3 км = 3000 м = 300 000 см</p>'
         +'<h3 style="margin-top:16px">Масса</h3>'
         +'<p>1 т = 1000 кг, 1 кг = 1000 г, 1 г = 1000 мг</p>'
+        +'__SVG_VAL4_LADDERS__'
         +'<h3 style="margin-top:16px">Время</h3>'
         +'<p>1 сутки = 24 ч, 1 ч = 60 мин, 1 мин = 60 с</p>'
         +'<h3 style="margin-top:16px">Площадь</h3>'
         +'<p>1 м² = 100 дм² = 10 000 см², 1 га = 10 000 м²</p>'
+        +'__SVG_VAL4_AREA__'
         +'<h3 style="margin-top:16px">Объём</h3>'
         +'<p>1 м³ = 1000 дм³, 1 дм³ = 1 л, 1 л = 1000 мл</p>'
         +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> мм &lt; см &lt; дм &lt; м &lt; км. Мельче — умножаем, крупнее — делим.</div>';
@@ -11466,6 +11530,7 @@ var CHEATSHEETS = [
         +'<tr><td>III</td><td>(−;−)</td></tr>'
         +'<tr><td>IV</td><td>(+;−)</td></tr>'
         +'</tbody></table>'
+        +'__SVG_COORD6_QUADRANTS__'
         +'<div class="fbox" style="margin-top:16px"><b>Запомни:</b> x вправо — плюс, влево — минус; y вверх — плюс, вниз — минус. Четверти считаются против часовой стрелки, начиная с правой верхней.</div>';
     }
   },
@@ -11533,9 +11598,11 @@ function viewCheats(){
 function viewCheatsheet(){
   var cs=CHEATSHEETS.filter(function(c){return c.id===view.id})[0];
   if(!cs) return viewCheats();
+  // в. 2.20.0 — карточки теперь могут вставлять картинки/анимации через те же __SVG_ИМЯ__-маркеры,
+  // что и объяснения тем (см. renderSvgMarkers); initAnims() в render() подхватывает их так же.
   return '<div class="sheet"><div class="crumb"><button data-nav="cheats">Шпаргалки</button><span>/</span><span>'+esc(cs.title)+'</span></div>'
     +'<h1>'+esc(cs.title)+'</h1>'
-    +cs.html()
+    +renderSvgMarkers(cs.html())
     +'</div>';
 }
 
