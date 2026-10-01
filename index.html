@@ -390,6 +390,11 @@ body{padding-bottom:88px}
 /* ---- Анимированные схемы (в. 2.5.0): пошаговый проигрыватель, см. animPlay() ---- */
 .anim-wrap{text-align:center}
 .anim-ctl{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.anim-live{display:none;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--blue)}
+.anim-wrap.anim-playing .anim-live{display:inline-flex}
+.anim-live .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:anim-live-pulse 1s ease-in-out infinite}
+@keyframes anim-live-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.65)}}
+@media (prefers-reduced-motion: reduce){.anim-live .dot{animation:none}}
 .anim-dots{display:inline-flex;gap:6px}
 .anim-dots i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .3s}
 .anim-dots i.on{background:var(--blue)}
@@ -8204,14 +8209,19 @@ SVG_LIB.TRI_ISO = function(){
    Шаги нумеруются с 0. У <svg class="anim"> атрибут data-steps="N" и data-dur="3500"
    (мс на шаг; можно список через запятую, по одному числу на шаг).
    Схему оборачивает animFigure(svg, подпись-aria): под ней точки шагов и кнопка «Показать ещё раз».
-   Запуск — когда схема видна на экране; при «уменьшить движение» сразу показан последний шаг. */
+   Запуск — когда схема видна на экране; при «уменьшить движение» сразу показан последний шаг.
+   В. 2.15.0 — пока анимация реально проигрывает шаги, у неё есть явный знак «Анимация идёт»
+   (пульсирующая точка + подпись) — чтобы было однозначно видно, что это не статичная картинка,
+   а что-то происходит прямо сейчас. Появляется только на время проигрывания (класс .anim-playing
+   на .anim-wrap, см. animPlay()); скрыт изначально, скрыт после завершения, скрыт целиком при
+   «уменьшить движение» (там анимация физически не проигрывается — сразу показан последний шаг). */
 function animFigure(svgInner, opts){
   opts=opts||{};
   var steps=opts.steps||1, dur=opts.dur||3500;
   var dots=''; for(var i=0;i<steps;i++) dots+='<i></i>';
   return '<div class="anim-wrap"><svg class="anim" data-steps="'+steps+'" data-dur="'+dur+'" viewBox="0 0 '+(opts.w||520)+' '+(opts.h||300)+'" width="100%"'
     +' style="max-width:'+(opts.w||520)+'px;display:block;margin:0 auto" role="img" aria-label="'+esc(opts.label||'Анимированная схема')+'">'
-    +svgInner+'</svg><div class="anim-ctl"><span class="anim-dots" aria-hidden="true">'+dots+'</span>'
+    +svgInner+'</svg><div class="anim-ctl"><span class="anim-live" aria-hidden="true"><i class="dot"></i>Анимация идёт</span><span class="anim-dots" aria-hidden="true">'+dots+'</span>'
     +'<button type="button" class="btn small ghost" data-anim-replay>↻ Показать ещё раз</button></div></div>';
 }
 function animStep(svg,k){
@@ -8236,18 +8246,21 @@ function animStep(svg,k){
 function animPlay(svg){
   (svg._animT||[]).forEach(clearTimeout); svg._animT=[];
   svg.classList.remove('fin');
+  var wrap=svg.parentNode;
   var n=+svg.getAttribute('data-steps')||1;
   var durs=String(svg.getAttribute('data-dur')||'3500').split(',').map(Number);
   svg.classList.add('fin'); animStep(svg,0); void svg.getBoundingClientRect(); svg.classList.remove('fin');
+  if(wrap) wrap.classList.add('anim-playing'); // в. 2.15.0 — знак «Анимация идёт» включён на время проигрывания
   var t=0;
   for(var k=1;k<n;k++){ t+=durs[Math.min(k-1,durs.length-1)]; (function(k){ svg._animT.push(setTimeout(function(){ animStep(svg,k); },t)); })(k); }
+  svg._animT.push(setTimeout(function(){ if(wrap) wrap.classList.remove('anim-playing'); },t));
 }
 function initAnims(root){
   var reduce=false; try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
   Array.prototype.forEach.call((root||document).querySelectorAll('svg.anim:not([data-init])'),function(svg){
     svg.setAttribute('data-init','1');
     var n=+svg.getAttribute('data-steps')||1;
-    if(reduce){ svg.classList.add('fin'); animStep(svg,n-1); return; }
+    if(reduce){ svg.classList.add('fin'); animStep(svg,n-1); return; } // анимация не проигрывается — знак «Анимация идёт» не нужен
     svg.classList.add('fin'); animStep(svg,0); void svg.getBoundingClientRect(); svg.classList.remove('fin');
     if(!('IntersectionObserver' in window)){ animPlay(svg); return; }
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.disconnect(); animPlay(svg); } }); },{threshold:.6});
@@ -9841,12 +9854,20 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.14.0';
+var APP_VERSION = '2.15.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.14.0",
+ "current": "2.15.0",
  "versions": [
+  {
+   "v": "2.15.0",
+   "date": "2026-10-01",
+   "title": "Знак «Анимация идёт»",
+   "items": [
+    "Пока анимированная схема реально проигрывает шаги, рядом с ней появляется знак «Анимация идёт» — пульсирующая точка с подписью. Раньше по статичному превью первого шага не всегда было понятно, что это не просто картинка, а что сейчас что-то происходит на экране. Знак показывается только во время проигрывания — исчезает, как только анимация доходит до последнего шага, и не появляется совсем при включённой настройке «уменьшить движение» (там анимация физически не проигрывается — сразу показан готовый результат). Один общий проигрыватель — работает сразу во всех анимациях на всех классах (4, 5, 6, 7, 8), без правок в каждой теме по отдельности."
+   ]
+  },
   {
    "v": "2.14.0",
    "date": "2026-10-01",
@@ -10090,7 +10111,7 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.15.0",
+  "v": "2.16.0",
   "title": "Ограничение на сообщения в поддержку",
   "when": "в планах",
   "items": [
@@ -10752,7 +10773,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.14.0', note:'Новое в версии 2.14.0', topics:[], books:[]};
+var NEW_IN={v:'2.15.0', note:'Новое в версии 2.15.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
