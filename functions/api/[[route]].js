@@ -503,6 +503,15 @@ async function supportRoute(req, env) {
   const email = (s && s.e) || (EMAIL_RE.test(contact) ? contact : '');
   const key = 'sup:' + (email || ip);
   if (await tooMany(env, key, 5, 3600)) return bad(429, 'Слишком много сообщений подряд, попробуйте позже');
+  // Лимит на семью (в. 2.16.0): не больше 3 ОТКРЫТЫХ (ещё не отмеченных админом как «done»)
+  // обращений одновременно и не больше 6 за сутки — считаем только question/idea/bug
+  // (kind != 'pin'), у запроса PIN свой отдельный лимит в pinRequest().
+  if (s && s.f) {
+    const openRow = await env.DB.prepare("SELECT COUNT(*) AS n FROM support WHERE family_id = ? AND status = 'new' AND kind != 'pin'").bind(s.f).first();
+    if ((openRow && openRow.n) >= 3) return bad(429, 'У вашей семьи уже есть 3 открытых обращения в поддержку — дождитесь ответа хотя бы на одно из них, прежде чем писать новое.');
+    const dayRow = await env.DB.prepare("SELECT COUNT(*) AS n FROM support WHERE family_id = ? AND created_at > ? AND kind != 'pin'").bind(s.f, Date.now() - 24 * 3600 * 1000).first();
+    if ((dayRow && dayRow.n) >= 6) return bad(429, 'Сегодня ваша семья уже отправила 6 сообщений в поддержку — попробуйте написать завтра.');
+  }
   await noteAttempt(env, key); await noteAttempt(env, ipKey);
   // одинаковое сообщение повторно за час — не дублируем ни в базе, ни в почте
   const dup = await env.DB.prepare('SELECT 1 AS x FROM support WHERE message = ? AND created_at > ? LIMIT 1').bind(message, Date.now() - 3600 * 1000).first();

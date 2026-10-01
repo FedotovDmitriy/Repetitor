@@ -99,6 +99,7 @@ a{color:var(--blue)}
 .rail button:hover{background:var(--sheet2)}
 .rail button[aria-current="page"]{background:var(--blue-soft);font-weight:600}
 .rail button[disabled]{color:var(--muted);cursor:default}
+.rail button[disabled]:hover{background:none}
 .dot{flex:none;width:10px;height:10px;border-radius:50%;border:2px solid var(--line)}
 .dot.prog{border-color:var(--gold);background:var(--gold)}
 .dot.done{border-color:var(--green);background:var(--green)}
@@ -135,6 +136,8 @@ a{color:var(--blue)}
 .row .nm{font-weight:600;line-height:1.3}
 .row .sub{display:block;font-size:13.5px;color:var(--muted);font-weight:400;line-height:1.35;margin-top:2px}
 .row.soon .nm{color:var(--muted)}
+.row[disabled]{cursor:default}
+.row[disabled]:hover{background:none}
 .pill{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap;background:var(--sheet2);color:var(--muted);border:1px solid var(--line)}
 .pill.prog{background:var(--gold-soft);color:var(--gold);border-color:transparent}
 .pill.done{background:var(--green-soft);color:var(--green);border-color:transparent}
@@ -9854,12 +9857,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.15.0';
+var APP_VERSION = '2.17.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.15.0",
+ "current": "2.17.0",
  "versions": [
+  {
+   "v": "2.17.0",
+   "date": "2026-10-01",
+   "title": "Недоступные разделы нельзя нажать",
+   "items": [
+    "Раздел, который ещё не готов (сейчас это темы 9 класса), раньше можно было нажать и попасть на страницу-заглушку «Раздел готовится». Теперь такая кнопка — и на главной карте, и в боковой панели внутри темы — по-настоящему неактивна: по ней нельзя кликнуть, курсор не меняется на «руку», подсказка поясняет, что раздел ещё готовится."
+   ]
+  },
+  {
+   "v": "2.16.0",
+   "date": "2026-10-01",
+   "title": "Ограничение на сообщения в поддержку",
+   "items": [
+    "Не больше 3 открытых (ещё не закрытых администратором) обращений от одной семьи одновременно — форма объяснит, что ответ уже готовится, и не даст отправить новое, пока хотя бы одно из трёх не закрыто. Дополнительно — не больше 6 обращений в поддержку от одной семьи в сутки (раньше был только общий лимит по IP и по почте — привязки к семье не было). Лимит общий для вопросов, идей и сообщений об ошибках; запросы PIN-кода считаются отдельно и в этот лимит не входят."
+   ]
+  },
   {
    "v": "2.15.0",
    "date": "2026-10-01",
@@ -10111,13 +10130,14 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.16.0",
-  "title": "Ограничение на сообщения в поддержку",
+  "v": "2.18.0",
+  "title": "Шпаргалки: новые карточки",
   "when": "в планах",
   "items": [
-   "Не больше одного открытого (ещё не закрытого администратором) обращения от одной семьи одновременно — форма будет объяснять, что ответ уже готовится, вместо того чтобы разрешать слать новые вопросы подряд. Дополнительно — не больше 3 обращений в поддержку от одной семьи в сутки (сейчас есть только общий лимит по IP и по почте, привязки к семье нет)."
+   "Добавить ещё несколько шпаргалок (отдельных карточек-памяток) в раздел «Шпаргалки» — сейчас там только одна, «Слова-действия: сумма, разность, произведение, частное». Новые карточки — по формулам и приёмам, которые дети чаще всего путают."
   ],
   "later": [
+   "Анимации 4 класса: добавить фигур. Сейчас в каждой из 6 тем 4 класса только одна анимированная схема из трёх фигур на тему — и это самый «текстовый» класс в приложении: ни одна тема не опускается ниже ~1100 знаков текста на одну фигуру (для сравнения, у части тем в других классах это 400–900). План — добавить ещё по одной-две анимированные схемы в каждую тему и сократить текст там, где схема теперь объясняет то же самое.",
    "Материалы для скачивания: вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью).",
    "Тест на время: примерно 3–4 минуты на каждое задание и 5 минут в запас. Перед началом ребёнок видит предупреждение и соглашается начать; там же совет подготовить черновик, две ручки и тихое место.",
    "9 класс: квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия.",
@@ -10773,7 +10793,7 @@ function viewReport(){
 }
 /* «Новинка» (в. 2.5.0): что появилось в последней версии. Пометка видна, пока APP_VERSION совпадает с NEW_IN.v —
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
-var NEW_IN={v:'2.15.0', note:'Новое в версии 2.15.0', topics:[], books:[]};
+var NEW_IN={v:'2.17.0', note:'Новое в версии 2.17.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
 function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
@@ -11016,6 +11036,9 @@ function go(name,extra){
   var gate=needsGate();
   if(gate && name!=='versions'){ view={name:gate}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
   if(name!=='pickkid' && name!=='parent' && name!=='versions' && name!=='landing' && !activeKid){ view={name:'pickkid'}; render(); try{window.scrollTo(0,0)}catch(e){} return; }
+  // подстраховка (в. 2.17.0): кнопки на ещё не готовый раздел теперь неактивны и клика не дают,
+  // но если какой-то путь в коде всё же попросит открыть такой раздел — показываем заглушку, а не пустую тему
+  if(name==='topic' && extra && extra.id && !avail(extra.id)) name='soon';
   view=Object.assign({name:name},extra||{});
   render();
   try{window.scrollTo(0,0)}catch(e){}
@@ -11035,7 +11058,9 @@ function nextStep(){
 }
 function rowHTML(id,W){
   var T=TOPICS[id], a=avail(id), s=tStat(id);
-  return '<button class="row'+(a?'':' soon')+'" data-nav="'+(a?'t/'+id+'/explain':'soon/'+id)+'">'
+  // в. 2.17.0: раздел, который ещё не готов, не открывает заглушку по клику — кнопка
+  // просто неактивна (disabled), чтобы не создавать иллюзию, что по ней есть что нажимать
+  return '<button class="row'+(a?'':' soon')+'"'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+'>'
     +'<span class="dot '+(s==='new'?'':s)+'"></span>'
     +'<span class="nm">'+esc(T.name)
     +(W&&W[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span>':'')
@@ -11206,7 +11231,7 @@ function railHTML(cur){
     if(!ids.length) return '';
     return '<h4>'+title+'</h4>'+ids.map(function(id){
       var a=avail(id), s=tStat(id);
-      return '<button data-nav="'+(a?'t/'+id+'/explain':'soon/'+id)+'"'+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+'</span></button>';
+      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+'</span></button>';
     }).join('');
   }
   return '<aside class="rail">'+GRADES.map(function(g){return grp(GRADE_LABEL[g],BY_GRADE[g]);}).join('')+'</aside>';
