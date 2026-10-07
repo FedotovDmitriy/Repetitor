@@ -2877,7 +2877,7 @@ CONTENT.n2 = {
   + '<div class="note"><span class="hand">Запомни</span>Удобно сначала «дотянуть» число до круглого десятка, а потом прибавить или отнять то, что осталось.</div>'
   + '<h3>Сложение и вычитание столбиком</h3>'
   + '<p>Когда числа складывают или вычитают письменно, их записывают одно под другим так, чтобы десятки были под десятками, а единицы — под единицами. Считаем справа налево: сначала единицы, потом десятки.</p>'
-  + '<p>Найдём 27 + 35. Единицы: 7 + 5 = 12 — это больше 10, поэтому пишем 2, а 1 десяток «переносим» в разряд десятков. Десятки: 2 + 3 + 1 (перенос) = 6. Получаем 62.</p>'
+  + '<p>Смотри, как переносится десяток: 27 + 35 = 62.</p><div class="figure">__SVG_N2_COLSUM_ANIM__</div>'
   + '<p>Вычитаем тоже справа налево. Если единиц сверху не хватает, «занимаем» десяток у соседнего разряда. Найдём 54 − 28. Единицы: 4 меньше 8, поэтому занимаем десяток: 5 десятков становится 4 десятка, а 4 единицы превращаются в 14. 14 − 8 = 6. Десятки: 4 − 2 = 2. Получаем 26.</p>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>После «занимания» десятка в старшем разряде остаётся на 1 меньше, чем было. Если про это забыть, ответ получится на 10 больше, чем надо.</div>'
   + '<h3>Уравнения с окошком</h3>'
@@ -2956,7 +2956,7 @@ CONTENT.mul2 = {
   + '<p>Второй вид: мы знаем, <b>сколько предметов в каждой группе</b>, и ищем, сколько получилось групп. Например, 12 яблок раскладывают по 4 штуки в пакет — сколько пакетов понадобится? Делим: 12 : 4 = 3 пакета.</p>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>В записи деления первым всегда пишем то число, которое делим (его называют делимое), а вторым — то, на сколько частей или по сколько делим (делитель). 12 : 3 и 3 : 12 — это совсем разные действия!</div>'
   + '<h3>Деление — обратное действие умножению</h3>'
-  + '<p>Деление и умножение связаны: если ты знаешь одно произведение, то сразу знаешь два деления. Например, 4 · 5 = 20. Значит, 20 : 4 = 5 (двадцать разделили на 4 равные части — получили по 5), и 20 : 5 = 4 (двадцать разделили на 5 равных частей — получили по 4).</p>'
+  + '<p>Деление и умножение связаны: одно умножение сразу даёт два деления. Смотри:</p><div class="figure">__SVG_MUL2_INVERSE_ANIM__</div>'
   + '<div class="note"><span class="hand">Запомни</span>Чтобы проверить деление, умножь частное на делитель — должно получиться делимое. Проверяем 20 : 4 = 5: 5 · 4 = 20 — верно!</div>',
   examples: [
     {t:'Замени сумму 6 + 6 + 6 умножением и найди значение.', s:'Слагаемое 6 повторяется 3 раза, значит, сумму можно записать как 6 · 3. Считаем: 6 + 6 + 6 = 18. Значит, 6 · 3 = 18.'},
@@ -3030,7 +3030,7 @@ CONTENT.word2 = {
   + '<p>В неделе 7 дней: понедельник, вторник, среда, четверг, пятница, суббота и воскресенье. В году 12 месяцев: январь, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь.</p>'
   + '<h3>Периметр многоугольника</h3>'
   + '<p><b>Периметр</b> — это длина границы фигуры, то есть сумма длин всех её сторон. Чтобы найти периметр любого многоугольника — треугольника, четырёхугольника и любого другого, — нужно просто сложить длины всех его сторон.</p>'
-  + '<p>У треугольника со сторонами 4 см, 5 см и 6 см периметр равен 4 + 5 + 6 = 15 см. У четырёхугольника со сторонами 3 см, 4 см, 3 см и 4 см периметр равен 3 + 4 + 3 + 4 = 14 см.</p>'
+  + '<p>Периметр — это сумма всех сторон. Смотри на примере треугольника:</p><div class="figure">__SVG_WORD2_PERIM_ANIM__</div>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>Забывают прибавить какую-нибудь сторону или складывают не все стороны, а только часть. Перед тем как считать, посчитай вслух, сколько у фигуры сторон, и отметь каждую, когда прибавляешь её число.</div>',
   examples: [
     {t:'У Кати 6 наклеек, а у Светы на 3 наклейки больше. Сколько наклеек у Светы?', s:'Слово «больше» — значит прибавляем к числу Кати: 6 + 3 = 9. У Светы 9 наклеек.'},
@@ -3099,7 +3099,7 @@ CONTENT.n3 = {
   + '<p>Соседи числа — это числа, которые стоят рядом с ним при счёте: предыдущее число меньше на 1, следующее — больше на 1. У числа 400 соседи — 399 и 401.</p>'
   + '<h3>Округление</h3>'
   + '<p>Когда точное число не важно, его заменяют похожим «круглым» — округляют. Чтобы округлить число до десятков, смотрим на цифру единиц. Если она 0, 1, 2, 3 или 4 — десятки не меняются, а единицы заменяем нулём. Если цифра единиц 5, 6, 7, 8 или 9 — десятки увеличиваем на 1, а единицы снова заменяем нулём.</p>'
-  + '<p>Чтобы округлить до сотен, точно так же смотрим на цифру десятков. 427 ≈ 400 (цифра десятков 2 — меньше 5), а 468 ≈ 500 (цифра десятков 6 — не меньше 5). Знак ≈ означает «приблизительно равно».</p>'
+  + '<p>Чтобы округлить до сотен, точно так же смотрим на цифру десятков. Смотри, как число «прыгает» к ближайшей сотне. Знак ≈ означает «приблизительно равно».<div class="figure">__SVG_N3_ROUND_ANIM__</div></p>'
   + '<div class="note"><span class="hand">Запомни</span>Число, которое оканчивается на 50, при округлении до сотен увеличивается: 350 ≈ 400. А 650 округляется до сотен до 700.</div>'
   + '<h3>Сложение столбиком</h3>'
   + '<p>Чтобы сложить числа столбиком, записываем их друг под другом так, чтобы единицы были под единицами, десятки под десятками, а сотни под сотнями. Складываем справа налево — начиная с единиц. Если сумма в разряде получилась 10 или больше, записываем только цифру единиц, а десяток «переносим» в следующий разряд.</p>'
@@ -3175,7 +3175,7 @@ CONTENT.mul3 = {
   + '<p>Деление без остатка можно представить как умножение «в обратную сторону»: подбираем такое число, которое при умножении на делитель даёт делимое. Например, 96 : 4 — ищем число, которое при умножении на 4 даёт 96. Удобно делить по частям: 96 = 80 + 16, значит 80 : 4 = 20 и 16 : 4 = 4, а вместе 20 + 4 = 24. Проверка: 24 · 4 = 96 — совпало!</p>'
   + '<p>С трёхзначными числами действуем так же: разбиваем делимое на удобные «круглые» части. 848 : 4 = (800 + 48) : 4 = 800 : 4 + 48 : 4 = 200 + 12 = 212.</p>'
   + '<h3>Деление с остатком</h3>'
-  + '<p>Не каждое число делится поровну без остатка. Если 34 конфеты раздать по 5 штукам на тарелку, получится 6 полных тарелок (5 · 6 = 30), а 4 конфеты останутся — их уже нельзя разложить ещё по одной тарелке, не нарушив правило «по 5». Это число 4 называется <b>остатком</b>. Записывают так: 34 : 5 = 6 (ост. 4).</p>'
+  + '<p>Смотри, как появляется <b>остаток</b>, если 34 конфеты нельзя разложить по 5 без остатка: получается 6 целых тарелок, а 4 конфеты лишние.</p><div class="figure">__SVG_MUL3_REMAINDER_ANIM__</div>'
   + '<div class="note"><span class="hand">Запомни</span>Остаток всегда <b>меньше делителя</b>. Если делишь на 5, остаток может быть только 0, 1, 2, 3 или 4 — но никогда не 5 и больше. Если у тебя получился остаток, равный делителю или больше него, значит, частное взято слишком маленьким — нужно увеличить его на 1.</div>'
   + '<p>Проверить деление с остатком легко: <b>делитель · частное + остаток = делимое</b>. Для примера выше: 5 · 6 + 4 = 30 + 4 = 34 — верно!</p>'
   + '<h3>Переместительное свойство умножения</h3>'
@@ -3240,7 +3240,7 @@ CONTENT.word3 = {
   + '<h3>Сравнение «на сколько больше или меньше»</h3>'
   + '<p>Чтобы узнать, <b>на сколько</b> одно число больше или меньше другого, из большего числа вычитают меньшее. Маша собрала 24 наклейки, а Коля — 17. На сколько наклеек больше у Маши? 24 − 17 = 7 — вот и сравнили разностью.</p>'
   + '<h3>Сравнение «во сколько раз больше или меньше»</h3>'
-  + '<p>Иногда нужно сравнить по-другому: не на сколько единиц отличаются числа, а сколько раз одно число «укладывается» в другом. Для этого большее число делят на меньшее. У Пети 4 машинки, а у Серёжи 12. Во сколько раз у Серёжи больше машинок? 12 : 4 = 3 — у Серёжи в 3 раза больше машинок.</p>'
+  + '<p>Иногда нужно сравнить не на сколько, а во сколько раз одно число больше другого — тогда большее число делят на меньшее. Смотри, как 12 машинок Серёжи укладываются по 4, как у Пети:<div class="figure">__SVG_WORD3_TIMES_ANIM__</div></p>'
   + '<div class="note"><span class="hand">Запомни</span>Слова «на сколько» — сигнал для <b>вычитания</b>. Слова «во сколько раз» — сигнал для <b>деления</b>. Легко перепутать, поэтому всегда перечитывай вопрос.</div>'
   + '<h3>Задачи на движение</h3>'
   + '<p><b>Скорость</b> показывает, какое расстояние проходят, проезжают или пролетают за одну единицу времени — например, за 1 час. Если скорость пешехода 4 км/ч, значит, за каждый час он проходит 4 км, а за 2 часа — вдвое больше. Чтобы найти пройденный путь, скорость умножают на время:</p>'
@@ -3319,7 +3319,7 @@ CONTENT.geo3 = {
   + '<p>Так и получается общая формула: площадь прямоугольника равна произведению его сторон: <b>S = a · b</b>. А у квадрата обе стороны одинаковы, поэтому его площадь: <b>S = a · a</b>. Например, площадь квадрата со стороной 5 см равна 5 · 5 = 25 см².</p>'
   + '<div class="note"><span class="hand">Запомни</span>Периметр измеряют в обычных единицах длины (см, м), а площадь — в квадратных единицах (см², м²), потому что считаем не отрезки, а квадратики.</div>'
   + '<h3>Периметр и площадь — не путай!</h3>'
-  + '<p>Это две совсем разные величины, хотя считаются по одним и тем же сторонам. <b>Периметр</b> — это длина границы фигуры, он отвечает на вопрос «сколько метров забора нужно, чтобы огородить участок по краю». <b>Площадь</b> — это то, сколько места внутри, она отвечает на вопрос «сколько квадратных метров земли внутри участка» или «сколько краски нужно, чтобы покрасить пол».</p>'
+  + '<p>Это две разные величины, даже у одной фигуры. Смотри на примере:</p><div class="figure">__SVG_GEO3_PERIM_AREA_ANIM__</div>'
   + '<div class="warn"><span class="hand">Частая ошибка</span>Считают, что у фигур с одинаковым периметром обязательно одинаковая площадь (или наоборот). Это не так! У прямоугольника 8 см на 2 см периметр 2 · (8 + 2) = 20 см и площадь 8 · 2 = 16 см². А у квадрата со стороной 4 см периметр 4 · 4 = 16 см, а площадь 4 · 4 = 16 см². Периметры разные, а площади совпали — это просто совпадение чисел, из периметра площадь никак не вычислить и наоборот.</div>',
   examples: [
     {t:'Найди периметр прямоугольника со сторонами 6 см и 4 см.', s:'У прямоугольника две пары равных сторон: 6 см, 4 см, 6 см, 4 см. По формуле P = 2 · (a + b) = 2 · (6 + 4) = 2 · 10 = 20 см.'},
@@ -10646,7 +10646,279 @@ SVG_LIB.TRIG_RATIOS = function(){
   return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;display:block;margin:0 auto" role="img" aria-label="Прямоугольный треугольник с углом альфа: прилежащий катет (зелёный) рядом с углом, противолежащий катет (синий) напротив угла, гипотенуза (жёлтый) — самая длинная сторона напротив прямого угла. Синус альфа равно противолежащий делить на гипотенузу, косинус альфа равно прилежащий делить на гипотенузу, тангенс альфа равно противолежащий делить на прилежащий">'+b+'</svg>';
 };
 
-var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1, "N4_ADD_ANIM": 1, "MUL4_LONGDIV_ANIM": 1, "VAL4_CLOCK_ANIM": 1, "WORD4_TRIANGLE_ANIM": 1, "GEO4_COMPOSITE_ANIM": 1, "FRAC4_OF_NUMBER_ANIM": 1, "NEG6_THERMO_ANIM": 1, "RATIO6_PROPORTION_ANIM": 1, "COORD6_SYMMETRY_ANIM": 1, "ALG6_DISTRIB_ANIM": 1, "GEO6_TRISUM_ANIM": 1, "CIRC6_UNROLL_ANIM": 1, "STAT6_MEAN_ANIM": 1, "N4_COMPARE_ANIM": 1, "MUL4_SINGLE_ANIM": 1, "VAL4_CARRY_ANIM": 1, "WORD4_MEET_ANIM": 1, "GEO4_PERIM_AREA_ANIM": 1, "FRAC4_ADDSUB_ANIM": 1, "TRIG_RATIOS": 1};
+/* ---------- N2_COLSUM_ANIM — «Числа до 100»: сложение столбиком с переносом десятка, 27 + 35 = 62 ---------- */
+SVG_LIB.N2_COLSUM_ANIM = function(){
+  var XT=225, XU=300, MID=262;
+  var LABEL_Y=26, CARRY_Y=50, ROW1_Y=80, ROW2_Y=120, LINE_Y=138, SUM_Y=180;
+  function D(x,y,s,attrs,fill,size){ return AN.t(x,y,s,{size:size||28,weight:700,fill:fill||'var(--ink)',attrs:attrs}); }
+  var b='';
+  b+=AN.t(XT,LABEL_Y,'дес.',{size:13,fill:'var(--muted)'});
+  b+=AN.t(XU,LABEL_Y,'ед.',{size:13,fill:'var(--muted)'});
+  b+='<line x1="'+MID+'" y1="54" x2="'+MID+'" y2="204" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 5"/>';
+  b+='<rect x="'+(XU-42)+'" y="54" width="84" height="150" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="1" data-out="2"/>';
+  b+='<rect x="'+(XT-42)+'" y="30" width="84" height="174" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="3" data-out="4"/>';
+  b+=D(XT,ROW1_Y,'2');
+  b+=D(XU,ROW1_Y,'7');
+  b+=D(XT,ROW2_Y,'3');
+  b+=D(XU,ROW2_Y,'5');
+  b+=AN.t(150,ROW2_Y,'+',{size:28,weight:700});
+  b+='<line x1="108" y1="'+LINE_Y+'" x2="412" y2="'+LINE_Y+'" stroke="var(--ink)" stroke-width="2"/>';
+  b+=D(XT,CARRY_Y,'1','data-in="2" data-pop','var(--red)',16);
+  b+=D(XU,SUM_Y,'12','data-in="1" data-out="2"','var(--gold)');
+  b+=D(XU,SUM_Y,'2','data-in="2" data-hl="4" data-hl-fill="var(--green)"');
+  b+=D(XT,SUM_Y,'6','data-in="3" data-hl="4" data-hl-fill="var(--green)"');
+  b+=AN.g('data-in="4" data-pop',AN.t(500,ROW2_Y,'= 62',{size:24,weight:700,fill:'var(--green)',anchor:'end'}));
+  b+=AN.cap(0,'Десятки под десятками, единицы под единицами.',{y:220});
+  b+=AN.cap(1,'Единицы: 7 + 5 = 12 — больше 10.',{y:220});
+  b+=AN.cap(2,'Пишем 2, а 1 десяток переносим наверх.',{y:220});
+  b+=AN.cap(3,'Десятки: 2 + 3 + 1 (перенос) = 6.',{y:220});
+  b+=AN.cap(4,'27 + 35 = 62',{y:220,size:19,weight:700,last:true});
+  return animFigure(b,{w:520,h:245,steps:5,dur:'3800,3800,3600,3200',
+    label:'Анимация: сложение столбиком 27 плюс 35; единицы 7 плюс 5 равно 12, пишем 2 и переносим 1 десяток; десятки 2 плюс 3 плюс 1 равно 6; итог 62'});
+};
+
+/* ---------- MUL2_INVERSE_ANIM — «Умножение и деление»: 4 · 5 = 20, значит 20 : 4 = 5 и 20 : 5 = 4 ---------- */
+SVG_LIB.MUL2_INVERSE_ANIM = function(){
+  var X0=185, DX=38, Y0=60, DY=42, R=11;
+  function cx(j){ return X0+j*DX; }
+  function cy(i){ return Y0+i*DY; }
+  var rowFill=['var(--blue-soft)','var(--green-soft)'], rowStroke=['var(--blue)','var(--green)'];
+  var colFill=['var(--gold-soft)','var(--red-soft)'], colStroke=['var(--gold)','var(--red)'];
+  var b='', i, j;
+  // деление на 4 ряда по 5 (20 : 4 = 5) — фон под кружками
+  for(i=0;i<4;i++){
+    b+=AN.g('data-in="1" data-out="2"',
+      '<rect x="'+(X0-R-6)+'" y="'+(cy(i)-R-6)+'" width="'+(4*DX+2*R+12)+'" height="'+(2*R+12)+'" rx="10" fill="'+rowFill[i%2]+'" stroke="'+rowStroke[i%2]+'" stroke-width="2"/>'
+      +AN.t(X0-R-6+4*DX+2*R+12+18,cy(i)+5,'5',{size:16,weight:700,fill:rowStroke[i%2],anchor:'start'}));
+  }
+  // деление на 5 столбиков по 4 (20 : 5 = 4) — фон под кружками
+  for(j=0;j<5;j++){
+    b+=AN.g('data-in="2" data-out="3"',
+      '<rect x="'+(cx(j)-R-6)+'" y="'+(Y0-R-6)+'" width="'+(2*R+12)+'" height="'+(3*DY+2*R+12)+'" rx="10" fill="'+colFill[j%2]+'" stroke="'+colStroke[j%2]+'" stroke-width="2"/>'
+      +AN.t(cx(j),Y0-R-6+3*DY+2*R+12+16,'4',{size:16,weight:700,fill:colStroke[j%2]}));
+  }
+  // сетка 20 кружков (4 ряда по 5) — поверх фоновых групп
+  for(i=0;i<4;i++){
+    for(j=0;j<5;j++){
+      b+='<circle data-in="0" data-pop cx="'+cx(j)+'" cy="'+cy(i)+'" r="'+R+'" fill="var(--blue)" stroke="var(--ink)" stroke-width="2"/>';
+    }
+  }
+  // равенства справа
+  b+=AN.g('data-in="0"',AN.t(455,34,'4 · 5 = 20',{size:18,weight:700,fill:'var(--ink)'}));
+  b+=AN.g('data-in="1"',AN.t(455,76,'20 : 4 = 5',{size:18,weight:700,fill:'var(--blue)'}));
+  b+=AN.g('data-in="2"',AN.t(455,118,'20 : 5 = 4',{size:18,weight:700,fill:'var(--gold)'}));
+  b+=AN.cap(0,'4 ряда по 5 кружков — всего 20.',{y:265});
+  b+=AN.cap(1,'20 : 4 = 5 — делим на 4 группы по 5.',{y:265});
+  b+=AN.cap(2,'20 : 5 = 4 — делим на 5 групп по 4.',{y:265});
+  b+=AN.cap(3,'Одно умножение — сразу два деления!',{y:265,size:17,weight:700,last:true});
+  return animFigure(b,{w:520,h:295,steps:4,dur:'4000,4000,3500',
+    label:'Анимация: сетка из четырёх рядов по пять кружков — всего двадцать; её же делят на 4 равные группы по 5, и на 5 равных групп по 4 — одно умножение сразу даёт два деления'});
+};
+
+/* ---------- WORD2_PERIM_ANIM — «Задачи и единицы измерения»: периметр треугольника 4+5+6=15 см ---------- */
+SVG_LIB.WORD2_PERIM_ANIM = function(){
+  var Ax=150, Ay=210, Bx=390, By=210, Cx=270, Cy=55; // треугольник: A — слева, B — справа, C — вверху
+  function side(x1,y1,x2,y2,k,col){
+    return '<line data-hl="'+k+'" data-hl-stroke="'+col+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>';
+  }
+  var b='';
+  // стороны: CA (4 см, слева) — шаг 0; CB (5 см, справа) — шаг 1; AB (6 см, снизу) — шаг 2
+  b+=side(Cx,Cy,Ax,Ay,0,'var(--red)');
+  b+=side(Cx,Cy,Bx,By,1,'var(--green)');
+  b+=side(Ax,Ay,Bx,By,2,'var(--blue)');
+  b+='<circle cx="'+Ax+'" cy="'+Ay+'" r="4" fill="var(--ink)"/>';
+  b+='<circle cx="'+Bx+'" cy="'+By+'" r="4" fill="var(--ink)"/>';
+  b+='<circle cx="'+Cx+'" cy="'+Cy+'" r="4" fill="var(--ink)"/>';
+  // подписи длин сторон — каждая появляется вместе со своей стороной
+  b+=AN.g('data-in="0"',AN.t(175,140,'4 см',{size:18,weight:700,fill:'var(--red)'}));
+  b+=AN.g('data-in="1"',AN.t(365,140,'5 см',{size:18,weight:700,fill:'var(--green)'}));
+  b+=AN.g('data-in="2"',AN.t(270,236,'6 см',{size:18,weight:700,fill:'var(--blue)'}));
+  // сложение чисел под треугольником — появляется по шагам
+  b+=AN.g('data-in="0"',AN.t(175,280,'4',{size:22,weight:700,fill:'var(--red)'}));
+  b+=AN.g('data-in="1"',AN.t(225,280,'+ 5',{size:22,weight:700,fill:'var(--green)'}));
+  b+=AN.g('data-in="2"',AN.t(280,280,'+ 6',{size:22,weight:700,fill:'var(--blue)'}));
+  b+=AN.g('data-in="3" data-pop',AN.t(355,280,'= 15 см',{size:22,weight:700,fill:'var(--ink)'}));
+  b+=AN.cap(0,'Первая сторона — 4 см.',{y:308});
+  b+=AN.cap(1,'Вторая сторона — 5 см.',{y:308});
+  b+=AN.cap(2,'Третья сторона — 6 см.',{y:308});
+  b+=AN.cap(3,'Складываем все стороны: 4 + 5 + 6 = 15.',{y:308});
+  b+=AN.cap(4,'Периметр треугольника — 15 см.',{weight:700,last:true,y:308});
+  return animFigure(b,{w:520,h:325,steps:5,dur:'3500,3500,3500,3200',
+    label:'Анимация: у треугольника со сторонами 4, 5 и 6 см по очереди подсвечивается и подписывается каждая сторона, затем числа складываются: 4+5+6=15, периметр треугольника равен 15 сантиметрам'});
+};
+
+/* ---------- N3_ROUND_ANIM — «Числа до 1000»: округление до сотен, 427 ≈ 400 и 468 ≈ 500 ---------- */
+SVG_LIB.N3_ROUND_ANIM = function(){
+  var LY=150, X400=70, X500=450;                 // числовая прямая: 1 (единица числа) = 3.8 px
+  var XA=173, XB=328;                            // позиции 427 и 468 на прямой
+  var b='';
+  // числовая прямая и отметки 400 / 500
+  b+=AN.g('data-in="0"','<line x1="'+(X400-20)+'" y1="'+LY+'" x2="'+(X500+20)+'" y2="'+LY+'" stroke="var(--line)" stroke-width="3"/>'
+    +'<line x1="'+X400+'" y1="'+(LY-11)+'" x2="'+X400+'" y2="'+(LY+11)+'" stroke="var(--ink)" stroke-width="2"/>'
+    +'<line x1="'+X500+'" y1="'+(LY-11)+'" x2="'+X500+'" y2="'+(LY+11)+'" stroke="var(--ink)" stroke-width="2"/>'
+    +AN.t(X400,LY+32,'400',{size:17,weight:700})+AN.t(X500,LY+32,'500',{size:17,weight:700}));
+  // число 427 → прыжок к 400
+  b+=AN.g('data-mv="2" style="--tx:'+(X400-XA)+'px;--ty:0px"',
+      '<circle cx="'+XA+'" cy="'+LY+'" r="9" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2.5" data-in="1" data-hl="2" data-hl-fill="var(--green-soft)" data-hl-stroke="var(--green)"/>'
+    +AN.g('data-in="1" data-out="2"','<text x="'+XA+'" y="'+(LY-18)+'" font-size="19" font-weight="700" text-anchor="middle" fill="var(--ink)">4<tspan fill="var(--gold)">2</tspan>7</text>')
+    +AN.g('data-in="2"',AN.t(XA,LY-18,'≈ 400',{size:17,weight:700,fill:'var(--green)'})));
+  // число 468 → прыжок к 500
+  b+=AN.g('data-mv="4" style="--tx:'+(X500-XB)+'px;--ty:0px"',
+      '<circle cx="'+XB+'" cy="'+LY+'" r="9" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2.5" data-in="3" data-hl="4" data-hl-fill="var(--green-soft)" data-hl-stroke="var(--green)"/>'
+    +AN.g('data-in="3" data-out="4"','<text x="'+XB+'" y="'+(LY-18)+'" font-size="19" font-weight="700" text-anchor="middle" fill="var(--ink)">4<tspan fill="var(--gold)">6</tspan>8</text>')
+    +AN.g('data-in="4"',AN.t(XB,LY-18,'≈ 500',{size:17,weight:700,fill:'var(--green)'})));
+  b+=AN.cap(0,'Округляем до сотен: 427 и 468.',{y:210});
+  b+=AN.cap(1,'У числа 427 цифра десятков — 2.',{y:210});
+  b+=AN.cap(2,'2 меньше 5 — прыжок вниз: 427 ≈ 400.',{y:210});
+  b+=AN.cap(3,'У числа 468 цифра десятков — 6.',{y:210});
+  b+=AN.cap(4,'6 не меньше 5 — прыжок вверх: 468 ≈ 500.',{y:210});
+  b+=AN.cap(5,'Меньше 5 — вниз, 5 и больше — вверх. ≈ значит «примерно».',{y:210,last:true});
+  return animFigure(b,{w:520,h:230,steps:6,dur:'3400,3800,3400,3800,4200',
+    label:'Анимация: числовая прямая от 400 до 500; число 427 прыгает вниз к 400, потому что цифра десятков 2 меньше 5; число 468 прыгает вверх к 500, потому что цифра десятков 6 не меньше 5'});
+};
+
+/* ---------- MUL3_REMAINDER_ANIM — «Деление с остатком»: 34 : 5 = 6 (ост. 4) ---------- */
+SVG_LIB.MUL3_REMAINDER_ANIM = function(){
+  var R=6.5;                                    // радиус кружка-«конфеты»
+  // начальное (неразложенное) расположение — компактная сетка 7×5
+  var GX=215, GY=74, gdx=15, gdy=16, gcols=7;
+  // итоговое расположение — 6 тарелок по 5 (сетка 3×2) + тарелка остатка (4)
+  var PW=96, PH=44, colX=[98,212,326], rowY=[26,84], remY=142;
+  var i, col, row, g, within, bx, by;
+  var x0=[], y0=[], x1=[], y1=[];
+  for (i=0;i<34;i++){
+    col=i%gcols; row=Math.floor(i/gcols);
+    x0[i]=GX+col*gdx; y0[i]=GY+row*gdy;
+    if (i<30){
+      g=Math.floor(i/5); within=i%5;
+      bx=colX[g%3]; by=rowY[Math.floor(g/3)];
+      x1[i]=bx+16+within*16; y1[i]=by+PH/2;
+    } else {
+      within=i-30;
+      x1[i]=colX[1]+24+within*16; y1[i]=remY+PH/2;
+    }
+  }
+  function dot(i){
+    var rem=(i>=30);
+    var hl=' data-hl="2" data-hl-fill="'+(rem?'var(--red-soft)':'var(--green-soft)')+'" data-hl-stroke="'+(rem?'var(--red)':'var(--green)')+'"';
+    return '<circle data-mv="1" style="--tx:'+(x1[i]-x0[i]).toFixed(1)+'px;--ty:'+(y1[i]-y0[i]).toFixed(1)+'px"'+hl
+      +' cx="'+x0[i]+'" cy="'+y0[i]+'" r="'+R+'" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.5"/>';
+  }
+  function plateBox(bx,by,hlStroke){
+    return '<rect data-in="1" data-hl="2" data-hl-stroke="'+hlStroke+'" x="'+bx+'" y="'+by+'" width="'+PW+'" height="'+PH
+      +'" rx="7" ry="7" fill="none" stroke="var(--line)" stroke-width="2"/>';
+  }
+  var b='';
+  for (g=0; g<6; g++) b+=plateBox(colX[g%3], rowY[Math.floor(g/3)], 'var(--green)');
+  b+=plateBox(colX[1], remY, 'var(--red)');
+  for (i=0;i<34;i++) b+=dot(i);
+  b+=AN.g('data-in="3" data-pop', AN.t(260,228,'34 : 5 = 6 (ост. 4)',{size:21,weight:700}));
+  b+=AN.g('data-in="4" data-pop', AN.t(260,256,'5 · 6 + 4 = 34',{size:17,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,'34 конфеты нужно разложить по тарелкам, по 5 штук.');
+  b+=AN.cap(1,'Раскладываем по 5 — получаются тарелки-группы.');
+  b+=AN.cap(2,'6 тарелок по 5 — это 30. 4 конфеты лишние — остаток.');
+  b+=AN.cap(3,'Записываем: 34 : 5 = 6 (ост. 4).');
+  b+=AN.cap(4,'Проверка: 5 · 6 + 4 = 34. Остаток всегда меньше делителя.',{last:true});
+  return animFigure(b,{w:520,h:296,steps:5,dur:'3800,4000,3200,3200',
+    label:'Анимация: 34 конфеты раскладывают по 5 штук — получается 6 полных тарелок (30 конфет) и 4 лишние конфеты, остаток; 34 разделить на 5 равно 6 и ещё 4 в остатке, проверка 5 умножить на 6 плюс 4 равно 34'});
+};
+
+/* ---------- WORD3_TIMES_ANIM — «Во сколько раз больше»: у Пети 4 машинки, у Серёжи 12, 12 : 4 = 3 ---------- */
+SVG_LIB.WORD3_TIMES_ANIM = function(){
+  var COL=[130,220,310,400];           // 4 колонки — ширина ряда Пети и каждой группы Серёжи
+  var PY=60, SH=[114,154,194];         // ряд Пети и 3 ряда Серёжи (по 4 машинки)
+  var BX=94, BW=342, BH=36;            // рамка группы
+  function car(cx,cy,fill,stroke,hl){
+    return '<rect '+(hl||'')+' x="'+(cx-22)+'" y="'+(cy-12)+'" width="44" height="24" rx="6" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2"/>'
+      +'<circle cx="'+(cx-13)+'" cy="'+(cy+12)+'" r="5" fill="var(--ink)"/>'
+      +'<circle cx="'+(cx+13)+'" cy="'+(cy+12)+'" r="5" fill="var(--ink)"/>';
+  }
+  var b='';
+  // ряд Пети — 4 машинки
+  b+=AN.g('data-in="0"',AN.t(20,65,'Петя',{size:14,weight:700,fill:'var(--blue)',anchor:'start'}));
+  COL.forEach(function(x){ b+=AN.g('data-in="0"',car(x,PY,'var(--blue-soft)','var(--blue)')); });
+  // 12 машинок Серёжи — 3 ряда по 4, той же шириной, что ряд Пети
+  b+=AN.g('data-in="1"',AN.t(20,159,'Серёжа',{size:14,weight:700,fill:'var(--green)',anchor:'start'}));
+  SH.forEach(function(y,ri){
+    COL.forEach(function(x){
+      var hl = ri===0 ? 'data-hl="3" data-hl-fill="var(--blue-soft)" data-hl-stroke="var(--blue)"' : '';
+      b+=AN.g('data-in="1"',car(x,y,'var(--green-soft)','var(--green)',hl));
+    });
+  });
+  // рамки групп по 4 + номер группы
+  SH.forEach(function(y,ri){
+    b+=AN.g('data-in="2"','<rect x="'+BX+'" y="'+(y-BH/2)+'" width="'+BW+'" height="'+BH+'" rx="11" fill="none" stroke="var(--gold)" stroke-width="2.5"/>'
+      +'<circle cx="466" cy="'+y+'" r="13" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>'
+      +AN.t(466,y+5,String(ri+1),{size:14,weight:700}));
+  });
+  // "=" — первая группа Серёжи такая же, как весь ряд Пети
+  b+=AN.g('data-in="3"',AN.t(40,88,'=',{size:22,weight:700,fill:'var(--blue)'}));
+  // итог: 12 : 4 = 3
+  b+=AN.g('data-in="4" data-pop','<rect x="160" y="220" width="200" height="36" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>'
+    +AN.t(260,244,'12 : 4 = 3',{size:22,weight:700}));
+  b+=AN.cap(0,'У Пети 4 машинки.',{y:266});
+  b+=AN.cap(1,'У Серёжи целых 12 машинок.',{y:266});
+  b+=AN.cap(2,'Делим машинки Серёжи на группы по 4.',{y:266});
+  b+=AN.cap(3,'Каждая группа — как у Пети, групп всего 3.',{y:266});
+  b+=AN.cap(4,'12 : 4 = 3 — у Серёжи в 3 раза больше машинок!',{y:266,weight:700,last:true});
+  return animFigure(b,{w:520,h:286,steps:5,dur:'4000,4200,4000,3800',
+    label:'Анимация: у Пети 4 машинки, у Серёжи 12; 12 машинок делят на группы по 4 — получается 3 группы; первая группа такая же, как весь ряд Пети; значит 12 : 4 = 3, у Серёжи в 3 раза больше машинок'});
+};
+
+/* ---------- GEO3_PERIM_AREA_ANIM — «Периметр и площадь»: один прямоугольник 8×2 см — сначала обходим границу (P=20 см), потом считаем клеточки (S=16 см²) ---------- */
+SVG_LIB.GEO3_PERIM_AREA_ANIM = function(){
+  var CELL=42, COLS=8, ROWS=2;
+  var X0=92, Y0=70, X1=X0+CELL*COLS, Y1=Y0+CELL*ROWS; // 92..428, 70..154
+  var MX=(X0+X1)/2, MY=(Y0+Y1)/2+5;
+  var RESY=200;
+  function borderLines(attrs){ // 4 стороны прямоугольника: верх, право, низ, лево
+    var LS='stroke="var(--gold)" stroke-width="4" stroke-linecap="round" fill="none" '+attrs;
+    return '<line '+LS+' x1="'+X0+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y0+'"/>'
+         + '<line '+LS+' x1="'+X1+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y1+'"/>'
+         + '<line '+LS+' x1="'+X1+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y1+'"/>'
+         + '<line '+LS+' x1="'+X0+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y0+'"/>';
+  }
+  var b='';
+  // --- база: сам прямоугольник + подписи сторон (видны всегда) ---
+  b+='<rect x="'+X0+'" y="'+Y0+'" width="'+(X1-X0)+'" height="'+(Y1-Y0)+'" fill="var(--sheet2)" stroke="var(--ink)" stroke-width="2.5"/>';
+  b+=AN.t(MX,Y0-14,'8 см',{size:16,weight:700,fill:'var(--blue)'});
+  b+=AN.t(X0-14,MY,'2 см',{size:16,weight:700,fill:'var(--blue)',anchor:'end'});
+  // --- шаг 1: обходим границу по сторонам — каждая сторона подсвечивается и подписывается по очереди ---
+  b+=AN.g('data-in="1" data-out="2"',
+      '<line style="transition-delay:0s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X0+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y0+'"/>'
+    + '<line style="transition-delay:.3s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X1+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y1+'"/>'
+    + '<line style="transition-delay:.6s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X1+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y1+'"/>'
+    + '<line style="transition-delay:.9s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X0+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y0+'"/>'
+    + AN.g('data-pop style="transition-delay:0s;animation-delay:0s"',AN.t(MX,Y0-14,'8 см',{size:16,weight:700,fill:'var(--gold)'}))
+    + AN.g('data-pop style="transition-delay:.3s;animation-delay:.3s"',AN.t(X1+14,MY,'2 см',{size:16,weight:700,fill:'var(--gold)',anchor:'start'}))
+    + AN.g('data-pop style="transition-delay:.6s;animation-delay:.6s"',AN.t(MX,Y1+22,'8 см',{size:16,weight:700,fill:'var(--gold)'}))
+    + AN.g('data-pop style="transition-delay:.9s;animation-delay:.9s"',AN.t(X0-14,MY,'2 см',{size:16,weight:700,fill:'var(--gold)',anchor:'end'}))
+    + AN.g('data-pop style="transition-delay:1.3s;animation-delay:1.3s"',AN.t(MX,RESY,'8+2+8+2=20 см',{size:17,weight:700,fill:'var(--gold)'})));
+  // --- шаг 2: итог «периметр» остаётся виден до начала шага 4 (когда его сменяет площадь) ---
+  b+=AN.g('data-in="2" data-out="4" data-pop',AN.t(MX,RESY,'Периметр = 20 см',{size:17,weight:700,fill:'var(--gold)'}));
+  // --- шаг 3: клеточки появляются по одной (8 в ширину, 2 ряда = 16 клеток) ---
+  var cells='', r,c;
+  for(r=0;r<ROWS;r++) for(c=0;c<COLS;c++){
+    cells+='<rect data-in="3" style="transition-delay:'+((r*COLS+c)*0.06).toFixed(2)+'s" x="'+(X0+c*CELL)+'" y="'+(Y0+r*CELL)+'" width="'+CELL+'" height="'+CELL+'" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.2"/>';
+  }
+  b+=cells;
+  // --- шаг 4: подсчёт площади — временная формула ---
+  b+=AN.g('data-in="4" data-out="5" data-pop',AN.t(MX,RESY,'8 · 2 = 16 см²',{size:17,weight:700,fill:'var(--green)'}));
+  // --- шаг 5: итог — короткие P и S рядом, граница снова подсвечена золотом ---
+  b+=borderLines('data-in="5"');
+  b+=AN.g('data-in="5" data-pop',AN.t(MX-90,RESY,'P = 20 см',{size:17,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="5" data-pop style="animation-delay:.2s"',AN.t(MX+90,RESY,'S = 16 см²',{size:17,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,'Прямоугольник со сторонами 8 см и 2 см.',{y:230});
+  b+=AN.cap(1,'Обходим границу: 8+2+8+2=20 см.',{y:230});
+  b+=AN.cap(2,'Это периметр — длина всей границы: 20 см.',{y:230});
+  b+=AN.cap(3,'Площадь — считаем клетки внутри фигуры.',{y:230});
+  b+=AN.cap(4,'8 · 2 = 16 — значит, площадь 16 см².',{y:230});
+  b+=AN.cap(5,'Одна фигура — периметр 20 см, площадь 16 см².',{y:230,size:15,weight:700,last:true});
+  return animFigure(b,{w:520,h:246,steps:6,dur:'3400,4200,3600,3800,4000',
+    label:'Анимация: прямоугольник 8 на 2 сантиметра; сначала обходим его границу по сторонам — 8+2+8+2=20 сантиметров, это периметр; затем заполняем тот же прямоугольник клеточками со стороной 1 сантиметр, 8 умножить на 2 равно 16 таких клеток — это площадь, 16 квадратных сантиметров; итог: одна и та же фигура — периметр 20 см, площадь 16 квадратных сантиметров, это два разных числа'});
+};
+
+var SVG_MARKERS = {"ALG6_BALANCE2": 1, "ALG6_DISTRIB": 1, "ALG6_LIKE": 1, "CIRC6_AREA": 1, "CIRC6_PARTS": 1, "CIRC6_UNROLL": 1, "COORD6_QUADRANTS": 1, "COORD6_RECT": 1, "COORD6_SYMMETRY": 1, "FRAC4_LINE": 1, "FRAC4_OF_NUMBER": 1, "FRAC4_PARTS": 1, "GEO4_ANGLES": 1, "GEO4_COMPOSITE": 1, "GEO4_TRIANGLES": 1, "MUL4_COLUMN": 1, "MUL4_LONGDIV": 1, "MUL4_LONGDIV2": 1, "N4_ADD": 1, "N4_CLASSES": 1, "N4_ROUND": 1, "RATIO_INVERSE": 1, "RATIO_MAP_SCALE": 1, "RATIO_PROPORTION": 1, "STAT6_DICE": 1, "STAT6_MEAN": 1, "STAT6_PIE": 1, "VAL4_AREA": 1, "VAL4_CLOCK": 1, "VAL4_LADDERS": 1, "WORD4_BARS": 1, "WORD4_PARTS": 1, "WORD4_TRIANGLE": 1, "NAT_CLASSES": 1, "NAT_COLUMN": 1, "EXPR_BAR": 1, "EXPR_PROGRAM": 1, "ORD_LADDER": 1, "ORD_TREE": 1, "UNITS_LENGTH_LADDER": 1, "UNITS_AREA_LADDER": 1, "UNITS_CUBE": 1, "BOX_ABC": 1, "DIV_VENN": 1, "DIV_SIEVE": 1, "DIV_REMAINDER": 1, "FACTOR_TREE": 1, "GCD_VENN": 1, "LCM_LINES": 1, "POW_SQUARE_CUBE": 1, "POW_DOUBLING": 1, "MOT_CASES": 1, "MOT_GRAPH": 1, "SET_EULER": 1, "LOGIC_FLOW": 1, "FRAC_STRIPS": 1, "FRAC_NUMLINE": 1, "FRAC_ADD": 1, "DEC_PLACE": 1, "DEC_GRID": 1, "DEC_ROUND": 1, "PERC_GRID": 1, "PERC_BARS": 1, "PERC_STEPS": 1, "NEG_THERMO": 1, "NEG_MOVES": 1, "GEO_AREAS": 1, "GEO_TRISUM": 1, "POW_RULES": 1, "POLY_TILES": 1, "FSU_SQUARE": 1, "FSU_DIFF": 1, "FUNC_LINE": 1, "FUNC_SLOPES": 1, "SYS_GRAPH": 1, "ANG_ADJ": 1, "ANG_CROSS": 1, "ANG_BISECT": 1, "PAR_TRANS": 1, "TRI_LINES": 1, "TRI_SIGNS": 1, "TRI_ISO": 1, "NUMLINE": 1, "PIE": 1, "BALANCE": 1, "RECT": 1, "TRIANGLE": 1, "COORD": 1, "CIRCLE": 1, "ANGLES": 1, "SQRT_SQUARE": 1, "SQRT_NUMLINE": 1, "QUAD_PARABOLA_CASES": 1, "QUAD_VIETA": 1, "RATF_ODZ": 1, "RATF_CANCEL": 1, "PYTH_SQUARES": 1, "PYTH_LADDER": 1, "CIRC8_ANGLES": 1, "CIRC8_TANGENT": 1, "QUADR_PARALLELOGRAM": 1, "QUADR_TRAPEZOID": 1, "INEQ_NUMLINE": 1, "INEQ_SYSTEM": 1, "FRAC_ADD_ANIM": 1, "NAT_CARRY_ANIM": 1, "EXPR_BAR_ANIM": 1, "ORD_BRACKETS_ANIM": 1, "UNITS_AREA_ANIM": 1, "DIV_SIEVE_ANIM": 1, "GCD_FACTOR_ANIM": 1, "DEG_REPEAT_ANIM": 1, "MOT_MEET_ANIM": 1, "SET_EULER_ANIM": 1, "DEC_COLUMN_ANIM": 1, "PERC_OF_ANIM": 1, "LIN_BALANCE_ANIM": 1, "POW_MULT_ANIM": 1, "POLY_TILES_ANIM": 1, "FSU_SQUARE_ANIM": 1, "FUNC_SLOPE_ANIM": 1, "SYS_GRAPH_ANIM": 1, "ANG_CROSS_ANIM": 1, "TRI_SAS_ANIM": 1, "PAR_TRANS_ANIM": 1, "SQRT_SQUARE_ANIM": 1, "QUAD_DISCRIMINANT_ANIM": 1, "RATF_CANCEL_ANIM": 1, "INEQ_FLIP_ANIM": 1, "PYTH_SQUARES_ANIM": 1, "CIRC8_ANGLES_ANIM": 1, "QUADR_MIDLINE_ANIM": 1, "N4_ADD_ANIM": 1, "MUL4_LONGDIV_ANIM": 1, "VAL4_CLOCK_ANIM": 1, "WORD4_TRIANGLE_ANIM": 1, "GEO4_COMPOSITE_ANIM": 1, "FRAC4_OF_NUMBER_ANIM": 1, "NEG6_THERMO_ANIM": 1, "RATIO6_PROPORTION_ANIM": 1, "COORD6_SYMMETRY_ANIM": 1, "ALG6_DISTRIB_ANIM": 1, "GEO6_TRISUM_ANIM": 1, "CIRC6_UNROLL_ANIM": 1, "STAT6_MEAN_ANIM": 1, "N4_COMPARE_ANIM": 1, "MUL4_SINGLE_ANIM": 1, "VAL4_CARRY_ANIM": 1, "WORD4_MEET_ANIM": 1, "GEO4_PERIM_AREA_ANIM": 1, "FRAC4_ADDSUB_ANIM": 1, "TRIG_RATIOS": 1, "N2_COLSUM_ANIM": 1, "MUL2_INVERSE_ANIM": 1, "WORD2_PERIM_ANIM": 1, "N3_ROUND_ANIM": 1, "MUL3_REMAINDER_ANIM": 1, "WORD3_TIMES_ANIM": 1, "GEO3_PERIM_AREA_ANIM": 1};
 function renderSvgMarkers(html){
   // нежадный \w+? — иначе два маркера подряд без разделителя между ними (как в некоторых
   // карточках «Шпаргалки» с в. 2.20.0) склеиваются в одно совпадение и не находят SVG_LIB[name]
@@ -10661,12 +10933,22 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.23.0';
+var APP_VERSION = '2.24.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.23.0",
+ "current": "2.24.0",
  "versions": [
+  {
+   "v": "2.24.0",
+   "date": "2026-10-07",
+   "title": "Анимации для тем 2 и 3 класса",
+   "items": [
+    "У всех семи новых тем 2 и 3 класса (добавленных в версии 2.23.0) теперь есть анимированная схема, которая по шагам показывает главную идею темы — вместо длинного абзаца текста.",
+    "«Числа до 100»: перенос десятка при сложении столбиком. «Умножение и деление: первые шаги»: как одно умножение сразу даёт два деления. «Задачи и единицы измерения»: периметр треугольника. «Числа до 1000»: округление до сотен. «Таблица умножения и деление с остатком»: откуда берётся остаток. «Составные задачи»: сравнение «во сколько раз больше». «Периметр и площадь»: почему это две разные величины даже у одной фигуры.",
+    "Текст рядом с каждой анимацией немного сокращён — то, что раньше объяснялось абзацем, теперь показано по шагам; все формулировки и правила на месте."
+   ]
+  },
   {
    "v": "2.23.0",
    "date": "2026-10-05",
@@ -10992,7 +11274,7 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.23.0",
+  "v": "2.25.0",
   "title": "Материалы для скачивания с обложками",
   "when": "в планах",
   "items": [
