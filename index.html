@@ -162,33 +162,64 @@ a{color:var(--blue)}
 .how div{border-left:3px solid var(--blue);padding-left:12px;font-size:14.5px;line-height:1.45}
 .how b{display:block;font-size:15.5px}
 
-/* карта-путь 5 класса (в. 2.27.0) — узлы вместо плоского списка, с персонажем-проводником */
+/* карта-путь 5 класса (в. 2.27.0, доработано в 2.28.0 — тропа в стиле приключенческой игры) —
+   узлы вместо плоского списка, с персонажем-проводником и дорожкой-тропой с флажками старта/финиша */
 .jmap-char{display:flex;gap:14px;align-items:center;margin-bottom:18px;padding:12px 16px;background:var(--blue-soft);border-radius:14px}
 .jmap-char svg{flex:none;width:64px;height:64px}
 .jmap-char .bubble{font-size:14.5px;line-height:1.4;color:var(--ink)}
 .jmap-char .bubble b{color:var(--blue)}
-.jpath{position:relative;display:flex;flex-direction:column;gap:20px;padding:4px 0}
-.jpath::before{content:'';position:absolute;top:2px;bottom:2px;left:32px;width:0;border-left:3px dashed var(--line);z-index:0}
+/* фон «местности» нарочно вынесен в отдельный элемент-«подложку» (а не background прямо на .jterrain):
+   при фоне на самом .jterrain, который к тому же является предком зигзag-колонок (.jnode-wrap.a/.b,
+   align-self слева/справа), часть узорного фона справа переставала прорисовываться в Chromium —
+   воспроизводится и в headless, и в обычном окне, подтверждённый баг рендеринга, а не артефакт скриншота.
+   Подложка как отдельный соседний элемент полностью снимает проблему. */
+.jterrain-wrap{position:relative}
+.jterrain-bg{position:absolute;inset:0;border-radius:20px;border:1px solid var(--line);z-index:0;background:
+    radial-gradient(circle,var(--line) 1px,transparent 1.4px) 0 0/22px 22px,
+    linear-gradient(180deg,var(--green-soft),var(--sheet2) 60%)}
+.jterrain{position:relative;z-index:1;padding:18px 14px 22px}
+.jflag{display:flex;align-items:center;gap:8px;justify-content:center;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;margin:0 0 10px}
+.jflag.finish{margin:10px 0 0}
+.jflag svg{width:20px;height:20px;flex:none}
+.jpath{position:relative;display:flex;flex-direction:column;gap:22px;padding:4px 0}
+.jpath::before{content:'';position:absolute;top:0;bottom:0;left:32px;width:4px;border-radius:4px;
+  background:repeating-linear-gradient(180deg,var(--gold) 0 10px,transparent 10px 20px);z-index:0}
 .jnode-wrap{position:relative;z-index:1;width:100%}
+.jnode-wrap::before{content:'';position:absolute;top:18px;left:32px;width:10px;height:10px;margin-left:-3px;
+  border-radius:50%;background:var(--gold);border:2px solid var(--sheet);z-index:2}
 @media (min-width:720px){
-  .jpath{gap:26px}
-  .jpath::before{left:50%}
+  .jpath{gap:30px}
+  .jpath::before{left:50%;margin-left:-2px}
   .jnode-wrap{max-width:47%}
   .jnode-wrap.a{align-self:flex-start}
   .jnode-wrap.b{align-self:flex-end}
+  .jnode-wrap.a::before{left:100%}
+  .jnode-wrap.b::before{left:0}
 }
 .jnode{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;box-shadow:var(--shadow)}
 .jnode:hover{background:var(--sheet2)}
 .jnode[disabled]{cursor:default}
 .jnode[disabled]:hover{background:var(--sheet)}
-.jnode-circle{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--sheet2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--muted)}
-.jnode-circle.prog{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}
+.jnode-circle{flex:none;width:38px;height:38px;border-radius:50%;border:2.5px solid var(--line);background:var(--sheet2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--muted);box-shadow:0 2px 0 rgba(20,33,61,.12)}
+.jnode-circle.prog{border-color:var(--gold);background:var(--gold-soft);color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+@media (prefers-reduced-motion:no-preference){.jnode-circle.prog{animation:jpulse 2.2s ease-in-out infinite}}
+@keyframes jpulse{0%,100%{box-shadow:0 0 0 3px var(--gold-soft)}50%{box-shadow:0 0 0 7px var(--gold-soft)}}
 .jnode-circle.done{border-color:var(--green);background:var(--green);color:var(--onblue)}
 .jnode-body{min-width:0;flex:1 1 auto}
 .jnode-nm{font-weight:600;line-height:1.3}
 .jnode-sub{display:block;font-size:13px;color:var(--muted);font-weight:400;line-height:1.35;margin-top:2px}
 .jnode-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
 .jnode-foot .mk{margin-left:0}
+
+/* в. 2.28.0 — значок Клетчика у названия темы: открывает окно с полным объяснением */
+.char-badge{position:relative;flex:none;width:34px;height:34px;padding:2px;border-radius:50%;border:2px solid var(--blue);background:var(--blue-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;vertical-align:middle}
+.char-badge:hover{background:var(--sheet2)}
+.char-badge svg{width:100%;height:100%}
+.char-badge .excl{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;font-weight:700;line-height:16px;text-align:center;border:1.5px solid var(--sheet)}
+.chardlg{max-width:560px}
+.chardlg-top{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.chardlg-top svg{flex:none;width:52px;height:52px}
+.chardlg-top h2{margin:0;font-size:18px}
 
 /* topic */
 .crumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted);margin-bottom:8px}
@@ -462,6 +493,7 @@ body{padding-bottom:88px}
 <footer class="legalfoot">© 2026 Дмитрий Федотов. Все права защищены. Копирование, распространение и публикация материалов сайта без письменного разрешения правообладателя запрещены.<br><a href="/legal/terms.html" target="_blank" rel="noopener">Пользовательское соглашение</a> · <a href="/legal/privacy.html" target="_blank" rel="noopener">Политика конфиденциальности</a> · <a href="/legal/copyright.html" target="_blank" rel="noopener">Авторские права</a><br>© Дмитрий Федотов, «Математика в клетку». Только для личного использования. Копирование и распространение запрещены.</footer>
 <div id="fabRoot"></div>
 <div id="modal"></div>
+<div id="charModalRoot"></div>
 
 <script>
 /* ======================= ДАННЫЕ ======================= */
@@ -2242,35 +2274,45 @@ CONTENT.nat = {
 };
 /* в. 2.26.0 — «по шагам» (пилот, выбор пользователя от 17.10.2026): тот же текст и те же примеры,
    что в explain/examples выше, просто сгруппированные по экранам — смыслово ничего не менялось. */
+/* в. 2.28.0 — по отзыву пользователя шаги разбиты на более мелкие этапы (каждый — один абзац
+   и своя иллюстрация, своя или через прикреплённый пример), текст не менялся, только разбивка. */
 CONTENT.nat.steps = [
   {title:'Что такое натуральные числа', body:
     '<p>Натуральные числа — это числа, которые мы используем при счёте предметов: 1, 2, 3, 4, … Самое маленькое натуральное число — это 1, а вот самого большого не существует: к любому числу можно прибавить ещё единицу. Все числа мы записываем с помощью всего десяти цифр: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Такая запись называется <b>десятичной</b>: каждые десять единиц одного разряда образуют одну единицу следующего.</p>'
     +'<div class="figure">__SVG_NAT_INTRO__</div>'},
   {title:'Разряды и классы', body:
     '<p>Значение цифры зависит от того, на каком месте она стоит. В числе 333 три одинаковые цифры значат разное: 300, 30 и 3. Место цифры называется <b>разрядом</b>. Считаем разряды справа налево: единицы, десятки, сотни, потом снова единицы, десятки, сотни, но уже тысяч, и так далее. Чтобы не запутаться в длинных числах, разряды объединяют по три в <b>классы</b>: класс единиц, класс тысяч, класс миллионов, а дальше — миллиардов. Между классами при записи ставят небольшой пробел.</p>'
-    +'<div class="figure">__SVG_NAT_CLASSES__</div>'
-    +'<p>Читаем число слева направо, по классам: называем число, стоящее в классе, и добавляем название класса. Число 45 038 207 читается так: «сорок пять миллионов тридцать восемь тысяч двести семь». Название «единиц» для последнего класса не произносят. Обрати внимание: в классе тысяч стоит 038 — сотен тысяч нет, поэтому мы их не называем, но нуль в записи <b>обязательно</b> нужен. Без него число превратилось бы в 45 38 207 и потеряло смысл. Нуль показывает, что в этом разряде пусто.</p>'
+    +'<div class="figure">__SVG_NAT_CLASSES__</div>'},
+  {title:'Чтение и запись чисел по классам', body:
+    '<p>Читаем число слева направо, по классам: называем число, стоящее в классе, и добавляем название класса. Число 45 038 207 читается так: «сорок пять миллионов тридцать восемь тысяч двести семь». Название «единиц» для последнего класса не произносят. Обрати внимание: в классе тысяч стоит 038 — сотен тысяч нет, поэтому мы их не называем, но нуль в записи <b>обязательно</b> нужен. Без него число превратилось бы в 45 38 207 и потеряло смысл. Нуль показывает, что в этом разряде пусто.</p>'
     +'<p>Записывать число под диктовку нужно так же по классам. «Двадцать четыре миллиона восемьдесят»: в классе миллионов — 24, тысяч не назвали, значит 000, единиц — 080. Получаем 24 000 080.</p>'
     +'<div class="note"><span class="hand">Запомни</span>Каждый класс, кроме самого старшего, состоит ровно из трёх цифр. Если какой-то класс при чтении не назвали, пишем в нём три нуля (000); если в классе назвали только десятки или единицы, слева дописываем недостающие нули (080, 005).</div>',
     exIdx:[0]},
-  {title:'Сравнение и округление', body:
-    '<p>Сравнивая натуральные числа, сначала смотрим, сколько в них цифр: у кого цифр больше, то число и больше (5 000 000 больше 999 999). Если цифр поровну, сравниваем цифры по разрядам, начиная со старшего (самого левого), пока не найдём первое различие: 632 510 и 632 007 — совпали две первые тройки и шестёрка с двойкой, на месте сотен 5 больше 0, значит, 632 510 больше.</p>'
-    +'<p>Чтобы <b>округлить</b> число до какого-то разряда, все цифры справа от него заменяют нулями. Смотрим на первую отбрасываемую цифру: если она 0, 1, 2, 3 или 4 — цифру нужного разряда оставляем; если 5, 6, 7, 8 или 9 — увеличиваем её на 1. Округлим 3 876 542 до тысяч: цифра сотен 5, значит 3 877 000. До сотен тысяч: цифра десятков тысяч 7, значит 3 900 000.</p>'
-    +'<div class="figure">__SVG_NAT_COMPARE_ROUND__</div>',
-    exIdx:[1,2]},
-  {title:'Сложение и вычитание столбиком', body:
-    '<p>Числа записывают одно под другим, разряд под разрядом, и действуем справа налево. Смотри, как лишний десяток переходит в следующий разряд:</p><div class="figure">__SVG_NAT_CARRY_ANIM__</div><p>При вычитании, если не хватает единиц, «занимаем» один десяток слева и превращаем его в 10 единиц. Вычитая, обязательно проверяем себя сложением: разность плюс вычитаемое должно дать уменьшаемое.</p>',
+  {title:'Сравнение чисел', body:
+    '<p>Сравнивая натуральные числа, сначала смотрим, сколько в них цифр: у кого цифр больше, то число и больше (5 000 000 больше 999 999). Если цифр поровну, сравниваем цифры по разрядам, начиная со старшего (самого левого), пока не найдём первое различие: 632 510 и 632 007 — совпали две первые тройки и шестёрка с двойкой, на месте сотен 5 больше 0, значит, 632 510 больше.</p>',
+    exIdx:[1]},
+  {title:'Округление', body:
+    '<p>Чтобы <b>округлить</b> число до какого-то разряда, все цифры справа от него заменяют нулями. Смотрим на первую отбрасываемую цифру: если она 0, 1, 2, 3 или 4 — цифру нужного разряда оставляем; если 5, 6, 7, 8 или 9 — увеличиваем её на 1. Округлим 3 876 542 до тысяч: цифра сотен 5, значит 3 877 000. До сотен тысяч: цифра десятков тысяч 7, значит 3 900 000.</p>'
+    +'<div class="figure">__SVG_NAT_ROUND__</div>',
+    exIdx:[2]},
+  {title:'Сложение столбиком', body:
+    '<p>Числа записывают одно под другим, разряд под разрядом, и действуем справа налево. Смотри, как лишний десяток переходит в следующий разряд:</p><div class="figure">__SVG_NAT_CARRY_ANIM__</div>'},
+  {title:'Вычитание столбиком', body:
+    '<p>При вычитании, если не хватает единиц, «занимаем» один десяток слева и превращаем его в 10 единиц. Вычитая, обязательно проверяем себя сложением: разность плюс вычитаемое должно дать уменьшаемое.</p>',
     exIdx:[3]},
   {title:'Умножение столбиком', body:
     '<p>Второй множитель умножаем на первый по разрядам: сначала на единицы, потом на десятки, потом на сотни. Каждое следующее частичное произведение записываем на один разряд левее, потому что мы умножаем не на цифру, а на десятки, сотни и так далее. Затем все частичные произведения складываем. Посмотри на схему: 36 · 17 — это 36 · 7 = 252 плюс 36 · 10 = 360 (число 36 сдвинуто на разряд влево), вместе 612.</p>'
     +'<div class="figure">__SVG_NAT_COLUMN__</div>'
     +'<div class="warn"><span class="hand">Частая ошибка</span>Не сдвигают второе частичное произведение и получают 252 + 36 = 288 вместо 612. Помни: 1 в числе 17 — это десяток, поэтому 36 нужно записать на разряд левее (или дописать справа нуль: 360). Ещё одна беда — забыть, что если во втором множителе есть нуль (как в 309), вместо него нужно сдвинуться ещё на разряд, а не пропустить его.</div>',
     exIdx:[4]},
-  {title:'Деление уголком и деление с остатком', body:
+  {title:'Деление уголком', body:
     '<p>Делим по частям, слева направо. Берём первые цифры делимого, пока получившееся число не станет не меньше делителя, и смотрим, сколько раз делитель в нём помещается — это первая цифра частного. Умножаем, вычитаем, «сносим» следующую цифру и повторяем. Пример: 4056 : 78. Берём 405: 78 помещается 5 раз (78 · 5 = 390), остаток 15. Сносим 6, получаем 156: 78 помещается 2 раза (156). Остатка нет, частное 52. Проверка умножением: 78 · 52 = 4056.</p>'
-    +'<p>Если число не делится нацело, получается <b>деление с остатком</b>: 1000 : 7 = 142 (остаток 6), потому что 7 · 142 + 6 = 1000. Число 142 называют неполным частным. Общая формула: делимое = делитель · неполное частное + остаток, причём остаток всегда <b>меньше делителя</b>. Значит, при делении на 7 остаток может быть только 0, 1, 2, 3, 4, 5 или 6.</p>'
-    +'<div class="figure">__SVG_NAT_DIVISION__</div>',
-    exIdx:[5,6]},
+    +'<div class="figure">__SVG_NAT_DIV_EXACT__</div>',
+    exIdx:[5]},
+  {title:'Деление с остатком', body:
+    '<p>Если число не делится нацело, получается <b>деление с остатком</b>: 1000 : 7 = 142 (остаток 6), потому что 7 · 142 + 6 = 1000. Число 142 называют неполным частным. Общая формула: делимое = делитель · неполное частное + остаток, причём остаток всегда <b>меньше делителя</b>. Значит, при делении на 7 остаток может быть только 0, 1, 2, 3, 4, 5 или 6.</p>'
+    +'<div class="figure">__SVG_NAT_DIV_REM__</div>',
+    exIdx:[6]},
   {title:'«На сколько» и «во сколько раз»', body:
     '<p>Вопрос «на сколько больше?» — это разностное сравнение: из большего числа вычитаем меньшее. Вопрос «во сколько раз больше?» — кратное сравнение: большее число делим на меньшее. Если в дереве 84 яблока, а в кусте 12, то на дереве на 84 − 12 = 72 яблока больше и в 84 : 12 = 7 раз больше. А фразы «на 5 больше» и «в 5 раз больше» в условии, наоборот, говорят о том, что нужно прибавить 5 или умножить на 5. Не путай эти два разных сравнения.</p>'
     +'<div class="figure">__SVG_NAT_COMPARE_TIMES__</div>',
@@ -2354,25 +2396,34 @@ CONTENT.expr = {
     {t:'Быстрый счёт против калькулятора', b:'Возьми пять примеров на удобный счёт: 25 · 13 · 4, 47 + 88 + 53, 125 · 9 · 8, 64 · 9 + 64, 250 · 7 · 4. Устраивай соревнование: один считает в уме с помощью свойств действий, другой — на калькуляторе. Засеки время. Обычно выигрывает тот, кто догадался сгруппировать «круглые» числа!'}
   ]
 };
-/* в. 2.26.0 — «по шагам» (пилот): см. комментарий у CONTENT.nat.steps выше. */
+/* в. 2.28.0 — по отзыву пользователя шаги разбиты на более мелкие этапы (каждый — один абзац
+   и своя иллюстрация, своя или через прикреплённый пример), текст не менялся, только разбивка. */
 CONTENT.expr.steps = [
   {title:'Язык математики', body:
     '<p>У математики есть свой язык: вместо длинных фраз она пишет короткие записи из чисел, букв и знаков действий. Выучив этот язык, ты сможешь «переводить» любую задачу с русского на математический, а потом просто считать.</p>'
     +'<div class="figure">__SVG_EXPR_INTRO__</div>'},
   {title:'Числовое выражение и его значение', body:
-    '<p><b>Числовое выражение</b> — это запись из чисел, знаков действий и (иногда) скобок. Например: 15 + 8, 40 − 3 · 6, (12 + 8) : 5. Даже одно число — тоже числовое выражение. Результат вычислений называют <b>значением выражения</b>: значение выражения 15 + 8 равно 23, а значение выражения 40 − 3 · 6 равно 22 (сначала 3 · 6 = 18, потом 40 − 18).</p>'
-    +'<p>Выражение можно назвать по его <b>последнему действию</b>. Выражение 15 + 8 — сумма чисел 15 и 8. Выражение (12 + 8) : 5 — частное суммы чисел 12 и 8 и числа 5, потому что последним выполняется деление. А 40 − 3 · 6 — разность числа 40 и произведения чисел 3 и 6.</p>'
-    +'<p>Полезно знать «переводчик» с русского: «на 7 больше» — прибавить 7; «на 7 меньше» — вычесть 7; «в 3 раза больше» — умножить на 3; «в 3 раза меньше» — разделить на 3; «всего», «вместе» — чаще всего сложение; «осталось» — вычитание; «по 5 штук в каждой из 4 коробок» — умножение 5 · 4.</p>',
+    '<p><b>Числовое выражение</b> — это запись из чисел, знаков действий и (иногда) скобок. Например: 15 + 8, 40 − 3 · 6, (12 + 8) : 5. Даже одно число — тоже числовое выражение. Результат вычислений называют <b>значением выражения</b>: значение выражения 15 + 8 равно 23, а значение выражения 40 − 3 · 6 равно 22 (сначала 3 · 6 = 18, потом 40 − 18).</p>',
     exIdx:[1]},
+  {title:'Как назвать выражение', body:
+    '<p>Выражение можно назвать по его <b>последнему действию</b>. Выражение 15 + 8 — сумма чисел 15 и 8. Выражение (12 + 8) : 5 — частное суммы чисел 12 и 8 и числа 5, потому что последним выполняется деление. А 40 − 3 · 6 — разность числа 40 и произведения чисел 3 и 6.</p>'
+    +'<div class="figure">__SVG_EXPR_READ_LAST__</div>'},
+  {title:'Переводчик с русского на математический', body:
+    '<p>Полезно знать «переводчик» с русского: «на 7 больше» — прибавить 7; «на 7 меньше» — вычесть 7; «в 3 раза больше» — умножить на 3; «в 3 раза меньше» — разделить на 3; «всего», «вместе» — чаще всего сложение; «осталось» — вычитание; «по 5 штук в каждой из 4 коробок» — умножение 5 · 4.</p>'
+    +'<div class="figure">__SVG_EXPR_TRANSLATOR__</div>'},
   {title:'Программа действий', body:
     '<p>Чтобы вычислить длинное выражение, составляют <b>программу действий</b> — список шагов в том порядке, в каком их нужно делать. Порядок ты знаешь: сначала скобки, потом умножение и деление, потом сложение и вычитание (подробно — в теме про порядок действий). Возьмём выражение (8 + 9) · 2 − 5 · 5:</p>'
     +'<div class="figure">__SVG_EXPR_PROGRAM__</div>'
-    +'<p>На схеме шаги пронумерованы кружками ①②③④. Скобки выполняются первыми: 8 + 9 = 17. Затем 17 · 2 = 34 и, независимо от этого, 5 · 5 = 25. Последним идёт вычитание 34 − 25 = 9. Значит, значение выражения равно 9. Заметь: последнее действие здесь — вычитание, поэтому выражение читается как «разность произведения суммы чисел 8 и 9 и числа 2 и произведения чисел 5 и 5».</p>'
-    +'<div class="note"><span class="hand">Запомни</span>Программа действий — это записанный по порядку список: «1) …, 2) …, 3) …». Количество действий в ней равно количеству знаков действий в выражении. В выражении (8 + 9) · 2 − 5 · 5 четыре знака (+, ·, −, ·), значит, четыре действия.</div>',
-    exIdx:[0,5]},
-  {title:'Буквенное выражение и подстановка', body:
+    +'<p>На схеме шаги пронумерованы кружками ①②③④. Скобки выполняются первыми: 8 + 9 = 17. Затем 17 · 2 = 34 и, независимо от этого, 5 · 5 = 25. Последним идёт вычитание 34 − 25 = 9. Значит, значение выражения равно 9. Заметь: последнее действие здесь — вычитание, поэтому выражение читается как «разность произведения суммы чисел 8 и 9 и числа 2 и произведения чисел 5 и 5».</p>',
+    exIdx:[0]},
+  {title:'Частая ошибка в порядке действий', body:
+    '<div class="note"><span class="hand">Запомни</span>Программа действий — это записанный по порядку список: «1) …, 2) …, 3) …». Количество действий в ней равно количеству знаков действий в выражении. В выражении (8 + 9) · 2 − 5 · 5 четыре знака (+, ·, −, ·), значит, четыре действия.</div>',
+    exIdx:[5]},
+  {title:'Буквенное выражение', body:
     '<p>Если число в записи может меняться, его заменяют <b>буквой</b>. Выражение a + 5 читается «сумма числа a и пяти»; выражение 3 · b — «утроенное b», его можно писать короче: 3b. Знак умножения между числом и буквой (и между буквами) можно опускать: 3b, ab. Но между двумя числами его опускать нельзя: 3 · 5 — это не 35!</p>'
-    +'<p>Чтобы найти значение буквенного выражения, нужно <b>подставить</b> вместо буквы число. Пусть a = 4. Тогда значение выражения 3a + 7 равно 3 · 4 + 7 = 12 + 7 = 19. При a = 10 получится 3 · 10 + 7 = 37. Одна запись — много разных значений: в этом и сила букв.</p>'
+    +'<div class="figure">__SVG_EXPR_NOTATION__</div>'},
+  {title:'Подстановка', body:
+    '<p>Чтобы найти значение буквенного выражения, нужно <b>подставить</b> вместо буквы число. Пусть a = 4. Тогда значение выражения 3a + 7 равно 3 · 4 + 7 = 12 + 7 = 19. При a = 10 получится 3 · 10 + 7 = 37. Одна запись — много разных значений: в этом и сила букв.</p>'
     +'<div class="figure">__SVG_EXPR_SUBST__</div>'
     +'<div class="warn"><span class="hand">Частая ошибка</span>Подставляя число вместо буквы, дети забывают знак умножения. Если a = 4, то 3a — это 3 · 4 = 12, а вовсе не «34». Подставляй и сразу пиши знак «·» между числом и подставленным числом.</div>',
     exIdx:[2,7]},
@@ -2380,14 +2431,17 @@ CONTENT.expr.steps = [
     '<p>Задача: «В магазине было 200 кг яблок. Утром продали x кг, а днём ещё y кг. Сколько килограммов яблок осталось?» Читаем медленно: было 200, продали x, ещё продали y — значит, осталось 200 − x − y. Это буквенное выражение. Если x = 70 и y = 45, то осталось 200 − 70 − 45 = 85 кг. Одна и та же запись подходит для любых продаж.</p>'
     +'<div class="figure">__SVG_EXPR_FROM_TEXT__</div>',
     exIdx:[3]},
-  {title:'Текстовые задачи и схема-отрезок', body:
+  {title:'Схема-отрезок', body:
     '<p>Сложные задачи удобно рисовать <b>отрезком</b>: всё количество — длинный отрезок, а его части — маленькие отрезки одинаковой «единицы» длины. Разберём задачу: «Серёжа, Костя и Денис принесли 120 марок. Серёжа принёс 25 марок, Костя — в 2 раза больше Серёжи. Сколько марок принёс Денис?»</p>'
-    +'<div class="figure">__SVG_EXPR_BAR_ANIM__</div>'
-    +'<p>Чтобы найти неизвестную часть, вычитаем известные части из целого. Такую задачу можно решить <b>по действиям</b> (1) 25 · 2 = 50 — Костя; 2) 25 + 50 = 75 — двое; 3) 120 − 75 = 45 — Денис) или <b>одним выражением</b>: 120 − (25 + 25 · 2) = 45. Ответ, конечно, один и тот же.</p>',
+    +'<div class="figure">__SVG_EXPR_BAR_ANIM__</div>'},
+  {title:'По действиям или одним выражением', body:
+    '<p>Чтобы найти неизвестную часть, вычитаем известные части из целого. Такую задачу можно решить <b>по действиям</b> (1) 25 · 2 = 50 — Костя; 2) 25 + 50 = 75 — двое; 3) 120 − 75 = 45 — Денис) или <b>одним выражением</b>: 120 − (25 + 25 · 2) = 45. Ответ, конечно, один и тот же.</p>',
     exIdx:[4]},
-  {title:'Удобный счёт: свойства действий', body:
+  {title:'Свойства действий', body:
     '<p>Иногда выражение можно пересчитать хитро, не вычисляя «в лоб». Помогают три свойства. <b>Переместительное:</b> a + b = b + a и a · b = b · a — слагаемые и множители можно менять местами. <b>Сочетательное:</b> (a + b) + c = a + (b + c) и (a · b) · c = a · (b · c) — можно группировать так, как удобно. <b>Распределительное:</b> a · (b + c) = a · b + a · c.</p>'
-    +'<p>Примеры: 38 + 57 + 62 = (38 + 62) + 57 = 100 + 57 = 157. Или: 25 · 37 · 4 = (25 · 4) · 37 = 100 · 37 = 3700. Или: 46 · 8 + 46 · 2 = 46 · (8 + 2) = 46 · 10 = 460. Ищи «круглые» пары: 25 и 4, 50 и 2, 125 и 8, слагаемые, дающие 10, 100, 1000.</p>'
+    +'<div class="figure">__SVG_EXPR_PROPERTIES__</div>'},
+  {title:'Удобный счёт на примерах', body:
+    '<p>Примеры: 38 + 57 + 62 = (38 + 62) + 57 = 100 + 57 = 157. Или: 25 · 37 · 4 = (25 · 4) · 37 = 100 · 37 = 3700. Или: 46 · 8 + 46 · 2 = 46 · (8 + 2) = 46 · 10 = 460. Ищи «круглые» пары: 25 и 4, 50 и 2, 125 и 8, слагаемые, дающие 10, 100, 1000.</p>'
     +'<div class="figure">__SVG_EXPR_SHORTCUT__</div>'
     +'<div class="note"><span class="hand">Запомни</span>Три шага решения задачи: 1) прочитай и выдели, что известно и что нужно найти; 2) запиши план — по действиям или выражением, по желанию нарисуй схему-отрезок; 3) вычисли и проверь, что ответ подходит к условию (не получилось ли «−5 яблок» или «2,5 ученика»).</div>',
     exIdx:[6]}
@@ -8132,6 +8186,131 @@ SVG_LIB.ANGLES = function(){
     b+=T(W/2,176,'проверка: 3 · 10 + 7 = 37',12.5,'var(--muted)','middle',false);
     return S(W,H,460,'Решение уравнения 3x+7=37 обратными действиями: 37 минус 7 равно 30, 30 делить на 3 равно 10',b);
   };
+
+  /* ======================= в. 2.28.0 — иллюстрации для разбивки шагов на мелкие этапы ======================= */
+
+  // ---------- NAT_ROUND: округление 3 876 542 (отдельно от сравнения) ----------
+  SVG_LIB.NAT_ROUND = function(){
+    var W=360,H=210;
+    var b='';
+    b+=T(W/2,24,'Округление 3 876 542',15.5,'var(--ink)','middle',true);
+    b+=T(W/2,48,'до тысяч: сотни — 5, 5 ≥ 5 ⇒ +1',12.5,'var(--muted)','middle',false);
+    b+=R(W/2-80,58,160,36,'var(--blue-soft)','var(--blue)',8,2)+T(W/2,81,'3 877 000',16,'var(--blue)','middle',true);
+    b+=T(W/2,118,'до сотен тыс.: дес. тыс. — 7, 7 ≥ 5 ⇒ +1',12.5,'var(--muted)','middle',false);
+    b+=R(W/2-80,128,160,36,'var(--gold-soft)','var(--gold)',8,2)+T(W/2,151,'3 900 000',16,'var(--gold)','middle',true);
+    b+=L(20,174,W-20,174,'var(--line)',1.5);
+    b+=T(W/2,196,'0–4 → оставляем, 5–9 → увеличиваем на 1',12.5,'var(--ink)','middle',true);
+    return S(W,H,340,'Округление 3 876 542 до тысяч даёт 3 877 000, до сотен тысяч — 3 900 000',b);
+  };
+
+  // ---------- NAT_DIV_EXACT: деление уголком 4056 : 78 = 52 (без остатка) ----------
+  SVG_LIB.NAT_DIV_EXACT = function(){
+    var W=320,H=176;
+    var b='';
+    b+=T(W/2,24,'4056 : 78',17,'var(--ink)','middle',true);
+    var steps1=[
+      {t:'405 : 78 = 5 (78·5=390), ост. 15',c:'var(--blue)'},
+      {t:'сносим 6 → 156 : 78 = 2, ост. 0',c:'var(--green)'}
+    ];
+    steps1.forEach(function(s,i){
+      var y=46+i*34;
+      b+=R(10,y,W-20,28,'var(--sheet2)','var(--line)',8,1.3);
+      b+=T(W/2,y+19,s.t,12,s.c,'middle',true);
+    });
+    b+=R(60,122,W-120,38,'var(--blue-soft)','var(--blue)',8,2)+T(W/2,146,'частное 52, остатка нет',14,'var(--blue)','middle',true);
+    return S(W,H,300,'Деление уголком 4056 на 78 равно 52 без остатка',b);
+  };
+
+  // ---------- NAT_DIV_REM: деление с остатком 1000 : 7 = 142 (ост. 6) ----------
+  SVG_LIB.NAT_DIV_REM = function(){
+    var W=380,H=230;
+    var b='';
+    b+=T(W/2,24,'1000 : 7',17,'var(--ink)','middle',true);
+    var steps2=[
+      {t:'10 : 7 = 1 (7), ост. 3'},
+      {t:'30 : 7 = 4 (28), ост. 2'},
+      {t:'20 : 7 = 2 (14), ост. 6'}
+    ];
+    steps2.forEach(function(s,i){
+      var y=48+i*24;
+      b+=T(W/2,y,s.t,12.5,'var(--gold)','middle',false);
+    });
+    b+=R(W/2-80,128,160,38,'var(--gold-soft)','var(--gold)',8,2)+T(W/2,152,'частное 142, остаток 6',14,'var(--gold)','middle',true);
+    b+=L(20,180,W-20,180,'var(--line)',1.5);
+    b+='<text x="'+W/2+'" y="202" font-size="15" text-anchor="middle" font-weight="700" fill="var(--ink)">делимое = делитель · частное + остаток</text>';
+    b+='<text x="'+W/2+'" y="222" font-size="14.5" text-anchor="middle" font-weight="700"><tspan fill="var(--gold)">1000 = 7 · 142 + 6</tspan></text>';
+    return S(W,H,360,'Деление 1000 на 7 равно 142 с остатком 6; проверка: 7 умножить на 142 плюс 6 равно 1000',b);
+  };
+
+  // ---------- EXPR_READ_LAST: чтение выражения (12+8):5 по последнему действию ----------
+  SVG_LIB.EXPR_READ_LAST = function(){
+    var W=380,H=150;
+    var b='';
+    b+='<text x="'+(W/2)+'" y="40" font-size="22" text-anchor="middle" font-weight="700" fill="var(--ink)">(12 + 8) <tspan fill="var(--red)">:</tspan> 5</text>';
+    b+=T(W/2,70,'последнее действие — деление (красным)',13,'var(--red)','middle',true);
+    b+=R(30,86,W-60,50,'var(--sheet2)','var(--line)',10,1.5);
+    b+=T(W/2,106,'частное суммы чисел 12 и 8',13,'var(--ink)','middle',false);
+    b+=T(W/2,126,'и числа 5',13,'var(--ink)','middle',false);
+    return S(W,H,360,'Выражение (12+8):5 называют по последнему действию — делению: частное суммы 12 и 8 и числа 5',b);
+  };
+
+  // ---------- EXPR_TRANSLATOR: переводчик фраз на язык математики ----------
+  SVG_LIB.EXPR_TRANSLATOR = function(){
+    var W=460,H=190;
+    var cards=[
+      ['на 7 больше','+7','var(--blue)'],
+      ['на 7 меньше','−7','var(--red)'],
+      ['в 3 раза больше','×3','var(--blue)'],
+      ['в 3 раза меньше','÷3','var(--red)'],
+      ['всего, вместе','+','var(--green)'],
+      ['осталось','−','var(--gold)']
+    ];
+    var cw=142,ch=78,gx=12,gy=10;
+    var b='';
+    cards.forEach(function(c,i){
+      var col=i%3, row=Math.floor(i/3);
+      var x=gx+col*(cw+6), y=gy+row*(ch+10);
+      b+=R(x,y,cw,ch,'var(--sheet2)','var(--line)',10,1.3);
+      b+=T(x+cw/2,y+30,c[0],11.5,'var(--ink)','middle',false);
+      b+=T(x+cw/2,y+60,c[1],20,c[2],'middle',true);
+    });
+    return S(W,H,440,'Перевод фраз на язык математики: «на 7 больше» — плюс 7, «на 7 меньше» — минус 7, «в 3 раза больше» — умножить на 3, «в 3 раза меньше» — разделить на 3, «всего, вместе» — сложение, «осталось» — вычитание',b);
+  };
+
+  // ---------- EXPR_NOTATION: запись буквенного выражения, 3b короче 3·b, но 3·5 ≠ 35 ----------
+  SVG_LIB.EXPR_NOTATION = function(){
+    var W=420,H=200;
+    var b='';
+    b+=T(W/2,26,'Буквенное выражение',15,'var(--ink)','middle',true);
+    b+=R(20,38,W-40,34,'var(--sheet2)','var(--line)',8,1.3);
+    b+='<text x="'+(W/2)+'" y="61" font-size="16" text-anchor="middle" fill="var(--ink)">a + 5 — «сумма числа a и пяти»</text>';
+    b+=R(20,82,W-40,34,'var(--blue-soft)','var(--blue)',8,2);
+    b+='<text x="'+(W/2)+'" y="105" font-size="16" text-anchor="middle" fill="var(--blue)" font-weight="700">3 · b = 3b  (точку можно не писать)</text>';
+    b+=L(20,130,W-20,130,'var(--line)',1.5);
+    b+=T(W/2,152,'но между двумя ЧИСЛАМИ точку убирать нельзя:',12.5,'var(--ink)','middle',true);
+    b+=R(W/2-90,160,80,32,'var(--green-soft)','var(--green)',8,2)+T(W/2-50,181,'3 · 5',14,'var(--green)','middle',true);
+    b+=T(W/2,181,'≠',16,'var(--muted)','middle',true);
+    b+=R(W/2+10,160,80,32,'var(--red-soft)','var(--red)',8,2)+T(W/2+50,181,'35',14,'var(--red)','middle',true);
+    return S(W,H,400,'Буквенное выражение a+5 — сумма числа a и пяти; 3·b можно писать короче 3b; но между двумя числами точку убирать нельзя — 3·5 не равно 35',b);
+  };
+
+  // ---------- EXPR_PROPERTIES: три свойства действий ----------
+  SVG_LIB.EXPR_PROPERTIES = function(){
+    var W=440,H=210;
+    var rows=[
+      ['Переместительное','a + b = b + a    a · b = b · a','var(--blue)','var(--blue-soft)'],
+      ['Сочетательное','(a + b) + c = a + (b + c)','var(--gold)','var(--gold-soft)'],
+      ['Распределительное','a · (b + c) = a · b + a · c','var(--green)','var(--green-soft)']
+    ];
+    var b='';
+    rows.forEach(function(r,i){
+      var y=10+i*66;
+      b+=R(10,y,W-20,56,r[3],r[2],10,2);
+      b+=T(W/2,y+22,r[0],13,r[2],'middle',true);
+      b+=T(W/2,y+44,r[1],14,'var(--ink)','middle',true);
+    });
+    return S(W,H,420,'Три свойства действий: переместительное a+b=b+a и a·b=b·a; сочетательное (a+b)+c=a+(b+c); распределительное a·(b+c)=a·b+a·c',b);
+  };
 })();
 
 (function(){
@@ -13668,12 +13847,23 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.27.0';
+var APP_VERSION = '2.28.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.27.0",
+ "current": "2.28.0",
  "versions": [
+  {
+   "v": "2.28.0",
+   "date": "2026-10-17",
+   "title": "Шаги помельче, Клетчик объясняет подробно, тропа как в игре",
+   "items": [
+    "По отзыву на 2.27.0: в шагах всё ещё было много текста. Шаги обеих пилотных тем разбиты на более мелкие этапы — «Натуральные числа и действия» с 7 до 11, «Выражения и текстовые задачи» с 7 до 13 — у каждого этапа теперь своя иллюстрация (7 новых схем) или общая с прикреплённым примером. Текст не менялся, только разбивка и 7 новых картинок.",
+    "Рядом с названием темы (там, где есть шаги) появился значок Клетчика с восклицательным знаком — по нажатию открывается окно с полным объяснением той же темы одним текстом, без разбивки на шаги, для тех, кому так привычнее.",
+    "Карта-путь 5 класса стала больше похожа на карту из приключенческой игры: тропа на зелёном поле в клеточку, флажки «старт» и «финиш», пунктирная дорожка с точками-вехами у каждого узла.",
+    "Исправлена прокрутка: при переходе «Назад/Дальше» между шагами экран теперь прыгает к началу нового шага, а не остаётся там, где был — раньше середина следующего шага могла оказаться выше окна."
+   ]
+  },
   {
    "v": "2.27.0",
    "date": "2026-10-17",
@@ -14233,6 +14423,28 @@ async function sendSupport(){
 function pinRequestBtn(){
   if(!(CLOUD.on&&CLOUD.me&&CLOUD.me.role==='parent')) return '';
   return '<button class="btn ghost small" data-pin-request>Забыли PIN или пароль? Запросить у поддержки</button>';
+}
+
+/* в. 2.28.0 — по шагам текст в теме стал короче; значок Клетчика у названия темы
+   открывает окно с полным объяснением (тот же текст, что раньше показывался целиком). */
+var CHAR_MODAL=null; // id темы, чьё полное объяснение открыто, или null
+function charBadgeHTML(id){
+  if(!(CONTENT[id]&&CONTENT[id].steps)) return '';
+  return '<button class="char-badge" data-char-open="'+id+'" title="Клетчик: показать полное объяснение" aria-label="Показать полное объяснение этой темы">'
+    +SVG_LIB.JOURNEY_CHAR()+'<span class="excl" aria-hidden="true">!</span></button>';
+}
+function openCharModal(id){ if(!(CONTENT[id]&&CONTENT[id].steps)) return; CHAR_MODAL=id; drawCharModal(); }
+function closeCharModal(){ CHAR_MODAL=null; drawCharModal(); }
+function drawCharModal(){
+  var root=$('#charModalRoot'); if(!root) return;
+  if(!CHAR_MODAL){ root.innerHTML=''; return; }
+  var id=CHAR_MODAL, C=CONTENT[id], T=TOPICS[id];
+  var h='<div class="modal" data-char-bg><div class="dlg chardlg" role="dialog" aria-modal="true" aria-labelledby="charTitle">'
+    +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">Клетчик объясняет подробно</h2><p class="legend" style="margin:2px 0 0">'+esc(T.name)+'</p></div></div>'
+    +'<div class="prose">'+renderSvgMarkers(fmt(C.explain))+'</div>'
+    +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-char-close>Понятно, закрыть</button></div>'
+    +'</div></div>';
+  root.innerHTML=h;
 }
 
 /* ---- Страница входа ---- */
@@ -15767,9 +15979,18 @@ function jnodeHTML(id,i,W){
     +'</button>'
     +'</div>';
 }
+var JFLAG_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 5h13l-3 4 3 4H5"/></svg>';
+var JTROPHY_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4"/><path d="M12 13v3M9 20h6M10 16.5h4v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/></svg>';
 function gradeMapHTML(ids,W){
   return '<div class="jmap">'+journeyCharHTML()
+    +'<div class="jterrain-wrap">'
+    +'<div class="jterrain-bg"></div>'
+    +'<div class="jterrain">'
+    +'<div class="jflag start">'+JFLAG_SVG+'<span>старт</span></div>'
     +'<div class="jpath">'+ids.map(function(id,i){return jnodeHTML(id,i,W);}).join('')+'</div>'
+    +'<div class="jflag finish">'+JTROPHY_SVG+'<span>финиш темы 5 класса</span></div>'
+    +'</div>'
+    +'</div>'
     +'</div>';
 }
 function gradeSection(g,wide,W){
@@ -15848,7 +16069,7 @@ function viewTopic(){
   var nextTab=tabs[tabIdx+1];
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
     +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+(cheatsForTopic(id).length?' <button class="btn small ghost" data-nav="cheat/'+cheatsForTopic(id)[0].id+'" title="Открыть шпаргалку по этой теме">📄 Шпаргалка</button>':'')+'</span></div>'
-    +'<h1>'+esc(T.name)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
+    +'<h1>'+esc(T.name)+' '+charBadgeHTML(id)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
     +'<p class="legend" style="margin-top:-4px">Уровень мастерства: <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
     +body
@@ -15862,6 +16083,16 @@ function viewTopic(){
    кнопками «Назад/Дальше» вместо одной длинной страницы. Остальные темы не затронуты —
    stepperPos живёт только в памяти вкладки (сбрасывается при перезагрузке страницы). */
 var stepperPos={};
+/* в. 2.28.0 — по отзыву пользователя: при переходе между шагами экран прыгал на то же место
+   прокрутки, из-за чего середина нового шага могла оказаться выше окна. Теперь после Назад/Дальше
+   экран переходит к началу шага (к заголовку), а не просто к верху страницы. */
+function scrollStepperTop(){
+  try{
+    var el=$('.stepper-top');
+    if(el && el.scrollIntoView) el.scrollIntoView({block:'start'});
+    else window.scrollTo(0,0);
+  }catch(e){ try{window.scrollTo(0,0)}catch(e2){} }
+}
 function stepperDotsHTML(n,cur){
   var h='';
   for(var i=0;i<n;i++) h+='<i class="'+(i<cur?'done':i===cur?'cur':'')+'"></i>';
@@ -16219,6 +16450,9 @@ document.addEventListener('click',function(ev){
   if(t.hasAttribute('data-support-close')){ closeSupport(); return; }
   if(t.hasAttribute('data-support-send')){ sendSupport(); return; }
   if(t.hasAttribute('data-support-kind')){ SUP.kind=t.getAttribute('data-support-kind'); drawSupport(); return; }
+  var charOpen=t.getAttribute('data-char-open');
+  if(charOpen){ openCharModal(charOpen); return; }
+  if(t.hasAttribute('data-char-close')){ closeCharModal(); return; }
   if(t.hasAttribute('data-logout')){ cloudLogout(); return; }
   if(t.hasAttribute('data-google-login')){ openGoogleLogin(); return; }
   if(t.hasAttribute('data-onb-mode')){
@@ -16257,8 +16491,8 @@ document.addEventListener('click',function(ev){
   if(stepAttr){
     var stp=stepAttr.split(':'), stpId=stp[0], stpDir=stp[1], stpArr=CONTENT[stpId]&&CONTENT[stpId].steps;
     if(stpArr){
-      if(stpDir==='next'){ stepperPos[stpId]=Math.min((stepperPos[stpId]||0)+1,stpArr.length-1); render(); }
-      else if(stpDir==='prev'){ stepperPos[stpId]=Math.max((stepperPos[stpId]||0)-1,0); render(); }
+      if(stpDir==='next'){ stepperPos[stpId]=Math.min((stepperPos[stpId]||0)+1,stpArr.length-1); render(); scrollStepperTop(); }
+      else if(stpDir==='prev'){ stepperPos[stpId]=Math.max((stepperPos[stpId]||0)-1,0); render(); scrollStepperTop(); }
       else if(stpDir==='practice'){ go('topic',{id:stpId,tab:'practice'}); }
     }
     return;
