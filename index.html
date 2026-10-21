@@ -24570,12 +24570,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.37.0';
+var APP_VERSION = '2.37.1';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.37.0",
+ "current": "2.37.1",
  "versions": [
+  {
+   "v": "2.37.1",
+   "date": "2026-10-21",
+   "title": "Исправлена ошибка в показе примеров внутри шага",
+   "items": [
+    "Если шаг объяснения был привязан к одному конкретному примеру (а не к нескольким), страница с объяснением могла зависнуть с ошибкой, а привязанный к нулевому примеру шаг — показать пример без текста решения. Починено для всех шагов во всех классах.",
+    "Ошибка была давней (с самого первого запуска формата «по шагам», версия 2.26.0) и обнаружена только сейчас — при финальной сквозной проверке всех 444 шагов во всех 55 темах после завершения 9 класса."
+   ]
+  },
   {
    "v": "2.37.0",
    "date": "2026-10-21",
@@ -26936,7 +26945,8 @@ function tabExplainSteps(id){
   var C=CONTENT[id], steps=C.steps;
   var cur=Math.max(0,Math.min(stepperPos[id]||0,steps.length-1));
   var st=steps[cur], isLast=cur===steps.length-1;
-  var exHTML=renderSvgMarkers((st.exIdx||[]).map(function(ei){
+  var exIdxArr=Array.isArray(st.exIdx)?st.exIdx:(st.exIdx!==undefined&&st.exIdx!==null?[st.exIdx]:[]);
+  var exHTML=renderSvgMarkers(exIdxArr.map(function(ei){
     var e=C.examples[ei];
     return '<div class="ex"><div class="t">Пример. '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>';
   }).join(''));
