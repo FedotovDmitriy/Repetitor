@@ -128,6 +128,12 @@ a{color:var(--blue)}
 .track-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .track-h h2{white-space:nowrap}
 .track-h .hand{font-size:24px;color:var(--blue)}
+/* в. 2.29.0 — класс на главной как карточка-аккордеон: заголовок кликабелен целиком, шеврон
+   поворачивается при открытии; визуально ничего не меняется, когда карта свёрнута. */
+.grade-head{display:flex;align-items:center;gap:8px;background:none;border:0;padding:2px 2px 2px 0;margin:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
+.grade-head h2{margin:0}
+.grade-chevron{flex:none;width:18px;height:18px;color:var(--muted);transition:transform .15s ease}
+.grade-card.open .grade-chevron{transform:rotate(180deg);color:var(--blue)}
 .rows{display:grid;gap:2px}
 .row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;width:100%;background:none;border:0;border-top:1px solid var(--line);padding:11px 4px;cursor:pointer;border-radius:0}
 .rows .row:first-child{border-top:0}
@@ -13847,12 +13853,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.28.0';
+var APP_VERSION = '2.29.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.28.0",
+ "current": "2.29.0",
  "versions": [
+  {
+   "v": "2.29.0",
+   "date": "2026-10-21",
+   "title": "Карта-путь — у каждого класса, открывается по клику",
+   "items": [
+    "По отзыву пользователя: карта-путь (раньше была только у 5 класса) теперь есть у всех 8 классов — 2–9.",
+    "Карта класса больше не показана всегда — она открывается по клику на заголовок класса и сворачивается обратно кнопкой «✕ Свернуть карту» (или повторным кликом на заголовок). Шеврон у заголовка поворачивается, когда карта открыта. По умолчанию открыт только класс самого ребёнка — иначе страница со всеми 8 картами была бы огромной."
+   ]
+  },
   {
    "v": "2.28.0",
    "date": "2026-10-17",
@@ -15953,9 +15968,9 @@ function bookLinkHTML(g){
 /* в. 2.27.0 — полная карта-путь для 5 класса: узлы вместо плоского списка, персонаж-проводник
    «Клетчик». Статус узла — только из реальных данных (tStat), без искусственных «замков»: по
    духу приложения тему можно открыть в любом порядке. */
-function journeyCharHTML(){
+function journeyCharHTML(g){
   return '<div class="jmap-char">'+SVG_LIB.JOURNEY_CHAR()
-    +'<span class="bubble"><b>Клетчик:</b> Привет! Это карта 5 класса — иди по темам в любом порядке, я провожу. Там, где значок «✏️ по шагам», объяснение разбито на кусочки с картинками.</span>'
+    +'<span class="bubble"><b>Клетчик:</b> Привет! Это карта '+esc(GRADE_LABEL[g])+' — иди по темам в любом порядке, я провожу. Там, где значок «✏️ по шагам», объяснение разбито на кусочки с картинками.</span>'
     +'</div>';
 }
 function jnodeHTML(id,i,W){
@@ -15979,24 +15994,37 @@ function jnodeHTML(id,i,W){
     +'</button>'
     +'</div>';
 }
+var GRADE_CHEVRON_SVG='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>';
 var JFLAG_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 5h13l-3 4 3 4H5"/></svg>';
 var JTROPHY_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4"/><path d="M12 13v3M9 20h6M10 16.5h4v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/></svg>';
-function gradeMapHTML(ids,W){
-  return '<div class="jmap">'+journeyCharHTML()
+function gradeMapHTML(ids,W,g){
+  return '<div class="jmap">'+journeyCharHTML(g)
     +'<div class="jterrain-wrap">'
     +'<div class="jterrain-bg"></div>'
     +'<div class="jterrain">'
     +'<div class="jflag start">'+JFLAG_SVG+'<span>старт</span></div>'
     +'<div class="jpath">'+ids.map(function(id,i){return jnodeHTML(id,i,W);}).join('')+'</div>'
-    +'<div class="jflag finish">'+JTROPHY_SVG+'<span>финиш темы 5 класса</span></div>'
+    +'<div class="jflag finish">'+JTROPHY_SVG+'<span>финиш '+esc(GRADE_LABEL[g])+'а</span></div>'
     +'</div>'
     +'</div>'
     +'</div>';
 }
+/* в. 2.29.0 — класс на главной теперь карточка-аккордеон: заголовок всегда виден, карта-путь (как
+   раньше была только у 5 класса) открывается по клику на класс и сворачивается явной кнопкой
+   «Свернуть карту» (плюс повторный клик по заголовку) — вместо того, чтобы всегда показывать
+   все темы всех 8 классов одним длинным списком. */
 function gradeSection(g,wide,W){
-  var ids=BY_GRADE[g];
-  return '<section class="sheet"><div class="track-h"><h2>'+GRADE_LABEL[g]+'</h2><span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(GRADE_SUB[g])+'</span>'+bookLinkHTML(g)+'</span></div>'
-    +(g===5?gradeMapHTML(ids,W):'<div class="rows'+((wide||ids.length>10)?' two':'')+'">'+ids.map(function(id){return rowHTML(id,W)}).join('')+'</div>')
+  var ids=BY_GRADE[g], open=isGradeOpen(g);
+  var avIds=ids.filter(avail), doneN=avIds.filter(function(id){return tStat(id)==='done'}).length;
+  var progText=avIds.length?('освоено '+doneN+' из '+avIds.length):'раздел готовится';
+  return '<section class="sheet grade-card'+(open?' open':'')+'">'
+    +'<div class="track-h">'
+    +'<button class="grade-head" data-grade-toggle="'+g+'" aria-expanded="'+(open?'true':'false')+'">'
+      +'<span class="grade-chevron" aria-hidden="true">'+GRADE_CHEVRON_SVG+'</span><h2>'+esc(GRADE_LABEL[g])+'</h2>'
+    +'</button>'
+    +'<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(GRADE_SUB[g])+'</span><span class="legend" style="margin:0">'+esc(progText)+'</span>'+bookLinkHTML(g)+'</span>'
+    +'</div>'
+    +(open?('<div class="cta" style="justify-content:flex-end;margin:4px 0 10px"><button class="btn ghost small" data-grade-toggle="'+g+'">✕ Свернуть карту</button></div>'+gradeMapHTML(ids,W,g)):'')
     +'</section>';
 }
 function viewHome(){
@@ -16083,6 +16111,15 @@ function viewTopic(){
    кнопками «Назад/Дальше» вместо одной длинной страницы. Остальные темы не затронуты —
    stepperPos живёт только в памяти вкладки (сбрасывается при перезагрузке страницы). */
 var stepperPos={};
+/* в. 2.29.0 — по отзыву пользователя: карта-путь (раньше была только у 5 класса) теперь есть у
+   КАЖДОГО класса, и открывается по клику на класс вместо того, чтобы всегда быть развёрнутой —
+   иначе главная страница с картами всех 8 классов была бы огромной. gradeMapOpen живёт только в
+   памяти вкладки (не сохраняется), по умолчанию открыт только класс самого ребёнка. */
+var gradeMapOpen={};
+function isGradeOpen(g){
+  if(gradeMapOpen[g]===undefined) gradeMapOpen[g]=(g===kidGrade(activeKid));
+  return gradeMapOpen[g];
+}
 /* в. 2.28.0 — по отзыву пользователя: при переходе между шагами экран прыгал на то же место
    прокрутки, из-за чего середина нового шага могла оказаться выше окна. Теперь после Назад/Дальше
    экран переходит к началу шага (к заголовку), а не просто к верху страницы. */
@@ -16453,6 +16490,8 @@ document.addEventListener('click',function(ev){
   var charOpen=t.getAttribute('data-char-open');
   if(charOpen){ openCharModal(charOpen); return; }
   if(t.hasAttribute('data-char-close')){ closeCharModal(); return; }
+  var gradeToggle=t.getAttribute('data-grade-toggle');
+  if(gradeToggle){ var gt=+gradeToggle; gradeMapOpen[gt]=!isGradeOpen(gt); render(); return; }
   if(t.hasAttribute('data-logout')){ cloudLogout(); return; }
   if(t.hasAttribute('data-google-login')){ openGoogleLogin(); return; }
   if(t.hasAttribute('data-onb-mode')){
