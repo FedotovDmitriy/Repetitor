@@ -24,7 +24,7 @@
 - Кнопки «Войти через Яндекс»/«Войти через Яху» показываются на странице входа только после того, как способ настроен на сервере (переменные окружения `YANDEX_CLIENT_ID`/`YANDEX_CLIENT_SECRET` и `YAHOO_CLIENT_ID`/`YAHOO_CLIENT_SECRET`) — как и раньше было бы с Gmail, если бы он не был настроен. **До этого момента на сайте видна только кнопка Gmail — никаких изменений для пользователей, пока ключи не добавлены.**
 - **Нужно сделать на стороне Дмитрия, чтобы кнопки заработали:**
   1. Яндекс: зарегистрировать приложение на oauth.yandex.ru, включить доступ «Яндекс ID → Доступ к адресу электронной почты», redirect URI — `https://repetitor-5oz.pages.dev/api/auth/callback/yandex`. Добавить `YANDEX_CLIENT_ID`/`YANDEX_CLIENT_SECRET` в переменные окружения Cloudflare Pages (как уже сделано для Google).
-  2. Яху: зарегистрировать приложение на developer.yahoo.com/apps (тип — Confidential Client, OpenID Connect, разрешения `openid`+`email`), redirect URI — `https://repetitor-5oz.pages.dev/api/auth/callback/yahoo`. Добавить `YAHOO_CLIENT_ID`/`YAHOO_CLIENT_SECRET` в переменные окружения.
+  2. Яху: зарегистрировать приложение на developer.yahoo.com/apps (тип приложения — Web Application, в разделе API Permissions включить «OpenID Connect Permissions» → отметить Email), redirect URI — `https://repetitor-5oz.pages.dev/api/auth/callback/yahoo`. Добавить `YAHOO_CLIENT_ID`/`YAHOO_CLIENT_SECRET` в переменные окружения.
   3. Вход через Google не трогали — его redirect URI (`/api/auth/callback`, без суффикса) не менялся, уже настроенный Google OAuth продолжит работать как есть.
 
 ## 2.38.0 — материалы для скачивания с обложками (2026-10-27)
