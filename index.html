@@ -24584,12 +24584,22 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.41.0';
+var APP_VERSION = '2.42.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.41.0",
+ "current": "2.42.0",
  "versions": [
+  {
+   "v": "2.42.0",
+   "date": "2026-10-27",
+   "title": "Английский язык — первый шаг: переключатель и часть интерфейса",
+   "items": [
+    "Кнопка RU/EN в шапке сайта (рядом с переключателем темы) — выбор запоминается, как и тема оформления.",
+    "На английский переведены: страница входа, главная (блок «Как заниматься», олимпиадный трек), шапка и навигация, выход из аккаунта.",
+    "Пока НЕ переведено (следующие шаги): темы (объяснения/примеры/шаги/тесты — будут переводиться по классам, как раньше делался формат «по шагам»), диагностика, значки, страница родителя, шпаргалки, регистрация/условия использования, подвал с авторскими правами. Пока язык интерфейса — английский, а контент тем — на русском."
+   ]
+  },
   {
    "v": "2.41.0",
    "date": "2026-10-27",
@@ -25096,11 +25106,12 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.42.0",
-  "title": "Английский язык — интерфейс и часть заданий",
+  "v": "2.43.0",
+  "title": "Английский язык — продолжение перевода интерфейса",
   "when": "в планах",
   "items": [
-   "Начало перевода интерфейса и части заданий на английский язык."
+   "Диагностика, значки, страница родителя, шпаргалки, регистрация и условия использования — на английский.",
+   "Затем перевод контента тем по классам (объяснения, примеры, шаги, тесты) — по одному классу за версию, как раньше делался формат «по шагам»."
   ],
   "later": [
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
@@ -25326,20 +25337,20 @@ function drawCharModal(){
 var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Не удалось подтвердить вход — попробуйте ещё раз.',claims:'Не удалось подтвердить адрес почты.',not_configured:'Этот способ входа ещё не настроен.',disabled:'Эта семья отключена администратором. Если это ошибка — напишите в поддержку.'};
 function viewLanding(){
   return '<div class="kidwrap"><div class="kidbox sheet landing">'
-    +'<p class="kick hand" style="margin:0">Тетрадь открыта — начнём</p>'
-    +'<h1>Математика в клетку</h1>'
-    +'<p class="lead">Спокойные занятия по математике для 2–9 классов: находим пробелы, объясняем со схемами, тренируем на задачах с подсказками и проверяем тестами.</p>'
-    +(CLOUD.err?'<p class="fb bad" style="justify-content:center">'+esc(LOGIN_ERR[CLOUD.err]||'Не получилось войти.')+'</p>':'')
-    +'<button type="button" class="btn primary gbtn" data-google-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>Войти через Gmail</button>'
-    +(CLOUD.yandex?'<button type="button" class="btn primary gbtn" data-yandex-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 17l3-10 3 10"/></svg>Войти через Яндекс</button>':'')
-    +(CLOUD.yahoo?'<button type="button" class="btn primary gbtn" data-yahoo-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 8l4 5.2V17M16 8l-4 5.2"/></svg>Войти через Yahoo</button>':'')
-    +'<p class="goal" style="font-size:14.5px;margin-inline:auto;max-width:48ch">Родитель входит со своей почты, принимает условия и создаёт семью. Ученик входит со своей почтой и отправляет родителю запрос — после подтверждения выбирает свой значок и вводит PIN.</p>'
-    +'<p style="margin-top:14px"><button class="btn ghost small" data-nav="versions">Версии и планы</button></p>'
+    +'<p class="kick hand" style="margin:0">'+T('Тетрадь открыта — начнём','The notebook is open — let’s start')+'</p>'
+    +'<h1>'+T('Математика в клетку','Math in a Grid')+'</h1>'
+    +'<p class="lead">'+T('Спокойные занятия по математике для 2–9 классов: находим пробелы, объясняем со схемами, тренируем на задачах с подсказками и проверяем тестами.','Calm math practice for grades 2–9: we find the gaps, explain with diagrams, drill with hinted problems, and check with tests.')+'</p>'
+    +(CLOUD.err?'<p class="fb bad" style="justify-content:center">'+esc(LOGIN_ERR[CLOUD.err]||T('Не получилось войти.','Could not sign in.'))+'</p>':'')
+    +'<button type="button" class="btn primary gbtn" data-google-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>'+T('Войти через Gmail','Sign in with Gmail')+'</button>'
+    +(CLOUD.yandex?'<button type="button" class="btn primary gbtn" data-yandex-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 17l3-10 3 10"/></svg>'+T('Войти через Яндекс','Sign in with Yandex')+'</button>':'')
+    +(CLOUD.yahoo?'<button type="button" class="btn primary gbtn" data-yahoo-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 8l4 5.2V17M16 8l-4 5.2"/></svg>'+T('Войти через Yahoo','Sign in with Yahoo')+'</button>':'')
+    +'<p class="goal" style="font-size:14.5px;margin-inline:auto;max-width:48ch">'+T('Родитель входит со своей почты, принимает условия и создаёт семью. Ученик входит со своей почтой и отправляет родителю запрос — после подтверждения выбирает свой значок и вводит PIN.','A parent signs in with their own email, accepts the terms, and creates a family. A student signs in with their own email and sends the parent a request — once approved, the student picks an icon and sets a PIN.')+'</p>'
+    +'<p style="margin-top:14px"><button class="btn ghost small" data-nav="versions">'+T('Версии и планы','Versions and plans')+'</button></p>'
     +'</div></div>';
 }
 function familyStrip(){
   if(!(CLOUD.on&&CLOUD.me)) return '';
-  return '<div class="famstrip"><span>Семья · <b>'+esc(CLOUD.me.email)+'</b>'+(CLOUD.me.role==='kid'?' <span style="color:var(--muted)">(вход ребёнка)</span>':'')+'</span><button class="btn small ghost" data-logout>Выйти из Gmail</button></div>';
+  return '<div class="famstrip"><span>'+T('Семья','Family')+' · <b>'+esc(CLOUD.me.email)+'</b>'+(CLOUD.me.role==='kid'?' <span style="color:var(--muted)">'+T('(вход ребёнка)','(child sign-in)')+'</span>':'')+'</span><button class="btn small ghost" data-logout>'+T('Выйти','Sign out')+'</button></div>';
 }
 
 /* ---- Регистрация: кто вы — родитель или ученик; условия; запросы в семью ---- */
@@ -25354,7 +25365,7 @@ function needsGate(){
   return '';
 }
 function onbBox(inner){ return '<div class="kidwrap"><div class="kidbox sheet landing" style="max-width:640px">'+inner+'</div></div>'; }
-function onbStrip(){ return '<div class="famstrip"><span>Вы вошли как <b>'+esc((CLOUD.me&&CLOUD.me.email)||'')+'</b></span><button class="btn small ghost" data-logout>Выйти из Gmail</button></div>'; }
+function onbStrip(){ return '<div class="famstrip"><span>'+T('Вы вошли как','Signed in as')+' <b>'+esc((CLOUD.me&&CLOUD.me.email)||'')+'</b></span><button class="btn small ghost" data-logout>'+T('Выйти','Sign out')+'</button></div>'; }
 function onbErr(){ return ONB.err?'<p class="fb bad" style="justify-content:center">'+esc(ONB.err)+'</p>':''; }
 function legalLinks(){ return '<a href="/legal/terms.html" target="_blank" rel="noopener">Пользовательское соглашение</a>, <a href="/legal/privacy.html" target="_blank" rel="noopener">Политику конфиденциальности</a> и <a href="/legal/copyright.html" target="_blank" rel="noopener">условия об авторских правах</a>'; }
 function termsBlock(){
@@ -25529,6 +25540,18 @@ function setTheme(t){try{if(t==='auto') localStorage.removeItem(THEME_KEY); else
 function cycleTheme(){var order=['auto','light','dark'], i=order.indexOf(getTheme()); setTheme(order[(i+1)%3]);}
 function themeIcon(){var t=getTheme(); return t==='light'?'☀️':t==='dark'?'🌙':'🌓'}
 function themeLabel(){var t=getTheme(); return t==='light'?'Светлая тема — нажми, чтобы сменить':t==='dark'?'Тёмная тема — нажми, чтобы сменить':'Тема как на устройстве — нажми, чтобы выбрать свою'}
+/* в. 2.42.0 — язык интерфейса (RU/EN). Хранится и переключается так же, как тема (localStorage, без сервера).
+   T(ru,en) — точечный перевод строки прямо в месте использования, без отдельного словаря: так проще
+   видеть оба варианта рядом и постепенно переводить остальной интерфейс, не трогая архитектуру.
+   Контент тем (объяснения/примеры/шаги/тесты) пока не переведён — переводится по классам в следующих версиях;
+   при LANG='en' он по-прежнему показывается на русском. */
+var LANG_KEY='mvk-lang';
+function getLang(){ try{ return localStorage.getItem(LANG_KEY)==='en'?'en':'ru'; }catch(e){ return 'ru'; } }
+function setLang(l){ try{ if(l==='en') localStorage.setItem(LANG_KEY,'en'); else localStorage.removeItem(LANG_KEY); }catch(e){} render(); }
+function cycleLang(){ setLang(getLang()==='en'?'ru':'en'); }
+function langIcon(){ return getLang()==='en'?'EN':'RU'; }
+function langLabel(){ return getLang()==='en'?'English — switch to Russian':'Русский — переключить на English'; }
+function T(ru,en){ return getLang()==='en'?en:ru; }
 
 var LS_PREFIX='mvk-state-v1-';  // + kidId -> прогресс конкретного ребёнка
 
@@ -26629,21 +26652,23 @@ function kidName(id){var k=KIDS.filter(function(x){return x.id===id})[0]; return
 function visibleKids(){return KIDS.filter(function(k){return k.active!==false})}
 function paintBar(){
   if(view.name==='pickkid'||view.name==='landing'||view.name==='welcome'||view.name==='terms'||(view.name==='versions'&&!activeKid)){
-    $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='landing'?'landing':'pickkid')+'"><span class="hand">Математика</span><b>в клетку</b></button>'
-      +'<button class="btn small ghost" style="margin-left:auto" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="Тема оформления">'+themeIcon()+'</button>'
-      +'<button class="btn small ghost" data-nav="versions">Версии</button>';
+    $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='landing'?'landing':'pickkid')+'"><span class="hand">'+T('Математика','Math')+'</span><b>'+T('в клетку','in a Grid')+'</b></button>'
+      +'<button class="btn small ghost" style="margin-left:auto" data-lang-toggle title="'+esc(langLabel())+'" aria-label="Язык / Language">'+langIcon()+'</button>'
+      +'<button class="btn small ghost" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="'+T('Тема оформления','Theme')+'">'+themeIcon()+'</button>'
+      +'<button class="btn small ghost" data-nav="versions">'+T('Версии','Versions')+'</button>';
     return;
   }
   var o=overall();
-  var nav=[['home','Карта'],['diag','Диагностика'],['cheats','Шпаргалки'],['status','Значки'],['parent','Родителю'],['versions','Версии']];
+  var nav=[['home',T('Карта','Map')],['diag',T('Диагностика','Diagnostic')],['cheats',T('Шпаргалки','Cheat sheets')],['status',T('Значки','Badges')],['parent',T('Родителю','For parents')],['versions',T('Версии','Versions')]];
   var cur=view.name==='topic'||view.name==='soon'?'home':(view.name==='cheatsheet'?'cheats':view.name);
-  var sync=dbState==='ok'?'сохраняется':dbState==='err'?'не сохранено онлайн':dbState==='off'?'только в этом браузере':'';
+  var sync=dbState==='ok'?T('сохраняется','saving online'):dbState==='err'?T('не сохранено онлайн','not saved online'):dbState==='off'?T('только в этом браузере','only in this browser'):'';
   $('#bar').innerHTML=
-    '<button class="brand" data-nav="home"><span class="hand">Математика</span><b>в клетку</b></button>'+
+    '<button class="brand" data-nav="home"><span class="hand">'+T('Математика','Math')+'</span><b>'+T('в клетку','in a Grid')+'</b></button>'+
     '<nav class="nav">'+nav.map(function(n){return '<button data-nav="'+n[0]+'"'+(cur===n[0]?' aria-current="page"':'')+'>'+n[1]+'</button>'}).join('')+'</nav>'+
-    '<button class="btn small ghost" style="margin-left:auto" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="Тема оформления">'+themeIcon()+'</button>'+
-    (activeKid?'<button class="btn small ghost" data-nav="pickkid" title="Сменить профиль">'+kidAvatarIcon(activeKid)+' '+esc(kidName(activeKid))+' · сменить</button>':'')+
-    '<div class="meter" title="'+esc(sync)+'"><span>Освоено '+o.done+' из '+o.total+'</span><span class="track"><span class="fill" style="display:block;width:'+pct(o.done,o.total)+'%"></span></span></div>';
+    '<button class="btn small ghost" style="margin-left:auto" data-lang-toggle title="'+esc(langLabel())+'" aria-label="Язык / Language">'+langIcon()+'</button>'+
+    '<button class="btn small ghost" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="'+T('Тема оформления','Theme')+'">'+themeIcon()+'</button>'+
+    (activeKid?'<button class="btn small ghost" data-nav="pickkid" title="'+T('Сменить профиль','Switch profile')+'">'+kidAvatarIcon(activeKid)+' '+esc(kidName(activeKid))+' · '+T('сменить','switch')+'</button>':'')+
+    '<div class="meter" title="'+esc(sync)+'"><span>'+T('Освоено','Mastered')+' '+o.done+' '+T('из','of')+' '+o.total+'</span><span class="track"><span class="fill" style="display:block;width:'+pct(o.done,o.total)+'%"></span></span></div>';
 }
 
 /* ======================= ВИДЫ ======================= */
@@ -26954,18 +26979,18 @@ function gradeSection(g,wide,W){
 }
 function viewHome(){
   var ns=nextStep(), W=weakTopics(), wids=ALL.filter(function(id){return W[id]});
-  var boost=wids.length?'<section class="sheet" style="margin-bottom:16px"><div class="track-h"><h2>Что подкрепить</h2><span class="hand">по итогам диагностики и тестов</span></div>'
+  var boost=wids.length?'<section class="sheet" style="margin-bottom:16px"><div class="track-h"><h2>'+T('Что подкрепить','What to reinforce')+'</h2><span class="hand">'+T('по итогам диагностики и тестов','from diagnostics and tests')+'</span></div>'
     +'<div class="boost-chips">'+wids.map(function(id){return '<button class="btn small" data-nav="t/'+id+'/explain">'+esc(TOPICS[id].name)+'</button>'}).join('')+'</div>'
-    +'<div class="cta" style="margin-top:10px"><button class="btn small ghost" data-nav="report">Подробный отчёт</button><span class="legend" style="margin:0">Сдашь тест по теме — пометка «укрепить» исчезнет.</span></div></section>':'';
+    +'<div class="cta" style="margin-top:10px"><button class="btn small ghost" data-nav="report">'+T('Подробный отчёт','Detailed report')+'</button><span class="legend" style="margin:0">'+T('Сдашь тест по теме — пометка «укрепить» исчезнет.','Pass the test on this topic and the “reinforce” mark will disappear.')+'</span></div></section>':'';
   /* в. 2.8.0 — «сравнение с собой»: серия дней подряд, без сравнения с другими детьми */
-  var streakLine=(S.streak&&S.streak.count>=2)?'<p class="legend" style="margin-top:6px">🔥 Серия: '+S.streak.count+' '+ruDays(S.streak.count)+' подряд с занятиями (личный рекорд — '+S.streak.best+'). Сравниваем только с тобой же вчерашним, не с другими ребятами.</p>':'';
+  var streakLine=(S.streak&&S.streak.count>=2)?'<p class="legend" style="margin-top:6px">🔥 '+T('Серия','Streak')+': '+S.streak.count+' '+T(ruDays(S.streak.count),(S.streak.count===1?'day':'days'))+' '+T('подряд с занятиями (личный рекорд —','in a row of practice (personal best —')+' '+S.streak.best+'). '+T('Сравниваем только с тобой же вчерашним, не с другими ребятами.','We only compare you with yesterday’s you, not with other kids.')+'</p>':'';
   return '<div class="hero">'
-    +'<p class="kick hand">Тетрадь открыта — начнём</p>'
-    +'<h1>Как заниматься</h1>'
-    +'<p class="lead">30–40 минут в день, в каждой теме одно и то же: объяснение со схемами, разобранные примеры, не меньше двадцати задач с подсказками, опыт из жизни и тест.</p>'
-    +'<div class="how"><div><b>1. Прочитай</b>Вкладка «Объяснение» со схемами и примерами. Повтори примеры своей рукой.</div><div><b>2. Решай</b>Не меньше двадцати задач. Подсказка есть, но сначала попробуй сам.</div><div><b>3. Примени</b>Один опыт из вкладки «Опыт» — так тема запоминается надолго.</div><div><b>4. Проверься</b>Тест без подсказок. Ответ проверяет сайт сразу, а решение увидит родитель.</div></div>'
+    +'<p class="kick hand">'+T('Тетрадь открыта — начнём','The notebook is open — let’s start')+'</p>'
+    +'<h1>'+T('Как заниматься','How to study')+'</h1>'
+    +'<p class="lead">'+T('30–40 минут в день, в каждой теме одно и то же: объяснение со схемами, разобранные примеры, не меньше двадцати задач с подсказками, опыт из жизни и тест.','30–40 minutes a day, the same routine for every topic: an explanation with diagrams, worked examples, at least twenty hinted problems, a real-life experiment, and a test.')+'</p>'
+    +'<div class="how"><div><b>'+T('1. Прочитай','1. Read')+'</b>'+T('Вкладка «Объяснение» со схемами и примерами. Повтори примеры своей рукой.','The “Explanation” tab with diagrams and examples. Redo the examples by hand.')+'</div><div><b>'+T('2. Решай','2. Solve')+'</b>'+T('Не меньше двадцати задач. Подсказка есть, но сначала попробуй сам.','At least twenty problems. A hint is there, but try on your own first.')+'</div><div><b>'+T('3. Примени','3. Apply')+'</b>'+T('Один опыт из вкладки «Опыт» — так тема запоминается надолго.','One experiment from the “Experiment” tab — that’s what makes a topic stick.')+'</div><div><b>'+T('4. Проверься','4. Check')+'</b>'+T('Тест без подсказок. Ответ проверяет сайт сразу, а решение увидит родитель.','A test with no hints. The site checks the answer right away, and a parent sees the written-out solution.')+'</div></div>'
     +'<div class="cta" style="margin-top:4px"><button class="btn primary" data-nav="'+ns.nav+'">'+esc(ns.label)+'</button><span style="color:var(--muted);font-size:14.5px">'+esc(ns.why)+'</span></div>'
-    +'<p class="legend" style="margin-top:6px">Это только подсказка — ниже на карте можно <a href="#maptop">выбрать любую тему самому</a>, в своём порядке.</p>'
+    +'<p class="legend" style="margin-top:6px">'+T('Это только подсказка — ниже на карте можно','This is only a suggestion — below on the map you can')+' <a href="#maptop">'+T('выбрать любую тему самому','pick any topic yourself')+'</a>'+T(', в своём порядке.',', in whatever order you like.')+'</p>'
     +streakLine
     +'</div>'
     +boost
@@ -26984,8 +27009,8 @@ function viewHome(){
     +'<div class="tracks" style="margin-top:16px">'
     +gradeSection(8,0,W)+gradeSection(9,0,W)
     +'</div>'
-    +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>Олимпиадный трек</h2><span class="hand">когда фундамент готов</span></div>'
-    +'<p class="empty" style="margin:0">Задачи на сообразительность, логику и нестандартные приёмы откроются после освоения фундамента. Пока в конце практики каждой темы есть одна «задача со звёздочкой» — это разминка.</p></section>';
+    +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>'+T('Олимпиадный трек','Olympiad track')+'</h2><span class="hand">'+T('когда фундамент готов','once the foundation is ready')+'</span></div>'
+    +'<p class="empty" style="margin:0">'+T('Задачи на сообразительность, логику и нестандартные приёмы откроются после освоения фундамента. Пока в конце практики каждой темы есть одна «задача со звёздочкой» — это разминка.','Problems on wit, logic, and non-standard tricks will open up once the foundation is mastered. For now, each topic’s practice ends with one “starred problem” as a warm-up.')+'</p></section>';
 }
 function viewSoon(){
   var T=TOPICS[view.id];
@@ -27512,6 +27537,7 @@ document.addEventListener('click',function(ev){
   var diffPick=t.getAttribute('data-difficulty');
   if(diffPick){ S.prefs=S.prefs||{challenge:false}; S.prefs.challenge=(diffPick==='challenge'); scheduleSave(); render(); return; }
   if(t.hasAttribute('data-theme-toggle')){ cycleTheme(); return; }
+  if(t.hasAttribute('data-lang-toggle')){ cycleLang(); return; }
   var readTxt=t.getAttribute('data-read');
   if(readTxt!==null){ speakRu(readTxt,t); return; }
   /* --- мини-игры (в. 2.9.0, доработано в 2.9.1) --- */
