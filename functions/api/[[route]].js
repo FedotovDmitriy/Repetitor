@@ -370,9 +370,9 @@ async function authCallbackYandex(req, env, url) {
   return new Response(null, { status: 302, headers: h });
 }
 
-/* --- вход через Яху (Yahoo, OpenID Connect — тот же принцип, что у Google) --- */
+/* --- вход через Yahoo (OpenID Connect — тот же принцип, что у Google) --- */
 async function authYahoo(req, env, url) {
-  if (!env.YAHOO_CLIENT_ID || !env.SESSION_SECRET) return bad(503, 'Вход через Яху ещё не настроен');
+  if (!env.YAHOO_CLIENT_ID || !env.SESSION_SECRET) return bad(503, 'Вход через Yahoo ещё не настроен');
   const state = b64u(crypto.getRandomValues(new Uint8Array(18)));
   const q = new URLSearchParams({
     client_id: env.YAHOO_CLIENT_ID,
