@@ -6,6 +6,15 @@
  *   DB                   — привязка D1 (имя именно «DB»)
  *   GOOGLE_CLIENT_ID     — OAuth Client ID из Google Cloud
  *   GOOGLE_CLIENT_SECRET — OAuth Client Secret            (секрет)
+ *   YANDEX_CLIENT_ID     — OAuth Client ID из Яндекс OAuth (oauth.yandex.ru), нужен доступ
+ *                          «Доступ к адресу электронной почты» на странице приложения
+ *   YANDEX_CLIENT_SECRET — OAuth Client Secret                                  (секрет)
+ *   YAHOO_CLIENT_ID      — Client ID из Yahoo Developer Network (developer.yahoo.com/apps),
+ *                          приложение типа «Confidential Client», OpenID Connect, scope openid+email
+ *   YAHOO_CLIENT_SECRET  — Client Secret                                        (секрет)
+ *   (для Яндекс и Yahoo в консоли провайдера нужно указать redirect URI:
+ *    https://<ваш-домен>/api/auth/callback/yandex и .../callback/yahoo соответственно —
+ *    у Google свой отдельный, уже настроенный callback без суффикса, его менять не нужно)
  *   SESSION_SECRET       — любая длинная случайная строка (секрет)
  *   ADMIN_PASSWORD       — ваш мастер-пароль для /admin   (секрет)
  *   RESEND_API_KEY       — ключ resend.com                (секрет)
@@ -300,14 +309,138 @@ async function authCallback(req, env, url) {
   return new Response(null, { status: 302, headers: h });
 }
 
+/* --- вход через Яндекс --- */
+async function authYandex(req, env, url) {
+  if (!env.YANDEX_CLIENT_ID || !env.SESSION_SECRET) return bad(503, 'Вход через Яндекс ещё не настроен');
+  const state = b64u(crypto.getRandomValues(new Uint8Array(18)));
+  const q = new URLSearchParams({
+    response_type: 'code',
+    client_id: env.YANDEX_CLIENT_ID,
+    redirect_uri: url.origin + '/api/auth/callback/yandex',
+    state,
+    force_confirm: 'yes',
+  });
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: 'https://oauth.yandex.ru/authorize?' + q,
+      'set-cookie': setCookie('mvk_state', state, 600),
+      'cache-control': 'no-store',
+    },
+  });
+}
+
+async function authCallbackYandex(req, env, url) {
+  const back = (msg) => new Response(null, { status: 302, headers: { location: '/?login_error=' + encodeURIComponent(msg) } });
+  if (!env.YANDEX_CLIENT_ID || !env.YANDEX_CLIENT_SECRET || !env.SESSION_SECRET) return back('not_configured');
+  const code = url.searchParams.get('code'), state = url.searchParams.get('state');
+  if (url.searchParams.get('error')) return back('denied');
+  if (!code || !state || !timingSafeEqual(state, getCookie(req, 'mvk_state'))) return back('state');
+  let tok;
+  try {
+    const r = await fetch('https://oauth.yandex.ru/token', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code', code,
+        client_id: env.YANDEX_CLIENT_ID, client_secret: env.YANDEX_CLIENT_SECRET,
+      }),
+    });
+    tok = await r.json();
+    if (!r.ok || !tok.access_token) return back('token');
+  } catch (e) { return back('token'); }
+  // Яндекс не выдаёт id_token по умолчанию — почту берём через их userinfo-эндпоинт,
+  // запрос идёт напрямую к login.yandex.ru по TLS с только что полученным токеном.
+  let info;
+  try {
+    const r = await fetch('https://login.yandex.ru/info?format=json', {
+      headers: { authorization: 'OAuth ' + tok.access_token },
+    });
+    info = await r.json();
+    if (!r.ok) return back('claims');
+  } catch (e) { return back('claims'); }
+  const email = String(info.default_email || (Array.isArray(info.emails) && info.emails[0]) || '').toLowerCase();
+  if (!EMAIL_RE.test(email)) return back('claims');
+  const who = await loginByEmail(env, email);
+  if (who.f && !(await familyActive(env, who.f))) return back('disabled');
+  const token = await sign({ e: email, f: who.f, r: who.r, exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
+  const h = new Headers({ location: '/' });
+  h.append('set-cookie', setCookie('mvk_sid', token, SESSION_TTL));
+  h.append('set-cookie', setCookie('mvk_state', '', 0));
+  return new Response(null, { status: 302, headers: h });
+}
+
+/* --- вход через Яху (Yahoo, OpenID Connect — тот же принцип, что у Google) --- */
+async function authYahoo(req, env, url) {
+  if (!env.YAHOO_CLIENT_ID || !env.SESSION_SECRET) return bad(503, 'Вход через Яху ещё не настроен');
+  const state = b64u(crypto.getRandomValues(new Uint8Array(18)));
+  const q = new URLSearchParams({
+    client_id: env.YAHOO_CLIENT_ID,
+    redirect_uri: url.origin + '/api/auth/callback/yahoo',
+    response_type: 'code',
+    scope: 'openid email',
+    state,
+    prompt: 'login',
+  });
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: 'https://api.login.yahoo.com/oauth2/request_auth?' + q,
+      'set-cookie': setCookie('mvk_state', state, 600),
+      'cache-control': 'no-store',
+    },
+  });
+}
+
+async function authCallbackYahoo(req, env, url) {
+  const back = (msg) => new Response(null, { status: 302, headers: { location: '/?login_error=' + encodeURIComponent(msg) } });
+  if (!env.YAHOO_CLIENT_ID || !env.YAHOO_CLIENT_SECRET || !env.SESSION_SECRET) return back('not_configured');
+  const code = url.searchParams.get('code'), state = url.searchParams.get('state');
+  if (url.searchParams.get('error')) return back('denied');
+  if (!code || !state || !timingSafeEqual(state, getCookie(req, 'mvk_state'))) return back('state');
+  let tok;
+  try {
+    const r = await fetch('https://api.login.yahoo.com/oauth2/get_token', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        authorization: 'Basic ' + btoa(env.YAHOO_CLIENT_ID + ':' + env.YAHOO_CLIENT_SECRET),
+      },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code', code,
+        redirect_uri: url.origin + '/api/auth/callback/yahoo',
+      }),
+    });
+    tok = await r.json();
+    if (!r.ok || !tok.id_token) return back('token');
+  } catch (e) { return back('token'); }
+  // id_token получен напрямую от Yahoo по TLS — достаточно проверить aud/iss/срок (как у Google)
+  let claims;
+  try { claims = JSON.parse(new TextDecoder().decode(unb64u(tok.id_token.split('.')[1]))); } catch (e) { return back('token'); }
+  if (claims.aud !== env.YAHOO_CLIENT_ID || !/^https:\/\/api\.login\.yahoo\.com$/.test(claims.iss || '') ||
+      !claims.email || (claims.exp || 0) < Date.now() / 1000) return back('claims');
+  const email = claims.email.toLowerCase();
+  const who = await loginByEmail(env, email);
+  if (who.f && !(await familyActive(env, who.f))) return back('disabled');
+  const token = await sign({ e: email, f: who.f, r: who.r, exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
+  const h = new Headers({ location: '/' });
+  h.append('set-cookie', setCookie('mvk_sid', token, SESSION_TTL));
+  h.append('set-cookie', setCookie('mvk_state', '', 0));
+  return new Response(null, { status: 302, headers: h });
+}
+
 function logout() {
   return json({ ok: true }, 200, { 'set-cookie': setCookie('mvk_sid', '', 0) });
 }
 
+/* Какие способы входа настроены (есть Client ID в переменных окружения) — чтобы на
+   странице входа показывались только реально рабочие кнопки, а не все три всегда. */
+const authFlags = env => ({ google: !!env.GOOGLE_CLIENT_ID, yandex: !!env.YANDEX_CLIENT_ID, yahoo: !!env.YAHOO_CLIENT_ID });
+
 async function me(req, env) {
   if (!env.DB) return json({ ok: false, configured: false }, 401);
   let s = await getSession(req, env);
-  if (!s) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID }, 401);
+  if (!s) return json({ ok: false, configured: true, ...authFlags(env) }, 401);
   let cookie = null;
   if (s.r === 'new' || !s.f || s.r === 'kid') {
     // пока человек ждал, родитель мог одобрить запрос — тогда он уже ребёнок из семьи;
@@ -315,7 +448,7 @@ async function me(req, env) {
     const who = await resolveEmail(env, s.e, false);
     if (who && (who.f !== s.f || who.r !== s.r)) { s = { ...s, f: who.f, r: who.r }; cookie = await sessionCookie(env, s); }
   }
-  if (s.f && !(await familyActive(env, s.f))) return json({ ok: false, configured: true, google: !!env.GOOGLE_CLIENT_ID, disabled: true }, 401);
+  if (s.f && !(await familyActive(env, s.f))) return json({ ok: false, configured: true, ...authFlags(env), disabled: true }, 401);
   const out = { ok: true, email: s.e, role: s.r, familyId: s.f || null, termsVersion: TERMS_VERSION };
   if (s.r === 'parent' || s.r === 'kid') out.consent = await hasConsent(env, s.f); // для ребёнка — принял ли условия его родитель
   if (s.r === 'new') out.joinRequest = await lastJoinRequest(env, s.e);
@@ -755,7 +888,11 @@ export async function onRequest(context) {
       if (route === 'consent') return consentRoute(req, env);
       if (route === 'join') return joinRoute(req, env, parts);
       if (route === 'auth' && parts[1] === 'google') return authGoogle(req, env, url);
-      if (route === 'auth' && parts[1] === 'callback') return authCallback(req, env, url);
+      if (route === 'auth' && parts[1] === 'yandex') return authYandex(req, env, url);
+      if (route === 'auth' && parts[1] === 'yahoo') return authYahoo(req, env, url);
+      if (route === 'auth' && parts[1] === 'callback' && parts[2] === 'yandex') return authCallbackYandex(req, env, url);
+      if (route === 'auth' && parts[1] === 'callback' && parts[2] === 'yahoo') return authCallbackYahoo(req, env, url);
+      if (route === 'auth' && parts[1] === 'callback' && !parts[2]) return authCallback(req, env, url);
       if (route === 'auth' && parts[1] === 'logout' && req.method === 'POST') return logout();
       if (route === 'doc') return docRoute(req, env, url);
       if (route === 'support') return supportRoute(req, env);

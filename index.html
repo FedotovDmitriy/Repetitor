@@ -24579,12 +24579,20 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.38.0';
+var APP_VERSION = '2.39.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.38.0",
+ "current": "2.39.0",
  "versions": [
+  {
+   "v": "2.39.0",
+   "date": "2026-10-27",
+   "title": "Регистрация и вход через Яндекс и Яху",
+   "items": [
+    "Вход и регистрация через Яндекс и через Яху — в дополнение к уже работающему входу через Gmail. Кнопки появляются на странице входа только после того, как способ настроен (как и раньше у Gmail)."
+   ]
+  },
   {
    "v": "2.38.0",
    "date": "2026-10-27",
@@ -25067,14 +25075,13 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.39.0",
-  "title": "Регистрация и вход через Яндекс и Яху",
+  "v": "2.40.0",
+  "title": "Английский язык — интерфейс и часть заданий",
   "when": "в планах",
   "items": [
-   "Вход и регистрация через Яндекс и через Яху — в дополнение к уже работающему входу через Gmail."
+   "Начало перевода интерфейса и части заданий на английский язык."
   ],
   "later": [
-   "Английский язык — интерфейс и часть заданий.",
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
   ]
  }
@@ -25082,7 +25089,7 @@ var CHANGELOG = {
 
 /* Сервер (Cloudflare Pages Functions + D1) необязателен: если /api/me не отвечает JSON-ом,
    приложение работает как раньше — с localStorage или базой claude.ai. */
-var CLOUD = {pending:true, on:false, support:false, me:null, err:''};
+var CLOUD = {pending:true, on:false, support:false, me:null, err:'', google:false, yandex:false, yahoo:false};
 var LS_FAMILY = 'mvk-family-v1';
 async function cloudInit(){
   try{
@@ -25096,7 +25103,11 @@ async function cloudInit(){
       if(/json/.test(r.headers.get('content-type')||'')){
         var j=await r.json();
         if(r.ok&&j.ok){ CLOUD.on=true; CLOUD.support=true; CLOUD.me=j; }
-        else if(j.configured){ CLOUD.support=true; if(j.google){ CLOUD.on=true; CLOUD.me=null; } if(j.disabled) CLOUD.err='disabled'; }
+        else if(j.configured){
+          CLOUD.support=true; CLOUD.google=!!j.google; CLOUD.yandex=!!j.yandex; CLOUD.yahoo=!!j.yahoo;
+          if(j.google||j.yandex||j.yahoo){ CLOUD.on=true; CLOUD.me=null; }
+          if(j.disabled) CLOUD.err='disabled';
+        }
       }
     }
   }catch(e){}
@@ -25123,10 +25134,13 @@ async function cloudLogout(){
   try{ Object.keys(localStorage).filter(function(k){return k.indexOf('mvk-')===0}).forEach(function(k){localStorage.removeItem(k)}); sessionStorage.removeItem('mvk-parentok-v1'); }catch(e){}
   location.href=location.pathname;
 }
-/* Окно выбора почты Google открывается отдельным окошком в левом нижнем углу экрана,
-   размером не больше 30% ширины и высоты экрана. */
+/* Окно выбора почты открывается отдельным окошком в левом нижнем углу экрана, размером
+   не больше 30% ширины и высоты экрана — общая логика для всех трёх способов входа. */
 var GLOGIN_NAME='mvk_google_login';
-function openGoogleLogin(){
+var YANDEX_LOGIN_NAME='mvk_yandex_login';
+var YAHOO_LOGIN_NAME='mvk_yahoo_login';
+var LOGIN_POPUP_NAMES=[GLOGIN_NAME,YANDEX_LOGIN_NAME,YAHOO_LOGIN_NAME];
+function openAuthPopup(path,winName){
   try{
     var scr=window.screen||{};
     var aw=scr.availWidth||scr.width||1024;
@@ -25136,20 +25150,24 @@ function openGoogleLogin(){
     var left=scr.availLeft||0;
     var top=(scr.availTop||0)+Math.max(0,ah-h);
     var feats='width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes';
-    var win=window.open('/api/auth/google',GLOGIN_NAME,feats);
-    if(!win){ location.href='/api/auth/google'; return; }
+    var win=window.open(path,winName,feats);
+    if(!win){ location.href=path; return; }
     try{win.focus()}catch(e){}
     var iv=setInterval(function(){
       var closed=true; try{closed=win.closed}catch(e){closed=true}
       if(closed){ clearInterval(iv); cloudInit().then(function(){render()}); }
     },400);
-  }catch(e){ location.href='/api/auth/google'; }
+  }catch(e){ location.href=path; }
 }
-/* Если это и есть то самое окошко входа (открыто из openGoogleLogin) и вход завершён —
-   передаём результат в основное окно и закрываемся, а не показываем всё приложение внутри окошка. */
+function openGoogleLogin(){ openAuthPopup('/api/auth/google',GLOGIN_NAME); }
+function openYandexLogin(){ openAuthPopup('/api/auth/yandex',YANDEX_LOGIN_NAME); }
+function openYahooLogin(){ openAuthPopup('/api/auth/yahoo',YAHOO_LOGIN_NAME); }
+/* Если это и есть то самое окошко входа (открыто из openGoogleLogin/openYandexLogin/openYahooLogin)
+   и вход завершён — передаём результат в основное окно и закрываемся, а не показываем всё
+   приложение внутри окошка. */
 function popupSelfClose(){
   try{
-    if(window.name===GLOGIN_NAME && window.opener && !window.opener.closed){
+    if(LOGIN_POPUP_NAMES.indexOf(window.name)>=0 && window.opener && !window.opener.closed){
       var target=window.opener;
       try{ target.location.href=location.href; }catch(e){}
       try{ target.focus(); }catch(e){}
@@ -25284,7 +25302,7 @@ function drawCharModal(){
 }
 
 /* ---- Страница входа ---- */
-var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Google не подтвердил вход — попробуйте ещё раз.',claims:'Google не подтвердил адрес почты.',not_configured:'Вход ещё не настроен.',disabled:'Эта семья отключена администратором. Если это ошибка — напишите в поддержку.'};
+var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Не удалось подтвердить вход — попробуйте ещё раз.',claims:'Не удалось подтвердить адрес почты.',not_configured:'Этот способ входа ещё не настроен.',disabled:'Эта семья отключена администратором. Если это ошибка — напишите в поддержку.'};
 function viewLanding(){
   return '<div class="kidwrap"><div class="kidbox sheet landing">'
     +'<p class="kick hand" style="margin:0">Тетрадь открыта — начнём</p>'
@@ -25292,6 +25310,8 @@ function viewLanding(){
     +'<p class="lead">Спокойные занятия по математике для 2–9 классов: находим пробелы, объясняем со схемами, тренируем на задачах с подсказками и проверяем тестами.</p>'
     +(CLOUD.err?'<p class="fb bad" style="justify-content:center">'+esc(LOGIN_ERR[CLOUD.err]||'Не получилось войти.')+'</p>':'')
     +'<button type="button" class="btn primary gbtn" data-google-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>Войти через Gmail</button>'
+    +(CLOUD.yandex?'<button type="button" class="btn primary gbtn" data-yandex-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 17l3-10 3 10"/></svg>Войти через Яндекс</button>':'')
+    +(CLOUD.yahoo?'<button type="button" class="btn primary gbtn" data-yahoo-login><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 8l4 5.2V17M16 8l-4 5.2"/></svg>Войти через Яху</button>':'')
     +'<p class="goal" style="font-size:14.5px;margin-inline:auto;max-width:48ch">Родитель входит со своей почты, принимает условия и создаёт семью. Ученик входит со своей почтой и отправляет родителю запрос — после подтверждения выбирает свой значок и вводит PIN.</p>'
     +'<p style="margin-top:14px"><button class="btn ghost small" data-nav="versions">Версии и планы</button></p>'
     +'</div></div>';
@@ -26920,9 +26940,10 @@ function viewHome(){
   var streakLine=(S.streak&&S.streak.count>=2)?'<p class="legend" style="margin-top:6px">🔥 Серия: '+S.streak.count+' '+ruDays(S.streak.count)+' подряд с занятиями (личный рекорд — '+S.streak.best+'). Сравниваем только с тобой же вчерашним, не с другими ребятами.</p>':'';
   return '<div class="hero">'
     +'<p class="kick hand">Тетрадь открыта — начнём</p>'
-    +'<h1>Заполним пробелы и пойдём дальше '+kidGrade(activeKid)+' класса</h1>'
-    +'<p class="lead">Сначала фундамент из предыдущих классов, потом программа '+kidGrade(activeKid)+' класса. В каждой теме: объяснение со схемами, разобранные примеры, не меньше двадцати задач с подсказками, опыты из жизни и тест.</p>'
-    +'<div class="cta"><button class="btn primary" data-nav="'+ns.nav+'">'+esc(ns.label)+'</button><span style="color:var(--muted);font-size:14.5px">'+esc(ns.why)+'</span></div>'
+    +'<h1>Как заниматься</h1>'
+    +'<p class="lead">30–40 минут в день, в каждой теме одно и то же: объяснение со схемами, разобранные примеры, не меньше двадцати задач с подсказками, опыт из жизни и тест.</p>'
+    +'<div class="how"><div><b>1. Прочитай</b>Вкладка «Объяснение» со схемами и примерами. Повтори примеры своей рукой.</div><div><b>2. Решай</b>Не меньше двадцати задач. Подсказка есть, но сначала попробуй сам.</div><div><b>3. Примени</b>Один опыт из вкладки «Опыт» — так тема запоминается надолго.</div><div><b>4. Проверься</b>Тест без подсказок. Ответ проверяет сайт сразу, а решение увидит родитель.</div></div>'
+    +'<div class="cta" style="margin-top:4px"><button class="btn primary" data-nav="'+ns.nav+'">'+esc(ns.label)+'</button><span style="color:var(--muted);font-size:14.5px">'+esc(ns.why)+'</span></div>'
     +'<p class="legend" style="margin-top:6px">Это только подсказка — ниже на карте можно <a href="#maptop">выбрать любую тему самому</a>, в своём порядке.</p>'
     +streakLine
     +'</div>'
@@ -26942,8 +26963,6 @@ function viewHome(){
     +'<div class="tracks" style="margin-top:16px">'
     +gradeSection(8,0,W)+gradeSection(9,0,W)
     +'</div>'
-    +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>Как заниматься</h2><span class="hand">30–40 минут в день</span></div>'
-    +'<div class="how"><div><b>1. Прочитай</b>Вкладка «Объяснение» со схемами и примерами. Повтори примеры своей рукой.</div><div><b>2. Решай</b>Не меньше двадцати задач. Подсказка есть, но сначала попробуй сам.</div><div><b>3. Примени</b>Один опыт из вкладки «Опыт» — так тема запоминается надолго.</div><div><b>4. Проверься</b>Тест без подсказок. Ответ проверяет сайт сразу, а решение увидит родитель.</div></div></section>'
     +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>Олимпиадный трек</h2><span class="hand">когда фундамент готов</span></div>'
     +'<p class="empty" style="margin:0">Задачи на сообразительность, логику и нестандартные приёмы откроются после освоения фундамента. Пока в конце практики каждой темы есть одна «задача со звёздочкой» — это разминка.</p></section>';
 }
@@ -27382,6 +27401,8 @@ document.addEventListener('click',function(ev){
   if(gradeToggle){ var gt=+gradeToggle; gradeMapOpen[gt]=!isGradeOpen(gt); render(); return; }
   if(t.hasAttribute('data-logout')){ cloudLogout(); return; }
   if(t.hasAttribute('data-google-login')){ openGoogleLogin(); return; }
+  if(t.hasAttribute('data-yandex-login')){ openYandexLogin(); return; }
+  if(t.hasAttribute('data-yahoo-login')){ openYahooLogin(); return; }
   if(t.hasAttribute('data-onb-mode')){
     ONB.mode=t.getAttribute('data-onb-mode'); ONB.err='';
     var jr0=CLOUD.me&&CLOUD.me.joinRequest;
