@@ -8,6 +8,11 @@
 <body>
 <script>(function(){try{var t=localStorage.getItem('mvk-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <title>Математика в клетку</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#2340C8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
@@ -24579,12 +24584,20 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.39.0';
+var APP_VERSION = '2.40.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.39.0",
+ "current": "2.40.0",
  "versions": [
+  {
+   "v": "2.40.0",
+   "date": "2026-10-27",
+   "title": "Иконка сайта",
+   "items": [
+    "У сайта появилась своя иконка — клетка с галочкой, как у освоенной темы на карте. Видна во вкладке браузера, при сохранении сайта на телефон и в других местах, где это поддерживает устройство."
+   ]
+  },
   {
    "v": "2.39.0",
    "date": "2026-10-27",
@@ -25075,7 +25088,7 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.40.0",
+  "v": "2.41.0",
   "title": "Английский язык — интерфейс и часть заданий",
   "when": "в планах",
   "items": [
