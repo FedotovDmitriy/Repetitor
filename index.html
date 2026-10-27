@@ -436,6 +436,14 @@ textarea.rep{width:100%;min-height:150px;padding:10px;border:1.5px solid var(--l
 .dlg input.txt{width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--sheet);font-size:16px}
 .dlg .kinds{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .dlg .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+/* в. 2.38.0 — модальное окно «Материалы»: обложки книг вместо прямых ссылок на PDF */
+.matdlg{max-width:760px}
+.matgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-top:4px}
+.matcard{display:flex;flex-direction:column;align-items:center;text-align:center;padding:14px;border:2px solid var(--line);border-radius:12px;background:var(--sheet2)}
+.matcover{width:100%;margin-bottom:10px}
+.matcard h3{font-size:15px;margin:0 0 6px}
+.matcard .desc{font-size:13.5px;color:var(--muted);margin:0 0 12px;flex:1}
+.matcard .btn{align-self:stretch;justify-content:center}
 /* в. 2.12.0 — пасхалка «67»: короткая (~1 с) весёлая вспышка на весь экран, выше модалок (z-index 90),
    не мешает вводу (pointer-events:none) и не пугает — не звук сирены, просто цвет и лёгкое «прыг-скок». */
 .e67{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;pointer-events:none}
@@ -500,6 +508,7 @@ body{padding-bottom:88px}
 <div id="fabRoot"></div>
 <div id="modal"></div>
 <div id="charModalRoot"></div>
+<div id="materialsModalRoot"></div>
 
 <script>
 /* ======================= ДАННЫЕ ======================= */
@@ -24570,12 +24579,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.37.1';
+var APP_VERSION = '2.38.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.37.1",
+ "current": "2.38.0",
  "versions": [
+  {
+   "v": "2.38.0",
+   "date": "2026-10-27",
+   "title": "Материалы для скачивания с обложками",
+   "items": [
+    "Вместо кнопки «Скачать книгу» — кнопка «Материалы» (у классов, где есть что скачать), а по нажатию — модальное окно: у каждой книги своя обложка, короткое описание и отдельная кнопка «Скачать».",
+    "Добавлены книги «Математика за 9 дней» — короткий курс повторения по одной теме в день — для 2, 3 и 4 классов (раньше лежали в проекте, но не были подключены к сайту)."
+   ]
+  },
   {
    "v": "2.37.1",
    "date": "2026-10-21",
@@ -25049,18 +25067,15 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.26.0",
-  "title": "Материалы для скачивания с обложками",
+  "v": "2.39.0",
+  "title": "Регистрация и вход через Яндекс и Яху",
   "when": "в планах",
   "items": [
-   "Вместо кнопки «Скачать книгу» — кнопка «Материалы» (у тех классов, где есть что скачать), а по нажатию — модальное окно с обложкой каждой книги/справочника, коротким описанием под ней и отдельной кнопкой «Скачать» под каждой обложкой (сейчас — просто прямые ссылки на PDF без превью)."
+   "Вход и регистрация через Яндекс и через Яху — в дополнение к уже работающему входу через Gmail."
   ],
   "later": [
-   "Регистрация и вход через Яндекс (в дополнение к входу через Gmail).",
    "Английский язык — интерфейс и часть заданий.",
-   "Кнопка «Скачать всё» — все книги и шпаргалки одним архивом.",
-   "Олимпиадный трек: задачи на сообразительность после освоения фундамента.",
-   "Работа без интернета (установка на телефон как приложение)."
+   "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
   ]
  }
 };
@@ -25732,7 +25747,6 @@ function viewReport(){
    в следующей версии список заменяется новым. books — href книг из BOOKS. */
 var NEW_IN={v:'2.18.0', note:'Новое в версии 2.18.0', topics:[], books:[]};
 function isNewTopic(id){ return NEW_IN.v===APP_VERSION && NEW_IN.topics.indexOf(id)>=0; }
-function isNewBook(href){ return NEW_IN.v===APP_VERSION && NEW_IN.books.indexOf(href)>=0; }
 function overall(){
   var ids=ALL.filter(avail); var d=ids.filter(function(i){return tStat(i)==='done'}).length;
   return {done:d,total:ids.length};
@@ -26755,21 +26769,85 @@ function pkSubmit(){
 }
 var GRADE_LABEL = {2:'2 класс',3:'3 класс',4:'4 класс',5:'5 класс',6:'6 класс',7:'7 класс',8:'8 класс',9:'9 класс'};
 var GRADE_SUB = {2:'числа до 100, умножение и деление: первые шаги, задачи',3:'числа до 1000, таблица умножения, составные задачи, периметр и площадь',4:'многозначные числа, величины, задачи, доли',5:'числа, делимость, дроби, проценты, величины',6:'отношения, координаты, уравнения, окружность, статистика',7:'алгебра и геометрия — программа этого года',8:'квадратные корни и уравнения, дроби, неравенства, Пифагор, окружность, четырёхугольники',9:'квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия'};
-/* Скачиваемые книги (справочник + сборник задач по темам класса) — печатное дополнение к сайту. */
+/* Скачиваемые книги (справочник + сборник задач, либо рабочая тетрадь «за 9 дней») — печатное
+   дополнение к сайту. в. 2.38.0 — у каждой книги теперь обложка (SVG) и короткое описание; видны
+   в модальном окне «Материалы» (см. ниже), открываемом одной кнопкой вместо списка прямых ссылок. */
 var BOOKS = {
-  4:[{href:'books/matematika-v-kletku-4-klass.pdf',label:'Скачать книгу (PDF)',title:'Скачать справочник и сборник задач по 4 классу в PDF'}],
-  5:[{href:'books/matematika-v-kletku-5-klass.pdf',label:'Скачать книгу (PDF)',title:'Скачать справочник и сборник задач по 5 классу в PDF'}],
-  6:[{href:'books/matematika-v-kletku-6-klass.pdf',label:'Скачать книгу (PDF)',title:'Скачать справочник и сборник задач по 6 классу в PDF'}],
-  7:[{href:'books/matematika-v-kletku-7-klass.pdf',label:'Скачать книгу: Алгебра (PDF)',title:'Скачать справочник и сборник задач по алгебре 7 класса в PDF'},
-     {href:'books/geometriya-7-klass.pdf',label:'Скачать книгу: Геометрия (PDF)',title:'Скачать справочник и сборник задач по геометрии 7 класса в PDF'}]
+  2:[{href:'books/matematika-za-9-dney-2-klass.pdf',kind:'nine',accent:'gold',
+      name:'Математика за 9 дней — 2 класс',
+      desc:'Короткий курс повторения: 9 дней занятий по одной теме в день — правила, разобранные примеры и задания для самостоятельной тренировки с ответами.'}],
+  3:[{href:'books/matematika-za-9-dney-3-klass.pdf',kind:'nine',accent:'gold',
+      name:'Математика за 9 дней — 3 класс',
+      desc:'Короткий курс повторения: 9 дней занятий по одной теме в день — правила, разобранные примеры и задания для самостоятельной тренировки с ответами.'}],
+  4:[{href:'books/matematika-v-kletku-4-klass.pdf',kind:'ref',accent:'blue',
+      name:'Справочник и сборник задач — 4 класс',
+      desc:'Краткий справочник по всем темам 4 класса: правила, разобранные примеры и задачи для самостоятельной тренировки.'},
+     {href:'books/matematika-za-9-dney-4-klass.pdf',kind:'nine',accent:'gold',
+      name:'Математика за 9 дней — 4 класс',
+      desc:'Короткий курс повторения: 9 дней занятий по одной теме в день — правила, разобранные примеры и задания для самостоятельной тренировки с ответами.'}],
+  5:[{href:'books/matematika-v-kletku-5-klass.pdf',kind:'ref',accent:'blue',
+      name:'Справочник и сборник задач — 5 класс',
+      desc:'Краткий справочник по всем темам 5 класса: правила, разобранные примеры и задачи для самостоятельной тренировки.'}],
+  6:[{href:'books/matematika-v-kletku-6-klass.pdf',kind:'ref',accent:'blue',
+      name:'Справочник и сборник задач — 6 класс',
+      desc:'Краткий справочник по всем темам 6 класса: правила, разобранные примеры и задачи для самостоятельной тренировки.'}],
+  7:[{href:'books/matematika-v-kletku-7-klass.pdf',kind:'ref',accent:'blue',
+      name:'Справочник и сборник задач: Алгебра — 7 класс',
+      desc:'Краткий справочник по алгебре 7 класса: правила, разобранные примеры и задачи для самостоятельной тренировки.'},
+     {href:'books/geometriya-7-klass.pdf',kind:'geo',accent:'green',
+      name:'Справочник и сборник задач: Геометрия — 7 класс',
+      desc:'Углы, треугольники, параллельные прямые — правила, разобранные примеры и задачи для самостоятельной тренировки.'}]
 };
-function bookLinkHTML(g){
-  var list=BOOKS[g]; if(!list||!list.length) return '';
-  return list.map(function(b){
-    return '<a class="btn ghost small" href="'+esc(b.href)+'" download title="'+esc(b.title)+'">'
+var MAT_KIND_LABEL={ref:'справочник',geo:'геометрия',nine:'9 дней'};
+var MAT_ACCENT={blue:{fill:'var(--blue-soft)',ink:'var(--blue)'},green:{fill:'var(--green-soft)',ink:'var(--green)'},gold:{fill:'var(--gold-soft)',ink:'var(--gold)'}};
+/* Обложка книги — своя простая SVG-карточка «в клетку» (без скриншотов PDF: на титульном листе
+   книги напечатана версия приложения на момент сборки PDF, и она неизбежно устареет на обложке). */
+function bookCoverSVG(b,g){
+  var a=MAT_ACCENT[b.accent]||MAT_ACCENT.blue;
+  var W=140,H=180,bx=12,by=10,bw=116,bh=160,spine=14;
+  var cx=bx+spine+(bw-spine)/2, gx0=bx+spine+6, gx1=bx+bw-6;
+  var grid='';
+  for(var i=1;i<4;i++){ var gx=gx0+i*(gx1-gx0)/4; grid+='<line x1="'+gx+'" y1="'+(by+8)+'" x2="'+gx+'" y2="'+(by+bh-8)+'" stroke="var(--line)" stroke-width="1"/>'; }
+  for(var j=1;j<6;j++){ var gy=by+8+j*(bh-16)/6; grid+='<line x1="'+gx0+'" y1="'+gy+'" x2="'+gx1+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>'; }
+  var body='<rect x="'+bx+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="10" fill="var(--sheet)" stroke="var(--ink)" stroke-width="2.5"/>'
+    +'<g opacity=".6">'+grid+'</g>'
+    +'<rect x="'+bx+'" y="'+by+'" width="'+spine+'" height="'+bh+'" rx="10" fill="'+a.fill+'" stroke="var(--ink)" stroke-width="2.5"/>'
+    +'<text x="'+cx+'" y="'+(by+bh*0.48)+'" text-anchor="middle" font-size="46" font-weight="800" fill="'+a.ink+'">'+g+'</text>'
+    +'<text x="'+cx+'" y="'+(by+bh*0.48+20)+'" text-anchor="middle" font-size="12" fill="var(--muted)">класс</text>'
+    +'<rect x="'+(cx-36)+'" y="'+(by+bh-30)+'" width="72" height="20" rx="10" fill="'+a.fill+'" stroke="'+a.ink+'" stroke-width="1.5"/>'
+    +'<text x="'+cx+'" y="'+(by+bh-16)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+a.ink+'">'+esc(MAT_KIND_LABEL[b.kind]||'книга')+'</text>';
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:140px;display:block;margin:0 auto" role="img" aria-label="Обложка: '+esc(b.name)+'">'+body+'</svg>';
+}
+function materialsCardHTML(b,g){
+  return '<div class="matcard">'
+    +'<div class="matcover">'+bookCoverSVG(b,g)+'</div>'
+    +'<h3>'+esc(b.name)+'</h3>'
+    +'<p class="desc">'+esc(b.desc)+'</p>'
+    +'<a class="btn primary small" href="'+esc(b.href)+'" download title="Скачать: '+esc(b.name)+'">'
       +'<svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px;margin-right:4px"><path d="M10 3v9"/><path d="m6 8.5 4 4 4-4"/><path d="M3.5 14v1.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V14"/></svg>'
-      +esc(b.label)+(isNewBook(b.href)?' <span class="mk new">новинка</span>':'')+'</a>';
-  }).join('');
+      +'Скачать</a>'
+    +'</div>';
+}
+function materialsButtonHTML(g){
+  var list=BOOKS[g]; if(!list||!list.length) return '';
+  return '<button class="btn ghost small" data-materials-open="'+g+'" title="Материалы для скачивания — '+esc(GRADE_LABEL[g])+'">'
+    +'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px;margin-right:4px"><path d="M2 4.5h6a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 4.5h-6a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg>'
+    +'Материалы</button>';
+}
+var MAT=null; // номер класса, для которого открыто модальное окно «Материалы», или null
+function openMaterials(g){ g=+g; if(!(BOOKS[g]&&BOOKS[g].length)) return; MAT=g; drawMaterials(); }
+function closeMaterials(){ MAT=null; drawMaterials(); }
+function drawMaterials(){
+  var root=$('#materialsModalRoot'); if(!root) return;
+  if(!MAT){ root.innerHTML=''; return; }
+  var g=MAT, list=BOOKS[g]||[];
+  var h='<div class="modal" data-mat-bg><div class="dlg matdlg" role="dialog" aria-modal="true" aria-labelledby="matTitle">'
+    +'<h2 id="matTitle">Материалы — '+esc(GRADE_LABEL[g])+'</h2>'
+    +'<p class="legend" style="margin:2px 0 14px">Печатное дополнение к сайту — можно скачать и распечатать.</p>'
+    +'<div class="matgrid">'+list.map(function(b){return materialsCardHTML(b,g);}).join('')+'</div>'
+    +'<div class="cta" style="margin-top:16px"><button class="btn ghost" data-mat-close>Закрыть</button></div>'
+    +'</div></div>';
+  root.innerHTML=h;
 }
 /* в. 2.27.0 — полная карта-путь для 5 класса: узлы вместо плоского списка, персонаж-проводник
    «Клетчик». Статус узла — только из реальных данных (tStat), без искусственных «замков»: по
@@ -26828,7 +26906,7 @@ function gradeSection(g,wide,W){
     +'<button class="grade-head" data-grade-toggle="'+g+'" aria-expanded="'+(open?'true':'false')+'">'
       +'<span class="grade-chevron" aria-hidden="true">'+GRADE_CHEVRON_SVG+'</span><h2>'+esc(GRADE_LABEL[g])+'</h2>'
     +'</button>'
-    +'<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(GRADE_SUB[g])+'</span><span class="legend" style="margin:0">'+esc(progText)+'</span>'+bookLinkHTML(g)+'</span>'
+    +'<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(GRADE_SUB[g])+'</span><span class="legend" style="margin:0">'+esc(progText)+'</span>'+materialsButtonHTML(g)+'</span>'
     +'</div>'
     +(open?('<div class="cta" style="justify-content:flex-end;margin:4px 0 10px"><button class="btn ghost small" data-grade-toggle="'+g+'">✕ Свернуть карту</button></div>'+gradeMapHTML(ids,W,g)):'')
     +'</section>';
@@ -27297,6 +27375,9 @@ document.addEventListener('click',function(ev){
   var charOpen=t.getAttribute('data-char-open');
   if(charOpen){ openCharModal(charOpen); return; }
   if(t.hasAttribute('data-char-close')){ closeCharModal(); return; }
+  var matOpen=t.getAttribute('data-materials-open');
+  if(matOpen){ openMaterials(matOpen); return; }
+  if(t.hasAttribute('data-mat-close')){ closeMaterials(); return; }
   var gradeToggle=t.getAttribute('data-grade-toggle');
   if(gradeToggle){ var gt=+gradeToggle; gradeMapOpen[gt]=!isGradeOpen(gt); render(); return; }
   if(t.hasAttribute('data-logout')){ cloudLogout(); return; }
@@ -27426,6 +27507,7 @@ document.addEventListener('click',function(ev){
   }
 });
 document.addEventListener('keydown',function(ev){
+  if(MAT){ if(ev.key==='Escape') closeMaterials(); return; }
   if(SUP.open){ if(ev.key==='Escape') closeSupport(); return; }
   if(view.name==='pickkid' && (pick.mode==='pin'||pick.mode==='newpin'||pick.mode==='newpin2')){
     if(/^[0-9]$/.test(ev.key)) pkKey(ev.key);
