@@ -597,6 +597,41 @@ var NODE_ORDER = ["b_num", "b_col", "b_tab", "b_ord", "b_word", "b_unit", "b_geo
 /* Формат: {a|b} — дробь, ^n — степень. ans — строка: 3/4, 1.2, -5. reduced — требовать несократимую дробь. */
 var CONTENT = {};
 
+/* в. 2.45.0 — английский контент тем, по классам, подгружается отдельным файлом (content-en/g<N>.js)
+   только когда язык интерфейса EN и реально открыта тема этого класса — не раздувает основной файл
+   сразу для всех. CONTENT_EN[id] зеркалит структуру CONTENT[id] (goal/explain/examples/tasks/test/
+   lab/bonus/steps, те же длины массивов и те же числовые ans — только текст на английском), поэтому
+   прогресс по задачам совпадает по индексам независимо от текущего языка. Иллюстрации (SVG через
+   __SVG_X__) пока НЕ перерисованы на английском — показывают русские подписи, это отдельная, более
+   крупная задача на будущее. */
+var CONTENT_EN = {};
+var CONTENT_EN_LOADED = {};   // grade -> true | 'error'
+var CONTENT_EN_LOADING = {};  // grade -> массив callback'ов, ожидающих загрузки
+function ensureContentEn(grade){
+  if(!grade || getLang()!=='en') return;
+  if(CONTENT_EN_LOADED[grade] || CONTENT_EN_LOADING[grade]) return;
+  CONTENT_EN_LOADING[grade]=true;
+  var s=document.createElement('script');
+  s.src='content-en/g'+grade+'.js?v='+encodeURIComponent(APP_VERSION);
+  s.onload=function(){ CONTENT_EN_LOADED[grade]=true; CONTENT_EN_LOADING[grade]=false; render(); };
+  s.onerror=function(){ CONTENT_EN_LOADED[grade]='error'; CONTENT_EN_LOADING[grade]=false; };
+  document.head.appendChild(s);
+}
+/* Что рендерить для темы id: английский перевод, если язык EN и для класса этой темы контент уже
+   подгружен и реально переведён (может быть переведён только часть тем класса — тогда у остальных
+   тем CONTENT_EN[id] просто не существует, и они честно показываются по-русски, как и раньше,
+   задокументировано в CHANGELOG). Вызов ensureContentEn() здесь же — ленивая подгрузка по факту
+   обращения к теме, без отдельного прелоада на каждый переход по сайту. */
+function topicContent(id){
+  var c=CONTENT[id];
+  if(getLang()==='en'){
+    var g=TOPICS[id]&&TOPICS[id].grade;
+    ensureContentEn(g);
+    if(CONTENT_EN[id]) return CONTENT_EN[id];
+  }
+  return c;
+}
+
 CONTENT.ord = {
   goal: 'После этой темы ты будешь вычислять длинные примеры со скобками и разными действиями точно и без единой ошибки в порядке шагов.',
   explain: '<p>Когда в примере несколько действий, важно знать, в каком порядке их выполнять — иначе один и тот же пример у разных людей даст разные ответы. Математики договорились о строгих правилах, и их нужно соблюдать всегда.</p>'
@@ -24584,12 +24619,22 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.44.0';
+var APP_VERSION = '2.45.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.44.0",
+ "current": "2.45.0",
  "versions": [
+  {
+   "v": "2.45.0",
+   "date": "2026-10-28",
+   "title": "Английский язык — перевод контента 2 класса",
+   "items": [
+    "Начат перевод содержимого самих тем (не только интерфейса): полностью переведены все 3 темы 2 класса — «Числа до 100», «Умножение и деление», «Текстовые задачи и величины» (объяснение, разобранные примеры, практика, тест, опыты, объяснение по шагам).",
+    "Технически: английский контент подгружается отдельным файлом (content-en/g2.js) только когда выбран английский язык и реально открыта тема 2 класса — не хранится внутри основного файла сайта для всех сразу.",
+    "Иллюстрации (картинки-схемы внутри тем) пока показывают русские подписи — их перерисовка на английском отдельная задача на будущее. Если для какой-то темы английский текст ещё не готов, тема по-прежнему честно показывается на русском, как и раньше."
+   ]
+  },
   {
    "v": "2.44.0",
    "date": "2026-10-28",
@@ -25125,12 +25170,11 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.45.0",
-  "title": "Английский язык — перевод контента по классам (начало)",
+  "v": "2.46.0",
+  "title": "Английский язык — перевод контента 3 класса",
   "when": "в планах",
   "items": [
-   "Интерфейс переведён полностью (регистрация, диагностика, карта, шпаргалки, кабинет родителя, страница темы, подвал). Дальше — содержимое самих тем: объяснения, примеры, шаги и тесты, по одному классу за версию, начиная со 2 класса, как раньше делался формат «по шагам».",
-   "Технически: английский контент темы будет подгружаться отдельным файлом (по уже принятому решению), а не храниться внутри index.html вместе с русским.",
+   "Продолжение перевода содержимого тем по классам: 2 класс готов (2.45.0), дальше — 3 класс (4 темы), тем же способом — отдельный подгружаемый файл content-en/g3.js.",
    "Названия тем и разделов карты, а также формулы в шпаргалках — скорее всего будут переведены в рамках этой же работы, по мере того как класс за классом становится полностью двуязычным."
   ],
   "later": [
@@ -25335,16 +25379,16 @@ function pinRequestBtn(){
    открывает окно с полным объяснением (тот же текст, что раньше показывался целиком). */
 var CHAR_MODAL=null; // id темы, чьё полное объяснение открыто, или null
 function charBadgeHTML(id){
-  if(!(CONTENT[id]&&CONTENT[id].steps)) return '';
+  if(!(topicContent(id)&&topicContent(id).steps)) return '';
   return '<button class="char-badge" data-char-open="'+id+'" title="'+TL('Клетчик: показать полное объяснение','Cellie: show the full explanation')+'" aria-label="'+TL('Показать полное объяснение этой темы','Show the full explanation for this topic')+'">'
     +SVG_LIB.JOURNEY_CHAR()+'<span class="excl" aria-hidden="true">!</span></button>';
 }
-function openCharModal(id){ if(!(CONTENT[id]&&CONTENT[id].steps)) return; CHAR_MODAL=id; drawCharModal(); }
+function openCharModal(id){ if(!(topicContent(id)&&topicContent(id).steps)) return; CHAR_MODAL=id; drawCharModal(); }
 function closeCharModal(){ CHAR_MODAL=null; drawCharModal(); }
 function drawCharModal(){
   var root=$('#charModalRoot'); if(!root) return;
   if(!CHAR_MODAL){ root.innerHTML=''; return; }
-  var id=CHAR_MODAL, C=CONTENT[id], T=TOPICS[id];
+  var id=CHAR_MODAL, C=topicContent(id), T=TOPICS[id];
   var h='<div class="modal" data-char-bg><div class="dlg chardlg" role="dialog" aria-modal="true" aria-labelledby="charTitle">'
     +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">'+TL('Клетчик объясняет подробно','Cellie explains it in full')+'</h2><p class="legend" style="margin:2px 0 0">'+esc(T.name)+'</p></div></div>'
     +'<div class="prose">'+renderSvgMarkers(fmt(C.explain))+'</div>'
@@ -25841,7 +25885,7 @@ function statPill(id){
   var s=tStat(id);
   if(s==='soon') return '<span class="pill">'+TL('готовится','coming soon')+'</span>';
   if(s==='done') return needsReview(id)?'<span class="pill rev">'+TL('повторить','review')+'</span>':'<span class="pill done">'+TL('освоено','mastered')+'</span>';
-  if(s==='prog'){var t=S.tests[id]; return '<span class="pill prog">'+(t?(TL('тест','test')+' '+t.best+'/'+t.total):(TL('задач','problems')+' '+solvedCount(id)+'/'+(CONTENT[id]?CONTENT[id].tasks.length:20)))+'</span>'}
+  if(s==='prog'){var t=S.tests[id]; return '<span class="pill prog">'+(t?(TL('тест','test')+' '+t.best+'/'+t.total):(TL('задач','problems')+' '+solvedCount(id)+'/'+(topicContent(id)?topicContent(id).tasks.length:20)))+'</span>'}
   return '<span class="pill">'+TL('не начато','not started')+'</span>';
 }
 
@@ -26772,7 +26816,7 @@ function rowHTML(id,W){
     +(W&&W[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span>':'')
     +(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span>':'')
     +(a&&cheatsForTopic(id).length?'<span class="mk cheat" title="Есть шпаргалка по этой теме">📄 шпаргалка</span>':'')
-    +(a&&CONTENT[id].steps?'<span class="mk steps" title="Объяснение этой темы можно пройти по шагам">✏️ по шагам</span>':'')
+    +(a&&topicContent(id).steps?'<span class="mk steps" title="Объяснение этой темы можно пройти по шагам">✏️ по шагам</span>':'')
     +'<span class="sub">'+esc(T.blurb)+'</span></span>'
     +'<span class="rowend">'+(a?masteryDotsHTML(id,S):'')+statPill(id)+'</span></button>';
 }
@@ -26983,7 +27027,7 @@ function jnodeHTML(id,i,W){
     +'<span class="jnode-sub">'+esc(T.blurb)+'</span>'
     +'<span class="jnode-foot">'+(a?masteryDotsHTML(id,S):'')+statPill(id)
     +(a&&cheatsForTopic(id).length?'<span class="mk cheat" title="Есть шпаргалка по этой теме">📄 шпаргалка</span>':'')
-    +(a&&CONTENT[id].steps?'<span class="mk steps" title="Объяснение этой темы можно пройти по шагам">✏️ по шагам</span>':'')
+    +(a&&topicContent(id).steps?'<span class="mk steps" title="Объяснение этой темы можно пройти по шагам">✏️ по шагам</span>':'')
     +'</span>'
     +'</span>'
     +'</button>'
@@ -27075,7 +27119,7 @@ function railHTML(cur){
   return '<aside class="rail">'+GRADES.map(function(g){return grp(gradeLabel(g),BY_GRADE[g]);}).join('')+'</aside>';
 }
 function viewTopic(){
-  var id=view.id, tab=view.tab||'explain', T=TOPICS[id], C=CONTENT[id];
+  var id=view.id, tab=view.tab||'explain', T=TOPICS[id], C=topicContent(id);
   var tabs=[['explain',TL('Объяснение','Explanation')],['practice',TL('Практика','Practice')],['lab',TL('Опыт','Experiment')],['video',TL('Видео','Video')],['test',TL('Тест','Test')]];
   var solved=solvedCount(id);
   var idx=ALL.indexOf(id), prev=null,next=null;
@@ -27130,7 +27174,7 @@ function stepperDotsHTML(n,cur){
   return h;
 }
 function tabExplainSteps(id){
-  var C=CONTENT[id], steps=C.steps;
+  var C=topicContent(id), steps=C.steps;
   var cur=Math.max(0,Math.min(stepperPos[id]||0,steps.length-1));
   var st=steps[cur], isLast=cur===steps.length-1;
   var exIdxArr=Array.isArray(st.exIdx)?st.exIdx:(st.exIdx!==undefined&&st.exIdx!==null?[st.exIdx]:[]);
@@ -27149,7 +27193,7 @@ function tabExplainSteps(id){
     +'</div></div>';
 }
 function tabExplain(id){
-  var C=CONTENT[id];
+  var C=topicContent(id);
   if(C.steps) return tabExplainSteps(id);
   return '<div class="prose">'+renderSvgMarkers(fmt(addReadButtons(C.explain)))+'</div>'
     +'<h3 style="margin-top:28px">'+TL('Разобранные примеры','Worked examples')+'</h3>'
@@ -27182,7 +27226,7 @@ function difficultyPickHTML(){
 }
 function tabPractice(id){
   if(GAME && GAME.topic===id) return gameHTML();
-  var C=CONTENT[id];
+  var C=topicContent(id);
   var chal=!!(S.prefs&&S.prefs.challenge);
   var mainHTML=C.tasks.slice(0,MAIN_TASKS).map(function(t,i){return taskHTML(id,i,t,false)}).join('');
   var extraHTML=C.tasks.length>MAIN_TASKS
@@ -27198,12 +27242,12 @@ function tabPractice(id){
     +taskHTML(id,0,C.bonus,true);
 }
 function tabLab(id){
-  var C=CONTENT[id];
+  var C=topicContent(id);
   return '<p class="prose">'+TL('Математика нужна не только в тетради. Выбери один опыт, сделай его руками и запиши результат — это самый быстрый путь к настоящему пониманию.','Math isn’t just for the notebook. Pick one experiment, do it with your own hands, and write down the result — it’s the fastest way to real understanding.')+'</p>'
     +C.lab.map(function(l){return '<div class="lab"><h3>'+esc(l.t)+'</h3><p>'+fmt(l.b)+'</p></div>'}).join('');
 }
 function tabVideo(id){
-  var C=CONTENT[id], vids=C.videos||[];
+  var C=topicContent(id), vids=C.videos||[];
   if(!vids.length) return '<p class="prose empty">'+TL('Для этой темы подборка видео пока не готова — используй поиск на YouTube по названию темы.','There’s no video selection for this topic yet — search YouTube for the topic name.')+'</p>';
   return '<p class="prose">'+TL('Подборка роликов на русском языке по теме. Смотри с бумагой и ручкой рядом — останавливай видео и повторяй пример сам. Если после ролика ты можешь решить похожий пример — он подошёл.','A selection of Russian-language videos on this topic. Watch with paper and a pen nearby — pause the video and redo the example yourself. If you can solve a similar example after watching, it was a good fit.')+'</p>'
     +'<div class="vids">'+vids.map(function(v){
@@ -27245,7 +27289,7 @@ function ttestReadyHTML(id,C,last){
     +'<div class="cta" style="justify-content:center;margin-top:14px"><button class="btn primary" data-ttest-begin="'+id+'">'+TL('Готов, начинаю','Ready, start')+'</button><button class="btn ghost" data-nav="home">'+TL('Не сейчас','Not now')+'</button></div></div>';
 }
 function ttestBegin(id){
-  var C=CONTENT[id]; if(!C) return;
+  var C=topicContent(id); if(!C) return;
   ttestStop();
   TTEST={topic:id, deadline:Date.now()+ttestTotalMin(C.test.length)*60000};
   render();
@@ -27265,7 +27309,7 @@ function paintTtestClock(ms){
   el.style.color=(ms<5*60000)?'var(--red)':'';
 }
 function tabTest(id){
-  var C=CONTENT[id], last=S.tests[id];
+  var C=topicContent(id), last=S.tests[id];
   var res=view.result;
   if(res) return resultHTML(res);
   if(!TTEST || TTEST.topic!==id) return ttestReadyHTML(id,C,last);
@@ -27305,7 +27349,7 @@ function finish(forced){
   var box=$('#testbox'); if(!box){ if(forced){ ttestStop(); TTEST=null; } return; }
   var kind=box.getAttribute('data-kind'), items, topic=box.getAttribute('data-topic');
   if(kind==='test'){ ttestStop(); TTEST=null; } // тест (не диагностика) мог идти на время — таймер больше не нужен
-  items=kind==='diag'?curDiag():CONTENT[topic].test;
+  items=kind==='diag'?curDiag():topicContent(topic).test;
   var res=gradeAll(items,box);
   var empty=res.filter(function(r){return r.given===''}).length;
   if(empty && !forced && !box.getAttribute('data-warned')){
@@ -27458,8 +27502,8 @@ function viewParent(){
       var pr=kSt.practice[id]||{};
       var solved=Object.keys(pr).filter(function(k){return k!=='b'&&pr[k].ok}).length;
       var s=(!t)?(solved>0?'prog':'new'):(t.best/t.total>=PASS?'done':'prog');
-      var pill=s==='done'?'<span class="pill done">'+TL('освоено','mastered')+'</span>':s==='prog'?'<span class="pill prog">'+(t?(TL('тест','test')+' '+t.best+'/'+t.total):(TL('задач','problems')+' '+solved+'/'+CONTENT[id].tasks.length))+'</span>':'<span class="pill">'+TL('не начато','not started')+'</span>';
-      return '<tr><td>'+esc(TOPICS[id].name)+'</td><td>'+solved+' / '+CONTENT[id].tasks.length+'</td><td>'+(t?(TL('лучший','best')+' '+t.best+'/'+t.total+', '+TL('попыток','attempts')+': '+t.tries+'<br><span style="color:var(--muted)">'+ruDate(t.ts)+'</span>'):'—')+'</td><td>'+pill+'</td></tr>';
+      var pill=s==='done'?'<span class="pill done">'+TL('освоено','mastered')+'</span>':s==='prog'?'<span class="pill prog">'+(t?(TL('тест','test')+' '+t.best+'/'+t.total):(TL('задач','problems')+' '+solved+'/'+topicContent(id).tasks.length))+'</span>':'<span class="pill">'+TL('не начато','not started')+'</span>';
+      return '<tr><td>'+esc(TOPICS[id].name)+'</td><td>'+solved+' / '+topicContent(id).tasks.length+'</td><td>'+(t?(TL('лучший','best')+' '+t.best+'/'+t.total+', '+TL('попыток','attempts')+': '+t.tries+'<br><span style="color:var(--muted)">'+ruDate(t.ts)+'</span>'):'—')+'</td><td>'+pill+'</td></tr>';
     }).join('')
     +'</tbody></table></div></div>';
   h+='<div class="sheet"><h2>'+TL('Журнал попыток','Attempt log')+'</h2>';
@@ -27528,7 +27572,7 @@ document.addEventListener('click',function(ev){
   /* в. 2.26.0 — «по шагам»: кнопки «Назад/Дальше/Готово» внутри степпера объяснения */
   var stepAttr=t.getAttribute('data-step');
   if(stepAttr){
-    var stp=stepAttr.split(':'), stpId=stp[0], stpDir=stp[1], stpArr=CONTENT[stpId]&&CONTENT[stpId].steps;
+    var stp=stepAttr.split(':'), stpId=stp[0], stpDir=stp[1], stpArr=topicContent(stpId)&&topicContent(stpId).steps;
     if(stpArr){
       if(stpDir==='next'){ stepperPos[stpId]=Math.min((stepperPos[stpId]||0)+1,stpArr.length-1); render(); scrollStepperTop(); }
       else if(stpDir==='prev'){ stepperPos[stpId]=Math.max((stepperPos[stpId]||0)-1,0); render(); scrollStepperTop(); }
@@ -27645,7 +27689,7 @@ document.addEventListener('keydown',function(ev){
     gameSubmit(gv2);
   }
 });
-function itemFor(id,key){return key==='b'?CONTENT[id].bonus:CONTENT[id].tasks[+key]}
+function itemFor(id,key){return key==='b'?topicContent(id).bonus:topicContent(id).tasks[+key]}
 /* в. 2.8.0 — установка на рост: хвалим стратегию и усилие, а не «ты умный/умная»; формулировки без указания
    пола ребёнка (используем безличные обороты вроде «получилось», а не «ты сделал(а)»). */
 var PRAISE_FIRST=[
@@ -27697,7 +27741,7 @@ function checkTask(task,id,key,optIdx){
     else $$('.opt',task).forEach(function(o,k){if(k===it.ans)o.classList.add('ok')});
     extra.innerHTML='<div class="solbox"><b>'+TL('Решение.','Solution.')+'</b> '+fmt(it.sol)+'</div>'+sessionHookHTML();
     var c=$('#solved'); if(c) c.textContent=solvedCount(id);
-    var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
+    var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+topicContent(id).tasks.length;
   }else{
     fb.className='fb bad';
     if(it.opts){ $$('.opt',task).forEach(function(o,k){if(k===optIdx)o.classList.add('bad')}); fb.textContent=TL('Пока не так. Выбери другой вариант.','Not quite. Pick another option.'); }
@@ -27738,7 +27782,7 @@ function markHelped(task,id,key){
   }
   extra.innerHTML='';
   var c=$('#solved'); if(c) c.textContent=solvedCount(id);
-  var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
+  var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+topicContent(id).tasks.length;
   scheduleSave();
   paintBar();
 }
@@ -27842,7 +27886,7 @@ var GAME_PRAISE=['Есть!','Точно!','Вот это да!','Красота
 var GAME_MISS_TXT=['Почти! Дальше будет проще.','Мимо — но соображаешь быстро!','Не в этот раз, но движение отличное.'];
 function ruPlural(n,one,few,many){ n=Math.abs(n)%100; var n1=n%10; if(n>10&&n<20) return many; if(n1===1) return one; if(n1>1&&n1<5) return few; return many; }
 function gamePool(id){
-  var arr=CONTENT[id].tasks.slice();
+  var arr=topicContent(id).tasks.slice();
   for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp; }
   return arr;
 }
