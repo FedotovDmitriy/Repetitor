@@ -24584,12 +24584,21 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.43.0';
+var APP_VERSION = '2.44.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.43.0",
+ "current": "2.44.0",
  "versions": [
+  {
+   "v": "2.44.0",
+   "date": "2026-10-28",
+   "title": "Английский язык — страница темы и подвал сайта",
+   "items": [
+    "На английский переведены: страница темы целиком (вкладки «Объяснение/Практика/Опыт/Видео/Тест», кнопки «Назад/Дальше/Подсказка/Проверить», шаги объяснения, задачи и обратная связь по ним, окно «Клетчик объясняет подробно», мини-игры «Раунд на время» и «Цепочка»), подвал сайта (авторские права, ссылки на страницы соглашений).",
+    "Пока НЕ переведено: содержимое самих тем (объяснения/примеры/шаги/тесты), названия тем и разделов на карте, формулы в шпаргалках, история версий (прошлые записи), сами страницы соглашений (/legal/*.html — на них ссылается подвал, но их текст пока на русском)."
+   ]
+  },
   {
    "v": "2.43.0",
    "date": "2026-10-27",
@@ -25116,12 +25125,13 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.44.0",
-  "title": "Английский язык — последние куски интерфейса",
+  "v": "2.45.0",
+  "title": "Английский язык — перевод контента по классам (начало)",
   "when": "в планах",
   "items": [
-   "Страница темы (вкладки «Объяснение/Практика/Опыт/Видео/Тест», кнопки «Далее/Назад/Подсказка/Проверить») и подвал сайта (авторские права, ссылки на страницы /legal) — на английский.",
-   "Затем перевод контента тем по классам (объяснения, примеры, шаги, тесты) — по одному классу за версию, как раньше делался формат «по шагам». Названия тем и разделов карты, а также формулы в шпаргалках, скорее всего будут переведены в рамках этой же работы."
+   "Интерфейс переведён полностью (регистрация, диагностика, карта, шпаргалки, кабинет родителя, страница темы, подвал). Дальше — содержимое самих тем: объяснения, примеры, шаги и тесты, по одному классу за версию, начиная со 2 класса, как раньше делался формат «по шагам».",
+   "Технически: английский контент темы будет подгружаться отдельным файлом (по уже принятому решению), а не храниться внутри index.html вместе с русским.",
+   "Названия тем и разделов карты, а также формулы в шпаргалках — скорее всего будут переведены в рамках этой же работы, по мере того как класс за классом становится полностью двуязычным."
   ],
   "later": [
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
@@ -25326,7 +25336,7 @@ function pinRequestBtn(){
 var CHAR_MODAL=null; // id темы, чьё полное объяснение открыто, или null
 function charBadgeHTML(id){
   if(!(CONTENT[id]&&CONTENT[id].steps)) return '';
-  return '<button class="char-badge" data-char-open="'+id+'" title="Клетчик: показать полное объяснение" aria-label="Показать полное объяснение этой темы">'
+  return '<button class="char-badge" data-char-open="'+id+'" title="'+TL('Клетчик: показать полное объяснение','Cellie: show the full explanation')+'" aria-label="'+TL('Показать полное объяснение этой темы','Show the full explanation for this topic')+'">'
     +SVG_LIB.JOURNEY_CHAR()+'<span class="excl" aria-hidden="true">!</span></button>';
 }
 function openCharModal(id){ if(!(CONTENT[id]&&CONTENT[id].steps)) return; CHAR_MODAL=id; drawCharModal(); }
@@ -25336,9 +25346,9 @@ function drawCharModal(){
   if(!CHAR_MODAL){ root.innerHTML=''; return; }
   var id=CHAR_MODAL, C=CONTENT[id], T=TOPICS[id];
   var h='<div class="modal" data-char-bg><div class="dlg chardlg" role="dialog" aria-modal="true" aria-labelledby="charTitle">'
-    +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">Клетчик объясняет подробно</h2><p class="legend" style="margin:2px 0 0">'+esc(T.name)+'</p></div></div>'
+    +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">'+TL('Клетчик объясняет подробно','Cellie explains it in full')+'</h2><p class="legend" style="margin:2px 0 0">'+esc(T.name)+'</p></div></div>'
     +'<div class="prose">'+renderSvgMarkers(fmt(C.explain))+'</div>'
-    +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-char-close>Понятно, закрыть</button></div>'
+    +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-char-close>'+TL('Понятно, закрыть','Got it, close')+'</button></div>'
     +'</div></div>';
   root.innerHTML=h;
 }
@@ -26694,9 +26704,16 @@ function paintBar(){
 }
 
 /* ======================= ВИДЫ ======================= */
+function paintFooter(){
+  var el=$('.legalfoot'); if(!el) return;
+  el.innerHTML = getLang()==='en'
+    ? '© 2026 Dmitriy Fedotov. All rights reserved. Copying, distributing, or publishing the site’s materials without the rights holder’s written permission is prohibited.<br><a href="/legal/terms.html" target="_blank" rel="noopener">Terms of Use</a> · <a href="/legal/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> · <a href="/legal/copyright.html" target="_blank" rel="noopener">Copyright</a><br>© Dmitriy Fedotov, “Math in a Grid”. For personal use only. Copying and distribution are prohibited.'
+    : '© 2026 Дмитрий Федотов. Все права защищены. Копирование, распространение и публикация материалов сайта без письменного разрешения правообладателя запрещены.<br><a href="/legal/terms.html" target="_blank" rel="noopener">Пользовательское соглашение</a> · <a href="/legal/privacy.html" target="_blank" rel="noopener">Политика конфиденциальности</a> · <a href="/legal/copyright.html" target="_blank" rel="noopener">Авторские права</a><br>© Дмитрий Федотов, «Математика в клетку». Только для личного использования. Копирование и распространение запрещены.';
+}
 function render(){
   applySkin();
   paintBar();
+  paintFooter();
   var fr=$('#fabRoot'); if(fr&&!fr.firstChild) fr.innerHTML=fabHTML();
   var h='';
   if(CLOUD.pending){ $('#app').innerHTML='<p class="empty" style="text-align:center;margin-top:20vh">Загрузка…</p>'; return; }
@@ -26858,6 +26875,10 @@ function pkSubmit(){
   }
 }
 var GRADE_LABEL = {2:'2 класс',3:'3 класс',4:'4 класс',5:'5 класс',6:'6 класс',7:'7 класс',8:'8 класс',9:'9 класс'};
+/* в. 2.44.0 — геттер для перевода: GRADE_LABEL сам по себе остаётся русским (карта тем и её узлы
+   пока не переведены, см. план), но там, где подпись класса используется в уже переведённом
+   интерфейсе (хлебная крошка темы, боковая панель), резолвим через TL() в момент рендера. */
+function gradeLabel(g){ return TL(GRADE_LABEL[g],'Grade '+g); }
 var GRADE_SUB = {2:'числа до 100, умножение и деление: первые шаги, задачи',3:'числа до 1000, таблица умножения, составные задачи, периметр и площадь',4:'многозначные числа, величины, задачи, доли',5:'числа, делимость, дроби, проценты, величины',6:'отношения, координаты, уравнения, окружность, статистика',7:'алгебра и геометрия — программа этого года',8:'квадратные корни и уравнения, дроби, неравенства, Пифагор, окружность, четырёхугольники',9:'квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия'};
 /* Скачиваемые книги (справочник + сборник задач, либо рабочая тетрадь «за 9 дней») — печатное
    дополнение к сайту. в. 2.38.0 — у каждой книги теперь обложка (SVG) и короткое описание; видны
@@ -27048,14 +27069,14 @@ function railHTML(cur){
     if(!ids.length) return '';
     return '<h4>'+title+'</h4>'+ids.map(function(id){
       var a=avail(id), s=tStat(id);
-      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+(a&&cheatsForTopic(id).length?'<span class="railcheat" title="Есть шпаргалка по этой теме">📄</span>':'')+'</span></button>';
+      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="'+TL('Раздел пока готовится','This section is still being prepared')+'"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+(a&&cheatsForTopic(id).length?'<span class="railcheat" title="'+TL('Есть шпаргалка по этой теме','There’s a cheat sheet for this topic')+'">📄</span>':'')+'</span></button>';
     }).join('');
   }
-  return '<aside class="rail">'+GRADES.map(function(g){return grp(GRADE_LABEL[g],BY_GRADE[g]);}).join('')+'</aside>';
+  return '<aside class="rail">'+GRADES.map(function(g){return grp(gradeLabel(g),BY_GRADE[g]);}).join('')+'</aside>';
 }
 function viewTopic(){
   var id=view.id, tab=view.tab||'explain', T=TOPICS[id], C=CONTENT[id];
-  var tabs=[['explain','Объяснение'],['practice','Практика'],['lab','Опыт'],['video','Видео'],['test','Тест']];
+  var tabs=[['explain',TL('Объяснение','Explanation')],['practice',TL('Практика','Practice')],['lab',TL('Опыт','Experiment')],['video',TL('Видео','Video')],['test',TL('Тест','Test')]];
   var solved=solvedCount(id);
   var idx=ALL.indexOf(id), prev=null,next=null;
   for(var i=idx-1;i>=0;i--) if(avail(ALL[i])){prev=ALL[i];break}
@@ -27069,14 +27090,14 @@ function viewTopic(){
   var tabIdx=tabs.map(function(t){return t[0]}).indexOf(tab);
   var nextTab=tabs[tabIdx+1];
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
-    +'<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(GRADE_LABEL[T.grade])+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span> ':'')+statPill(id)+(cheatsForTopic(id).length?' <button class="btn small ghost" data-nav="cheat/'+cheatsForTopic(id)[0].id+'" title="Открыть шпаргалку по этой теме">📄 Шпаргалка</button>':'')+'</span></div>'
+    +'<div class="sheet"><div class="crumb"><button data-nav="home">'+TL('Карта','Map')+'</button><span>/</span><span>'+esc(gradeLabel(T.grade))+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="'+TL('По итогам диагностики или теста эту тему стоит подкрепить','Based on the diagnostic or a test, this topic is worth reinforcing')+'">'+TL('укрепить','reinforce')+'</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">'+TL('новинка','new')+'</span> ':'')+statPill(id)+(cheatsForTopic(id).length?' <button class="btn small ghost" data-nav="cheat/'+cheatsForTopic(id)[0].id+'" title="'+TL('Открыть шпаргалку по этой теме','Open the cheat sheet for this topic')+'">📄 '+TL('Шпаргалка','Cheat sheet')+'</button>':'')+'</span></div>'
     +'<h1>'+esc(T.name)+' '+charBadgeHTML(id)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
-    +'<p class="legend" style="margin-top:-4px">Уровень мастерства: <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
+    +'<p class="legend" style="margin-top:-4px">'+TL('Уровень мастерства','Mastery level')+': <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
     +body
     +'<div class="foot"><div>'+(prev?'<button class="btn ghost small" data-nav="t/'+prev+'/explain">← '+esc(TOPICS[prev].name)+'</button>':'')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
-    +(nextTab?'<button class="btn small" data-nav="t/'+id+'/'+nextTab[0]+'">Дальше: '+nextTab[1]+' →</button>':'')
-    +(!nextTab&&next?'<button class="btn small" data-nav="t/'+next+'/explain">Следующая тема: '+esc(TOPICS[next].name)+' →</button>':'')
+    +(nextTab?'<button class="btn small" data-nav="t/'+id+'/'+nextTab[0]+'">'+TL('Дальше','Next')+': '+nextTab[1]+' →</button>':'')
+    +(!nextTab&&next?'<button class="btn small" data-nav="t/'+next+'/explain">'+TL('Следующая тема','Next topic')+': '+esc(TOPICS[next].name)+' →</button>':'')
     +'</div></div></div></div></div>';
 }
 /* в. 2.26.0 — «по шагам» (пилот на двух темах 5 класса, выбор пользователя от 17.10.2026):
@@ -27115,24 +27136,24 @@ function tabExplainSteps(id){
   var exIdxArr=Array.isArray(st.exIdx)?st.exIdx:(st.exIdx!==undefined&&st.exIdx!==null?[st.exIdx]:[]);
   var exHTML=renderSvgMarkers(exIdxArr.map(function(ei){
     var e=C.examples[ei];
-    return '<div class="ex"><div class="t">Пример. '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>';
+    return '<div class="ex"><div class="t">'+TL('Пример.','Example.')+' '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>';
   }).join(''));
   return '<div class="stepper">'
-    +'<div class="stepper-top"><span class="legend">Шаг '+(cur+1)+' из '+steps.length+'</span><span class="stepper-dots">'+stepperDotsHTML(steps.length,cur)+'</span></div>'
+    +'<div class="stepper-top"><span class="legend">'+TL('Шаг','Step')+' '+(cur+1)+' '+TL('из','of')+' '+steps.length+'</span><span class="stepper-dots">'+stepperDotsHTML(steps.length,cur)+'</span></div>'
     +'<h3>'+esc(st.title)+'</h3>'
     +'<div class="prose">'+renderSvgMarkers(fmt(addReadButtons(st.body)))+'</div>'
     +exHTML
     +'<div class="stepper-nav">'
-    +(cur>0?'<button class="btn ghost" data-step="'+id+':prev">← Назад</button>':'<span></span>')
-    +(isLast?'<button class="btn primary" data-step="'+id+':practice">Готово — к практике →</button>':'<button class="btn primary" data-step="'+id+':next">Дальше →</button>')
+    +(cur>0?'<button class="btn ghost" data-step="'+id+':prev">← '+TL('Назад','Back')+'</button>':'<span></span>')
+    +(isLast?'<button class="btn primary" data-step="'+id+':practice">'+TL('Готово — к практике','Done — on to practice')+' →</button>':'<button class="btn primary" data-step="'+id+':next">'+TL('Дальше','Next')+' →</button>')
     +'</div></div>';
 }
 function tabExplain(id){
   var C=CONTENT[id];
   if(C.steps) return tabExplainSteps(id);
   return '<div class="prose">'+renderSvgMarkers(fmt(addReadButtons(C.explain)))+'</div>'
-    +'<h3 style="margin-top:28px">Разобранные примеры</h3>'
-    +renderSvgMarkers(C.examples.map(function(e,i){return '<div class="ex"><div class="t">Пример '+(i+1)+'. '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>'}).join(''));
+    +'<h3 style="margin-top:28px">'+TL('Разобранные примеры','Worked examples')+'</h3>'
+    +renderSvgMarkers(C.examples.map(function(e,i){return '<div class="ex"><div class="t">'+TL('Пример','Example')+' '+(i+1)+'. '+fmt(e.t)+'</div><div class="s">'+fmt(e.s)+'</div></div>'}).join(''));
 }
 function taskHTML(id,i,t,star){
   var st=(S.practice[id]||{})[i]||{};
@@ -27141,12 +27162,12 @@ function taskHTML(id,i,t,star){
   var h='<div class="task'+(star?' star':'')+'" data-topic="'+id+'" data-i="'+key+'"><div class="no">'+(star?'★':(i+1))+'</div><div>'
     +'<div class="q">'+fmt(t.q)+'</div>';
   if(t.opts){
-    h+='<div class="opts">'+t.opts.map(function(o,k){return '<button class="opt'+(st2.ok&&k===t.ans?(st2.helped?' ok helped':' ok'):'')+'" data-opt="'+k+'"><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
+    h+='<div class="opts">'+t.opts.map(function(o,k){return '<button class="opt'+(st2.ok&&k===t.ans?(st2.helped?' ok helped':' ok'):'')+'" data-opt="'+k+'"><i>'+TL('АБВГ','ABCD').charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
   }else{
-    h+='<div class="ans-row"><input class="in'+(st2.ok?(st2.helped?' helped':' ok'):'')+'" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ к задаче '+(star?'со звёздочкой':(i+1))+'" value="'+(st2.ok?esc(st2.val||''):'')+'"'+(st2.ok?' readonly':'')+'>'
-      +'<button class="btn small primary" data-check'+(st2.ok?' disabled':'')+'>Проверить</button></div>';
+    h+='<div class="ans-row"><input class="in'+(st2.ok?(st2.helped?' helped':' ok'):'')+'" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="'+TL('ответ','answer')+'" aria-label="'+TL('Ответ к задаче','Answer to problem')+' '+(star?TL('со звёздочкой','with a star'):(i+1))+'" value="'+(st2.ok?esc(st2.val||''):'')+'"'+(st2.ok?' readonly':'')+'>'
+      +'<button class="btn small primary" data-check'+(st2.ok?' disabled':'')+'>'+TL('Проверить','Check')+'</button></div>';
   }
-  h+='<div class="fb'+(st2.ok?(st2.helped?' ok helped':' ok'):'')+'">'+(st2.ok?(st2.helped?helpBadge()+'<span>Разобрано с подсказкой</span>':okBadge()+'<span>Верно!</span>'):'')+'</div><div class="extra"></div>';
+  h+='<div class="fb'+(st2.ok?(st2.helped?' ok helped':' ok'):'')+'">'+(st2.ok?(st2.helped?helpBadge()+'<span>'+TL('Разобрано с подсказкой','Worked through with a hint')+'</span>':okBadge()+'<span>'+TL('Верно!','Correct!')+'</span>'):'')+'</div><div class="extra"></div>';
   if(st2.ok) h+='';
   h+='</div></div>';
   return h;
@@ -27155,9 +27176,9 @@ var MAIN_TASKS=16; // первые 16 задач — основные, оста�
 /* в. 2.8.0 — автономия: ребёнок сам выбирает, с чего начать практику (немного выбора — часть мотивации) */
 function difficultyPickHTML(){
   var chal=!!(S.prefs&&S.prefs.challenge);
-  return '<div class="diffpick" style="margin-bottom:14px"><span class="legend" style="margin:0">Как тебе интереснее сегодня?</span>'
-    +'<div class="cta" style="margin-top:6px"><button class="btn small'+(chal?'':' primary')+'" data-difficulty="standard">Сначала основные</button>'
-    +'<button class="btn small'+(chal?' primary':'')+'" data-difficulty="challenge">Сразу посложнее</button></div></div>';
+  return '<div class="diffpick" style="margin-bottom:14px"><span class="legend" style="margin:0">'+TL('Как тебе интереснее сегодня?','What sounds more fun today?')+'</span>'
+    +'<div class="cta" style="margin-top:6px"><button class="btn small'+(chal?'':' primary')+'" data-difficulty="standard">'+TL('Сначала основные','Basics first')+'</button>'
+    +'<button class="btn small'+(chal?' primary':'')+'" data-difficulty="challenge">'+TL('Сразу посложнее','Jump to harder')+'</button></div></div>';
 }
 function tabPractice(id){
   if(GAME && GAME.topic===id) return gameHTML();
@@ -27165,39 +27186,39 @@ function tabPractice(id){
   var chal=!!(S.prefs&&S.prefs.challenge);
   var mainHTML=C.tasks.slice(0,MAIN_TASKS).map(function(t,i){return taskHTML(id,i,t,false)}).join('');
   var extraHTML=C.tasks.length>MAIN_TASKS
-    ?'<div class="extra-set"><div class="extra-h"><span class="etag">Экстра</span><span class="legend">Дополнительные задачи — для тех, кто хочет потренироваться ещё.</span></div>'
+    ?'<div class="extra-set"><div class="extra-h"><span class="etag">'+TL('Экстра','Extra')+'</span><span class="legend">'+TL('Дополнительные задачи — для тех, кто хочет потренироваться ещё.','Extra problems — for anyone who wants more practice.')+'</span></div>'
       +C.tasks.slice(MAIN_TASKS).map(function(t,j){return taskHTML(id,MAIN_TASKS+j,t,false)}).join('')+'</div>'
     :'';
   return gameInviteHTML(id)
-    +'<p class="legend">Дроби пиши через косую черту (например, 3/4), десятичные — через запятую, отрицательные — с минусом (−3). Если дробь нужно сократить, ответ должен быть несократимым.</p>'
+    +'<p class="legend">'+TL('Дроби пиши через косую черту (например, 3/4), десятичные — через запятую, отрицательные — с минусом (−3). Если дробь нужно сократить, ответ должен быть несократимым.','Write fractions with a slash (e.g. 3/4), decimals with a comma, negatives with a minus (−3). If a fraction needs reducing, the answer must be in lowest terms.')+'</p>'
     +(extraHTML?difficultyPickHTML():'')
-    +'<div class="prog-line"><span>Решено верно: <b id="solved">'+solvedCount(id)+'</b> из '+C.tasks.length+'</span></div>'
+    +'<div class="prog-line"><span>'+TL('Решено верно','Solved correctly')+': <b id="solved">'+solvedCount(id)+'</b> '+TL('из','of')+' '+C.tasks.length+'</span></div>'
     +(chal?extraHTML+mainHTML:mainHTML+extraHTML)
-    +'<h3 style="margin-top:26px">Задача со звёздочкой</h3><p class="legend" style="margin-top:0">Необязательная. Для тех, кто хочет думать глубже — это тренировка перед олимпиадами.</p>'
+    +'<h3 style="margin-top:26px">'+TL('Задача со звёздочкой','Bonus star problem')+'</h3><p class="legend" style="margin-top:0">'+TL('Необязательная. Для тех, кто хочет думать глубже — это тренировка перед олимпиадами.','Optional. For anyone who wants to think deeper — good practice ahead of olympiads.')+'</p>'
     +taskHTML(id,0,C.bonus,true);
 }
 function tabLab(id){
   var C=CONTENT[id];
-  return '<p class="prose">Математика нужна не только в тетради. Выбери один опыт, сделай его руками и запиши результат — это самый быстрый путь к настоящему пониманию.</p>'
+  return '<p class="prose">'+TL('Математика нужна не только в тетради. Выбери один опыт, сделай его руками и запиши результат — это самый быстрый путь к настоящему пониманию.','Math isn’t just for the notebook. Pick one experiment, do it with your own hands, and write down the result — it’s the fastest way to real understanding.')+'</p>'
     +C.lab.map(function(l){return '<div class="lab"><h3>'+esc(l.t)+'</h3><p>'+fmt(l.b)+'</p></div>'}).join('');
 }
 function tabVideo(id){
   var C=CONTENT[id], vids=C.videos||[];
-  if(!vids.length) return '<p class="prose empty">Для этой темы подборка видео пока не готова — используй поиск на YouTube по названию темы.</p>';
-  return '<p class="prose">Подборка роликов на русском языке по теме. Смотри с бумагой и ручкой рядом — останавливай видео и повторяй пример сам. Если после ролика ты можешь решить похожий пример — он подошёл.</p>'
+  if(!vids.length) return '<p class="prose empty">'+TL('Для этой темы подборка видео пока не готова — используй поиск на YouTube по названию темы.','There’s no video selection for this topic yet — search YouTube for the topic name.')+'</p>';
+  return '<p class="prose">'+TL('Подборка роликов на русском языке по теме. Смотри с бумагой и ручкой рядом — останавливай видео и повторяй пример сам. Если после ролика ты можешь решить похожий пример — он подошёл.','A selection of Russian-language videos on this topic. Watch with paper and a pen nearby — pause the video and redo the example yourself. If you can solve a similar example after watching, it was a good fit.')+'</p>'
     +'<div class="vids">'+vids.map(function(v){
       var href = v.url ? v.url : ('https://www.youtube.com/results?search_query='+encodeURIComponent(v.q));
-      var sub = v.url ? 'Открыть на YouTube' : ('YouTube: «'+esc(v.q)+'»');
-      return '<div class="vid"><div><b>'+esc(v.t)+'</b><span>'+sub+'</span></div><a class="btn small" target="_blank" rel="noopener" href="'+esc(href)+'">'+(v.url?'Смотреть':'Найти')+'</a></div>';
+      var sub = v.url ? TL('Открыть на YouTube','Open on YouTube') : ('YouTube: «'+esc(v.q)+'»');
+      return '<div class="vid"><div><b>'+esc(v.t)+'</b><span>'+sub+'</span></div><a class="btn small" target="_blank" rel="noopener" href="'+esc(href)+'">'+(v.url?TL('Смотреть','Watch'):TL('Найти','Find'))+'</a></div>';
     }).join('')+'</div>';
 }
 
 /* ---- тест / диагностика ---- */
 function qHTML(prefix,i,it,showWork){
   var h='<div class="task" data-q="'+i+'"><div class="no">'+(i+1)+'</div><div><div class="q">'+fmt(it.q)+'</div>';
-  if(it.opts) h+='<div class="opts">'+it.opts.map(function(o,k){return '<button type="button" class="opt" data-pick="'+k+'"><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
-  else h+='<div class="ans-row"><input class="in" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ '+(i+1)+'"></div>';
-  if(showWork && !it.opts) h+='<div class="workbox"><label>Покажи решение (по шагам) — это увидит родитель<textarea class="work" rows="2" placeholder="напиши, как ты решал(а)…" aria-label="Решение к заданию '+(i+1)+'"></textarea></label></div>';
+  if(it.opts) h+='<div class="opts">'+it.opts.map(function(o,k){return '<button type="button" class="opt" data-pick="'+k+'"><i>'+TL('АБВГ','ABCD').charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
+  else h+='<div class="ans-row"><input class="in" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="'+TL('ответ','answer')+'" aria-label="'+TL('Ответ','Answer')+' '+(i+1)+'"></div>';
+  if(showWork && !it.opts) h+='<div class="workbox"><label>'+TL('Покажи решение (по шагам) — это увидит родитель','Show your work (step by step) — a parent will see this')+'<textarea class="work" rows="2" placeholder="'+TL('напиши, как ты решал(а)…','write how you solved it…')+'" aria-label="'+TL('Решение к заданию','Work for problem')+' '+(i+1)+'"></textarea></label></div>';
   h+='</div></div>';
   return h;
 }
@@ -27217,11 +27238,11 @@ function ttestStop(){ clearInterval(TTEST_TIMER); TTEST_TIMER=null; }
 function ttestReadyHTML(id,C,last){
   var n=C.test.length, total=ttestTotalMin(n);
   return '<div class="sheet" style="text-align:center">'
-    +'<h2>Тест на время</h2>'
-    +'<p class="goal">'+n+' заданий, примерно по '+TTEST_MIN_PER_Q+' минуты на каждое, плюс '+TTEST_BUFFER_MIN+' минут в запас — всего '+total+' минут. Как только нажмёшь «Готов, начинаю» — время пойдёт, поставить его на паузу нельзя.</p>'
-    +'<p class="goal">Подготовь заранее: черновик для вычислений, две ручки (на случай, если одна перестанет писать), и тихое место, где никто не будет мешать.</p>'
-    +(last?'<p class="legend">Лучший результат: '+last.best+' из '+last.total+' · последняя попытка: '+ruDate(last.ts)+'</p>':'')
-    +'<div class="cta" style="justify-content:center;margin-top:14px"><button class="btn primary" data-ttest-begin="'+id+'">Готов, начинаю</button><button class="btn ghost" data-nav="home">Не сейчас</button></div></div>';
+    +'<h2>'+TL('Тест на время','Timed test')+'</h2>'
+    +'<p class="goal">'+TL(n+' заданий, примерно по '+TTEST_MIN_PER_Q+' минуты на каждое, плюс '+TTEST_BUFFER_MIN+' минут в запас — всего '+total+' минут. Как только нажмёшь «Готов, начинаю» — время пойдёт, поставить его на паузу нельзя.',n+' problems, roughly '+TTEST_MIN_PER_Q+' minutes each, plus '+TTEST_BUFFER_MIN+' minutes of buffer — '+total+' minutes total. As soon as you tap “Ready, start” the clock runs — it can’t be paused.')+'</p>'
+    +'<p class="goal">'+TL('Подготовь заранее: черновик для вычислений, две ручки (на случай, если одна перестанет писать), и тихое место, где никто не будет мешать.','Get ready beforehand: scratch paper for calculations, two pens (in case one stops writing), and a quiet place where nothing will interrupt you.')+'</p>'
+    +(last?'<p class="legend">'+TL('Лучший результат','Best result')+': '+last.best+' '+TL('из','of')+' '+last.total+' · '+TL('последняя попытка','last attempt')+': '+ruDate(last.ts)+'</p>':'')
+    +'<div class="cta" style="justify-content:center;margin-top:14px"><button class="btn primary" data-ttest-begin="'+id+'">'+TL('Готов, начинаю','Ready, start')+'</button><button class="btn ghost" data-nav="home">'+TL('Не сейчас','Not now')+'</button></div></div>';
 }
 function ttestBegin(id){
   var C=CONTENT[id]; if(!C) return;
@@ -27249,11 +27270,11 @@ function tabTest(id){
   if(res) return resultHTML(res);
   if(!TTEST || TTEST.topic!==id) return ttestReadyHTML(id,C,last);
   return '<div id="testbox" data-kind="test" data-topic="'+id+'">'
-    +'<div class="cta" style="justify-content:space-between;align-items:center;flex-wrap:wrap"><span class="legend" style="margin:0">Тест на время — ответы проверяются только после завершения.</span><span class="pill" id="ttclock" style="font-size:16px;font-weight:700"></span></div>'
-    +'<p class="prose">'+C.test.length+' заданий без подсказок. Отвечай сам, как на настоящей контрольной. Ответ сайт проверит сразу и пустит тебя дальше — но, пожалуйста, коротко запиши решение в поле под каждым заданием: его посмотрит родитель. Порог «освоено» — '+Math.round(PASS*100)+'%.</p>'
-    +(last?'<p class="legend">Лучший результат: '+last.best+' из '+last.total+' · последняя попытка: '+ruDate(last.ts)+'</p>':'')
+    +'<div class="cta" style="justify-content:space-between;align-items:center;flex-wrap:wrap"><span class="legend" style="margin:0">'+TL('Тест на время — ответы проверяются только после завершения.','Timed test — answers are checked only after you finish.')+'</span><span class="pill" id="ttclock" style="font-size:16px;font-weight:700"></span></div>'
+    +'<p class="prose">'+TL(C.test.length+' заданий без подсказок. Отвечай сам, как на настоящей контрольной. Ответ сайт проверит сразу и пустит тебя дальше — но, пожалуйста, коротко запиши решение в поле под каждым заданием: его посмотрит родитель. Порог «освоено» — '+Math.round(PASS*100)+'%.',C.test.length+' problems, no hints. Answer on your own, like a real test. The site checks the answer right away and lets you move on — but please jot down your work in the field under each problem: a parent will see it. The “mastered” threshold is '+Math.round(PASS*100)+'%.')+'</p>'
+    +(last?'<p class="legend">'+TL('Лучший результат','Best result')+': '+last.best+' '+TL('из','of')+' '+last.total+' · '+TL('последняя попытка','last attempt')+': '+ruDate(last.ts)+'</p>':'')
     +C.test.map(function(t,i){return qHTML('t',i,t,true)}).join('')
-    +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-finish>Завершить тест</button><span class="fb" id="ferr"></span></div></div>';
+    +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-finish>'+TL('Завершить тест','Finish the test')+'</button><span class="fb" id="ferr"></span></div></div>';
 }
 function viewDiag(){
   if(view.result) return '<div class="sheet"><h1>'+TL('Входная диагностика','Initial diagnostic')+'</h1>'+resultHTML(view.result)+'</div>';
@@ -27288,7 +27309,7 @@ function finish(forced){
   var res=gradeAll(items,box);
   var empty=res.filter(function(r){return r.given===''}).length;
   if(empty && !forced && !box.getAttribute('data-warned')){
-    $('#ferr').textContent='Осталось без ответа: '+empty+'. Нажми ещё раз, чтобы завершить — пустые засчитаются как ошибки.';
+    $('#ferr').textContent=TL('Осталось без ответа: '+empty+'. Нажми ещё раз, чтобы завершить — пустые засчитаются как ошибки.','Left unanswered: '+empty+'. Tap again to finish — blanks count as mistakes.');
     $('#ferr').className='fb bad'; box.setAttribute('data-warned','1'); return;
   }
   var score=res.filter(function(r){return r.ok}).length, total=res.length, now=Date.now();
@@ -27627,9 +27648,19 @@ document.addEventListener('keydown',function(ev){
 function itemFor(id,key){return key==='b'?CONTENT[id].bonus:CONTENT[id].tasks[+key]}
 /* в. 2.8.0 — установка на рост: хвалим стратегию и усилие, а не «ты умный/умная»; формулировки без указания
    пола ребёнка (используем безличные обороты вроде «получилось», а не «ты сделал(а)»). */
-var PRAISE_FIRST=['Хорошая стратегия — решение сработало сразу.','Чёткий ход мыслей: шаги были по порядку.','Способ решения выбран верно — так и работай дальше.','Аккуратный расчёт — всё сошлось с первого раза.'];
-var PRAISE_RETRY=['Не сразу — и это нормально: пробовать разные подходы и есть учёба.','Получилось разобраться — вот так и работает обучение, через пробы.','Ошибка в прошлый раз помогла найти верный путь — это тоже результат.','Настойчивость сработала: с каждой попыткой расчёт становился точнее.'];
-function pickPraise(tries){var pool=tries<=1?PRAISE_FIRST:PRAISE_RETRY; return pool[Math.floor(Math.random()*pool.length)];}
+var PRAISE_FIRST=[
+  {ru:'Хорошая стратегия — решение сработало сразу.',en:'Good strategy — it worked on the first try.'},
+  {ru:'Чёткий ход мыслей: шаги были по порядку.',en:'Clear thinking: the steps were in the right order.'},
+  {ru:'Способ решения выбран верно — так и работай дальше.',en:'Right approach chosen — keep working that way.'},
+  {ru:'Аккуратный расчёт — всё сошлось с первого раза.',en:'Careful calculation — it all checked out the first time.'}
+];
+var PRAISE_RETRY=[
+  {ru:'Не сразу — и это нормально: пробовать разные подходы и есть учёба.',en:'Not on the first try — and that’s fine: trying different approaches is how you learn.'},
+  {ru:'Получилось разобраться — вот так и работает обучение, через пробы.',en:'You worked it out — that’s how learning works, through trial.'},
+  {ru:'Ошибка в прошлый раз помогла найти верный путь — это тоже результат.',en:'The earlier mistake helped you find the right path — that counts too.'},
+  {ru:'Настойчивость сработала: с каждой попыткой расчёт становился точнее.',en:'Persistence paid off: the calculation got more accurate with each try.'}
+];
+function pickPraise(tries){var pool=tries<=1?PRAISE_FIRST:PRAISE_RETRY; var p=pool[Math.floor(Math.random()*pool.length)]; return TL(p.ru,p.en);}
 /* в. 2.8.0 — короткие занятия с явным финалом и «крючком» на следующий раз (эффект Зейгарник):
    после нескольких решённых подряд задач мягко предлагаем паузу и дразним, что дальше — без принуждения,
    ребёнок сам решает, продолжать или нет. Счётчик — только в памяти, не хранится между заходами. */
@@ -27640,20 +27671,20 @@ function hookTeaser(){
     var id=ns.nav.split('/')[1];
     if(TOPICS[id]) return TOPICS[id].blurb||TOPICS[id].name;
   }
-  return 'следующая тема на карте';
+  return TL('следующая тема на карте','the next topic on the map');
 }
 function sessionHookHTML(){
   if(SESSION_HOOK_SHOWN || SESSION_SOLVED<SESSION_HOOK_AFTER) return '';
   SESSION_HOOK_SHOWN=true;
-  return '<div class="banner" style="margin-top:10px"><span>Хорошая сессия — '+SESSION_SOLVED+' задач подряд сегодня! Дальше на очереди: '
-    +esc(hookTeaser())+' — интересно будет разобраться. Можно закончить на этом и вернуться в другой раз, а можно продолжить, если есть настроение — решай сам(а).</span></div>';
+  return '<div class="banner" style="margin-top:10px"><span>'+TL('Хорошая сессия — '+SESSION_SOLVED+' задач подряд сегодня! Дальше на очереди','Good session — '+SESSION_SOLVED+' problems in a row today! Up next')+': '
+    +esc(hookTeaser())+TL(' — интересно будет разобраться. Можно закончить на этом и вернуться в другой раз, а можно продолжить, если есть настроение — решай сам(а).',' — it’ll be interesting to dig into. You can stop here and come back another time, or keep going if you’re in the mood — it’s up to you.')+'</span></div>';
 }
 function checkTask(task,id,key,optIdx){
   var it=itemFor(id,key), ok, given;
   var pr=S.practice[id]||(S.practice[id]={}); var st=pr[key]||(pr[key]={ok:false,tries:0});
   if(st.ok) return;
   if(it.opts){ given=optIdx; ok=optIdx===it.ans; }
-  else{ var inp=$('input.in',task); given=inp.value.trim(); if(given==='') {$('.fb',task).textContent='Введи ответ.'; $('.fb',task).className='fb bad'; return} ok=gradeNum(it,given); }
+  else{ var inp=$('input.in',task); given=inp.value.trim(); if(given==='') {$('.fb',task).textContent=TL('Введи ответ.','Enter an answer.'); $('.fb',task).className='fb bad'; return} ok=gradeNum(it,given); }
   maybeEaster67(it.opts?it.opts[optIdx]:given);
   st.tries++;
   var fb=$('.fb',task), extra=$('.extra',task);
@@ -27661,20 +27692,20 @@ function checkTask(task,id,key,optIdx){
     st.ok=true; st.val=it.opts?'':String(given);
     touchStreak();
     SESSION_SOLVED++;
-    fb.className='fb ok'; fb.innerHTML=okBadge()+'<span>Верно! '+esc(pickPraise(st.tries))+'</span>';
+    fb.className='fb ok'; fb.innerHTML=okBadge()+'<span>'+TL('Верно!','Correct!')+' '+esc(pickPraise(st.tries))+'</span>';
     if(!it.opts){var inp2=$('input.in',task); inp2.classList.add('ok'); inp2.readOnly=true; $('[data-check]',task).disabled=true}
     else $$('.opt',task).forEach(function(o,k){if(k===it.ans)o.classList.add('ok')});
-    extra.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'</div>'+sessionHookHTML();
+    extra.innerHTML='<div class="solbox"><b>'+TL('Решение.','Solution.')+'</b> '+fmt(it.sol)+'</div>'+sessionHookHTML();
     var c=$('#solved'); if(c) c.textContent=solvedCount(id);
     var tabc=$('.tabs .cnt'); if(tabc) tabc.textContent=solvedCount(id)+'/'+CONTENT[id].tasks.length;
   }else{
     fb.className='fb bad';
-    if(it.opts){ $$('.opt',task).forEach(function(o,k){if(k===optIdx)o.classList.add('bad')}); fb.textContent='Пока не так. Выбери другой вариант.'; }
-    else{ $('input.in',task).classList.add('bad'); fb.textContent='Пока не так. Проверь вычисления'+(it.reduced?' и не забудь сократить дробь':'')+'.'; }
+    if(it.opts){ $$('.opt',task).forEach(function(o,k){if(k===optIdx)o.classList.add('bad')}); fb.textContent=TL('Пока не так. Выбери другой вариант.','Not quite. Pick another option.'); }
+    else{ $('input.in',task).classList.add('bad'); fb.textContent=TL('Пока не так. Проверь вычисления'+(it.reduced?' и не забудь сократить дробь':'')+'.','Not quite. Check your calculations'+(it.reduced?' and remember to reduce the fraction':'')+'.'); }
     var btns='';
-    btns+='<button class="btn small ghost" data-hint>Подсказка</button> ';
+    btns+='<button class="btn small ghost" data-hint>'+TL('Подсказка','Hint')+'</button> ';
     var note='';
-    if(st.tries>=2){ btns+='<button class="btn small ghost" data-sol>Показать решение</button>'; note='<p class="legend" style="margin:6px 0 0">Ошибаться — обычная часть решения задач. Посмотри подсказку, если нужно.</p>'; }
+    if(st.tries>=2){ btns+='<button class="btn small ghost" data-sol>'+TL('Показать решение','Show the solution')+'</button>'; note='<p class="legend" style="margin:6px 0 0">'+TL('Ошибаться — обычная часть решения задач. Посмотри подсказку, если нужно.','Making mistakes is a normal part of solving problems. Check the hint if you need to.')+'</p>'; }
     extra.innerHTML='<div class="ans-row" style="margin-top:6px">'+btns+'</div>'+note+'<div class="ex-out"></div>';
   }
   scheduleSave();
@@ -27682,14 +27713,14 @@ function checkTask(task,id,key,optIdx){
 }
 function showExtra(task,kind,id,key){
   var it=itemFor(id,key), out=$('.ex-out',task); if(!out) return;
-  if(kind==='hint') out.innerHTML='<div class="hintbox"><b>Подсказка.</b> '+fmt(it.hint||'Разбей задачу на шаги и проверь каждый.')+'</div>';
+  if(kind==='hint') out.innerHTML='<div class="hintbox"><b>'+TL('Подсказка.','Hint.')+'</b> '+fmt(it.hint||TL('Разбей задачу на шаги и проверь каждый.','Break the problem into steps and check each one.'))+'</div>';
   else{
     /* в. 2.10.1 — раньше после просмотра решения задача навсегда оставалась «не решена», пока ребёнок
        не вводил верный ответ сам — даже если он просто переходил к следующей задаче. Теперь рядом с
        решением есть кнопка, которая закрывает задачу с отдельной отметкой «разобрано с подсказкой» —
        это не заменяет собственное решение (растёт не так, как «Верно!»), но и не виснет вечным долгом. */
-    out.innerHTML='<div class="solbox"><b>Решение.</b> '+fmt(it.sol)+'<br><span style="color:var(--muted)">Теперь реши похожую задачу сам(а) и введи ответ — а если разобрался(лась) и хочешь идти дальше, можно отметить задачу разобранной.</span></div>'
-      +'<div class="cta" style="margin-top:8px"><button class="btn small ghost" data-mark-helped>Понял(а) — отметить разобранной</button></div>';
+    out.innerHTML='<div class="solbox"><b>'+TL('Решение.','Solution.')+'</b> '+fmt(it.sol)+'<br><span style="color:var(--muted)">'+TL('Теперь реши похожую задачу сам(а) и введи ответ — а если разобрался(лась) и хочешь идти дальше, можно отметить задачу разобранной.','Now solve a similar problem yourself and enter the answer — or, if it clicked and you want to move on, you can mark this one as worked through.')+'</span></div>'
+      +'<div class="cta" style="margin-top:8px"><button class="btn small ghost" data-mark-helped>'+TL('Понял(а) — отметить разобранной','Got it — mark as worked through')+'</button></div>';
   }
 }
 function markHelped(task,id,key){
@@ -27699,7 +27730,7 @@ function markHelped(task,id,key){
   st.ok=true; st.helped=true; st.val=it.opts?'':'';
   touchStreak();
   var fb=$('.fb',task), extra=$('.extra',task);
-  fb.className='fb ok helped'; fb.innerHTML=helpBadge()+'<span>Разобрано с подсказкой — в следующий раз попробуй сначала сам(а).</span>';
+  fb.className='fb ok helped'; fb.innerHTML=helpBadge()+'<span>'+TL('Разобрано с подсказкой — в следующий раз попробуй сначала сам(а).','Worked through with a hint — try on your own first next time.')+'</span>';
   if(it.opts){ $$('.opt',task).forEach(function(o,k){o.classList.remove('bad'); if(k===it.ans) o.classList.add('helped')}); }
   else{
     var inp=$('input.in',task); if(inp){ inp.classList.remove('bad'); inp.classList.add('helped'); inp.readOnly=true; }
@@ -27920,19 +27951,20 @@ function endGame(){
   render();
 }
 function gameExit(){ gameStopTimers(); GAME=null; render(); }
+function gameModeLabel(mode){ return mode==='round'?TL('Раунд на время','Timed round'):TL('Цепочка','Chain'); }
 function gameReadyHTML(){
   var mode=GAME.mode;
   var icon=mode==='round'?'⚡':'🔗';
-  var title=mode==='round'?'Раунд на время':'Цепочка';
+  var title=gameModeLabel(mode);
   var rules=mode==='round'
-    ? 'У тебя 75 секунд. Отвечай на вопросы из этой темы — чем больше верных, тем лучше счёт. Ошибся — не страшно, идём дальше без штрафа.'
-    : 'Отвечай правильно один за другим — это и есть цепочка. На каждый вопрос — своё время, и оно понемногу сокращается, чем длиннее серия. Одна ошибка или просрочка — и цепочка обрывается.';
+    ? TL('У тебя 75 секунд. Отвечай на вопросы из этой темы — чем больше верных, тем лучше счёт. Ошибся — не страшно, идём дальше без штрафа.','You have 75 seconds. Answer questions from this topic — the more correct, the better your score. A mistake is no big deal — just move on, no penalty.')
+    : TL('Отвечай правильно один за другим — это и есть цепочка. На каждый вопрос — своё время, и оно понемногу сокращается, чем длиннее серия. Одна ошибка или просрочка — и цепочка обрывается.','Answer correctly one after another — that’s the chain. Each question has its own time limit, which shrinks a bit as the streak grows. One mistake or timeout and the chain breaks.');
   var best=(S.games&&S.games[GAME.topic]&&S.games[GAME.topic][mode]&&typeof S.games[GAME.topic][mode].best==='number')?S.games[GAME.topic][mode].best:null;
   return '<div class="gamebox sheet gready">'
     +'<span class="gicon">'+icon+'</span><h2 style="margin:0 0 8px">'+title+'</h2>'
     +'<p class="legend" style="margin:0 auto 4px;max-width:44ch">'+rules+'</p>'
-    +(best!==null?'<p class="legend" style="margin-top:0">Личный рекорд: '+best+'</p>':'')
-    +'<div class="cta" style="justify-content:center;margin-top:12px"><button class="btn primary" data-game-begin>Поехали!</button><button class="btn ghost" data-game-exit>Не сейчас</button></div>'
+    +(best!==null?'<p class="legend" style="margin-top:0">'+TL('Личный рекорд','Personal best')+': '+best+'</p>':'')
+    +'<div class="cta" style="justify-content:center;margin-top:12px"><button class="btn primary" data-game-begin>'+TL('Поехали!','Let’s go!')+'</button><button class="btn ghost" data-game-exit>'+TL('Не сейчас','Not now')+'</button></div>'
     +'</div>';
 }
 function gameHTML(){
@@ -27941,42 +27973,42 @@ function gameHTML(){
   if(GAME.phase==='ended') return gameResultHTML();
   var it=gameCurTask();
   if(!it){ endGame(); return gameResultHTML(); }
-  var modeLabel=GAME.mode==='round'?'Раунд на время':'Цепочка';
+  var modeLabel=gameModeLabel(GAME.mode);
   var timerNow=GAME.mode==='round'?Math.max(0,Math.ceil((GAME.deadline-Date.now())/1000)):Math.max(0,(GAME.qDeadline-Date.now())/1000).toFixed(1);
   var frac=GAME.mode==='round'?(GAME.deadline-Date.now())/GAME_ROUND_MS:(GAME.qDeadline-Date.now())/(GAME.qTimeNow*1000);
   var pct0=Math.max(0,Math.min(1,frac))*100;
   var barColor=pct0>50?'var(--green)':pct0>25?'var(--gold)':'var(--red)';
   var scoreHTML = GAME.mode==='chain'
     ? '<span class="gscore">🔥 '+GAME.score+'</span>'
-    : '<span class="gscore">⭐ '+GAME.score+(GAME.streak>=2?' <span class="gcombo">комбо ×'+GAME.streak+'</span>':'')+'</span>';
+    : '<span class="gscore">⭐ '+GAME.score+(GAME.streak>=2?' <span class="gcombo">'+TL('комбо','combo')+' ×'+GAME.streak+'</span>':'')+'</span>';
   var disabled=GAME.pendingAdvance;
   var body='<div class="q">'+fmt(it.q)+'</div>';
   if(it.opts){
-    body+='<div class="opts">'+it.opts.map(function(o,k){return '<button class="opt" data-game-opt="'+k+'"'+(disabled?' disabled':'')+'><i>'+'АБВГ'.charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
+    body+='<div class="opts">'+it.opts.map(function(o,k){return '<button class="opt" data-game-opt="'+k+'"'+(disabled?' disabled':'')+'><i>'+TL('АБВГ','ABCD').charAt(k)+'</i><span>'+fmt(o)+'</span></button>'}).join('')+'</div>';
   } else {
-    body+='<div class="ans-row"><input class="in" id="gameAnsInput" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ответ" aria-label="Ответ"'+(disabled?' disabled':'')+'>'
-      +'<button class="btn small primary" data-game-check'+(disabled?' disabled':'')+'>Проверить</button></div>';
+    body+='<div class="ans-row"><input class="in" id="gameAnsInput" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="'+TL('ответ','answer')+'" aria-label="'+TL('Ответ','Answer')+'"'+(disabled?' disabled':'')+'>'
+      +'<button class="btn small primary" data-game-check'+(disabled?' disabled':'')+'>'+TL('Проверить','Check')+'</button></div>';
   }
   var fbCls = GAME.flashOk?'ok':GAME.flashBad?'bad':'';
   var fbHTML = GAME.celebrateMsg ? (GAME.flashOk?okBadge():'')+'<span>'+esc(GAME.celebrateMsg)+'</span>' : '';
   return '<div class="gamebox sheet'+(GAME.flashOk?' g-ok':GAME.flashBad?' g-bad':'')+'" data-mode="'+GAME.mode+'">'
-    +'<div class="ghead"><span class="gtitle">'+modeLabel+'</span>'+scoreHTML+'<button class="btn ghost small" style="margin-left:auto" data-game-exit>Выйти</button></div>'
+    +'<div class="ghead"><span class="gtitle">'+modeLabel+'</span>'+scoreHTML+'<button class="btn ghost small" style="margin-left:auto" data-game-exit>'+TL('Выйти','Exit')+'</button></div>'
     +'<div class="gbar"><i id="gbarfill" style="width:'+pct0+'%;background:'+barColor+'"></i></div>'
-    +'<div class="gtimer" id="gtimer" style="text-align:right;font-size:13px;color:var(--muted)">'+timerNow+' с</div>'
+    +'<div class="gtimer" id="gtimer" style="text-align:right;font-size:13px;color:var(--muted)">'+timerNow+' '+TL('с','s')+'</div>'
     +body
     +'<div class="fb'+(fbCls?' '+fbCls:'')+'" id="gamefb">'+fbHTML+'</div>'
     +(GAME.flashOk?'<div class="gfloat">+1</div>':'')
     +'</div>';
 }
 function gameResultHTML(){
-  var modeLabel=GAME.mode==='round'?'Раунд на время':'Цепочка';
-  var h='<div class="gamebox sheet"><div class="score"><div class="big">'+GAME.score+'</div><div><h2>'+modeLabel+' — игра окончена</h2>'
-    +'<p style="margin:4px 0 0;color:var(--muted)">Решено верно: '+GAME.score+'</p></div></div>';
+  var modeLabel=gameModeLabel(GAME.mode);
+  var h='<div class="gamebox sheet"><div class="score"><div class="big">'+GAME.score+'</div><div><h2>'+modeLabel+' — '+TL('игра окончена','game over')+'</h2>'
+    +'<p style="margin:4px 0 0;color:var(--muted)">'+TL('Решено верно','Solved correctly')+': '+GAME.score+'</p></div></div>';
   /* «сравнение с собой», как и в тестах (2.8.0): сравниваем только с прежним результатом самого ребёнка */
-  if(GAME.newRecord && GAME.prevBest!==null) h+='<p class="legend" style="margin-top:2px">🏆 Новый личный рекорд! Раньше лучший результат в этом режиме был '+GAME.prevBest+', теперь — '+GAME.score+'.</p>';
-  else if(GAME.newRecord) h+='<p class="legend" style="margin-top:2px">Это первая игра в этом режиме — есть с чем сравнивать в следующий раз.</p>';
-  else h+='<p class="legend" style="margin-top:2px">Личный рекорд в этом режиме пока '+GAME.prevBest+' — можно попробовать побить его в другой раз.</p>';
-  h+='<div class="cta" style="margin-top:12px"><button class="btn primary" data-game-again>Играть ещё раз</button><button class="btn" data-game-exit>Вернуться к практике</button></div>';
+  if(GAME.newRecord && GAME.prevBest!==null) h+='<p class="legend" style="margin-top:2px">🏆 '+TL('Новый личный рекорд! Раньше лучший результат в этом режиме был '+GAME.prevBest+', теперь — '+GAME.score+'.','New personal best! The previous best in this mode was '+GAME.prevBest+', now it’s '+GAME.score+'.')+'</p>';
+  else if(GAME.newRecord) h+='<p class="legend" style="margin-top:2px">'+TL('Это первая игра в этом режиме — есть с чем сравнивать в следующий раз.','This is the first game in this mode — there’ll be something to compare against next time.')+'</p>';
+  else h+='<p class="legend" style="margin-top:2px">'+TL('Личный рекорд в этом режиме пока '+GAME.prevBest+' — можно попробовать побить его в другой раз.','The personal best in this mode is still '+GAME.prevBest+' — try to beat it another time.')+'</p>';
+  h+='<div class="cta" style="margin-top:12px"><button class="btn primary" data-game-again>'+TL('Играть ещё раз','Play again')+'</button><button class="btn" data-game-exit>'+TL('Вернуться к практике','Back to practice')+'</button></div>';
   h+='</div>';
   return h;
 }
@@ -27985,10 +28017,10 @@ function gameInviteHTML(id){
   var rb=g.round&&typeof g.round.best==='number'?g.round.best:null;
   var cb=g.chain&&typeof g.chain.best==='number'?g.chain.best:null;
   return '<div class="ginvite sheet" style="margin-bottom:14px">'
-    +'<span class="legend" style="margin:0">Устал(а) от обычных задач? Есть мини-игра на этих же задачах:</span>'
+    +'<span class="legend" style="margin:0">'+TL('Устал(а) от обычных задач? Есть мини-игра на этих же задачах:','Tired of the usual problems? There’s a mini-game using these same problems:')+'</span>'
     +'<div class="cta" style="margin-top:8px;flex-wrap:wrap">'
-    +'<button class="btn small" data-game-start="'+id+':round">⚡ Раунд на время'+(rb!==null?' · рекорд '+rb:'')+'</button>'
-    +'<button class="btn small" data-game-start="'+id+':chain">🔗 Цепочка'+(cb!==null?' · рекорд '+cb:'')+'</button>'
+    +'<button class="btn small" data-game-start="'+id+':round">⚡ '+TL('Раунд на время','Timed round')+(rb!==null?' · '+TL('рекорд','best')+' '+rb:'')+'</button>'
+    +'<button class="btn small" data-game-start="'+id+':chain">🔗 '+TL('Цепочка','Chain')+(cb!==null?' · '+TL('рекорд','best')+' '+cb:'')+'</button>'
     +'</div></div>';
 }
 document.addEventListener('input',function(ev){
