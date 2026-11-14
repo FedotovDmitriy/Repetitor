@@ -521,62 +521,69 @@ var PARENT_EMAIL = 'fnemoy@gmail.com';
 var PASS = 0.8; // порог «освоено»
 
 var TOPICS = {
-  n2:  {grade:2, name:'Числа до 100', blurb:'разряды, сравнение, устный счёт, сложение и вычитание столбиком'},
-  mul2:{grade:2, name:'Умножение и деление: первые шаги', blurb:'что такое умножение и деление, таблица на 2, 3, 4 и 5'},
-  word2:{grade:2, name:'Задачи и единицы измерения', blurb:'задачи в одно-два действия, см и м, кг, часы и минуты, периметр'},
-  n3:  {grade:3, name:'Числа до 1000', blurb:'разряды, разрядные слагаемые, сравнение, округление, столбик'},
-  mul3:{grade:3, name:'Таблица умножения и деление с остатком', blurb:'таблица до 9×9, умножение и деление многозначных, остаток'},
-  word3:{grade:3, name:'Составные задачи', blurb:'задачи в два-три действия, сравнение «во сколько раз», движение'},
-  geo3:{grade:3, name:'Периметр и площадь', blurb:'прямоугольник и квадрат, см², отличие периметра от площади'},
-  n4:{grade:4, name:'Многозначные числа', blurb:'числа до миллиарда, округление, сложение и вычитание столбиком'},
-  mul4:{grade:4, name:'Письменное умножение и деление', blurb:'столбиком и уголком, деление с остатком, проверка'},
-  val4:{grade:4, name:'Величины и единицы измерения', blurb:'длина, масса, площадь, время; именованные числа'},
-  word4:{grade:4, name:'Текстовые задачи', blurb:'краткая запись, схема, цена–количество–стоимость, движение, работа'},
-  geo4:{grade:4, name:'Геометрические фигуры', blurb:'периметр и площадь, углы, виды треугольников, круг'},
-  frac4:{grade:4, name:'Доли и простые дроби', blurb:'доля числа, сравнение дробей, сложение и вычитание'},
-  nat:  {grade:5, name:'Натуральные числа и действия', blurb:'разряды и классы, столбик, деление с остатком'},
-  expr: {grade:5, name:'Выражения и текстовые задачи', blurb:'программа действий, буквенные выражения, схемы к задачам'},
-  ord:  {grade:5, name:'Порядок действий', blurb:'скобки, приоритет действий, длинные примеры без ошибок'},
-  units:{grade:5, name:'Величины, площадь и объём', blurb:'единицы длины, площади и объёма, прямоугольный параллелепипед'},
-  div:  {grade:5, name:'Делимость чисел', blurb:'признаки делимости, простые числа, остатки'},
-  gcd:  {grade:5, name:'НОД и НОК', blurb:'разложение на множители, общий делитель и общее кратное'},
-  deg:  {grade:5, name:'Степень числа (5 класс)', blurb:'квадрат и куб, степени десяти, удвоения'},
-  mot:  {grade:5, name:'Задачи на движение', blurb:'навстречу, вдогонку, график движения'},
-  logic:{grade:5, name:'Множества и логика', blurb:'круги Эйлера, перебор вариантов, рыцари и лжецы'},
-  frac: {grade:5, name:'Обыкновенные дроби', blurb:'сокращение, четыре действия, смешанные числа'},
-  dec:  {grade:5, name:'Десятичные дроби', blurb:'действия с запятой, перевод в обыкновенные, округление'},
-  perc: {grade:5, name:'Проценты', blurb:'часть от числа, скидки, число по его части'},
-  neg:  {grade:6, name:'Отрицательные числа', blurb:'числовая прямая, модуль, знаки в действиях'},
-  ratio:{grade:6, name:'Отношения, пропорции и масштаб', blurb:'отношение, деление в отношении, пропорция, масштаб карты'},
-  coord:{grade:6, name:'Координатная плоскость', blurb:'точки и четверти, расстояния, симметрия, фигуры по координатам'},
-  alg6:{grade:6, name:'Буквенные выражения и уравнения', blurb:'подстановка, подобные слагаемые, скобки, решение уравнений'},
-  geo:  {grade:6, name:'Периметр, площадь, углы', blurb:'фигуры, единицы измерения, сумма углов треугольника'},
-  circ6:{grade:6, name:'Окружность и круг', blurb:'радиус и диаметр, длина окружности, площадь круга'},
-  stat6:{grade:6, name:'Среднее арифметическое и диаграммы', blurb:'среднее, размах, мода, медиана, чтение диаграмм, вероятность'},
-  lin:  {grade:7, name:'Линейные уравнения', blurb:'от x + 5 = 12 до уравнений со скобками и дробями'},
-  pow:  {grade:7, name:'Степень с натуральным показателем', blurb:'свойства степеней, порядок действий со степенями'},
-  poly: {grade:7, name:'Одночлены и многочлены', blurb:'приведение подобных, раскрытие скобок, умножение'},
-  fsu:  {grade:7, name:'Формулы сокращённого умножения', blurb:'квадрат суммы и разности, разность квадратов'},
-  func: {grade:7, name:'Линейная функция и график', blurb:'координатная плоскость, y = kx + b'},
-  sys:  {grade:7, name:'Системы линейных уравнений', blurb:'подстановка и сложение, задачи на составление систем'},
-  ang:  {grade:7, name:'Смежные и вертикальные углы', blurb:'геометрия 7 класса: начальные сведения'},
-  tri:  {grade:7, name:'Треугольники и признаки равенства', blurb:'три признака, медиана, биссектриса, высота'},
-  par:  {grade:7, name:'Параллельные прямые', blurb:'признаки, свойства, углы при секущей'},
-  sqrt: {grade:8, name:'Квадратные корни', blurb:'арифметический корень, свойства, вынесение множителя'},
-  quad: {grade:8, name:'Квадратные уравнения', blurb:'дискриминант, теорема Виета, неполные уравнения'},
-  ratf: {grade:8, name:'Рациональные дроби', blurb:'сокращение, действия с алгебраическими дробями'},
-  ineq: {grade:8, name:'Неравенства и системы неравенств', blurb:'числовые промежутки, линейные неравенства'},
-  pyth: {grade:8, name:'Теорема Пифагора', blurb:'прямоугольный треугольник, применение в задачах'},
-  circ8:{grade:8, name:'Окружность', blurb:'хорды, касательные, вписанные и центральные углы'},
-  quadr:{grade:8, name:'Четырёхугольники', blurb:'параллелограмм, трапеция, прямоугольник, ромб'},
-  qfunc:{grade:9, name:'Квадратичная функция', blurb:'парабола, вершина, построение графика'},
-  nsys: {grade:9, name:'Нелинейные системы уравнений', blurb:'системы с квадратными уравнениями'},
-  prog: {grade:9, name:'Прогрессии', blurb:'арифметическая и геометрическая прогрессии'},
-  stat: {grade:9, name:'Статистика и вероятность', blurb:'среднее, размах, медиана, классическая вероятность'},
-  simil:{grade:9, name:'Подобие треугольников', blurb:'признаки подобия, отношение площадей'},
-  vect: {grade:9, name:'Векторы', blurb:'сложение, вычитание, умножение на число'},
-  trig: {grade:9, name:'Тригонометрия прямоугольного треугольника', blurb:'синус, косинус, тангенс острого угла'}
+  n2:  {grade:2, name:'Числа до 100', nameEn:'Numbers up to 100', blurb:'разряды, сравнение, устный счёт, сложение и вычитание столбиком', blurbEn:'place value, comparing, mental math, column addition and subtraction'},
+  mul2:{grade:2, name:'Умножение и деление: первые шаги', nameEn:'Multiplication and Division: First Steps', blurb:'что такое умножение и деление, таблица на 2, 3, 4 и 5', blurbEn:'what multiplication and division mean, the tables for 2, 3, 4, and 5'},
+  word2:{grade:2, name:'Задачи и единицы измерения', nameEn:'Word Problems and Units of Measurement', blurb:'задачи в одно-два действия, см и м, кг, часы и минуты, периметр', blurbEn:'one- and two-step problems, cm and m, kg, hours and minutes, perimeter'},
+  n3:  {grade:3, name:'Числа до 1000', nameEn:'Numbers up to 1000', blurb:'разряды, разрядные слагаемые, сравнение, округление, столбик', blurbEn:'place value, place-value addends, comparing, rounding, column form'},
+  mul3:{grade:3, name:'Таблица умножения и деление с остатком', nameEn:'Multiplication Table and Division with a Remainder', blurb:'таблица до 9×9, умножение и деление многозначных, остаток', blurbEn:'the table up to 9×9, multiplying and dividing multi-digit numbers, remainders'},
+  word3:{grade:3, name:'Составные задачи', nameEn:'Multi-Step Word Problems', blurb:'задачи в два-три действия, сравнение «во сколько раз», движение', blurbEn:'two- and three-step problems, “how many times” comparisons, motion'},
+  geo3:{grade:3, name:'Периметр и площадь', nameEn:'Perimeter and Area', blurb:'прямоугольник и квадрат, см², отличие периметра от площади', blurbEn:'rectangles and squares, cm², telling perimeter apart from area'},
+  n4:{grade:4, name:'Многозначные числа', nameEn:'Multi-Digit Numbers', blurb:'числа до миллиарда, округление, сложение и вычитание столбиком', blurbEn:'numbers up to a billion, rounding, column addition and subtraction'},
+  mul4:{grade:4, name:'Письменное умножение и деление', nameEn:'Written Multiplication and Division', blurb:'столбиком и уголком, деление с остатком, проверка', blurbEn:'column multiplication and long division, remainders, checking your work'},
+  val4:{grade:4, name:'Величины и единицы измерения', nameEn:'Quantities and Units of Measurement', blurb:'длина, масса, площадь, время; именованные числа', blurbEn:'length, mass, area, time; compound (named) numbers'},
+  word4:{grade:4, name:'Текстовые задачи', nameEn:'Word Problems', blurb:'краткая запись, схема, цена–количество–стоимость, движение, работа', blurbEn:'short summaries, diagrams, price–quantity–cost, motion, work'},
+  geo4:{grade:4, name:'Геометрические фигуры', nameEn:'Geometric Shapes', blurb:'периметр и площадь, углы, виды треугольников, круг', blurbEn:'perimeter and area, angles, types of triangles, the circle'},
+  frac4:{grade:4, name:'Доли и простые дроби', nameEn:'Fractional Parts and Simple Fractions', blurb:'доля числа, сравнение дробей, сложение и вычитание', blurbEn:'a fraction of a number, comparing fractions, addition and subtraction'},
+  nat:  {grade:5, name:'Натуральные числа и действия', nameEn:'Natural Numbers and Operations', blurb:'разряды и классы, столбик, деление с остатком', blurbEn:'place values and classes, column form, division with a remainder'},
+  expr: {grade:5, name:'Выражения и текстовые задачи', nameEn:'Expressions and Word Problems', blurb:'программа действий, буквенные выражения, схемы к задачам', blurbEn:'order of operations, expressions with letters, diagrams for problems'},
+  ord:  {grade:5, name:'Порядок действий', nameEn:'Order of Operations', blurb:'скобки, приоритет действий, длинные примеры без ошибок', blurbEn:'parentheses, operation priority, long expressions without mistakes'},
+  units:{grade:5, name:'Величины, площадь и объём', nameEn:'Quantities, Area, and Volume', blurb:'единицы длины, площади и объёма, прямоугольный параллелепипед', blurbEn:'units of length, area, and volume, the rectangular box'},
+  div:  {grade:5, name:'Делимость чисел', nameEn:'Divisibility of Numbers', blurb:'признаки делимости, простые числа, остатки', blurbEn:'divisibility rules, prime numbers, remainders'},
+  gcd:  {grade:5, name:'НОД и НОК', nameEn:'GCD and LCM', blurb:'разложение на множители, общий делитель и общее кратное', blurbEn:'prime factorization, the greatest common divisor and least common multiple'},
+  deg:  {grade:5, name:'Степень числа (5 класс)', nameEn:'Powers of a Number (Grade 5)', blurb:'квадрат и куб, степени десяти, удвоения', blurbEn:'squares and cubes, powers of ten, doubling'},
+  mot:  {grade:5, name:'Задачи на движение', nameEn:'Motion Problems', blurb:'навстречу, вдогонку, график движения', blurbEn:'moving toward each other, catching up, motion graphs'},
+  logic:{grade:5, name:'Множества и логика', nameEn:'Sets and Logic', blurb:'круги Эйлера, перебор вариантов, рыцари и лжецы', blurbEn:'Euler/Venn diagrams, working through cases, knights and liars'},
+  frac: {grade:5, name:'Обыкновенные дроби', nameEn:'Fractions', blurb:'сокращение, четыре действия, смешанные числа', blurbEn:'reducing, all four operations, mixed numbers'},
+  dec:  {grade:5, name:'Десятичные дроби', nameEn:'Decimals', blurb:'действия с запятой, перевод в обыкновенные, округление', blurbEn:'operations with the decimal point, converting to fractions, rounding'},
+  perc: {grade:5, name:'Проценты', nameEn:'Percentages', blurb:'часть от числа, скидки, число по его части', blurbEn:'a percent of a number, discounts, finding the whole from a part'},
+  neg:  {grade:6, name:'Отрицательные числа', nameEn:'Negative Numbers', blurb:'числовая прямая, модуль, знаки в действиях', blurbEn:'the number line, absolute value, signs in operations'},
+  ratio:{grade:6, name:'Отношения, пропорции и масштаб', nameEn:'Ratios, Proportions, and Scale', blurb:'отношение, деление в отношении, пропорция, масштаб карты', blurbEn:'ratio, dividing in a given ratio, proportion, map scale'},
+  coord:{grade:6, name:'Координатная плоскость', nameEn:'The Coordinate Plane', blurb:'точки и четверти, расстояния, симметрия, фигуры по координатам', blurbEn:'points and quadrants, distances, symmetry, shapes from coordinates'},
+  alg6:{grade:6, name:'Буквенные выражения и уравнения', nameEn:'Expressions with Letters and Equations', blurb:'подстановка, подобные слагаемые, скобки, решение уравнений', blurbEn:'substitution, like terms, parentheses, solving equations'},
+  geo:  {grade:6, name:'Периметр, площадь, углы', nameEn:'Perimeter, Area, Angles', blurb:'фигуры, единицы измерения, сумма углов треугольника', blurbEn:'shapes, units of measurement, the angle sum of a triangle'},
+  circ6:{grade:6, name:'Окружность и круг', nameEn:'The Circle and the Disk', blurb:'радиус и диаметр, длина окружности, площадь круга', blurbEn:'radius and diameter, circumference, the area of a disk'},
+  stat6:{grade:6, name:'Среднее арифметическое и диаграммы', nameEn:'Averages and Charts', blurb:'среднее, размах, мода, медиана, чтение диаграмм, вероятность', blurbEn:'mean, range, mode, median, reading charts, probability'},
+  lin:  {grade:7, name:'Линейные уравнения', nameEn:'Linear Equations', blurb:'от x + 5 = 12 до уравнений со скобками и дробями', blurbEn:'from x + 5 = 12 to equations with parentheses and fractions'},
+  pow:  {grade:7, name:'Степень с натуральным показателем', nameEn:'Powers with a Natural Exponent', blurb:'свойства степеней, порядок действий со степенями', blurbEn:'properties of powers, order of operations with powers'},
+  poly: {grade:7, name:'Одночлены и многочлены', nameEn:'Monomials and Polynomials', blurb:'приведение подобных, раскрытие скобок, умножение', blurbEn:'combining like terms, expanding parentheses, multiplication'},
+  fsu:  {grade:7, name:'Формулы сокращённого умножения', nameEn:'Short Multiplication Formulas', blurb:'квадрат суммы и разности, разность квадратов', blurbEn:'the square of a sum and a difference, difference of squares'},
+  func: {grade:7, name:'Линейная функция и график', nameEn:'Linear Function and Its Graph', blurb:'координатная плоскость, y = kx + b', blurbEn:'the coordinate plane, y = kx + b'},
+  sys:  {grade:7, name:'Системы линейных уравнений', nameEn:'Systems of Linear Equations', blurb:'подстановка и сложение, задачи на составление систем', blurbEn:'substitution and addition, setting up systems from word problems'},
+  ang:  {grade:7, name:'Смежные и вертикальные углы', nameEn:'Adjacent and Vertical Angles', blurb:'геометрия 7 класса: начальные сведения', blurbEn:'grade-7 geometry: the basics'},
+  tri:  {grade:7, name:'Треугольники и признаки равенства', nameEn:'Triangles and Congruence Criteria', blurb:'три признака, медиана, биссектриса, высота', blurbEn:'the three criteria, median, bisector, altitude'},
+  par:  {grade:7, name:'Параллельные прямые', nameEn:'Parallel Lines', blurb:'признаки, свойства, углы при секущей', blurbEn:'criteria, properties, angles formed by a transversal'},
+  sqrt: {grade:8, name:'Квадратные корни', nameEn:'Square Roots', blurb:'арифметический корень, свойства, вынесение множителя', blurbEn:'the arithmetic root, properties, factoring a term out from under the root'},
+  quad: {grade:8, name:'Квадратные уравнения', nameEn:'Quadratic Equations', blurb:'дискриминант, теорема Виета, неполные уравнения', blurbEn:'the discriminant, Vieta’s theorem, incomplete equations'},
+  ratf: {grade:8, name:'Рациональные дроби', nameEn:'Rational Fractions', blurb:'сокращение, действия с алгебраическими дробями', blurbEn:'reducing, operations with algebraic fractions'},
+  ineq: {grade:8, name:'Неравенства и системы неравенств', nameEn:'Inequalities and Systems of Inequalities', blurb:'числовые промежутки, линейные неравенства', blurbEn:'number intervals, linear inequalities'},
+  pyth: {grade:8, name:'Теорема Пифагора', nameEn:'The Pythagorean Theorem', blurb:'прямоугольный треугольник, применение в задачах', blurbEn:'the right triangle, applying it to problems'},
+  circ8:{grade:8, name:'Окружность', nameEn:'The Circle', blurb:'хорды, касательные, вписанные и центральные углы', blurbEn:'chords, tangents, inscribed and central angles'},
+  quadr:{grade:8, name:'Четырёхугольники', nameEn:'Quadrilaterals', blurb:'параллелограмм, трапеция, прямоугольник, ромб', blurbEn:'the parallelogram, trapezoid, rectangle, rhombus'},
+  qfunc:{grade:9, name:'Квадратичная функция', nameEn:'Quadratic Function', blurb:'парабола, вершина, построение графика', blurbEn:'the parabola, its vertex, graphing it'},
+  nsys: {grade:9, name:'Нелинейные системы уравнений', nameEn:'Nonlinear Systems of Equations', blurb:'системы с квадратными уравнениями', blurbEn:'systems involving a quadratic equation'},
+  prog: {grade:9, name:'Прогрессии', nameEn:'Progressions', blurb:'арифметическая и геометрическая прогрессии', blurbEn:'arithmetic and geometric progressions'},
+  stat: {grade:9, name:'Статистика и вероятность', nameEn:'Statistics and Probability', blurb:'среднее, размах, медиана, классическая вероятность', blurbEn:'mean, range, median, classical probability'},
+  simil:{grade:9, name:'Подобие треугольников', nameEn:'Similarity of Triangles', blurb:'признаки подобия, отношение площадей', blurbEn:'similarity criteria, the ratio of areas'},
+  vect: {grade:9, name:'Векторы', nameEn:'Vectors', blurb:'сложение, вычитание, умножение на число', blurbEn:'addition, subtraction, multiplying by a number'},
+  trig: {grade:9, name:'Тригонометрия прямоугольного треугольника', nameEn:'Right-Triangle Trigonometry', blurb:'синус, косинус, тангенс острого угла', blurbEn:'sine, cosine, tangent of an acute angle'}
 };
+/* в. 2.53.0 — геттеры для перевода названий/описаний тем: TOPICS сам по себе остаётся русским
+   (как и GRADE_LABEL), nameEn/blurbEn — английские варианты прямо в том же объекте (объём
+   маленький, 55 коротких строк — в отличие от полного CONTENT тем, отдельный лениво
+   загружаемый файл здесь не нужен). Все места в коде, где раньше было TOPICS[id].name/.blurb,
+   переведены на эти геттеры. */
+function topicName(id){ var t=TOPICS[id]; return t?TL(t.name,t.nameEn||t.name):id; }
+function topicBlurb(id){ var t=TOPICS[id]; return t?TL(t.blurb,t.blurbEn||t.blurb):''; }
 var GRADES = [2,3,4,5,6,7,8,9];
 var BY_GRADE = {};
 GRADES.forEach(function(g){ BY_GRADE[g] = Object.keys(TOPICS).filter(function(id){return TOPICS[id].grade===g}); });
@@ -9993,7 +10000,11 @@ SVG_LIB.ANGLES = function(){
     b+=C(cx-15,by+bh*0.42,6.5,'var(--ink)','var(--ink)',0)+C(cx+15,by+bh*0.42,6.5,'var(--ink)','var(--ink)',0);
     b+=C(cx-13,by+bh*0.39,2,'var(--sheet)','none',0)+C(cx+17,by+bh*0.39,2,'var(--sheet)','none',0);
     b+='<path d="M'+n(cx-14)+','+n(by+bh*0.64)+' Q'+n(cx)+','+n(by+bh*0.78)+' '+n(cx+14)+','+n(by+bh*0.64)+'" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>';
-    return S(W,H,100,'Клетчик — персонаж-проводник, клетчатый человечек с карандашом',b);
+    // в. 2.53.0: внутри SVG_LIB локально переопределён хелпер TL(x,y,s,...) для текста в SVG
+    // (см. выше в этом файле), поэтому глобальный TL(ru,en) здесь вызывать нельзя — язык
+    // определяем напрямую через getLang() (имя не переопределено ни в одном из блоков SVG_LIB).
+    var charLabel=getLang()==='en'?'Cellie — the guide character, a little square-patterned figure with a pencil':'Клетчик — персонаж-проводник, клетчатый человечек с карандашом';
+    return S(W,H,100,charLabel,b);
   };
   function cellTint(bx,by,cw,ch,ci,cj,color){
     return R(bx+ci*cw+2,by+cj*ch+2,cw-4,ch-4,color,'none',4,0);
@@ -24619,12 +24630,24 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.52.0';
+var APP_VERSION = '2.53.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.52.0",
+ "current": "2.53.0",
  "versions": [
+  {
+   "v": "2.53.0",
+   "date": "2026-11-13",
+   "title": "Английский язык — названия тем, карта классов",
+   "items": [
+    "Переведены названия и короткие описания всех 55 тем всех 8 классов — заголовки тем на карте, в боковой панели, хлебных крошках, отчётах по диагностике и тестам, кабинете родителя, письмах с результатами.",
+    "Переведена главная страница с картой классов: подписи и подзаголовки классов, строка прогресса («освоено X из Y» / «раздел готовится»), кнопка «Свернуть карту», флаги «старт»/«финиш» на карте-пути, узлы карты (название темы, короткое описание, пометки «укрепить», «новинка», «шпаргалка», «по шагам»), речь персонажа-проводника Клетчика (включая его текстовое описание для программ чтения с экрана) — переведён и дан английский вариант имени, «Cellie».",
+    "Переведены заглушка «раздел пока готовится» для недоступных тем и подсказка-кнопка на главной (переход к диагностике, продолжение по теме пробела, следующая тема по порядку, «все готовые темы освоены»).",
+    "Технически: TOPICS[id].name/.blurb и GRADE_SUB остаются русскими (как и раньше GRADE_LABEL), английские варианты — прямо в тех же объектах (nameEn/blurbEn/GRADE_SUB_EN: объём маленький, 55×2+8 коротких строк, отдельный лениво загружаемый файл не нужен, в отличие от полного контента тем). Новые геттеры topicName(id)/topicBlurb(id)/gradeSub(g) заменили все прямые обращения к этим полям по всему файлу — перевод подхватился сразу везде, а не только на карте.",
+    "Модальное окно «Материалы» (обложки и описания скачиваемых книг) пока остаётся на русском — отдельная задача на будущее, не входила в эту версию."
+   ]
+  },
   {
    "v": "2.52.0",
    "date": "2026-11-12",
@@ -25248,12 +25271,12 @@ var CHANGELOG = {
   }
  ],
  "next": {
-  "v": "2.53.0",
+  "v": "2.54.0",
   "title": "Английский язык — перерисовка иллюстраций",
   "when": "в планах",
   "items": [
-   "Контент всех 8 классов (2–9) теперь переведён целиком (2.45.0–2.52.0) — следующий шаг перевода: перерисовка иллюстраций (картинок-схем внутри тем, сейчас показывают русские подписи на английском интерфейсе).",
-   "После иллюстраций — названия тем и узлов карты, главная страница с картой классов (включая реплику Клетчика), формулы в карточках шпаргалок, история версий, страницы /legal/*.html.",
+   "Контент тем, их названия и узлы карты, главная страница с картой классов — всё переведено (2.45.0–2.53.0). Следующий шаг перевода: перерисовка иллюстраций (картинок-схем внутри тем, сейчас показывают русские подписи на английском интерфейсе).",
+   "После иллюстраций — формулы в карточках шпаргалок, модальное окно «Материалы» (обложки и описания скачиваемых книг), история версий, страницы /legal/*.html.",
    "Точный объём и порядок следующей версии ещё не согласован с пользователем."
   ],
   "later": [
@@ -25469,7 +25492,7 @@ function drawCharModal(){
   if(!CHAR_MODAL){ root.innerHTML=''; return; }
   var id=CHAR_MODAL, C=topicContent(id), T=TOPICS[id];
   var h='<div class="modal" data-char-bg><div class="dlg chardlg" role="dialog" aria-modal="true" aria-labelledby="charTitle">'
-    +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">'+TL('Клетчик объясняет подробно','Cellie explains it in full')+'</h2><p class="legend" style="margin:2px 0 0">'+esc(T.name)+'</p></div></div>'
+    +'<div class="chardlg-top">'+SVG_LIB.JOURNEY_CHAR()+'<div><h2 id="charTitle">'+TL('Клетчик объясняет подробно','Cellie explains it in full')+'</h2><p class="legend" style="margin:2px 0 0">'+esc(topicName(id))+'</p></div></div>'
     +'<div class="prose">'+renderSvgMarkers(fmt(C.explain))+'</div>'
     +'<div class="cta" style="margin-top:14px"><button class="btn primary" data-char-close>'+TL('Понятно, закрыть','Got it, close')+'</button></div>'
     +'</div></div>';
@@ -25933,8 +25956,8 @@ function boostReportHTML(st,g,parent){
     });
     if(w.test) lines.push('<li>Тест по теме: лучший результат '+w.test.best+' из '+w.test.total+', для «освоено» нужно '+Math.ceil(PASS*w.test.total)+'</li>');
     var shaky=!w.test&&worst>=0.5;
-    return '<div class="boost-card'+(shaky?' shaky':'')+'"><h4>'+esc(TOPICS[id].name)+'<span class="pill '+(shaky?'prog':'red')+'">'+(shaky?'шатко':'пробел')+'</span>'
-      +'<span class="legend" style="margin:0">'+esc(GRADE_LABEL[TOPICS[id].grade])+'</span></h4><ul>'+lines.join('')+'</ul>'
+    return '<div class="boost-card'+(shaky?' shaky':'')+'"><h4>'+esc(topicName(id))+'<span class="pill '+(shaky?'prog':'red')+'">'+(shaky?'шатко':'пробел')+'</span>'
+      +'<span class="legend" style="margin:0">'+esc(gradeLabel(TOPICS[id].grade))+'</span></h4><ul>'+lines.join('')+'</ul>'
       +(parent?'':'<button class="btn small primary" data-nav="t/'+id+'/explain">Открыть тему</button>')+'</div>';
   }).join('')+'</div>';
   if(d&&d.byNode){
@@ -26873,17 +26896,17 @@ function go(name,extra){
   try{window.scrollTo(0,0)}catch(e){}
 }
 function nextStep(){
-  if(!S.diag && kidGrade(activeKid)>=4) return {label:'Пройти входную диагностику',nav:'diag',why:'15 минут — и мы узнаем, с чего начинать'};
+  if(!S.diag && kidGrade(activeKid)>=4) return {label:TL('Пройти входную диагностику','Take the initial diagnostic'),nav:'diag',why:TL('15 минут — и мы узнаем, с чего начинать','15 minutes — and we’ll know where to start')};
   if(S.diag) for(var i=0;i<NODE_ORDER.length;i++){
     var n=NODE_ORDER[i], r=S.diag.byNode&&S.diag.byNode[n];
     if(r && r[0]<r[1]){
       var id=topicForNode(n,kidGrade(activeKid));
-      if(id && TOPICS[id] && avail(id) && tStat(id)!=='done') return {label:'Продолжить: '+TOPICS[id].name,nav:'t/'+id+'/explain',why:'по диагностике здесь есть пробел'};
+      if(id && TOPICS[id] && avail(id) && tStat(id)!=='done') return {label:TL('Продолжить','Continue')+': '+topicName(id),nav:'t/'+id+'/explain',why:TL('по диагностике здесь есть пробел','there’s a gap here based on the diagnostic')};
     }
   }
   var pool=ALL.filter(avail);
-  for(var j=0;j<pool.length;j++) if(tStat(pool[j])!=='done') return {label:'Следующая тема: '+TOPICS[pool[j]].name,nav:'t/'+pool[j]+'/explain',why:'идём по порядку'};
-  return {label:'Все готовые темы освоены',nav:'home',why:'скоро добавим новые'};
+  for(var j=0;j<pool.length;j++) if(tStat(pool[j])!=='done') return {label:TL('Следующая тема','Next topic')+': '+topicName(pool[j]),nav:'t/'+pool[j]+'/explain',why:TL('идём по порядку','going in order')};
+  return {label:TL('Все готовые темы освоены','All available topics mastered'),nav:'home',why:TL('скоро добавим новые','more coming soon')};
 }
 function rowHTML(id,W){
   var T=TOPICS[id], a=avail(id), s=tStat(id);
@@ -26998,11 +27021,16 @@ function pkSubmit(){
   }
 }
 var GRADE_LABEL = {2:'2 класс',3:'3 класс',4:'4 класс',5:'5 класс',6:'6 класс',7:'7 класс',8:'8 класс',9:'9 класс'};
-/* в. 2.44.0 — геттер для перевода: GRADE_LABEL сам по себе остаётся русским (карта тем и её узлы
-   пока не переведены, см. план), но там, где подпись класса используется в уже переведённом
-   интерфейсе (хлебная крошка темы, боковая панель), резолвим через TL() в момент рендера. */
+/* в. 2.44.0 — геттер для перевода: GRADE_LABEL сам по себе остаётся русским, но там, где подпись
+   класса используется в переведённом интерфейсе, резолвим через TL() в момент рендера.
+   в. 2.53.0: карта тем и её узлы (jnodeHTML/gradeMapHTML/gradeSection/journeyCharHTML) теперь
+   тоже используют этот геттер вместо прямого обращения к GRADE_LABEL[g]. */
 function gradeLabel(g){ return TL(GRADE_LABEL[g],'Grade '+g); }
 var GRADE_SUB = {2:'числа до 100, умножение и деление: первые шаги, задачи',3:'числа до 1000, таблица умножения, составные задачи, периметр и площадь',4:'многозначные числа, величины, задачи, доли',5:'числа, делимость, дроби, проценты, величины',6:'отношения, координаты, уравнения, окружность, статистика',7:'алгебра и геометрия — программа этого года',8:'квадратные корни и уравнения, дроби, неравенства, Пифагор, окружность, четырёхугольники',9:'квадратичная функция, системы, прогрессии, статистика, подобие, векторы, тригонометрия'};
+var GRADE_SUB_EN = {2:'numbers up to 100, multiplication and division: first steps, word problems',3:'numbers up to 1000, the multiplication table, multi-step problems, perimeter and area',4:'multi-digit numbers, quantities, word problems, fractional parts',5:'numbers, divisibility, fractions, percentages, quantities',6:'ratios, coordinates, equations, the circle, statistics',7:'algebra and geometry — this year’s program',8:'square roots and equations, fractions, inequalities, Pythagoras, the circle, quadrilaterals',9:'quadratic function, systems, progressions, statistics, similarity, vectors, trigonometry'};
+/* в. 2.53.0 — тот же приём, что topicName/topicBlurb: GRADE_SUB остаётся русским, английский
+   вариант резолвится геттером в момент рендера. */
+function gradeSub(g){ return TL(GRADE_SUB[g],GRADE_SUB_EN[g]||GRADE_SUB[g]); }
 /* Скачиваемые книги (справочник + сборник задач, либо рабочая тетрадь «за 9 дней») — печатное
    дополнение к сайту. в. 2.38.0 — у каждой книги теперь обложка (SVG) и короткое описание; видны
    в модальном окне «Материалы» (см. ниже), открываемом одной кнопкой вместо списка прямых ссылок. */
@@ -27088,25 +27116,25 @@ function drawMaterials(){
    духу приложения тему можно открыть в любом порядке. */
 function journeyCharHTML(g){
   return '<div class="jmap-char">'+SVG_LIB.JOURNEY_CHAR()
-    +'<span class="bubble"><b>Клетчик:</b> Привет! Это карта '+esc(GRADE_LABEL[g])+' — иди по темам в любом порядке, я провожу. Там, где значок «✏️ по шагам», объяснение разбито на кусочки с картинками.</span>'
+    +'<span class="bubble"><b>'+TL('Клетчик','Cellie')+':</b> '+TL('Привет! Это карта ','Hi! This is the ')+esc(gradeLabel(g))+TL(' — иди по темам в любом порядке, я провожу. Там, где значок «✏️ по шагам», объяснение разбито на кусочки с картинками.',' map — go through the topics in any order, I’ll guide you. Where you see the ✏️ step-by-step icon, the explanation is split into bite-sized chunks with pictures.')+'</span>'
     +'</div>';
 }
 function jnodeHTML(id,i,W){
-  var T=TOPICS[id], a=avail(id), s=tStat(id);
+  var a=avail(id), s=tStat(id);
   var circleCls=s==='done'?'done':(s==='prog'?'prog':'');
   var circleBody=s==='done'?'✓':String(i+1);
   return '<div class="jnode-wrap '+(i%2===0?'a':'b')+'">'
-    +'<button class="jnode"'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="Раздел пока готовится"')+'>'
+    +'<button class="jnode"'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="'+TL('Раздел пока готовится','This section is still being prepared')+'"')+'>'
     +'<span class="jnode-circle'+(circleCls?' '+circleCls:'')+'">'+circleBody+'</span>'
     +'<span class="jnode-body">'
-    +'<span class="jnode-nm">'+esc(T.name)
-    +(W&&W[id]?'<span class="mk boost" title="По итогам диагностики или теста эту тему стоит подкрепить">укрепить</span>':'')
-    +(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">новинка</span>':'')
+    +'<span class="jnode-nm">'+esc(topicName(id))
+    +(W&&W[id]?'<span class="mk boost" title="'+TL('По итогам диагностики или теста эту тему стоит подкрепить','Based on the diagnostic or a test, this topic is worth reinforcing')+'">'+TL('укрепить','reinforce')+'</span>':'')
+    +(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">'+TL('новинка','new')+'</span>':'')
     +'</span>'
-    +'<span class="jnode-sub">'+esc(T.blurb)+'</span>'
+    +'<span class="jnode-sub">'+esc(topicBlurb(id))+'</span>'
     +'<span class="jnode-foot">'+(a?masteryDotsHTML(id,S):'')+statPill(id)
-    +(a&&cheatsForTopic(id).length?'<span class="mk cheat" title="Есть шпаргалка по этой теме">📄 шпаргалка</span>':'')
-    +(a&&topicContent(id).steps?'<span class="mk steps" title="Объяснение этой темы можно пройти по шагам">✏️ по шагам</span>':'')
+    +(a&&cheatsForTopic(id).length?'<span class="mk cheat" title="'+TL('Есть шпаргалка по этой теме','There’s a cheat sheet for this topic')+'">📄 '+TL('шпаргалка','cheat sheet')+'</span>':'')
+    +(a&&topicContent(id).steps?'<span class="mk steps" title="'+TL('Объяснение этой темы можно пройти по шагам','This topic’s explanation can be read step by step')+'">✏️ '+TL('по шагам','step by step')+'</span>':'')
     +'</span>'
     +'</span>'
     +'</button>'
@@ -27120,9 +27148,9 @@ function gradeMapHTML(ids,W,g){
     +'<div class="jterrain-wrap">'
     +'<div class="jterrain-bg"></div>'
     +'<div class="jterrain">'
-    +'<div class="jflag start">'+JFLAG_SVG+'<span>старт</span></div>'
+    +'<div class="jflag start">'+JFLAG_SVG+'<span>'+TL('старт','start')+'</span></div>'
     +'<div class="jpath">'+ids.map(function(id,i){return jnodeHTML(id,i,W);}).join('')+'</div>'
-    +'<div class="jflag finish">'+JTROPHY_SVG+'<span>финиш '+esc(GRADE_LABEL[g])+'а</span></div>'
+    +'<div class="jflag finish">'+JTROPHY_SVG+'<span>'+TL('финиш '+GRADE_LABEL[g]+'а','Finish — '+esc(gradeLabel(g)))+'</span></div>'
     +'</div>'
     +'</div>'
     +'</div>';
@@ -27134,21 +27162,21 @@ function gradeMapHTML(ids,W,g){
 function gradeSection(g,wide,W){
   var ids=BY_GRADE[g], open=isGradeOpen(g);
   var avIds=ids.filter(avail), doneN=avIds.filter(function(id){return tStat(id)==='done'}).length;
-  var progText=avIds.length?('освоено '+doneN+' из '+avIds.length):'раздел готовится';
+  var progText=avIds.length?(TL('освоено','mastered')+' '+doneN+' '+TL('из','of')+' '+avIds.length):TL('раздел готовится','this section is still being prepared');
   return '<section class="sheet grade-card'+(open?' open':'')+'">'
     +'<div class="track-h">'
     +'<button class="grade-head" data-grade-toggle="'+g+'" aria-expanded="'+(open?'true':'false')+'">'
-      +'<span class="grade-chevron" aria-hidden="true">'+GRADE_CHEVRON_SVG+'</span><h2>'+esc(GRADE_LABEL[g])+'</h2>'
+      +'<span class="grade-chevron" aria-hidden="true">'+GRADE_CHEVRON_SVG+'</span><h2>'+esc(gradeLabel(g))+'</h2>'
     +'</button>'
-    +'<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(GRADE_SUB[g])+'</span><span class="legend" style="margin:0">'+esc(progText)+'</span>'+materialsButtonHTML(g)+'</span>'
+    +'<span style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hand">'+esc(gradeSub(g))+'</span><span class="legend" style="margin:0">'+esc(progText)+'</span>'+materialsButtonHTML(g)+'</span>'
     +'</div>'
-    +(open?('<div class="cta" style="justify-content:flex-end;margin:4px 0 10px"><button class="btn ghost small" data-grade-toggle="'+g+'">✕ Свернуть карту</button></div>'+gradeMapHTML(ids,W,g)):'')
+    +(open?('<div class="cta" style="justify-content:flex-end;margin:4px 0 10px"><button class="btn ghost small" data-grade-toggle="'+g+'">✕ '+TL('Свернуть карту','Collapse map')+'</button></div>'+gradeMapHTML(ids,W,g)):'')
     +'</section>';
 }
 function viewHome(){
   var ns=nextStep(), W=weakTopics(), wids=ALL.filter(function(id){return W[id]});
   var boost=wids.length?'<section class="sheet" style="margin-bottom:16px"><div class="track-h"><h2>'+TL('Что подкрепить','What to reinforce')+'</h2><span class="hand">'+TL('по итогам диагностики и тестов','from diagnostics and tests')+'</span></div>'
-    +'<div class="boost-chips">'+wids.map(function(id){return '<button class="btn small" data-nav="t/'+id+'/explain">'+esc(TOPICS[id].name)+'</button>'}).join('')+'</div>'
+    +'<div class="boost-chips">'+wids.map(function(id){return '<button class="btn small" data-nav="t/'+id+'/explain">'+esc(topicName(id))+'</button>'}).join('')+'</div>'
     +'<div class="cta" style="margin-top:10px"><button class="btn small ghost" data-nav="report">'+TL('Подробный отчёт','Detailed report')+'</button><span class="legend" style="margin:0">'+TL('Сдашь тест по теме — пометка «укрепить» исчезнет.','Pass the test on this topic and the “reinforce” mark will disappear.')+'</span></div></section>':'';
   /* в. 2.8.0 — «сравнение с собой»: серия дней подряд, без сравнения с другими детьми */
   var streakLine=(S.streak&&S.streak.count>=2)?'<p class="legend" style="margin-top:6px">🔥 '+TL('Серия','Streak')+': '+S.streak.count+' '+TL(ruDays(S.streak.count),(S.streak.count===1?'day':'days'))+' '+TL('подряд с занятиями (личный рекорд —','in a row of practice (personal best —')+' '+S.streak.best+'). '+TL('Сравниваем только с тобой же вчерашним, не с другими ребятами.','We only compare you with yesterday’s you, not with other kids.')+'</p>':'';
@@ -27181,18 +27209,18 @@ function viewHome(){
     +'<p class="empty" style="margin:0">'+TL('Задачи на сообразительность, логику и нестандартные приёмы откроются после освоения фундамента. Пока в конце практики каждой темы есть одна «задача со звёздочкой» — это разминка.','Problems on wit, logic, and non-standard tricks will open up once the foundation is mastered. For now, each topic’s practice ends with one “starred problem” as a warm-up.')+'</p></section>';
 }
 function viewSoon(){
-  var T=TOPICS[view.id];
-  return '<div class="sheet"><div class="crumb"><button data-nav="home">Карта</button><span>/</span><span>'+esc(T.name)+'</span></div>'
-    +'<h1>'+esc(T.name)+'</h1><p class="goal">Раздел готовится. Внутри будет: '+esc(T.blurb)+'.</p>'
-    +'<p>Пока можно пройти готовые темы или сделать диагностику, чтобы понять, с чего начать.</p>'
-    +'<div class="cta"><button class="btn primary" data-nav="home">К карте</button><button class="btn" data-nav="diag">Диагностика</button></div></div>';
+  var id=view.id;
+  return '<div class="sheet"><div class="crumb"><button data-nav="home">'+TL('Карта','Map')+'</button><span>/</span><span>'+esc(topicName(id))+'</span></div>'
+    +'<h1>'+esc(topicName(id))+'</h1><p class="goal">'+TL('Раздел готовится. Внутри будет: ','This section is still being prepared. It will cover: ')+esc(topicBlurb(id))+'.</p>'
+    +'<p>'+TL('Пока можно пройти готовые темы или сделать диагностику, чтобы понять, с чего начать.','For now you can go through the ready topics or take the diagnostic to see where to start.')+'</p>'
+    +'<div class="cta"><button class="btn primary" data-nav="home">'+TL('К карте','Back to the map')+'</button><button class="btn" data-nav="diag">'+TL('Диагностика','Diagnostic')+'</button></div></div>';
 }
 function railHTML(cur){
   function grp(title,ids){
     if(!ids.length) return '';
     return '<h4>'+title+'</h4>'+ids.map(function(id){
       var a=avail(id), s=tStat(id);
-      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="'+TL('Раздел пока готовится','This section is still being prepared')+'"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(TOPICS[id].name)+(a&&cheatsForTopic(id).length?'<span class="railcheat" title="'+TL('Есть шпаргалка по этой теме','There’s a cheat sheet for this topic')+'">📄</span>':'')+'</span></button>';
+      return '<button'+(a?' data-nav="t/'+id+'/explain"':' disabled aria-disabled="true" title="'+TL('Раздел пока готовится','This section is still being prepared')+'"')+(id===cur?' aria-current="page"':'')+'><span class="dot '+(s==='new'?'':s)+'"></span><span>'+esc(topicName(id))+(a&&cheatsForTopic(id).length?'<span class="railcheat" title="'+TL('Есть шпаргалка по этой теме','There’s a cheat sheet for this topic')+'">📄</span>':'')+'</span></button>';
     }).join('');
   }
   return '<aside class="rail">'+GRADES.map(function(g){return grp(gradeLabel(g),BY_GRADE[g]);}).join('')+'</aside>';
@@ -27214,13 +27242,13 @@ function viewTopic(){
   var nextTab=tabs[tabIdx+1];
   return '<div class="layout with-rail">'+railHTML(id)+'<div>'
     +'<div class="sheet"><div class="crumb"><button data-nav="home">'+TL('Карта','Map')+'</button><span>/</span><span>'+esc(gradeLabel(T.grade))+'</span><span style="margin-left:auto">'+(weakTopics()[id]?'<span class="mk boost" title="'+TL('По итогам диагностики или теста эту тему стоит подкрепить','Based on the diagnostic or a test, this topic is worth reinforcing')+'">'+TL('укрепить','reinforce')+'</span> ':'')+(isNewTopic(id)?'<span class="mk new" title="'+esc(NEW_IN.note)+'">'+TL('новинка','new')+'</span> ':'')+statPill(id)+(cheatsForTopic(id).length?' <button class="btn small ghost" data-nav="cheat/'+cheatsForTopic(id)[0].id+'" title="'+TL('Открыть шпаргалку по этой теме','Open the cheat sheet for this topic')+'">📄 '+TL('Шпаргалка','Cheat sheet')+'</button>':'')+'</span></div>'
-    +'<h1>'+esc(T.name)+' '+charBadgeHTML(id)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
+    +'<h1>'+esc(topicName(id))+' '+charBadgeHTML(id)+'</h1><p class="goal">'+esc(C.goal)+readBtn(C.goal)+'</p>'
     +'<p class="legend" style="margin-top:-4px">'+TL('Уровень мастерства','Mastery level')+': <b>'+esc(masteryInfo(topicMastery(id,S)).label)+'</b> '+masteryDotsHTML(id,S)+'</p>'
     +'<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button role="tab" aria-selected="'+(t[0]===tab)+'" data-nav="t/'+id+'/'+t[0]+'">'+t[1]+(t[0]==='practice'?'<span class="cnt">'+solved+'/'+C.tasks.length+'</span>':'')+'</button>'}).join('')+'</div>'
     +body
-    +'<div class="foot"><div>'+(prev?'<button class="btn ghost small" data-nav="t/'+prev+'/explain">← '+esc(TOPICS[prev].name)+'</button>':'')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +'<div class="foot"><div>'+(prev?'<button class="btn ghost small" data-nav="t/'+prev+'/explain">← '+esc(topicName(prev))+'</button>':'')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
     +(nextTab?'<button class="btn small" data-nav="t/'+id+'/'+nextTab[0]+'">'+TL('Дальше','Next')+': '+nextTab[1]+' →</button>':'')
-    +(!nextTab&&next?'<button class="btn small" data-nav="t/'+next+'/explain">'+TL('Следующая тема','Next topic')+': '+esc(TOPICS[next].name)+' →</button>':'')
+    +(!nextTab&&next?'<button class="btn small" data-nav="t/'+next+'/explain">'+TL('Следующая тема','Next topic')+': '+esc(topicName(next))+' →</button>':'')
     +'</div></div></div></div></div>';
 }
 /* в. 2.26.0 — «по шагам» (пилот на двух темах 5 класса, выбор пользователя от 17.10.2026):
@@ -27459,7 +27487,7 @@ function finish(forced){
   try{window.scrollTo(0,0)}catch(e){}
 }
 function reportText(res){
-  var title=res.kind==='diag'?TL('Входная диагностика','Initial diagnostic'):(TL('Тест','Test')+': '+TOPICS[res.topic].name);
+  var title=res.kind==='diag'?TL('Входная диагностика','Initial diagnostic'):(TL('Тест','Test')+': '+topicName(res.topic));
   var L=[title+' — '+res.score+' '+TL('из','of')+' '+res.total+' ('+pct(res.score,res.total)+'%)',ruDate(res.ts),''];
   res.items.forEach(function(r,i){
     L.push((i+1)+'. '+(r.ok?TL('верно','correct'):TL('ошибка','wrong'))+' | '+plain(r.q)+' | '+TL('ответ ученика','student’s answer')+': '+(r.given===''?'—':plain(r.given))+(r.ok?'':' | '+TL('правильно','correct answer')+': '+plain(r.right)));
@@ -27500,7 +27528,7 @@ function resultHTML(res){
       +(r.work?'<div style="margin-top:4px;font-size:14px;color:var(--muted)">'+TL('Решение','Work')+': '+esc(r.work)+'</div>':'')+'</div></div>';
   }).join('')+'</div>';
   var rep=reportText(res);
-  var subject=(res.kind==='diag'?TL('Диагностика','Diagnostic'):TL('Тест','Test')+': '+TOPICS[res.topic].name)+' — '+res.score+'/'+res.total;
+  var subject=(res.kind==='diag'?TL('Диагностика','Diagnostic'):TL('Тест','Test')+': '+topicName(res.topic))+' — '+res.score+'/'+res.total;
   h+='<h3>'+TL('Отправить результат родителю','Send the result to a parent')+'</h3><p class="legend" style="margin-top:0">'+TL('Результат уже виден в разделе «Родителю». Нажми кнопку — откроется письмо с готовым отчётом, останется нажать «Отправить».','The result is already visible in the “For parents” section. Click the button — an email with the report will open, ready to send.')+'</p>'
     +'<textarea class="rep" id="rep" readonly aria-label="'+TL('Текст отчёта','Report text')+'">'+esc(rep)+'</textarea>'
     +'<div class="cta" style="margin-top:8px"><a class="btn primary" href="mailto:'+PARENT_EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(rep)+'">'+TL('Открыть письмо','Open email')+'</a><button class="btn" data-copy>'+TL('Скопировать текст','Copy text')+'</button><span class="fb ok" id="copied"></span></div>';
@@ -27582,13 +27610,13 @@ function viewParent(){
       var solved=Object.keys(pr).filter(function(k){return k!=='b'&&pr[k].ok}).length;
       var s=(!t)?(solved>0?'prog':'new'):(t.best/t.total>=PASS?'done':'prog');
       var pill=s==='done'?'<span class="pill done">'+TL('освоено','mastered')+'</span>':s==='prog'?'<span class="pill prog">'+(t?(TL('тест','test')+' '+t.best+'/'+t.total):(TL('задач','problems')+' '+solved+'/'+topicContent(id).tasks.length))+'</span>':'<span class="pill">'+TL('не начато','not started')+'</span>';
-      return '<tr><td>'+esc(TOPICS[id].name)+'</td><td>'+solved+' / '+topicContent(id).tasks.length+'</td><td>'+(t?(TL('лучший','best')+' '+t.best+'/'+t.total+', '+TL('попыток','attempts')+': '+t.tries+'<br><span style="color:var(--muted)">'+ruDate(t.ts)+'</span>'):'—')+'</td><td>'+pill+'</td></tr>';
+      return '<tr><td>'+esc(topicName(id))+'</td><td>'+solved+' / '+topicContent(id).tasks.length+'</td><td>'+(t?(TL('лучший','best')+' '+t.best+'/'+t.total+', '+TL('попыток','attempts')+': '+t.tries+'<br><span style="color:var(--muted)">'+ruDate(t.ts)+'</span>'):'—')+'</td><td>'+pill+'</td></tr>';
     }).join('')
     +'</tbody></table></div></div>';
   h+='<div class="sheet"><h2>'+TL('Журнал попыток','Attempt log')+'</h2>';
   if(!kSt.log.length) h+='<p class="empty">'+TL('Пока нет завершённых тестов.','No completed tests yet.')+'</p>';
   else h+=kSt.log.slice(0,15).map(function(e){
-    var name=e.kind==='diag'?TL('Диагностика','Diagnostic'):(TOPICS[e.topic]?TL('Тест','Test')+': '+TOPICS[e.topic].name:TL('Тест','Test'));
+    var name=e.kind==='diag'?TL('Диагностика','Diagnostic'):(TOPICS[e.topic]?TL('Тест','Test')+': '+topicName(e.topic):TL('Тест','Test'));
     return '<details style="border-top:1px solid var(--line);padding:10px 0"><summary style="cursor:pointer"><b>'+esc(name)+'</b> — '+e.score+'/'+e.total+' <span style="color:var(--muted)">· '+ruDate(e.ts)+'</span>'+(e.work?' <span class="pill" style="margin-left:6px">'+TL('есть решения','has work shown')+'</span>':'')+'</summary>'
       +(e.wrong.length?'<ul style="margin:8px 0 0;padding-left:20px;font-size:14.5px">'+e.wrong.map(function(w){return '<li>'+esc(w.q)+' — '+TL('ответ ученика','student\'s answer')+': <b>'+(w.given?esc(w.given):'—')+'</b>, '+TL('правильно','correct answer')+': <b>'+esc(w.right)+'</b>'+(w.work?'<br><span style="color:var(--muted)">'+TL('Решение','Work')+': '+esc(w.work)+'</span>':'')+'</li>'}).join('')+'</ul>':'<p style="margin:8px 0 0;font-size:14.5px">'+TL('Без ошибок.','No mistakes.')+'</p>')+'</details>';
   }).join('');
@@ -27792,7 +27820,7 @@ function hookTeaser(){
   var ns=nextStep();
   if(ns.nav && ns.nav.indexOf('t/')===0){
     var id=ns.nav.split('/')[1];
-    if(TOPICS[id]) return TOPICS[id].blurb||TOPICS[id].name;
+    if(TOPICS[id]) return topicBlurb(id)||topicName(id);
   }
   return TL('следующая тема на карте','the next topic on the map');
 }
