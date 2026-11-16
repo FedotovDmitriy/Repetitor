@@ -13626,24 +13626,26 @@ function n4hC(x,y,r,fill,stroke,sw){
 
 /* ---------- N4_EX0_CLASSES5302007 — пример 1: число 5 302 007 по классам ---------- */
 SVG_LIB.N4_EX0_CLASSES5302007 = function(){
+  var EN=getLang()==='en';
   var W=340,H=185,b='';
-  b+=n4hT(170,22,'«пять миллионов триста две тысячи семь»',11.5,'var(--muted)','middle',false);
+  b+=n4hT(170,22,EN?'&ldquo;five million three hundred two thousand seven&rdquo;':'«пять миллионов триста две тысячи семь»',11.5,'var(--muted)','middle',false);
   b+=n4hR(20,40,90,72,'var(--blue-soft)','var(--blue)',10,2);
   b+=n4hT(65,76,'5',28,'var(--blue)','middle',true);
-  b+=n4hT(65,100,'млн.',11.5,'var(--blue)','middle',false);
+  b+=n4hT(65,100,EN?'mln.':'млн.',11.5,'var(--blue)','middle',false);
   b+=n4hR(125,40,90,72,'var(--gold-soft)','var(--gold)',10,2);
   b+=n4hT(170,76,'302',26,'var(--gold)','middle',true);
-  b+=n4hT(170,100,'тыс.',11.5,'var(--gold)','middle',false);
+  b+=n4hT(170,100,EN?'th.':'тыс.',11.5,'var(--gold)','middle',false);
   b+=n4hR(230,40,90,72,'var(--green-soft)','var(--green)',10,2);
   b+=n4hT(275,76,'007',26,'var(--green)','middle',true);
-  b+=n4hT(275,100,'ед.',11.5,'var(--green)','middle',false);
+  b+=n4hT(275,100,EN?'ones':'ед.',11.5,'var(--green)','middle',false);
   b+=n4hT(170,135,'↓',18,'var(--muted)','middle',false);
   b+=n4hT(170,168,'5 302 007',24,'var(--ink)','middle',true);
-  return n4hS(W,H,340,'Число пять миллионов триста две тысячи семь: класс миллионов 5, класс тысяч 302, класс единиц 007 — вместе 5 302 007',b);
+  return n4hS(W,H,340,EN?'The number five million three hundred two thousand seven: millions class 5, thousands class 302, ones class 007 — together 5,302,007':'Число пять миллионов триста две тысячи семь: класс миллионов 5, класс тысяч 302, класс единиц 007 — вместе 5 302 007',b);
 };
 
 /* ---------- N4_EX1_SUM40305007 — пример 2: 40 305 007 читаем и раскладываем ---------- */
 SVG_LIB.N4_EX1_SUM40305007 = function(){
+  var EN=getLang()==='en';
   var W=340,H=205,b='';
   b+=n4hT(170,20,'40 305 007',22,'var(--ink)','middle',true);
   b+=n4hR(20,34,90,56,'var(--blue-soft)','var(--blue)',10,2);
@@ -13652,15 +13654,16 @@ SVG_LIB.N4_EX1_SUM40305007 = function(){
   b+=n4hT(170,68,'305',22,'var(--gold)','middle',true);
   b+=n4hR(230,34,90,56,'var(--green-soft)','var(--green)',10,2);
   b+=n4hT(275,68,'007',22,'var(--green)','middle',true);
-  b+=n4hT(170,108,'«сорок миллионов триста пять тысяч семь»',11.5,'var(--muted)','middle',false);
+  b+=n4hT(170,108,EN?'&ldquo;forty million three hundred five thousand seven&rdquo;':'«сорок миллионов триста пять тысяч семь»',11.5,'var(--muted)','middle',false);
   b+=n4hL(20,122,320,122,'var(--line)',1.5,' stroke-dasharray="4 4"');
   b+=n4hT(170,146,'40 000 000 + 300 000 + 5 000 + 7',15,'var(--ink)','middle',true);
-  b+=n4hT(170,172,'(нулевые разряды в сумме пропускаем)',11.5,'var(--muted)','middle',false);
-  return n4hS(W,H,340,'Число 40 305 007: класс миллионов 40, класс тысяч 305, класс единиц 007; читается «сорок миллионов триста пять тысяч семь», а в разрядных слагаемых равно 40 000 000 плюс 300 000 плюс 5 000 плюс 7',b);
+  b+=n4hT(170,172,EN?'(we skip zero places in the sum)':'(нулевые разряды в сумме пропускаем)',11.5,'var(--muted)','middle',false);
+  return n4hS(W,H,340,EN?'The number 40,305,007: millions class 40, thousands class 305, ones class 007; read as &ldquo;forty million three hundred five thousand seven,&rdquo; and as place-value addends it equals 40,000,000 plus 300,000 plus 5,000 plus 7':'Число 40 305 007: класс миллионов 40, класс тысяч 305, класс единиц 007; читается «сорок миллионов триста пять тысяч семь», а в разрядных слагаемых равно 40 000 000 плюс 300 000 плюс 5 000 плюс 7',b);
 };
 
 /* ---------- N4_EX2_COMPARE7 — пример 3: сравнение 6 205 371 и 6 250 137 ---------- */
 SVG_LIB.N4_EX2_COMPARE7 = function(){
+  var EN=getLang()==='en';
   var W=320,H=185,b='';
   function digitBox(x,y,d,hi){
     var r='';
@@ -13674,15 +13677,16 @@ SVG_LIB.N4_EX2_COMPARE7 = function(){
   for(i=0;i<7;i++) b+=digitBox(x0+i*40,22,a[i],i===2);
   for(i=0;i<7;i++) b+=digitBox(x0+i*40,76,c2[i],i===2);
   b+=n4hT(x0+2*40+16,70,'0 < 5',12,'var(--gold)','middle',true);
-  b+=n4hT(160,140,'разряды десятков тысяч: 0 и 5',13,'var(--muted)','middle',false);
+  b+=n4hT(160,140,EN?'ten-thousands place: 0 and 5':'разряды десятков тысяч: 0 и 5',13,'var(--muted)','middle',false);
   b+=n4hT(160,165,'6 205 371 < 6 250 137',16,'var(--ink)','middle',true);
-  return n4hS(W,H,320,'Сравнение чисел 6 205 371 и 6 250 137: цифры совпадают до разряда десятков тысяч, где 0 меньше 5, поэтому 6 205 371 меньше 6 250 137',b);
+  return n4hS(W,H,320,EN?'Comparing 6,205,371 and 6,250,137: the digits match up to the ten-thousands place, where 0 is less than 5, so 6,205,371 is less than 6,250,137':'Сравнение чисел 6 205 371 и 6 250 137: цифры совпадают до разряда десятков тысяч, где 0 меньше 5, поэтому 6 205 371 меньше 6 250 137',b);
 };
 
 /* ---------- N4_EX3_COLSUM — пример 4: столбиком 48 764 + 35 693 = 84 457 ---------- */
 SVG_LIB.N4_EX3_COLSUM = function(){
+  var EN=getLang()==='en';
   var W=320,H=235,b='';
-  var cols=['дес.тыс.','тыс.','сот.','дес.','ед.'];
+  var cols=EN?['tth.','th.','h.','t.','o.']:['дес.тыс.','тыс.','сот.','дес.','ед.'];
   var i; var x0=40, step=55;
   for(i=0;i<5;i++) b+=n4hT(x0+i*step,20,cols[i],10,'var(--muted)','middle',false);
   var carry=['','1','1','1',''];
@@ -13695,16 +13699,17 @@ SVG_LIB.N4_EX3_COLSUM = function(){
   b+=n4hL(x0-30,108,x0+4*step+25,108,'var(--ink)',2.2);
   var res=['8','4','4','5','7'];
   for(i=0;i<5;i++) b+=n4hT(x0+i*step,138,res[i],25,'var(--green)','middle',true);
-  b+=n4hT(160,168,'4+3=7; 6+9=15→5,пер.1; 7+6+1=14→4,пер.1',10.5,'var(--muted)','middle',false);
-  b+=n4hT(160,188,'8+5+1=14→4,пер.1; 4+3+1=8',10.5,'var(--muted)','middle',false);
+  b+=n4hT(160,168,EN?'4+3=7; 6+9=15→5,carry 1; 7+6+1=14→4,carry 1':'4+3=7; 6+9=15→5,пер.1; 7+6+1=14→4,пер.1',10.5,'var(--muted)','middle',false);
+  b+=n4hT(160,188,EN?'8+5+1=14→4,carry 1; 4+3+1=8':'8+5+1=14→4,пер.1; 4+3+1=8',10.5,'var(--muted)','middle',false);
   b+=n4hT(160,212,'48 764 + 35 693 = 84 457',15,'var(--ink)','middle',true);
-  return n4hS(W,H,320,'Сложение столбиком 48 764 плюс 35 693: справа налево переносим десятки через разряды, получаем 84 457',b);
+  return n4hS(W,H,320,EN?'Adding in column form, 48,764 plus 35,693: carrying tens right to left through the places, we get 84,457':'Сложение столбиком 48 764 плюс 35 693: справа налево переносим десятки через разряды, получаем 84 457',b);
 };
 
 /* ---------- N4_EX4_COLSUB — пример 5: столбиком 50 302 − 18 745 = 31 557, проверка ---------- */
 SVG_LIB.N4_EX4_COLSUB = function(){
+  var EN=getLang()==='en';
   var W=320,H=250,b='';
-  var cols=['дес.тыс.','тыс.','сот.','дес.','ед.'];
+  var cols=EN?['tth.','th.','h.','t.','o.']:['дес.тыс.','тыс.','сот.','дес.','ед.'];
   var i; var x0=40, step=55;
   for(i=0;i<5;i++) b+=n4hT(x0+i*step,18,cols[i],10,'var(--muted)','middle',false);
   var note=['→4','9','→2','9','→12'];
@@ -13717,39 +13722,41 @@ SVG_LIB.N4_EX4_COLSUB = function(){
   b+=n4hL(x0-30,104,x0+4*step+25,104,'var(--ink)',2.2);
   var res=['3','1','5','5','7'];
   for(i=0;i<5;i++) b+=n4hT(x0+i*step,134,res[i],24,'var(--green)','middle',true);
-  b+=n4hT(160,162,'заняли: сотни 3→2, десятки «9», единицы «12»',10.5,'var(--muted)','middle',false);
-  b+=n4hT(160,182,'тысячи 0→сот.занял у дес.тыс.: 5→4, тыс.«9»',10.5,'var(--muted)','middle',false);
+  b+=n4hT(160,162,EN?'borrowed: hundreds 3→2, tens &ldquo;9&rdquo;, ones &ldquo;12&rdquo;':'заняли: сотни 3→2, десятки «9», единицы «12»',10.5,'var(--muted)','middle',false);
+  b+=n4hT(160,182,EN?'thousands 0→hundreds borrowed from tth.: 5→4, th.&ldquo;9&rdquo;':'тысячи 0→сот.занял у дес.тыс.: 5→4, тыс.«9»',10.5,'var(--muted)','middle',false);
   b+=n4hT(160,206,'50 302 − 18 745 = 31 557',15,'var(--ink)','middle',true);
-  b+=n4hT(160,230,'проверка: 31 557 + 18 745 = 50 302',13,'var(--green)','middle',true);
-  return n4hS(W,H,320,'Вычитание столбиком 50 302 минус 18 745 с занятием через разряды, где стоят нули: получаем 31 557; проверка сложением даёт снова 50 302',b);
+  b+=n4hT(160,230,EN?'check: 31 557 + 18 745 = 50 302':'проверка: 31 557 + 18 745 = 50 302',13,'var(--green)','middle',true);
+  return n4hS(W,H,320,EN?'Subtracting in column form, 50,302 minus 18,745, borrowing through places that hold zeros: we get 31,557; checking by adding gives 50,302 again':'Вычитание столбиком 50 302 минус 18 745 с занятием через разряды, где стоят нули: получаем 31 557; проверка сложением даёт снова 50 302',b);
 };
 
 /* ---------- N4_EX5_ROUND47385 — пример 6: округление 47 385 до тысяч и сотен ---------- */
 SVG_LIB.N4_EX5_ROUND47385 = function(){
+  var EN=getLang()==='en';
   var W=330,H=225,b='';
-  b+=n4hT(165,18,'Округление числа 47 385',13.5,'var(--muted)','middle',false);
+  b+=n4hT(165,18,EN?'Rounding the number 47,385':'Округление числа 47 385',13.5,'var(--muted)','middle',false);
   b+=n4hC(75,70,19,'var(--sheet2)','var(--line)',2);
   b+=n4hT(75,76,'47 385',12.5,'var(--ink)','middle',true);
   b+='<path d="M98,70 Q165,42 232,70" fill="none" stroke="var(--gold)" stroke-width="2.3"/>';
-  b+=n4hT(165,42,'сот. 3 &lt; 5 → вниз',12,'var(--gold)','middle',true);
+  b+=n4hT(165,42,EN?'h. 3 < 5 → down':'сот. 3 &lt; 5 → вниз',12,'var(--gold)','middle',true);
   b+=n4hC(255,70,19,'var(--green-soft)','var(--green)',2.3);
   b+=n4hT(255,76,'47 000',12.5,'var(--green)','middle',true);
-  b+=n4hT(165,100,'округление до тысяч',12,'var(--muted)','middle',false);
+  b+=n4hT(165,100,EN?'rounding to the nearest thousand':'округление до тысяч',12,'var(--muted)','middle',false);
   b+=n4hC(75,160,19,'var(--sheet2)','var(--line)',2);
   b+=n4hT(75,166,'47 385',12.5,'var(--ink)','middle',true);
   b+='<path d="M98,160 Q165,132 232,160" fill="none" stroke="var(--gold)" stroke-width="2.3"/>';
-  b+=n4hT(165,132,'дес. 8 ≥ 5 → вверх',12,'var(--gold)','middle',true);
+  b+=n4hT(165,132,EN?'t. 8 ≥ 5 → up':'дес. 8 ≥ 5 → вверх',12,'var(--gold)','middle',true);
   b+=n4hC(255,160,19,'var(--green-soft)','var(--green)',2.3);
   b+=n4hT(255,166,'47 400',12.5,'var(--green)','middle',true);
-  b+=n4hT(165,188,'округление до сотен',12,'var(--muted)','middle',false);
-  b+=n4hT(165,212,'47 385 ≈ 47 000 и 47 385 ≈ 47 400',14,'var(--ink)','middle',true);
-  return n4hS(W,H,330,'Округление числа 47 385: до тысяч цифра сотен 3 меньше 5, округляем вниз до 47 000; до сотен цифра десятков 8 не меньше 5, округляем вверх до 47 400',b);
+  b+=n4hT(165,188,EN?'rounding to the nearest hundred':'округление до сотен',12,'var(--muted)','middle',false);
+  b+=n4hT(165,212,EN?'47,385 ≈ 47,000 and 47,385 ≈ 47,400':'47 385 ≈ 47 000 и 47 385 ≈ 47 400',14,'var(--ink)','middle',true);
+  return n4hS(W,H,330,EN?'Rounding 47,385: to the nearest thousand the hundreds digit 3 is less than 5, so we round down to 47,000; to the nearest hundred the tens digit 8 is not less than 5, so we round up to 47,400':'Округление числа 47 385: до тысяч цифра сотен 3 меньше 5, округляем вниз до 47 000; до сотен цифра десятков 8 не меньше 5, округляем вверх до 47 400',b);
 };
 
 /* ---------- N4_EX6_NEIGHBORSTENS — пример 7: соседи 1 000 000 и десятки в 3 470 ---------- */
 SVG_LIB.N4_EX6_NEIGHBORSTENS = function(){
+  var EN=getLang()==='en';
   var W=330,H=215,b='';
-  b+=n4hT(165,18,'Соседи числа 1 000 000',13,'var(--muted)','middle',false);
+  b+=n4hT(165,18,EN?'The neighbors of 1,000,000':'Соседи числа 1 000 000',13,'var(--muted)','middle',false);
   b+=n4hL(30,55,300,55,'var(--line)',2);
   b+=n4hC(75,55,19,'var(--green-soft)','var(--green)',2.2);
   b+=n4hT(75,60,'999 999',10.5,'var(--green)','middle',true);
@@ -13760,12 +13767,12 @@ SVG_LIB.N4_EX6_NEIGHBORSTENS = function(){
   b+=n4hT(120,36,'−1',12.5,'var(--green)','middle',true);
   b+=n4hT(210,36,'+1',12.5,'var(--green)','middle',true);
   b+=n4hL(30,120,300,120,'var(--line)',1.5,' stroke-dasharray="4 4"');
-  b+=n4hT(165,142,'Сколько всего десятков в числе 3 470?',12.5,'var(--muted)','middle',false);
+  b+=n4hT(165,142,EN?'How many tens in total are in the number 3,470?':'Сколько всего десятков в числе 3 470?',12.5,'var(--muted)','middle',false);
   b+=n4hR(110,152,55,38,'var(--blue-soft)','var(--blue)',8,2);
   b+=n4hT(137,178,'347',19,'var(--blue)','middle',true);
-  b+=n4hT(205,172,'и 0 ед.',12,'var(--muted)','middle',false);
-  b+=n4hT(165,204,'3 470 : 10 = 347 — всего 347 десятков',13.5,'var(--ink)','middle',true);
-  return n4hS(W,H,330,'Соседи числа 1 000 000 — это 999 999 и 1 000 001; а всего десятков в числе 3 470 будет 347, потому что 3 470 разделить на 10 равно 347',b);
+  b+=n4hT(205,172,EN?'and 0 ones':'и 0 ед.',12,'var(--muted)','middle',false);
+  b+=n4hT(165,204,EN?'3,470 : 10 = 347 — 347 tens in total':'3 470 : 10 = 347 — всего 347 десятков',13.5,'var(--ink)','middle',true);
+  return n4hS(W,H,330,EN?'The neighbors of 1,000,000 are 999,999 and 1,000,001; and the total number of tens in 3,470 is 347, because 3,470 divided by 10 equals 347':'Соседи числа 1 000 000 — это 999 999 и 1 000 001; а всего десятков в числе 3 470 будет 347, потому что 3 470 разделить на 10 равно 347',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -13789,6 +13796,7 @@ function m4hL(x1,y1,x2,y2,stroke,sw,extra){
 
 /* ---------- MUL4_EX0_MULT1 — пример 1: 3128 · 4 = 12 512 столбиком, с переносами ---------- */
 SVG_LIB.MUL4_EX0_MULT1 = function(){
+  var EN=getLang()==='en';
   var W=340,H=190,b='';
   b+=m4hT(170,18,'3128 · 4',14,'var(--muted)','middle',false);
   b+=m4hT(150,36,'1',13,'var(--red)','middle',true);
@@ -13806,11 +13814,12 @@ SVG_LIB.MUL4_EX0_MULT1 = function(){
   b+=m4hT(210,140,'1',28,'var(--green)','middle',true);
   b+=m4hT(270,140,'2',28,'var(--green)','middle',true);
   b+=m4hT(170,170,'3128 · 4 = 12 512',16,'var(--ink)','middle',true);
-  return m4hS(W,H,340,'Умножение столбиком 3128 на 4: 8×4=32, пишем 2, запоминаем 3; 2×4=8+3=11, пишем 1, запоминаем 1; 1×4=4+1=5; 3×4=12 — получаем 12512',b);
+  return m4hS(W,H,340,EN?'Multiplying 3128 by 4 in column form: 8×4=32, write 2, carry 3; 2×4=8+3=11, write 1, carry 1; 1×4=4+1=5; 3×4=12 — we get 12,512':'Умножение столбиком 3128 на 4: 8×4=32, пишем 2, запоминаем 3; 2×4=8+3=11, пишем 1, запоминаем 1; 1×4=4+1=5; 3×4=12 — получаем 12512',b);
 };
 
 /* ---------- MUL4_EX1_MULT2 — пример 2: 274 · 36 = 9 864, частичные произведения со сдвигом ---------- */
 SVG_LIB.MUL4_EX1_MULT2 = function(){
+  var EN=getLang()==='en';
   var W=320,H=220,b='';
   b+=m4hT(250,34,'274',24,'var(--ink)','end',true);
   b+=m4hT(250,62,'× 36',20,'var(--muted)','end',true);
@@ -13822,27 +13831,29 @@ SVG_LIB.MUL4_EX1_MULT2 = function(){
   b+=m4hT(250,170,'9 864',26,'var(--green)','end',true);
   b+=m4hT(160,194,'274 · 6 = 1644, 274 · 30 = 8220',12,'var(--muted)','middle',false);
   b+=m4hT(160,212,'1644 + 8220 = 9864',13,'var(--ink)','middle',true);
-  return m4hS(W,H,320,'Умножение 274 на 36: 274 умножить на 6 равно 1644, 274 умножить на 30 равно 8220 (записано со сдвигом влево, последний нуль — место сдвига), сумма 1644 плюс 8220 равно 9864',b);
+  return m4hS(W,H,320,EN?'Multiplying 274 by 36: 274 times 6 equals 1644, 274 times 30 equals 8220 (written shifted left, with the trailing zero marking the shift), and the sum 1644 plus 8220 equals 9864':'Умножение 274 на 36: 274 умножить на 6 равно 1644, 274 умножить на 30 равно 8220 (записано со сдвигом влево, последний нуль — место сдвига), сумма 1644 плюс 8220 равно 9864',b);
 };
 
 /* ---------- MUL4_EX2_TRICKS — пример 3: 350 · 40 и 25 · 48 удобными способами ---------- */
 SVG_LIB.MUL4_EX2_TRICKS = function(){
+  var EN=getLang()==='en';
   var W=360,H=200,b='';
   b+=m4hR(20,20,160,160,'var(--blue-soft)','var(--blue)',10,2);
   b+=m4hT(100,46,'350 · 40',16,'var(--blue)','middle',true);
   b+=m4hT(100,78,'35 · 4 = 140',14,'var(--ink)','middle',false);
-  b+=m4hT(100,106,'+ два нуля',13,'var(--muted)','middle',false);
+  b+=m4hT(100,106,EN?'+ two zeros':'+ два нуля',13,'var(--muted)','middle',false);
   b+=m4hT(100,142,'= 14 000',18,'var(--blue)','middle',true);
   b+=m4hR(180,20,160,160,'var(--gold-soft)','var(--gold)',10,2);
   b+=m4hT(260,46,'25 · 48',16,'var(--gold)','middle',true);
   b+=m4hT(260,78,'48 = 4 · 12',14,'var(--ink)','middle',false);
   b+=m4hT(260,106,'25 · 4 = 100',13,'var(--muted)','middle',false);
   b+=m4hT(260,142,'100 · 12 = 1 200',16,'var(--gold)','middle',true);
-  return m4hS(W,H,360,'Удобные приёмы: 350 умножить на 40 — это 35 умножить на 4 равно 140, приписываем два нуля, получаем 14000; 25 умножить на 48 — это 48 равно 4 на 12, тогда 25 умножить на 4 равно 100, а 100 умножить на 12 равно 1200',b);
+  return m4hS(W,H,360,EN?'Handy tricks: 350 times 40 is 35 times 4 equals 140, then tack on two zeros to get 14,000; 25 times 48 — since 48 equals 4 times 12, 25 times 4 equals 100, and 100 times 12 equals 1,200':'Удобные приёмы: 350 умножить на 40 — это 35 умножить на 4 равно 140, приписываем два нуля, получаем 14000; 25 умножить на 48 — это 48 равно 4 на 12, тогда 25 умножить на 4 равно 100, а 100 умножить на 12 равно 1200',b);
 };
 
 /* ---------- MUL4_EX3_DIV1 — пример 4: 8 124 : 4 = 2 031 (с нулём в частном) ---------- */
 SVG_LIB.MUL4_EX3_DIV1 = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   var xs=[70,140,210,280];
   var dig=['8','1','2','4'];
@@ -13854,13 +13865,14 @@ SVG_LIB.MUL4_EX3_DIV1 = function(){
   b+=m4hT(140,98,'0',24,'var(--gold)','middle',true);
   b+=m4hT(210,98,'3',24,'var(--green)','middle',true);
   b+=m4hT(280,98,'1',24,'var(--green)','middle',true);
-  b+=m4hT(140,130,'1 < 4 — делить нечем, пишем 0',12.5,'var(--muted)','middle',false);
+  b+=m4hT(140,130,EN?'1 < 4 — nothing to divide, write 0':'1 < 4 — делить нечем, пишем 0',12.5,'var(--muted)','middle',false);
   b+=m4hT(160,164,'8124 : 4 = 2031',17,'var(--ink)','middle',true);
-  return m4hS(W,H,320,'Деление 8124 на 4: 8 делим на 4, получаем 2; снесённая цифра 1 меньше 4, в частном пишем 0 и сносим дальше; 12 делим на 4, получаем 3; 4 делим на 4, получаем 1; частное 2031',b);
+  return m4hS(W,H,320,EN?'Dividing 8124 by 4: 8 divided by 4 is 2; the brought-down digit 1 is less than 4, so we write 0 in the quotient and bring down the next digit; 12 divided by 4 is 3; 4 divided by 4 is 1; the quotient is 2031':'Деление 8124 на 4: 8 делим на 4, получаем 2; снесённая цифра 1 меньше 4, в частном пишем 0 и сносим дальше; 12 делим на 4, получаем 3; 4 делим на 4, получаем 1; частное 2031',b);
 };
 
 /* ---------- MUL4_EX4_DIV2 — пример 5: 7 452 : 6 = 1 242 ---------- */
 SVG_LIB.MUL4_EX4_DIV2 = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   var xs=[70,140,210,280];
   var dig=['7','4','5','2'];
@@ -13870,38 +13882,40 @@ SVG_LIB.MUL4_EX4_DIV2 = function(){
   var q=['1','2','4','2'], rem=['1','2','1','0'];
   for(var i=0;i<4;i++){
     b+=m4hT(xs[i],98,q[i],24,'var(--green)','middle',true);
-    if(rem[i]!=='0') b+=m4hT(xs[i]+22,78,'ост. '+rem[i],10.5,'var(--red)','middle',false);
+    if(rem[i]!=='0') b+=m4hT(xs[i]+22,78,(EN?'rem. ':'ост. ')+rem[i],10.5,'var(--red)','middle',false);
   }
-  b+=m4hT(160,140,'7:6=1 (ост.1), 14:6=2 (ост.2), 25:6=4 (ост.1), 12:6=2',11.5,'var(--muted)','middle',false);
+  b+=m4hT(160,140,EN?'7:6=1 (rem.1), 14:6=2 (rem.2), 25:6=4 (rem.1), 12:6=2':'7:6=1 (ост.1), 14:6=2 (ост.2), 25:6=4 (ост.1), 12:6=2',11.5,'var(--muted)','middle',false);
   b+=m4hT(160,170,'7452 : 6 = 1242',17,'var(--ink)','middle',true);
-  return m4hS(W,H,320,'Деление 7452 на 6: 7 на 6 равно 1 остаток 1; снесли 4, получили 14 на 6 равно 2 остаток 2; снесли 5, получили 25 на 6 равно 4 остаток 1; снесли 2, получили 12 на 6 равно 2; частное 1242',b);
+  return m4hS(W,H,320,EN?'Dividing 7452 by 6: 7 divided by 6 is 1 remainder 1; bringing down 4 gives 14 divided by 6 is 2 remainder 2; bringing down 5 gives 25 divided by 6 is 4 remainder 1; bringing down 2 gives 12 divided by 6 is 2; the quotient is 1242':'Деление 7452 на 6: 7 на 6 равно 1 остаток 1; снесли 4, получили 14 на 6 равно 2 остаток 2; снесли 5, получили 25 на 6 равно 4 остаток 1; снесли 2, получили 12 на 6 равно 2; частное 1242',b);
 };
 
 /* ---------- MUL4_EX5_REMAINDER — пример 6: 1 000 : 7 = 142 (ост. 6), проверка ---------- */
 SVG_LIB.MUL4_EX5_REMAINDER = function(){
+  var EN=getLang()==='en';
   var W=320,H=175,b='';
-  b+=m4hT(160,30,'1000 : 7 = 142 (ост. 6)',17,'var(--ink)','middle',true);
+  b+=m4hT(160,30,EN?'1000 : 7 = 142 (rem. 6)':'1000 : 7 = 142 (ост. 6)',17,'var(--ink)','middle',true);
   b+=m4hR(40,50,240,38,'var(--gold-soft)','var(--gold)',8,1.8);
-  b+=m4hT(160,75,'остаток 6 < делителя 7',14,'var(--gold)','middle',true);
-  b+=m4hT(160,112,'проверка:',12,'var(--muted)','middle',false);
+  b+=m4hT(160,75,EN?'remainder 6 < divisor 7':'остаток 6 < делителя 7',14,'var(--gold)','middle',true);
+  b+=m4hT(160,112,EN?'check:':'проверка:',12,'var(--muted)','middle',false);
   b+=m4hT(160,140,'7 · 142 + 6 = 994 + 6 = 1000 ✓',15.5,'var(--green)','middle',true);
-  return m4hS(W,H,320,'Деление 1000 на 7 даёт 142 и остаток 6, причём остаток 6 меньше делителя 7; проверка: 7 умножить на 142 плюс 6 равно 994 плюс 6 равно 1000',b);
+  return m4hS(W,H,320,EN?'Dividing 1000 by 7 gives 142 with remainder 6, and the remainder 6 is less than the divisor 7; check: 7 times 142 plus 6 equals 994 plus 6 equals 1000':'Деление 1000 на 7 даёт 142 и остаток 6, причём остаток 6 меньше делителя 7; проверка: 7 умножить на 142 плюс 6 равно 994 плюс 6 равно 1000',b);
 };
 
 /* ---------- MUL4_EX6_DIV3 — пример 7: 5 796 : 12 = 483, подбор цифры частного ---------- */
 SVG_LIB.MUL4_EX6_DIV3 = function(){
+  var EN=getLang()==='en';
   var W=320,H=215,b='';
-  b+=m4hT(160,20,'5796 : 12 — первое неполное делимое 57',13,'var(--muted)','middle',false);
+  b+=m4hT(160,20,EN?'5796 : 12 — first partial dividend 57':'5796 : 12 — первое неполное делимое 57',13,'var(--muted)','middle',false);
   b+=m4hR(40,32,120,26,'var(--green-soft)','var(--green)',6,1.8);
   b+=m4hT(100,50,'12 · 4 = 48 ✓',13.5,'var(--green)','middle',true);
   b+=m4hR(160,32,120,26,'var(--red-soft)','var(--red)',6,1.8,' opacity="0.85"');
   b+=m4hT(220,50,'12 · 5 = 60 ✗',13.5,'var(--red)','middle',true);
-  b+=m4hT(160,80,'57 − 48 = 9, сносим 6 → 99',13,'var(--ink)','middle',false);
-  b+=m4hT(160,106,'12 · 8 = 96 ✓, 99 − 96 = 3, сносим 6 → 36',12.5,'var(--ink)','middle',false);
-  b+=m4hT(160,132,'12 · 3 = 36 ✓, остаток 0',13,'var(--ink)','middle',false);
-  b+=m4hT(160,166,'частное: 4 — 8 — 3',16,'var(--green)','middle',true);
+  b+=m4hT(160,80,EN?'57 − 48 = 9, bring down 6 → 99':'57 − 48 = 9, сносим 6 → 99',13,'var(--ink)','middle',false);
+  b+=m4hT(160,106,EN?'12 · 8 = 96 ✓, 99 − 96 = 3, bring down 6 → 36':'12 · 8 = 96 ✓, 99 − 96 = 3, сносим 6 → 36',12.5,'var(--ink)','middle',false);
+  b+=m4hT(160,132,EN?'12 · 3 = 36 ✓, remainder 0':'12 · 3 = 36 ✓, остаток 0',13,'var(--ink)','middle',false);
+  b+=m4hT(160,166,EN?'quotient: 4 — 8 — 3':'частное: 4 — 8 — 3',16,'var(--green)','middle',true);
   b+=m4hT(160,194,'5796 : 12 = 483',18,'var(--ink)','middle',true);
-  return m4hS(W,H,320,'Деление 5796 на 12: пробуем цифры частного подбором — 12 умножить на 4 равно 48 подходит (60 слишком много), остаток 9, сносим 6, получаем 99; 12 умножить на 8 равно 96, остаток 3; сносим 6, получаем 36; 12 умножить на 3 равно 36 без остатка; частное 483',b);
+  return m4hS(W,H,320,EN?'Dividing 5796 by 12: we try digits for the quotient by trial — 12 times 4 equals 48 works (60 is too much), remainder 9; bringing down 6 gives 99; 12 times 8 equals 96, remainder 3; bringing down 6 gives 36; 12 times 3 equals 36 with no remainder; quotient 483':'Деление 5796 на 12: пробуем цифры частного подбором — 12 умножить на 4 равно 48 подходит (60 слишком много), остаток 9, сносим 6, получаем 99; 12 умножить на 8 равно 96, остаток 3; сносим 6, получаем 36; 12 умножить на 3 равно 36 без остатка; частное 483',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -13928,39 +13942,42 @@ function v4hC(x,y,r,fill,stroke,sw){
 
 /* ---------- VAL4_EX0_KMTOM — пример 1: 4 км 30 м → м; 5 т 3 ц → кг ---------- */
 SVG_LIB.VAL4_EX0_KMTOM = function(){
+  var EN=getLang()==='en';
   var W=320,H=180,b='';
-  b+=v4hT(160,22,'4 км 30 м = ? м',15,'var(--ink)','middle',true);
+  b+=v4hT(160,22,EN?'4 km 30 m = ? m':'4 км 30 м = ? м',15,'var(--ink)','middle',true);
   b+=v4hR(30,36,120,40,'var(--blue-soft)','var(--blue)',8,1.5);
-  b+=v4hT(90,61,'4 км = 4000 м',13,'var(--blue)','middle',true);
+  b+=v4hT(90,61,EN?'4 km = 4000 m':'4 км = 4000 м',13,'var(--blue)','middle',true);
   b+=v4hT(160,36+20,'+',16,'var(--muted)','middle',true);
   b+=v4hR(170,36,120,40,'var(--gold-soft)','var(--gold)',8,1.5);
-  b+=v4hT(230,61,'30 м',13,'var(--gold)','middle',true);
+  b+=v4hT(230,61,EN?'30 m':'30 м',13,'var(--gold)','middle',true);
   b+=v4hR(90,86,140,34,'var(--green-soft)','var(--green)',8,2);
-  b+=v4hT(160,108,'4030 м',16,'var(--green)','middle',true);
+  b+=v4hT(160,108,EN?'4030 m':'4030 м',16,'var(--green)','middle',true);
   b+=v4hL(30,132,290,132,'var(--line)',1.2,' stroke-dasharray="4 4"');
-  b+=v4hT(160,150,'5 т 3 ц = 5000 + 300 = 5300 кг',13,'var(--ink)','middle',true);
-  return v4hS(W,H,320,'4 км переводим в 4000 м и прибавляем 30 м — получаем 4030 м; так же 5 тонн 3 центнера переводим в килограммы: 5000 плюс 300 равно 5300 кг',b);
+  b+=v4hT(160,150,EN?'5 t 3 cwt = 5000 + 300 = 5300 kg':'5 т 3 ц = 5000 + 300 = 5300 кг',13,'var(--ink)','middle',true);
+  return v4hS(W,H,320,EN?'We convert 4 km to 4000 m and add 30 m, getting 4030 m; likewise, we convert 5 tonnes 3 quintals to kilograms: 5000 plus 300 equals 5300 kg':'4 км переводим в 4000 м и прибавляем 30 м — получаем 4030 м; так же 5 тонн 3 центнера переводим в килограммы: 5000 плюс 300 равно 5300 кг',b);
 };
 
 /* ---------- VAL4_EX1_CMTOM — пример 2: 5210 см → м и см ---------- */
 SVG_LIB.VAL4_EX1_CMTOM = function(){
+  var EN=getLang()==='en';
   var W=300,H=170,b='';
-  b+=v4hT(150,24,'5210 см : 100',16,'var(--ink)','middle',true);
+  b+=v4hT(150,24,EN?'5210 cm : 100':'5210 см : 100',16,'var(--ink)','middle',true);
   b+=v4hR(50,40,90,50,'var(--blue-soft)','var(--blue)',8,1.5);
   b+=v4hT(95,70,'52',24,'var(--blue)','middle',true);
-  b+=v4hT(95,97,'целых (м)',11,'var(--blue)','middle',false);
+  b+=v4hT(95,97,EN?'whole (m)':'целых (м)',11,'var(--blue)','middle',false);
   b+=v4hR(160,40,90,50,'var(--gold-soft)','var(--gold)',8,1.5);
   b+=v4hT(205,70,'10',24,'var(--gold)','middle',true);
-  b+=v4hT(205,97,'остаток (см)',11,'var(--gold)','middle',false);
-  b+=v4hT(150,135,'5210 см = 52 м 10 см',16,'var(--green)','middle',true);
-  return v4hS(W,H,300,'Делим 5210 на 100 с остатком: получаем 52 целых — это метры, и остаток 10 — это сантиметры; значит 5210 см равно 52 м 10 см',b);
+  b+=v4hT(205,97,EN?'remainder (cm)':'остаток (см)',11,'var(--gold)','middle',false);
+  b+=v4hT(150,135,EN?'5210 cm = 52 m 10 cm':'5210 см = 52 м 10 см',16,'var(--green)','middle',true);
+  return v4hS(W,H,300,EN?'We divide 5210 by 100 with a remainder: we get 52 whole units — meters — and remainder 10 — centimeters; so 5210 cm equals 52 m 10 cm':'Делим 5210 на 100 с остатком: получаем 52 целых — это метры, и остаток 10 — это сантиметры; значит 5210 см равно 52 м 10 см',b);
 };
 
 /* ---------- VAL4_EX2_ADDCARRY — пример 3: 3 м 45 см + 2 м 78 см ---------- */
 SVG_LIB.VAL4_EX2_ADDCARRY = function(){
+  var EN=getLang()==='en';
   var W=300,H=210,b='';
-  b+=v4hT(100,22,'м',13,'var(--muted)','middle',false);
-  b+=v4hT(190,22,'см',13,'var(--muted)','middle',false);
+  b+=v4hT(100,22,EN?'m':'м',13,'var(--muted)','middle',false);
+  b+=v4hT(190,22,EN?'cm':'см',13,'var(--muted)','middle',false);
   b+=v4hT(230,40,'1',13,'var(--red)','middle',true);
   b+=v4hT(100,66,'3',24,'var(--ink)','middle',true);
   b+=v4hT(190,66,'45',24,'var(--ink)','middle',true);
@@ -13970,16 +13987,17 @@ SVG_LIB.VAL4_EX2_ADDCARRY = function(){
   b+=v4hL(45,112,250,112,'var(--ink)',2);
   b+=v4hT(100,142,'6',26,'var(--green)','middle',true);
   b+=v4hT(190,142,'23',26,'var(--green)','middle',true);
-  b+=v4hT(150,170,'45 + 78 = 123 см = 1 м 23 см',12,'var(--muted)','middle',false);
-  b+=v4hT(150,190,'3 + 2 + 1 = 6 м → 6 м 23 см',12.5,'var(--ink)','middle',true);
-  return v4hS(W,H,300,'Складываем сантиметры 45 и 78, получаем 123 см, то есть 1 м 23 см; лишний метр переносим к метрам: 3 плюс 2 плюс 1 равно 6; итог 6 м 23 см',b);
+  b+=v4hT(150,170,EN?'45 + 78 = 123 cm = 1 m 23 cm':'45 + 78 = 123 см = 1 м 23 см',12,'var(--muted)','middle',false);
+  b+=v4hT(150,190,EN?'3 + 2 + 1 = 6 m → 6 m 23 cm':'3 + 2 + 1 = 6 м → 6 м 23 см',12.5,'var(--ink)','middle',true);
+  return v4hS(W,H,300,EN?'We add the centimeters 45 and 78, getting 123 cm, that is 1 m 23 cm; we carry the extra meter over to the meters: 3 plus 2 plus 1 equals 6; the result is 6 m 23 cm':'Складываем сантиметры 45 и 78, получаем 123 см, то есть 1 м 23 см; лишний метр переносим к метрам: 3 плюс 2 плюс 1 равно 6; итог 6 м 23 см',b);
 };
 
 /* ---------- VAL4_EX3_SUBBORROW — пример 4: 5 м 20 см − 2 м 65 см ---------- */
 SVG_LIB.VAL4_EX3_SUBBORROW = function(){
+  var EN=getLang()==='en';
   var W=300,H=215,b='';
-  b+=v4hT(100,20,'м',12,'var(--muted)','middle',false);
-  b+=v4hT(190,20,'см',12,'var(--muted)','middle',false);
+  b+=v4hT(100,20,EN?'m':'м',12,'var(--muted)','middle',false);
+  b+=v4hT(190,20,EN?'cm':'см',12,'var(--muted)','middle',false);
   b+=v4hT(100,65,'5',24,'var(--muted)','middle',true);
   b+=v4hT(123,48,'→4',12,'var(--red)','middle',true);
   b+=v4hT(190,65,'20',24,'var(--muted)','middle',true);
@@ -13990,30 +14008,32 @@ SVG_LIB.VAL4_EX3_SUBBORROW = function(){
   b+=v4hL(45,114,250,114,'var(--ink)',2);
   b+=v4hT(100,146,'2',26,'var(--green)','middle',true);
   b+=v4hT(190,146,'55',26,'var(--green)','middle',true);
-  b+=v4hT(150,174,'120 − 65 = 55 см (заняли 1 м = 100 см)',11.5,'var(--muted)','middle',false);
-  b+=v4hT(150,194,'4 − 2 = 2 м → 2 м 55 см',12.5,'var(--ink)','middle',true);
-  return v4hS(W,H,300,'20 см не хватает, чтобы вычесть 65 см, поэтому занимаем 1 метр — он превращается в 100 см, и получается 120 см; 120 минус 65 равно 55 см, а метров остаётся 4 минус 2 равно 2; итог 2 м 55 см',b);
+  b+=v4hT(150,174,EN?'120 − 65 = 55 cm (borrowed 1 m = 100 cm)':'120 − 65 = 55 см (заняли 1 м = 100 см)',11.5,'var(--muted)','middle',false);
+  b+=v4hT(150,194,EN?'4 − 2 = 2 m → 2 m 55 cm':'4 − 2 = 2 м → 2 м 55 см',12.5,'var(--ink)','middle',true);
+  return v4hS(W,H,300,EN?'20 cm isn&rsquo;t enough to subtract 65 cm, so we borrow 1 meter — it turns into 100 cm, giving 120 cm; 120 minus 65 equals 55 cm, and the meters left are 4 minus 2 equals 2; the result is 2 m 55 cm':'20 см не хватает, чтобы вычесть 65 см, поэтому занимаем 1 метр — он превращается в 100 см, и получается 120 см; 120 минус 65 равно 55 см, а метров остаётся 4 минус 2 равно 2; итог 2 м 55 см',b);
 };
 
 /* ---------- VAL4_EX4_AREACOMPARE — пример 5: 3 м² 40 дм² в дм²; сравнение 3 км 50 м и 3500 м ---------- */
 SVG_LIB.VAL4_EX4_AREACOMPARE = function(){
+  var EN=getLang()==='en';
   var W=320,H=210,b='';
-  b+=v4hT(160,20,'3 м² 40 дм² = ? дм²',14,'var(--ink)','middle',true);
+  b+=v4hT(160,20,EN?'3 m² 40 dm² = ? dm²':'3 м² 40 дм² = ? дм²',14,'var(--ink)','middle',true);
   b+=v4hR(40,32,110,36,'var(--blue-soft)','var(--blue)',8,1.5);
-  b+=v4hT(95,56,'3 м² = 300 дм²',12.5,'var(--blue)','middle',true);
+  b+=v4hT(95,56,EN?'3 m² = 300 dm²':'3 м² = 300 дм²',12.5,'var(--blue)','middle',true);
   b+=v4hR(170,32,110,36,'var(--gold-soft)','var(--gold)',8,1.5);
-  b+=v4hT(225,56,'+ 40 дм²',12.5,'var(--gold)','middle',true);
+  b+=v4hT(225,56,EN?'+ 40 dm²':'+ 40 дм²',12.5,'var(--gold)','middle',true);
   b+=v4hR(100,76,120,30,'var(--green-soft)','var(--green)',8,2);
-  b+=v4hT(160,96,'340 дм²',14,'var(--green)','middle',true);
+  b+=v4hT(160,96,EN?'340 dm²':'340 дм²',14,'var(--green)','middle',true);
   b+=v4hL(30,120,290,120,'var(--line)',1.2,' stroke-dasharray="4 4"');
-  b+=v4hT(160,142,'3 км 50 м = 3050 м',13.5,'var(--ink)','middle',true);
-  b+=v4hT(160,164,'3050 м < 3500 м',13.5,'var(--ink)','middle',true);
-  b+=v4hT(160,188,'значит, 3500 м больше',14,'var(--green)','middle',true);
-  return v4hS(W,H,320,'3 квадратных метра переводим в квадратные дециметры: 300, плюс 40, равно 340 дм². Сравниваем 3 км 50 м с 3500 м: 3 км 50 м равно 3050 м, что меньше 3500 м',b);
+  b+=v4hT(160,142,EN?'3 km 50 m = 3050 m':'3 км 50 м = 3050 м',13.5,'var(--ink)','middle',true);
+  b+=v4hT(160,164,EN?'3050 m < 3500 m':'3050 м < 3500 м',13.5,'var(--ink)','middle',true);
+  b+=v4hT(160,188,EN?'so 3500 m is greater':'значит, 3500 м больше',14,'var(--green)','middle',true);
+  return v4hS(W,H,320,EN?'We convert 3 square meters to square decimeters: 300, plus 40, equals 340 dm². Comparing 3 km 50 m with 3500 m: 3 km 50 m equals 3050 m, which is less than 3500 m':'3 квадратных метра переводим в квадратные дециметры: 300, плюс 40, равно 340 дм². Сравниваем 3 км 50 м с 3500 м: 3 км 50 м равно 3050 м, что меньше 3500 м',b);
 };
 
 /* ---------- VAL4_EX5_ELAPSED — пример 6: сколько времени прошло с 14:35 до 17:10 ---------- */
 SVG_LIB.VAL4_EX5_ELAPSED = function(){
+  var EN=getLang()==='en';
   var W=340,H=160,b='';
   b+=v4hL(30,90,310,90,'var(--line)',2);
   var pts=[[30,'14:35'],[130,'15:00'],[230,'17:00'],[310,'17:10']];
@@ -14023,17 +14043,18 @@ SVG_LIB.VAL4_EX5_ELAPSED = function(){
   b+=v4hT(30,112,'14:35',12,'var(--ink)','middle',true);
   b+=v4hT(310,112,'17:10',12,'var(--ink)','middle',true);
   b+='<path d="M30,90 Q80,55 130,90" fill="none" stroke="var(--blue)" stroke-width="2.2"/>';
-  b+=v4hT(80,50,'+25 мин',12,'var(--blue)','middle',true);
+  b+=v4hT(80,50,EN?'+25 min':'+25 мин',12,'var(--blue)','middle',true);
   b+='<path d="M130,90 Q180,38 230,90" fill="none" stroke="var(--green)" stroke-width="2.2"/>';
-  b+=v4hT(180,34,'+2 ч',12,'var(--green)','middle',true);
+  b+=v4hT(180,34,EN?'+2 h':'+2 ч',12,'var(--green)','middle',true);
   b+='<path d="M230,90 Q270,58 310,90" fill="none" stroke="var(--gold)" stroke-width="2.2"/>';
-  b+=v4hT(270,54,'+10 мин',12,'var(--gold)','middle',true);
-  b+=v4hT(170,140,'25 мин + 2 ч + 10 мин = 2 ч 35 мин',14,'var(--ink)','middle',true);
-  return v4hS(W,H,340,'От 14:35 до 15:00 прошло 25 минут, от 15:00 до 17:00 прошло 2 часа, от 17:00 до 17:10 прошло 10 минут; всего 2 часа 35 минут',b);
+  b+=v4hT(270,54,EN?'+10 min':'+10 мин',12,'var(--gold)','middle',true);
+  b+=v4hT(170,140,EN?'25 min + 2 h + 10 min = 2 h 35 min':'25 мин + 2 ч + 10 мин = 2 ч 35 мин',14,'var(--ink)','middle',true);
+  return v4hS(W,H,340,EN?'From 14:35 to 15:00, 25 minutes pass; from 15:00 to 17:00, 2 hours pass; from 17:00 to 17:10, 10 minutes pass; in total, 2 hours 35 minutes':'От 14:35 до 15:00 прошло 25 минут, от 15:00 до 17:00 прошло 2 часа, от 17:00 до 17:10 прошло 10 минут; всего 2 часа 35 минут',b);
 };
 
 /* ---------- VAL4_EX6_FILMEND — пример 7: фильм 18:25 + 1 ч 50 мин ---------- */
 SVG_LIB.VAL4_EX6_FILMEND = function(){
+  var EN=getLang()==='en';
   var W=340,H=160,b='';
   b+=v4hL(30,90,310,90,'var(--line)',2);
   b+=v4hC(30,90,6,'var(--sheet2)','var(--blue)',2);
@@ -14045,29 +14066,30 @@ SVG_LIB.VAL4_EX6_FILMEND = function(){
   b+=v4hT(230,112,'20:00',12,'var(--ink)','middle',true);
   b+=v4hT(310,112,'20:15',12,'var(--green)','middle',true);
   b+='<path d="M30,90 Q90,52 150,90" fill="none" stroke="var(--blue)" stroke-width="2.2"/>';
-  b+=v4hT(90,48,'+1 ч',12,'var(--blue)','middle',true);
+  b+=v4hT(90,48,EN?'+1 h':'+1 ч',12,'var(--blue)','middle',true);
   b+='<path d="M150,90 Q190,55 230,90" fill="none" stroke="var(--gold)" stroke-width="2.2"/>';
-  b+=v4hT(190,51,'+35 мин',11.5,'var(--gold)','middle',true);
+  b+=v4hT(190,51,EN?'+35 min':'+35 мин',11.5,'var(--gold)','middle',true);
   b+='<path d="M230,90 Q270,58 310,90" fill="none" stroke="var(--green)" stroke-width="2.2"/>';
-  b+=v4hT(270,54,'+15 мин',11.5,'var(--green)','middle',true);
-  b+=v4hT(170,140,'1 ч 50 мин = 1 ч + 35 мин + 15 мин',13.5,'var(--ink)','middle',true);
-  return v4hS(W,H,340,'Фильм начался в 18:25. Прибавляем час — 19:25, затем 35 минут до 20:00, затем оставшиеся 15 минут — фильм заканчивается в 20:15',b);
+  b+=v4hT(270,54,EN?'+15 min':'+15 мин',11.5,'var(--green)','middle',true);
+  b+=v4hT(170,140,EN?'1 h 50 min = 1 h + 35 min + 15 min':'1 ч 50 мин = 1 ч + 35 мин + 15 мин',13.5,'var(--ink)','middle',true);
+  return v4hS(W,H,340,EN?'The film started at 18:25. We add an hour to get 19:25, then 35 minutes to reach 20:00, then the remaining 15 minutes — the film ends at 20:15':'Фильм начался в 18:25. Прибавляем час — 19:25, затем 35 минут до 20:00, затем оставшиеся 15 минут — фильм заканчивается в 20:15',b);
 };
 
 /* ---------- VAL4_EX7_DAYSEC — пример 8: 2 сутки 5 ч → ч; 4 мин 20 с → с ---------- */
 SVG_LIB.VAL4_EX7_DAYSEC = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
-  b+=v4hT(160,22,'2 сут 5 ч = ? ч',15,'var(--ink)','middle',true);
+  b+=v4hT(160,22,EN?'2 days 5 h = ? h':'2 сут 5 ч = ? ч',15,'var(--ink)','middle',true);
   b+=v4hR(30,36,120,38,'var(--blue-soft)','var(--blue)',8,1.5);
-  b+=v4hT(90,60,'2 · 24 = 48 ч',13,'var(--blue)','middle',true);
+  b+=v4hT(90,60,EN?'2 · 24 = 48 h':'2 · 24 = 48 ч',13,'var(--blue)','middle',true);
   b+=v4hR(170,36,120,38,'var(--gold-soft)','var(--gold)',8,1.5);
-  b+=v4hT(230,60,'+ 5 ч',13,'var(--gold)','middle',true);
+  b+=v4hT(230,60,EN?'+ 5 h':'+ 5 ч',13,'var(--gold)','middle',true);
   b+=v4hR(90,84,140,32,'var(--green-soft)','var(--green)',8,2);
-  b+=v4hT(160,105,'53 ч',16,'var(--green)','middle',true);
+  b+=v4hT(160,105,EN?'53 h':'53 ч',16,'var(--green)','middle',true);
   b+=v4hL(30,128,290,128,'var(--line)',1.2,' stroke-dasharray="4 4"');
-  b+=v4hT(160,150,'4 мин = 4 · 60 = 240 с',13,'var(--ink)','middle',true);
-  b+=v4hT(160,172,'4 мин 20 с = 240 + 20 = 260 с',13,'var(--green)','middle',true);
-  return v4hS(W,H,320,'2 суток переводим в часы: 2 умножить на 24 равно 48, плюс 5 часов равно 53 часа. Так же 4 минуты переводим в секунды: 4 умножить на 60 равно 240, плюс 20 секунд равно 260 секунд',b);
+  b+=v4hT(160,150,EN?'4 min = 4 · 60 = 240 s':'4 мин = 4 · 60 = 240 с',13,'var(--ink)','middle',true);
+  b+=v4hT(160,172,EN?'4 min 20 s = 240 + 20 = 260 s':'4 мин 20 с = 240 + 20 = 260 с',13,'var(--green)','middle',true);
+  return v4hS(W,H,320,EN?'We convert 2 days to hours: 2 times 24 equals 48, plus 5 hours equals 53 hours. Likewise, we convert 4 minutes to seconds: 4 times 60 equals 240, plus 20 seconds equals 260 seconds':'2 суток переводим в часы: 2 умножить на 24 равно 48, плюс 5 часов равно 53 часа. Так же 4 минуты переводим в секунды: 4 умножить на 60 равно 240, плюс 20 секунд равно 260 секунд',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -14105,32 +14127,34 @@ function w4hAL(x1,x2,y,color){ // arrow pointing left
 
 /* ---------- WORD4_EX0_PRICE — пример 1: яблоки 3кг×65 + груши 2кг×80 = 355 руб ---------- */
 SVG_LIB.WORD4_EX0_PRICE = function(){
+  var EN=getLang()==='en';
   var W=340,H=200,b='';
   function row(y,aVal,bVal,resVal,color,colorSoft){
     var r='';
     r+=w4hR(20,y,90,50,colorSoft,color,8,2);
-    r+=w4hT(65,y+24,aVal+' руб.',16,color,'middle',true);
-    r+=w4hT(65,y+42,'за кг',11,color,'middle',false);
+    r+=w4hT(65,y+24,aVal+(EN?' rub.':' руб.'),16,color,'middle',true);
+    r+=w4hT(65,y+42,EN?'per kg':'за кг',11,color,'middle',false);
     r+=w4hT(122,y+32,'×',20,'var(--ink)','middle',true);
     r+=w4hR(140,y,60,50,colorSoft,color,8,2);
-    r+=w4hT(170,y+24,bVal+' кг',16,color,'middle',true);
-    r+=w4hT(170,y+42,'купили',11,color,'middle',false);
+    r+=w4hT(170,y+24,bVal+(EN?' kg':' кг'),16,color,'middle',true);
+    r+=w4hT(170,y+42,EN?'bought':'купили',11,color,'middle',false);
     r+=w4hT(212,y+32,'=',20,'var(--ink)','middle',true);
     r+=w4hR(230,y,90,50,'var(--green-soft)','var(--green)',8,2);
-    r+=w4hT(275,y+24,resVal+' руб.',16,'var(--green)','middle',true);
-    r+=w4hT(275,y+42,'стоимость',11,'var(--green)','middle',false);
+    r+=w4hT(275,y+24,resVal+(EN?' rub.':' руб.'),16,'var(--green)','middle',true);
+    r+=w4hT(275,y+42,EN?'cost':'стоимость',11,'var(--green)','middle',false);
     return r;
   }
-  b+=w4hT(20,16,'Яблоки',13,'var(--muted)','start',true);
+  b+=w4hT(20,16,EN?'Apples':'Яблоки',13,'var(--muted)','start',true);
   b+=row(22,'65','3','195','var(--blue)','var(--blue-soft)');
-  b+=w4hT(20,92,'Груши',13,'var(--muted)','start',true);
+  b+=w4hT(20,92,EN?'Pears':'Груши',13,'var(--muted)','start',true);
   b+=row(98,'80','2','160','var(--gold)','var(--gold-soft)');
-  b+=w4hT(170,170,'195 + 160 = 355 (руб.)',18,'var(--ink)','middle',true);
-  return w4hS(W,H,340,'Яблоки: цена 65 умножить на 3 кг равно 195 рублей; груши: цена 80 умножить на 2 кг равно 160 рублей; всего 195 плюс 160 равно 355 рублей',b);
+  b+=w4hT(170,170,EN?'195 + 160 = 355 (rub.)':'195 + 160 = 355 (руб.)',18,'var(--ink)','middle',true);
+  return w4hS(W,H,340,EN?'Apples: price 65 times 3 kg equals 195 rubles; pears: price 80 times 2 kg equals 160 rubles; in total 195 plus 160 equals 355 rubles':'Яблоки: цена 65 умножить на 3 кг равно 195 рублей; груши: цена 80 умножить на 2 кг равно 160 рублей; всего 195 плюс 160 равно 355 рублей',b);
 };
 
 /* ---------- WORD4_EX1_PATH — пример 2: 14×3=42 км и 11×2=22 км, всего 64 км ---------- */
 SVG_LIB.WORD4_EX1_PATH = function(){
+  var EN=getLang()==='en';
   var W=360,H=160,b='';
   var x0=30,u=300/64;
   var xMid=x0+42*u, xEnd=x0+64*u;
@@ -14144,124 +14168,130 @@ SVG_LIB.WORD4_EX1_PATH = function(){
   b+=w4hT(xMid,126,'42',12,'var(--muted)','middle',false);
   b+=w4hL(xEnd,58,xEnd,112,'var(--ink)',2);
   b+=w4hT(xEnd,50,'64',13,'var(--ink)','middle',true);
-  b+=w4hT(170,148,'42 + 22 = 64 (км)',17,'var(--ink)','middle',true);
-  return w4hS(W,H,360,'Путь велосипедиста: первые 3 часа со скоростью 14 км/ч — 42 км, следующие 2 часа со скоростью 11 км/ч — 22 км; всего 42 плюс 22 равно 64 км',b);
+  b+=w4hT(170,148,EN?'42 + 22 = 64 (km)':'42 + 22 = 64 (км)',17,'var(--ink)','middle',true);
+  return w4hS(W,H,360,EN?'A cyclist&rsquo;s path: the first 3 hours at 14 km/h cover 42 km, the next 2 hours at 11 km/h cover 22 km; in total 42 plus 22 equals 64 km':'Путь велосипедиста: первые 3 часа со скоростью 14 км/ч — 42 км, следующие 2 часа со скоростью 11 км/ч — 22 км; всего 42 плюс 22 равно 64 км',b);
 };
 
 /* ---------- WORD4_EX2_MEET — пример 3: навстречу, 36 км, 4+5=9, встреча через 4 ч ---------- */
 SVG_LIB.WORD4_EX2_MEET = function(){
+  var EN=getLang()==='en';
   var W=360,H=170,b='';
   var x0=30,u=300/36;
   var xEnd=x0+36*u, xMeet=x0+16*u;
-  b+=w4hT((x0+xEnd)/2,30,'36 км',14,'var(--ink)','middle',true);
+  b+=w4hT((x0+xEnd)/2,30,EN?'36 km':'36 км',14,'var(--ink)','middle',true);
   b+=w4hL(x0,90,xEnd,90,'var(--line)',2.5);
   b+=w4hR(x0-14,74,28,32,'var(--blue-soft)','var(--blue)',6,2);
-  b+=w4hT(x0,96,'А',14,'var(--blue)','middle',true);
+  b+=w4hT(x0,96,'A',14,'var(--blue)','middle',true);
   b+=w4hR(xEnd-14,74,28,32,'var(--red-soft)','var(--red)',6,2);
-  b+=w4hT(xEnd,96,'Б',14,'var(--red)','middle',true);
+  b+=w4hT(xEnd,96,'B',14,'var(--red)','middle',true);
   b+=w4hAR(x0+20,xMeet-10,118,'var(--blue)');
   b+=w4hAL(xEnd-20,xMeet+10,118,'var(--red)');
   b+=w4hC(xMeet,118,6,'var(--green-soft)','var(--green)',2.2);
-  b+=w4hT((x0+20+xMeet-10)/2,138,'4 км/ч',12,'var(--blue)','middle',false);
-  b+=w4hT((xEnd-20+xMeet+10)/2,138,'5 км/ч',12,'var(--red)','middle',false);
-  b+=w4hT(180,160,'4 + 5 = 9 (км/ч); 36 : 9 = 4 (ч)',15,'var(--ink)','middle',true);
-  return w4hS(W,H,360,'Два пешехода идут навстречу друг другу по дороге 36 км со скоростями 4 и 5 км/ч; скорость сближения 4 плюс 5 равно 9 км/ч, время встречи 36 делить на 9 равно 4 часа',b);
+  b+=w4hT((x0+20+xMeet-10)/2,138,EN?'4 km/h':'4 км/ч',12,'var(--blue)','middle',false);
+  b+=w4hT((xEnd-20+xMeet+10)/2,138,EN?'5 km/h':'5 км/ч',12,'var(--red)','middle',false);
+  b+=w4hT(180,160,EN?'4 + 5 = 9 (km/h); 36 : 9 = 4 (h)':'4 + 5 = 9 (км/ч); 36 : 9 = 4 (ч)',15,'var(--ink)','middle',true);
+  return w4hS(W,H,360,EN?'Two walkers move toward each other along a 36 km road at speeds of 4 and 5 km/h; the closing speed 4 plus 5 equals 9 km/h, and the meeting time 36 divided by 9 equals 4 hours':'Два пешехода идут навстречу друг другу по дороге 36 км со скоростями 4 и 5 км/ч; скорость сближения 4 плюс 5 равно 9 км/ч, время встречи 36 делить на 9 равно 4 часа',b);
 };
 
 /* ---------- WORD4_EX3_CHASE — пример 4: вдогонку, 18 км, 15−12=3, догонит через 6 ч ---------- */
 SVG_LIB.WORD4_EX3_CHASE = function(){
+  var EN=getLang()==='en';
   var W=360,H=200,b='';
   var x0=40,xPed=184,xCatch=320;
-  b+=w4hT((x0+xPed)/2,30,'18 км',14,'var(--ink)','middle',true);
+  b+=w4hT((x0+xPed)/2,30,EN?'18 km':'18 км',14,'var(--ink)','middle',true);
   b+=w4hL(x0,44,xPed,44,'var(--muted)',1.5,' stroke-dasharray="3 3"');
   b+=w4hL(x0,38,x0,50,'var(--muted)',1.5);
   b+=w4hL(xPed,38,xPed,50,'var(--muted)',1.5);
   b+=w4hR(xPed-16,60,54,30,'var(--red-soft)','var(--red)',6,2);
-  b+=w4hT(xPed+11,80,'пешеход',11,'var(--red)','middle',true);
+  b+=w4hT(xPed+11,80,EN?'walker':'пешеход',11,'var(--red)','middle',true);
   b+=w4hAR(xPed+40,xCatch,78,'var(--red)');
-  b+=w4hT((xPed+40+xCatch)/2,100,'12 км/ч',12,'var(--red)','middle',false);
+  b+=w4hT((xPed+40+xCatch)/2,100,EN?'12 km/h':'12 км/ч',12,'var(--red)','middle',false);
   b+=w4hR(x0-16,122,70,30,'var(--blue-soft)','var(--blue)',6,2);
-  b+=w4hT(x0+19,142,'велосипедист',10.5,'var(--blue)','middle',true);
+  b+=w4hT(x0+19,142,EN?'cyclist':'велосипедист',10.5,'var(--blue)','middle',true);
   b+=w4hAR(x0+56,xCatch,160,'var(--blue)');
-  b+=w4hT((x0+56+xCatch)/2,182,'15 км/ч',12,'var(--blue)','middle',false);
+  b+=w4hT((x0+56+xCatch)/2,182,EN?'15 km/h':'15 км/ч',12,'var(--blue)','middle',false);
   b+=w4hL(xCatch,65,xCatch,172,'var(--green)',1.5,' stroke-dasharray="4 4"');
   b+=w4hC(xCatch,172,6,'var(--green-soft)','var(--green)',2.2);
-  return w4hS(W,H,360,'Велосипедист догоняет пешехода: между ними 18 км, скорости 15 и 12 км/ч; скорость сближения 15 минус 12 равно 3 км/ч, догонит через 18 делить на 3 равно 6 часов',b);
+  return w4hS(W,H,360,EN?'A cyclist is catching up to a walker: 18 km apart, speeds 15 and 12 km/h; the closing speed 15 minus 12 equals 3 km/h, so they catch up after 18 divided by 3 equals 6 hours':'Велосипедист догоняет пешехода: между ними 18 км, скорости 15 и 12 км/ч; скорость сближения 15 минус 12 равно 3 км/ч, догонит через 18 делить на 3 равно 6 часов',b);
 };
 
 /* ---------- WORD4_EX4_PUMP — пример 5: насос 30 л/мин, 450 л бассейн, 240 л за 8 мин ---------- */
 SVG_LIB.WORD4_EX4_PUMP = function(){
+  var EN=getLang()==='en';
   var W=360,H=190,b='';
   var x0=30,x1=330,u=(x1-x0)/450;
   var x240=x0+240*u;
-  b+=w4hT(180,20,'насос: 30 л в минуту',14,'var(--ink)','middle',true);
+  b+=w4hT(180,20,EN?'pump: 30 L per minute':'насос: 30 л в минуту',14,'var(--ink)','middle',true);
   b+=w4hR(x0,46,x1-x0,50,'var(--sheet2)','var(--line)',8,2);
   b+=w4hR(x0,46,240*u,50,'var(--blue-soft)','var(--blue)',8,2);
   b+=w4hL(x240,40,x240,102,'var(--blue)',1.5,' stroke-dasharray="3 3"');
-  b+=w4hT(x240,116,'240 л за 8 мин',13,'var(--blue)','middle',true);
+  b+=w4hT(x240,116,EN?'240 L in 8 min':'240 л за 8 мин',13,'var(--blue)','middle',true);
   b+=w4hT(x0,134,'0',12,'var(--muted)','start',false);
-  b+=w4hT(x1,134,'450 л — полный (15 мин)',12,'var(--ink)','end',true);
-  b+=w4hT(180,170,'450 : 30 = 15 (мин); 30 × 8 = 240 (л)',15,'var(--ink)','middle',true);
-  return w4hS(W,H,360,'Насос качает 30 литров в минуту: за 8 минут накачает 240 литров, а весь бассейн на 450 литров наполнит за 15 минут',b);
+  b+=w4hT(x1,134,EN?'450 L — full (15 min)':'450 л — полный (15 мин)',12,'var(--ink)','end',true);
+  b+=w4hT(180,170,EN?'450 : 30 = 15 (min); 30 × 8 = 240 (L)':'450 : 30 = 15 (мин); 30 × 8 = 240 (л)',15,'var(--ink)','middle',true);
+  return w4hS(W,H,360,EN?'A pump moves 30 liters per minute: in 8 minutes it pumps 240 liters, and it fills the whole 450-liter pool in 15 minutes':'Насос качает 30 литров в минуту: за 8 минут накачает 240 литров, а весь бассейн на 450 литров наполнит за 15 минут',b);
 };
 
 /* ---------- WORD4_EX5_CLASSES — пример 6: 28, 24, 27 учеников, всего 79 ---------- */
 SVG_LIB.WORD4_EX5_CLASSES = function(){
+  var EN=getLang()==='en';
   var W=360,H=230,b='';
   var x0=70,u=3.4;
   function bar(y,w,fill,stroke,label){
     return w4hR(x0,y,w,30,fill,stroke,6,2)+w4hT(x0+w/2,y+20,label,14,stroke,'middle',true);
   }
-  b+=w4hT(20,34,'1-й',13,'var(--muted)','start',true);
+  b+=w4hT(20,34,EN?'1st':'1-й',13,'var(--muted)','start',true);
   b+=bar(20,28*u,'var(--blue-soft)','var(--blue)','28');
-  b+=w4hT(20,74,'2-й',13,'var(--muted)','start',true);
+  b+=w4hT(20,74,EN?'2nd':'2-й',13,'var(--muted)','start',true);
   b+=bar(60,24*u,'var(--gold-soft)','var(--gold)','24');
   b+=w4hT(x0+24*u+10,80,'(−4)',12,'var(--red)','start',true);
-  b+=w4hT(20,114,'3-й',13,'var(--muted)','start',true);
+  b+=w4hT(20,114,EN?'3rd':'3-й',13,'var(--muted)','start',true);
   b+=bar(100,27*u,'var(--green-soft)','var(--green)','27');
   b+=w4hT(x0+27*u+10,120,'(+3)',12,'var(--green)','start',true);
   var ty=160;
   b+=w4hR(x0,ty,28*u,30,'var(--blue-soft)','var(--blue)',0,1.5);
   b+=w4hR(x0+28*u,ty,24*u,30,'var(--gold-soft)','var(--gold)',0,1.5);
   b+=w4hR(x0+28*u+24*u,ty,27*u,30,'var(--green-soft)','var(--green)',0,1.5);
-  b+=w4hT(20,ty+20,'всего',13,'var(--muted)','start',true);
-  b+=w4hT(180,210,'28 + 24 + 27 = 79 (уч.)',15,'var(--ink)','middle',true);
-  return w4hS(W,H,360,'Три класса: 28, 24 и 27 учеников, показаны столбиками друг под другом и затем одним общим отрезком; всего 28 плюс 24 плюс 27 равно 79 учеников',b);
+  b+=w4hT(20,ty+20,EN?'total':'всего',13,'var(--muted)','start',true);
+  b+=w4hT(180,210,EN?'28 + 24 + 27 = 79 (students)':'28 + 24 + 27 = 79 (уч.)',15,'var(--ink)','middle',true);
+  return w4hS(W,H,360,EN?'Three classes: 28, 24, and 27 students, shown as bars stacked one below the other and then as one combined segment; in total 28 plus 24 plus 27 equals 79 students':'Три класса: 28, 24 и 27 учеников, показаны столбиками друг под другом и затем одним общим отрезком; всего 28 плюс 24 плюс 27 равно 79 учеников',b);
 };
 
 /* ---------- WORD4_EX6_FOURTIMES — пример 7: 240 кг яблок, груш в 4 раза меньше (60), всего 300 ---------- */
 SVG_LIB.WORD4_EX6_FOURTIMES = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   var x0=50,segw=48,gap=4;
-  b+=w4hT(190,16,'Яблоки: 240 кг',13,'var(--blue)','middle',true);
+  b+=w4hT(190,16,EN?'Apples: 240 kg':'Яблоки: 240 кг',13,'var(--blue)','middle',true);
   for(var i=0;i<4;i++){
     b+=w4hR(x0+i*(segw+gap),28,segw,36,'var(--blue-soft)','var(--blue)',6,2);
     b+=w4hT(x0+i*(segw+gap)+segw/2,51,'60',14,'var(--blue)','middle',true);
   }
-  b+=w4hT(190,98,'Груши: в 4 раза меньше',13,'var(--gold)','middle',true);
+  b+=w4hT(190,98,EN?'Pears: 4 times less':'Груши: в 4 раза меньше',13,'var(--gold)','middle',true);
   b+=w4hR(x0,112,segw,36,'var(--gold-soft)','var(--gold)',6,2);
   b+=w4hT(x0+segw/2,135,'60',14,'var(--gold)','middle',true);
-  b+=w4hT(190,170,'240 : 4 = 60 (кг); 240 + 60 = 300 (кг)',14.5,'var(--ink)','middle',true);
-  return w4hS(W,H,320,'Яблок 240 кг показаны четырьмя равными отрезками по 60 кг; груш в 4 раза меньше — один такой отрезок, то есть 60 кг; всего 240 плюс 60 равно 300 кг',b);
+  b+=w4hT(190,170,EN?'240 : 4 = 60 (kg); 240 + 60 = 300 (kg)':'240 : 4 = 60 (кг); 240 + 60 = 300 (кг)',14.5,'var(--ink)','middle',true);
+  return w4hS(W,H,320,EN?'240 kg of apples are shown as four equal segments of 60 kg each; pears are 4 times less — one such segment, that is 60 kg; in total 240 plus 60 equals 300 kg':'Яблок 240 кг показаны четырьмя равными отрезками по 60 кг; груш в 4 раза меньше — один такой отрезок, то есть 60 кг; всего 240 плюс 60 равно 300 кг',b);
 };
 
 /* ---------- WORD4_EX7_CANDY — пример 8: 56 конфет, Аня 3 части, Боря 4 части ---------- */
 SVG_LIB.WORD4_EX7_CANDY = function(){
+  var EN=getLang()==='en';
   var W=340,H=230,b='';
   var x0=40,segw=34,y=70;
-  b+=w4hT(190,20,'всего 56 конфет',15,'var(--ink)','middle',true);
+  b+=w4hT(190,20,EN?'56 candies total':'всего 56 конфет',15,'var(--ink)','middle',true);
   for(var i=0;i<7;i++){
     var isAnya=i<3;
     b+=w4hR(x0+i*segw,y,segw-3,38,isAnya?'var(--blue-soft)':'var(--gold-soft)',isAnya?'var(--blue)':'var(--gold)',4,2);
     b+=w4hT(x0+i*segw+(segw-3)/2,y+24,'8',15,isAnya?'var(--blue)':'var(--gold)','middle',true);
   }
-  b+=w4hT(x0+1.5*segw,y+56,'Аня: 3 части',13,'var(--blue)','middle',true);
-  b+=w4hT(x0+3*segw+2*segw,y+56,'Боря: 4 части',13,'var(--gold)','middle',true);
+  b+=w4hT(x0+1.5*segw,y+56,EN?'Anya: 3 parts':'Аня: 3 части',13,'var(--blue)','middle',true);
+  b+=w4hT(x0+3*segw+2*segw,y+56,EN?'Borya: 4 parts':'Боря: 4 части',13,'var(--gold)','middle',true);
   b+=w4hR(10,150,320,70,'var(--sheet2)','var(--line)',8,1.5);
-  b+=w4hT(24,172,'3 + 4 = 7 (частей); 56 : 7 = 8 (конф.) — часть',13.5,'var(--ink)','start');
-  b+=w4hT(24,196,'8 × 4 = 32 (конф.) — Боре',13.5,'var(--green)','start',true);
-  b+=w4hT(24,214,'проверка: Ане 8 × 3 = 24, 24 + 32 = 56',11.5,'var(--muted)','start');
-  return w4hS(W,H,340,'56 конфет разделены на 7 равных частей по 8 конфет: Ане 3 части, Боре 4 части — 8 умножить на 4 равно 32 конфеты Боре',b);
+  b+=w4hT(24,172,EN?'3 + 4 = 7 (parts); 56 : 7 = 8 (candies) — one part':'3 + 4 = 7 (частей); 56 : 7 = 8 (конф.) — часть',13.5,'var(--ink)','start');
+  b+=w4hT(24,196,EN?'8 × 4 = 32 (candies) — for Borya':'8 × 4 = 32 (конф.) — Боре',13.5,'var(--green)','start',true);
+  b+=w4hT(24,214,EN?'check: Anya gets 8 × 3 = 24, 24 + 32 = 56':'проверка: Ане 8 × 3 = 24, 24 + 32 = 56',11.5,'var(--muted)','start');
+  return w4hS(W,H,340,EN?'56 candies are split into 7 equal parts of 8 candies each: Anya gets 3 parts, Borya gets 4 parts — 8 times 4 equals 32 candies for Borya':'56 конфет разделены на 7 равных частей по 8 конфет: Ане 3 части, Боре 4 части — 8 умножить на 4 равно 32 конфеты Боре',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -14292,68 +14322,74 @@ function g4hPoly(pts,fill,stroke,sw,extra){
 
 /* ---------- GEO4_EX0_RECTPERIMAREA — пример 1: прямоугольник 12×5, периметр и площадь ---------- */
 SVG_LIB.GEO4_EX0_RECTPERIMAREA = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   b+=g4hR(60,30,200,90,'var(--blue-soft)','var(--blue)',6,2.5);
-  b+=g4hT(160,20,'12 см',13,'var(--muted)','middle',false);
-  b+=g4hT(48,80,'5 см',13,'var(--muted)','end',false);
-  b+=g4hT(160,140,'P = (12 + 5) · 2 = 34 см',14,'var(--ink)','middle',true);
-  b+=g4hT(160,164,'S = 12 · 5 = 60 см²',14,'var(--green)','middle',true);
-  return g4hS(W,H,320,'Прямоугольник со сторонами 12 см и 5 см: периметр 34 см, площадь 60 квадратных сантиметров',b);
+  b+=g4hT(160,20,EN?'12 cm':'12 см',13,'var(--muted)','middle',false);
+  b+=g4hT(48,80,EN?'5 cm':'5 см',13,'var(--muted)','end',false);
+  b+=g4hT(160,140,EN?'P = (12 + 5) · 2 = 34 cm':'P = (12 + 5) · 2 = 34 см',14,'var(--ink)','middle',true);
+  b+=g4hT(160,164,EN?'S = 12 · 5 = 60 cm²':'S = 12 · 5 = 60 см²',14,'var(--green)','middle',true);
+  return g4hS(W,H,320,EN?'A rectangle with sides 12 cm and 5 cm: perimeter 34 cm, area 60 square centimeters':'Прямоугольник со сторонами 12 см и 5 см: периметр 34 см, площадь 60 квадратных сантиметров',b);
 };
 
 /* ---------- GEO4_EX1_UNITS — пример 2: 3 дм² в см², 500 дм² в м² ---------- */
 SVG_LIB.GEO4_EX1_UNITS = function(){
+  var EN=getLang()==='en';
   var W=320,H=185,b='';
   b+=g4hR(30,30,110,100,'var(--gold-soft)','var(--gold)',6,2);
-  b+=g4hT(85,85,'1 дм²',16,'var(--gold)','middle',true);
-  b+=g4hT(85,15,'= 100 см²',12,'var(--muted)','middle',false);
+  b+=g4hT(85,85,EN?'1 dm²':'1 дм²',16,'var(--gold)','middle',true);
+  b+=g4hT(85,15,EN?'= 100 cm²':'= 100 см²',12,'var(--muted)','middle',false);
   for(var i=0;i<3;i++) for(var j=0;j<3;j++){ b+=g4hL(30+i*36.6+36.6,40,30+i*36.6+36.6,120,'var(--gold)',0.6); }
-  b+=g4hT(160,90,'3 дм² = 300 см²',14,'var(--ink)','middle',true);
+  b+=g4hT(160,90,EN?'3 dm² = 300 cm²':'3 дм² = 300 см²',14,'var(--ink)','middle',true);
   b+=g4hR(200,30,90,100,'var(--blue-soft)','var(--blue)',6,2);
-  b+=g4hT(245,85,'1 м²',16,'var(--blue)','middle',true);
-  b+=g4hT(245,15,'= 100 дм²',12,'var(--muted)','middle',false);
-  b+=g4hT(160,160,'500 дм² = 500 : 100 = 5 м²',14,'var(--ink)','middle',true);
-  return g4hS(W,H,320,'Единицы площади: 1 квадратный дециметр равен 100 квадратным сантиметрам, значит 3 дм² это 300 см²; 1 квадратный метр равен 100 квадратным дециметрам, значит 500 дм² это 5 м²',b);
+  b+=g4hT(245,85,EN?'1 m²':'1 м²',16,'var(--blue)','middle',true);
+  b+=g4hT(245,15,EN?'= 100 dm²':'= 100 дм²',12,'var(--muted)','middle',false);
+  b+=g4hT(160,160,EN?'500 dm² = 500 : 100 = 5 m²':'500 дм² = 500 : 100 = 5 м²',14,'var(--ink)','middle',true);
+  return g4hS(W,H,320,EN?'Units of area: 1 square decimeter equals 100 square centimeters, so 3 dm² is 300 cm²; 1 square meter equals 100 square decimeters, so 500 dm² is 5 m²':'Единицы площади: 1 квадратный дециметр равен 100 квадратным сантиметрам, значит 3 дм² это 300 см²; 1 квадратный метр равен 100 квадратным дециметрам, значит 500 дм² это 5 м²',b);
 };
 
 /* ---------- GEO4_EX2_GSHAPE — пример 3: Г-фигура 9×6 минус уголок 5×2, площадь 44 ---------- */
 SVG_LIB.GEO4_EX2_GSHAPE = function(){
+  var EN=getLang()==='en';
   var W=300,H=210,b='';
   b+=g4hPoly([[50,30],[230,30],[230,90],[140,90],[140,150],[50,150]],'var(--blue-soft)','var(--blue)',2.5);
   b+=g4hL(140,30,140,90,'var(--line)',1.2,' stroke-dasharray="4 4"');
   b+=g4hL(140,90,230,90,'var(--line)',1.2,' stroke-dasharray="4 4"');
-  b+=g4hT(140,22,'9 см',12,'var(--muted)','middle',false);
-  b+=g4hT(38,90,'6 см',12,'var(--muted)','end',false);
-  b+=g4hT(185,105,'вырез 5×2',11,'var(--red)','middle',false);
-  b+=g4hT(150,180,'54 − 10 = 44 см²',15,'var(--ink)','middle',true);
-  return g4hS(W,H,300,'Г-образная фигура: из прямоугольника 9 на 6 см вырезан уголок 5 на 2 см, площадь фигуры 54 минус 10 равно 44 квадратных сантиметра',b);
+  b+=g4hT(140,22,EN?'9 cm':'9 см',12,'var(--muted)','middle',false);
+  b+=g4hT(38,90,EN?'6 cm':'6 см',12,'var(--muted)','end',false);
+  b+=g4hT(185,105,EN?'5×2 cutout':'вырез 5×2',11,'var(--red)','middle',false);
+  b+=g4hT(150,180,EN?'54 − 10 = 44 cm²':'54 − 10 = 44 см²',15,'var(--ink)','middle',true);
+  return g4hS(W,H,300,EN?'An L-shaped figure: a 5-by-2-cm corner is cut out of a 9-by-6-cm rectangle; the figure&rsquo;s area is 54 minus 10 equals 44 square centimeters':'Г-образная фигура: из прямоугольника 9 на 6 см вырезан уголок 5 на 2 см, площадь фигуры 54 минус 10 равно 44 квадратных сантиметра',b);
 };
 
 /* ---------- GEO4_EX3_FINDPERIM — пример 4: S=84, сторона 12 → периметр ---------- */
 SVG_LIB.GEO4_EX3_FINDPERIM = function(){
+  var EN=getLang()==='en';
   var W=300,H=170,b='';
   b+=g4hR(60,30,180,70,'var(--green-soft)','var(--green)',6,2.2);
-  b+=g4hT(150,20,'12 см',13,'var(--muted)','middle',false);
-  b+=g4hT(150,70,'S = 84 см²',16,'var(--green)','middle',true);
-  b+=g4hT(44,65,'? см',13,'var(--gold)','end',true);
-  b+=g4hT(150,125,'84 : 12 = 7 см',14,'var(--ink)','middle',true);
-  b+=g4hT(150,150,'P = (12 + 7) · 2 = 38 см',14,'var(--ink)','middle',true);
-  return g4hS(W,H,300,'Площадь прямоугольника 84 квадратных сантиметра, одна сторона 12 см, другая сторона 84 делить на 12 равно 7 см, периметр 38 см',b);
+  b+=g4hT(150,20,EN?'12 cm':'12 см',13,'var(--muted)','middle',false);
+  b+=g4hT(150,70,EN?'S = 84 cm²':'S = 84 см²',16,'var(--green)','middle',true);
+  b+=g4hT(44,65,EN?'? cm':'? см',13,'var(--gold)','end',true);
+  b+=g4hT(150,125,EN?'84 : 12 = 7 cm':'84 : 12 = 7 см',14,'var(--ink)','middle',true);
+  b+=g4hT(150,150,EN?'P = (12 + 7) · 2 = 38 cm':'P = (12 + 7) · 2 = 38 см',14,'var(--ink)','middle',true);
+  return g4hS(W,H,300,EN?'The area of a rectangle is 84 square centimeters, one side is 12 cm, the other side is 84 divided by 12 equals 7 cm, and the perimeter is 38 cm':'Площадь прямоугольника 84 квадратных сантиметра, одна сторона 12 см, другая сторона 84 делить на 12 равно 7 см, периметр 38 см',b);
 };
 
 /* ---------- GEO4_EX4_FINDWIDTH — пример 5: P=40, длина 14 → ширина и площадь ---------- */
 SVG_LIB.GEO4_EX4_FINDWIDTH = function(){
+  var EN=getLang()==='en';
   var W=300,H=175,b='';
   b+=g4hR(55,35,190,65,'var(--blue-soft)','var(--blue)',6,2.2);
-  b+=g4hT(150,25,'14 см',13,'var(--muted)','middle',false);
-  b+=g4hT(40,70,'? см',13,'var(--gold)','end',true);
-  b+=g4hT(150,130,'40 : 2 − 14 = 6 см',14,'var(--ink)','middle',true);
-  b+=g4hT(150,155,'S = 14 · 6 = 84 см²',14,'var(--green)','middle',true);
-  return g4hS(W,H,300,'Периметр прямоугольника 40 см, длина 14 см: ширина равна 40 делить на 2 минус 14, то есть 6 см; площадь 14 умножить на 6 равно 84 квадратных сантиметра',b);
+  b+=g4hT(150,25,EN?'14 cm':'14 см',13,'var(--muted)','middle',false);
+  b+=g4hT(40,70,EN?'? cm':'? см',13,'var(--gold)','end',true);
+  b+=g4hT(150,130,EN?'40 : 2 − 14 = 6 cm':'40 : 2 − 14 = 6 см',14,'var(--ink)','middle',true);
+  b+=g4hT(150,155,EN?'S = 14 · 6 = 84 cm²':'S = 14 · 6 = 84 см²',14,'var(--green)','middle',true);
+  return g4hS(W,H,300,EN?'The perimeter of a rectangle is 40 cm, the length is 14 cm: the width equals 40 divided by 2 minus 14, that is 6 cm; the area is 14 times 6 equals 84 square centimeters':'Периметр прямоугольника 40 см, длина 14 см: ширина равна 40 делить на 2 минус 14, то есть 6 см; площадь 14 умножить на 6 равно 84 квадратных сантиметра',b);
 };
 
 /* ---------- GEO4_EX5_ANGLETYPES — пример 6: виды углов 30°, 90°, 100°, 180° ---------- */
 SVG_LIB.GEO4_EX5_ANGLETYPES = function(){
+  var EN=getLang()==='en';
   var W=340,H=160,b='';
   function wedge(cx,angDeg,color,label,sub){
     var r=36, rad=angDeg*Math.PI/180;
@@ -14365,37 +14401,39 @@ SVG_LIB.GEO4_EX5_ANGLETYPES = function(){
     s+=g4hT(cx,112,sub,11,'var(--muted)','middle',false);
     return s;
   }
-  b+=wedge(55,-30,'var(--green)','30°','острый');
-  b+=wedge(140,-90,'var(--blue)','90°','прямой');
-  b+=wedge(225,-100,'var(--gold)','100°','тупой');
-  b+=wedge(290,-180,'var(--red)','180°','развёрнутый');
-  return g4hS(W,H,340,'Виды углов: 30 градусов острый, 90 градусов прямой, 100 градусов тупой, 180 градусов развёрнутый',b);
+  b+=wedge(55,-30,'var(--green)','30°',EN?'acute':'острый');
+  b+=wedge(140,-90,'var(--blue)','90°',EN?'right':'прямой');
+  b+=wedge(225,-100,'var(--gold)','100°',EN?'obtuse':'тупой');
+  b+=wedge(290,-180,'var(--red)','180°',EN?'straight':'развёрнутый');
+  return g4hS(W,H,340,EN?'Types of angles: 30 degrees is acute, 90 degrees is right, 100 degrees is obtuse, 180 degrees is straight':'Виды углов: 30 градусов острый, 90 градусов прямой, 100 градусов тупой, 180 градусов развёрнутый',b);
 };
 
 /* ---------- GEO4_EX6_ISOTRI — пример 7: треугольник 5,5,7 — равнобедренный ---------- */
 SVG_LIB.GEO4_EX6_ISOTRI = function(){
+  var EN=getLang()==='en';
   var W=300,H=190,b='';
   b+=g4hPoly([[150,30],[80,150],[220,150]],'var(--gold-soft)','var(--gold)',2.5);
-  b+=g4hT(105,90,'5 см',13,'var(--gold)','middle',true);
-  b+=g4hT(195,90,'5 см',13,'var(--gold)','middle',true);
-  b+=g4hT(150,168,'7 см — основание',13,'var(--ink)','middle',false);
-  b+=g4hT(150,15,'равнобедренный',14,'var(--ink)','middle',true);
-  return g4hS(W,H,300,'Треугольник со сторонами 5, 5 и 7 см — равнобедренный, 7 см это основание; периметр 5 плюс 5 плюс 7 равно 17 см',b);
+  b+=g4hT(105,90,EN?'5 cm':'5 см',13,'var(--gold)','middle',true);
+  b+=g4hT(195,90,EN?'5 cm':'5 см',13,'var(--gold)','middle',true);
+  b+=g4hT(150,168,EN?'7 cm — base':'7 см — основание',13,'var(--ink)','middle',false);
+  b+=g4hT(150,15,EN?'isosceles':'равнобедренный',14,'var(--ink)','middle',true);
+  return g4hS(W,H,300,EN?'A triangle with sides 5, 5, and 7 cm is isosceles, with 7 cm as the base; the perimeter is 5 plus 5 plus 7 equals 17 cm':'Треугольник со сторонами 5, 5 и 7 см — равнобедренный, 7 см это основание; периметр 5 плюс 5 плюс 7 равно 17 см',b);
 };
 
 /* ---------- GEO4_EX7_CIRCLECUBE — пример 8: диаметр 14 → радиус; рёбра куба ---------- */
 SVG_LIB.GEO4_EX7_CIRCLECUBE = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   b+=g4hC(100,95,55,'var(--paper)','var(--blue)',2.2);
   b+=g4hL(45,95,155,95,'var(--blue)',2,' stroke-dasharray="3 3"');
-  b+=g4hT(100,80,'d = 14 см',12,'var(--blue)','middle',true);
+  b+=g4hT(100,80,EN?'d = 14 cm':'d = 14 см',12,'var(--blue)','middle',true);
   b+=g4hL(100,95,155,95,'var(--green)',2.6);
   b+=g4hT(128,112,'r = 7',12,'var(--green)','middle',true);
   b+=g4hPoly([[230,60],[290,60],[300,75],[300,140],[240,140],[230,125]],'var(--gold-soft)','var(--gold)',1.8);
   b+=g4hPoly([[230,60],[240,75],[300,75],[290,60]],'var(--gold-soft)','var(--gold)',1.5);
   b+=g4hL(240,75,240,140,'var(--gold)',1.5);
-  b+=g4hT(265,165,'у куба 12 рёбер',12,'var(--ink)','middle',false);
-  return g4hS(W,H,320,'Диаметр круга 14 см, радиус 7 см; у куба 12 рёбер',b);
+  b+=g4hT(265,165,EN?'a cube has 12 edges':'у куба 12 рёбер',12,'var(--ink)','middle',false);
+  return g4hS(W,H,320,EN?'The diameter of a circle is 14 cm, the radius is 7 cm; a cube has 12 edges':'Диаметр круга 14 см, радиус 7 см; у куба 12 рёбер',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -14441,6 +14479,7 @@ function f4hDots(cx0,y,n,perRow,gap,r,fillLo,fillHi,k,strokeLo,strokeHi){
 
 /* ---------- FRAC4_EX0_CIRCLE710 — пример 1: круг на 10 частей, закрашено 7 ---------- */
 SVG_LIB.FRAC4_EX0_CIRCLE710 = function(){
+  var EN=getLang()==='en';
   var W=240,H=240,b='',cx=120,cy=120,r=95,n=10,shaded=7;
   for(var i=0;i<n;i++){
     var a0=i*36, a1=(i+1)*36;
@@ -14448,11 +14487,12 @@ SVG_LIB.FRAC4_EX0_CIRCLE710 = function(){
   }
   b+=f4hC(cx,cy,r,'none','var(--ink)',2.2);
   b+=f4hT(cx,cy+8,'{7|10}'.replace('{7|10}','7⁄10'),26,'var(--blue)','middle',true);
-  return f4hS(W,H,240,'Круг разделён на 10 равных частей, 7 частей закрашено — это семь десятых круга',b);
+  return f4hS(W,H,240,EN?'A circle is split into 10 equal parts, 7 of which are shaded — that is seven tenths of the circle':'Круг разделён на 10 равных частей, 7 частей закрашено — это семь десятых круга',b);
 };
 
 /* ---------- FRAC4_EX1_COMPARE — пример 2: сравнение дробей двумя парами полосок ---------- */
 SVG_LIB.FRAC4_EX1_COMPARE = function(){
+  var EN=getLang()==='en';
   var W=320,H=230,b='';
   function strip(y,n,k,color,soft){
     var x0=30,w=260,seg=w/n,r='';
@@ -14462,19 +14502,20 @@ SVG_LIB.FRAC4_EX1_COMPARE = function(){
     r+=f4hR(x0,y,w,34,'none','var(--ink)',0,2);
     return r;
   }
-  b+=f4hT(30,18,'4⁄9 и 7⁄9 — знаменатели одинаковые',13,'var(--muted)','start',false);
+  b+=f4hT(30,18,EN?'4⁄9 and 7⁄9 — same denominator':'4⁄9 и 7⁄9 — знаменатели одинаковые',13,'var(--muted)','start',false);
   b+=strip(26,9,4,'var(--red)','var(--red-soft)');
-  b+=f4hT(30,80,'7⁄9 больше, потому что частей больше (7 > 4)',12.5,'var(--ink)','start',false);
+  b+=f4hT(30,80,EN?'7⁄9 is greater, because it has more parts (7 > 4)':'7⁄9 больше, потому что частей больше (7 > 4)',12.5,'var(--ink)','start',false);
   b+=strip(96,9,7,'var(--green)','var(--green-soft)');
   b+=f4hL(30,146,290,146,'var(--line)',1,' stroke-dasharray="3 3"');
-  b+=f4hT(30,170,'2⁄5 и 2⁄3 — числители одинаковые',13,'var(--muted)','start',false);
+  b+=f4hT(30,170,EN?'2⁄5 and 2⁄3 — same numerator':'2⁄5 и 2⁄3 — числители одинаковые',13,'var(--muted)','start',false);
   b+=strip(178,5,2,'var(--gold)','var(--gold-soft)');
-  b+=f4hT(30,232,'2⁄3 больше: третьи доли крупнее пятых',12.5,'var(--ink)','start',false);
-  return f4hS(W,H,320,'Сравнение дробей: при одинаковом знаменателе больше та дробь, у которой больше числитель; при одинаковом числителе больше та дробь, у которой меньше знаменатель',b);
+  b+=f4hT(30,232,EN?'2⁄3 is greater: thirds are bigger than fifths':'2⁄3 больше: третьи доли крупнее пятых',12.5,'var(--ink)','start',false);
+  return f4hS(W,H,320,EN?'Comparing fractions: with the same denominator, the fraction with the larger numerator is greater; with the same numerator, the fraction with the smaller denominator is greater':'Сравнение дробей: при одинаковом знаменателе больше та дробь, у которой больше числитель; при одинаковом числителе больше та дробь, у которой меньше знаменатель',b);
 };
 
 /* ---------- FRAC4_EX2_ADDSUB12_11 — пример 3: 5/12+7/12=1, 8/11−3/11=5/11 ---------- */
 SVG_LIB.FRAC4_EX2_ADDSUB12_11 = function(){
+  var EN=getLang()==='en';
   var W=320,H=210,b='';
   function strip(y,n,k1,k2){
     var x0=30,w=260,seg=w/n,r='';
@@ -14487,7 +14528,7 @@ SVG_LIB.FRAC4_EX2_ADDSUB12_11 = function(){
   }
   b+=f4hT(30,16,'5⁄12 + 7⁄12 = 12⁄12 = 1',13.5,'var(--ink)','start',true);
   b+=strip(24,12,5,7);
-  b+=f4hT(30,88,'все 12 частей закрашены — целое',12,'var(--muted)','start',false);
+  b+=f4hT(30,88,EN?'all 12 parts are shaded — a whole':'все 12 частей закрашены — целое',12,'var(--muted)','start',false);
   b+=f4hL(30,104,290,104,'var(--line)',1,' stroke-dasharray="3 3"');
   b+=f4hT(30,128,'8⁄11 − 3⁄11 = 5⁄11',13.5,'var(--ink)','start',true);
   function strip2(y,n,start,take){
@@ -14500,62 +14541,65 @@ SVG_LIB.FRAC4_EX2_ADDSUB12_11 = function(){
     return r;
   }
   b+=strip2(136,11,8,3);
-  b+=f4hT(30,200,'было 8 частей, убрали 3 — осталось 5',12,'var(--muted)','start',false);
-  return f4hS(W,H,320,'Сложение дробей 5 двенадцатых плюс 7 двенадцатых равно 1; вычитание 8 одиннадцатых минус 3 одиннадцатых равно 5 одиннадцатых',b);
+  b+=f4hT(30,200,EN?'there were 8 parts, 3 were removed — 5 are left':'было 8 частей, убрали 3 — осталось 5',12,'var(--muted)','start',false);
+  return f4hS(W,H,320,EN?'Adding fractions, 5 twelfths plus 7 twelfths equals 1; subtracting, 8 elevenths minus 3 elevenths equals 5 elevenths':'Сложение дробей 5 двенадцатых плюс 7 двенадцатых равно 1; вычитание 8 одиннадцатых минус 3 одиннадцатых равно 5 одиннадцатых',b);
 };
 
 /* ---------- FRAC4_EX3_OFNUM45_20 — пример 4: 1/5 от 45 = 9, 3/5 от 20 = 12 ---------- */
 SVG_LIB.FRAC4_EX3_OFNUM45_20 = function(){
+  var EN=getLang()==='en';
   var W=320,H=230,b='';
-  b+=f4hT(160,16,'1⁄5 от 45: 45 : 5 = 9',13.5,'var(--ink)','middle',true);
+  b+=f4hT(160,16,EN?'1⁄5 of 45: 45 : 5 = 9':'1⁄5 от 45: 45 : 5 = 9',13.5,'var(--ink)','middle',true);
   var groups1=[0,9,18,27,36];
   for(var g=0;g<5;g++){
     var gx=20+g*58;
     b+=f4hR(gx,26,50,34, g===0?'var(--blue-soft)':'var(--sheet2)', g===0?'var(--blue)':'var(--line)',6,1.5);
     b+=f4hT(gx+25,47,'9',15,g===0?'var(--blue)':'var(--muted)','middle',true);
   }
-  b+=f4hT(160,78,'одна часть из пяти равна 9',12,'var(--muted)','middle',false);
+  b+=f4hT(160,78,EN?'one part out of five equals 9':'одна часть из пяти равна 9',12,'var(--muted)','middle',false);
   b+=f4hL(20,96,300,96,'var(--line)',1,' stroke-dasharray="3 3"');
-  b+=f4hT(160,118,'3⁄5 от 20: 20 : 5 = 4, 4 · 3 = 12',13.5,'var(--ink)','middle',true);
+  b+=f4hT(160,118,EN?'3⁄5 of 20: 20 : 5 = 4, 4 · 3 = 12':'3⁄5 от 20: 20 : 5 = 4, 4 · 3 = 12',13.5,'var(--ink)','middle',true);
   for(var g2=0;g2<5;g2++){
     var gx2=20+g2*58;
     var hi = g2<3;
     b+=f4hR(gx2,128,50,34, hi?'var(--green-soft)':'var(--sheet2)', hi?'var(--green)':'var(--line)',6,1.5);
     b+=f4hT(gx2+25,149,'4',14,hi?'var(--green)':'var(--muted)','middle',true);
   }
-  b+=f4hT(160,182,'взяли 3 части по 4 — получили 12',12,'var(--muted)','middle',false);
-  b+=f4hT(160,208,'3⁄5 от 20 = 12',16,'var(--green)','middle',true);
-  return f4hS(W,H,320,'Доля от числа: одна пятая от 45 равна 9 (45 разделили на 5 равных частей); три пятых от 20 равны 12 (20 разделили на 5 частей по 4, взяли 3 части)',b);
+  b+=f4hT(160,182,EN?'took 3 parts of 4 — got 12':'взяли 3 части по 4 — получили 12',12,'var(--muted)','middle',false);
+  b+=f4hT(160,208,EN?'3⁄5 of 20 = 12':'3⁄5 от 20 = 12',16,'var(--green)','middle',true);
+  return f4hS(W,H,320,EN?'A fraction of a number: one fifth of 45 equals 9 (45 split into 5 equal parts); three fifths of 20 equals 12 (20 split into 5 parts of 4, taking 3 parts)':'Доля от числа: одна пятая от 45 равна 9 (45 разделили на 5 равных частей); три пятых от 20 равны 12 (20 разделили на 5 частей по 4, взяли 3 части)',b);
 };
 
 /* ---------- FRAC4_EX4_NUMBYSHARE — пример 5: 3/7 числа = 18 → число 42 ---------- */
 SVG_LIB.FRAC4_EX4_NUMBYSHARE = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
-  b+=f4hT(160,16,'3⁄7 числа равны 18',14,'var(--ink)','middle',true);
+  b+=f4hT(160,16,EN?'3⁄7 of a number equals 18':'3⁄7 числа равны 18',14,'var(--ink)','middle',true);
   for(var i=0;i<7;i++){
     var x=20+i*40;
     var hi=i<3;
     b+=f4hR(x,28,34,34, hi?'var(--gold-soft)':'var(--sheet2)', hi?'var(--gold)':'var(--line)',6,1.5);
     if(hi) b+=f4hT(x+17,50,'6',15,'var(--gold)','middle',true);
   }
-  b+=f4hT(160,80,'3 части = 18, значит 1 часть = 18 : 3 = 6',12.5,'var(--muted)','middle',false);
+  b+=f4hT(160,80,EN?'3 parts = 18, so 1 part = 18 : 3 = 6':'3 части = 18, значит 1 часть = 18 : 3 = 6',12.5,'var(--muted)','middle',false);
   b+=f4hL(20,98,300,98,'var(--line)',1,' stroke-dasharray="3 3"');
   for(var j=0;j<7;j++){
     var x2=20+j*40;
     b+=f4hR(x2,108,34,34,'var(--green-soft)','var(--green)',6,1.5);
     b+=f4hT(x2+17,130,'6',15,'var(--green)','middle',true);
   }
-  b+=f4hT(160,162,'всего 7 частей: 6 · 7 = 42',13,'var(--ink)','middle',false);
-  b+=f4hT(160,184,'число = 42',16,'var(--green)','middle',true);
-  return f4hS(W,H,320,'Число по доле: три седьмых числа равны 18, значит одна седьмая равна 6, а всё число — семь таких частей, то есть 42',b);
+  b+=f4hT(160,162,EN?'7 parts in total: 6 · 7 = 42':'всего 7 частей: 6 · 7 = 42',13,'var(--ink)','middle',false);
+  b+=f4hT(160,184,EN?'number = 42':'число = 42',16,'var(--green)','middle',true);
+  return f4hS(W,H,320,EN?'A number from its fraction: three sevenths of a number equal 18, so one seventh equals 6, and the whole number is seven such parts, that is 42':'Число по доле: три седьмых числа равны 18, значит одна седьмая равна 6, а всё число — семь таких частей, то есть 42',b);
 };
 
 /* ---------- FRAC4_EX5_PROPERIMPROPER — пример 6: правильные/неправильные дроби ---------- */
 SVG_LIB.FRAC4_EX5_PROPERIMPROPER = function(){
+  var EN=getLang()==='en';
   var W=320,H=190,b='';
   var items=[['3⁄5',true],['5⁄5',false],['7⁄4',false],['2⁄9',true],['9⁄8',false]];
-  b+=f4hT(80,20,'правильные',13,'var(--green)','middle',true);
-  b+=f4hT(240,20,'неправильные',13,'var(--red)','middle',true);
+  b+=f4hT(80,20,EN?'proper':'правильные',13,'var(--green)','middle',true);
+  b+=f4hT(240,20,EN?'improper':'неправильные',13,'var(--red)','middle',true);
   b+=f4hL(160,10,160,170,'var(--line)',1.3,' stroke-dasharray="4 4"');
   var gy=0,ry=0;
   for(var i=0;i<items.length;i++){
@@ -14566,13 +14610,14 @@ SVG_LIB.FRAC4_EX5_PROPERIMPROPER = function(){
     b+=f4hR(x-45,y-26,90,38, ok?'var(--green-soft)':'var(--red-soft)', ok?'var(--green)':'var(--red)',8,1.5);
     b+=f4hT(x,y-2,items[i][0],17,ok?'var(--green)':'var(--red)','middle',true);
   }
-  return f4hS(W,H,320,'Правильные дроби (числитель меньше знаменателя): три пятых и две девятых. Неправильные дроби (числитель равен или больше знаменателя): пять пятых, семь четвёртых и девять восьмых',b);
+  return f4hS(W,H,320,EN?'Proper fractions (numerator less than denominator): three fifths and two ninths. Improper fractions (numerator equal to or greater than denominator): five fifths, seven fourths, and nine eighths':'Правильные дроби (числитель меньше знаменателя): три пятых и две девятых. Неправильные дроби (числитель равен или больше знаменателя): пять пятых, семь четвёртых и девять восьмых',b);
 };
 
 /* ---------- FRAC4_EX6_CANDYBOX — пример 7: 24 конфеты, подарили 1/8, съели 3/8 ---------- */
 SVG_LIB.FRAC4_EX6_CANDYBOX = function(){
+  var EN=getLang()==='en';
   var W=320,H=220,b='';
-  b+=f4hT(160,16,'24 конфеты, по 3 конфеты в каждой из 8 частей',12.5,'var(--muted)','middle',false);
+  b+=f4hT(160,16,EN?'24 candies, 3 candies in each of 8 parts':'24 конфеты, по 3 конфеты в каждой из 8 частей',12.5,'var(--muted)','middle',false);
   for(var i=0;i<8;i++){
     var row=Math.floor(i/4), col=i%4;
     var x=35+col*65, y=30+row*60;
@@ -14582,15 +14627,16 @@ SVG_LIB.FRAC4_EX6_CANDYBOX = function(){
     b+=f4hR(x,y,50,48,fill,stroke,8,1.6);
     b+=f4hT(x+25,y+30,'3',17,stroke,'middle',true);
   }
-  b+=f4hT(80,172,'подарили (1⁄8)',11.5,'var(--gold)','middle',true);
-  b+=f4hT(205,172,'съели (3⁄8)',11.5,'var(--red)','middle',true);
-  b+=f4hT(80,206,'осталось: 24 − 3 − 9 = 12',12.5,'var(--green)','middle',true);
+  b+=f4hT(80,172,EN?'gave away (1⁄8)':'подарили (1⁄8)',11.5,'var(--gold)','middle',true);
+  b+=f4hT(205,172,EN?'ate (3⁄8)':'съели (3⁄8)',11.5,'var(--red)','middle',true);
+  b+=f4hT(80,206,EN?'left: 24 − 3 − 9 = 12':'осталось: 24 − 3 − 9 = 12',12.5,'var(--green)','middle',true);
   b+=f4hT(230,206,'',1,'var(--green)','middle',false);
-  return f4hS(W,H,320,'В коробке 24 конфеты по 8 равных частей, 3 конфеты в части: одну часть подарили (3 конфеты), три части съели (9 конфет), осталось 12 конфет',b);
+  return f4hS(W,H,320,EN?'A box has 24 candies in 8 equal parts, 3 candies per part: one part was given away (3 candies), three parts were eaten (9 candies), 12 candies are left':'В коробке 24 конфеты по 8 равных частей, 3 конфеты в части: одну часть подарили (3 конфеты), три части съели (9 конфет), осталось 12 конфет',b);
 };
 
 /* ---------- FRAC4_X1_INTRO — вводная схема: пирог делят между 4 друзьями ---------- */
 SVG_LIB.FRAC4_X1_INTRO = function(){
+  var EN=getLang()==='en';
   var W=240,H=210,b='',cx=120,cy=110,r=85,n=4;
   var colors=[['var(--blue-soft)','var(--blue)'],['var(--gold-soft)','var(--gold)'],['var(--green-soft)','var(--green)'],['var(--red-soft)','var(--red)']];
   for(var i=0;i<n;i++){
@@ -14598,13 +14644,14 @@ SVG_LIB.FRAC4_X1_INTRO = function(){
     b+=f4hPie(cx,cy,r,a0,a1,colors[i][0],colors[i][1],1.8);
   }
   b+=f4hC(cx,cy,r,'none','var(--ink)',2.2);
-  b+=f4hT(cx,cy-r-14,'1 пирог — 4 друга',13,'var(--muted)','middle',false);
-  b+=f4hT(cx,H-14,'каждому — 1⁄4 пирога',14,'var(--ink)','middle',true);
-  return f4hS(W,H,240,'Пирог разделили на 4 равные части между четырьмя друзьями — каждому досталась одна четверть',b);
+  b+=f4hT(cx,cy-r-14,EN?'1 pie — 4 friends':'1 пирог — 4 друга',13,'var(--muted)','middle',false);
+  b+=f4hT(cx,H-14,EN?'each gets 1⁄4 of the pie':'каждому — 1⁄4 пирога',14,'var(--ink)','middle',true);
+  return f4hS(W,H,240,EN?'A pie is split into 4 equal parts among four friends — each one gets one quarter':'Пирог разделили на 4 равные части между четырьмя друзьями — каждому досталась одна четверть',b);
 };
 
 /* ---------- FRAC4_X2_SAMEDENOM — вводная схема: 5/9 больше 2/9 (одинаковый знаменатель) ---------- */
 SVG_LIB.FRAC4_X2_SAMEDENOM = function(){
+  var EN=getLang()==='en';
   var W=300,H=140,b='';
   function strip(y,n,k,soft,strong){
     var x0=20,w=260,seg=w/n,r='';
@@ -14616,8 +14663,8 @@ SVG_LIB.FRAC4_X2_SAMEDENOM = function(){
   b+=strip(22,9,5,'var(--green-soft)');
   b+=f4hT(20,76,'2⁄9',14,'var(--red)','start',true);
   b+=strip(82,9,2,'var(--red-soft)');
-  b+=f4hT(150,132,'части одного размера: 5 частей больше, чем 2',12,'var(--muted)','middle',false);
-  return f4hS(W,H,300,'Дроби пять девятых и две девятых: знаменатель одинаковый, значит больше та дробь, у которой больше числитель — пять девятых больше двух девятых',b);
+  b+=f4hT(150,132,EN?'parts of the same size: 5 parts is more than 2':'части одного размера: 5 частей больше, чем 2',12,'var(--muted)','middle',false);
+  return f4hS(W,H,300,EN?'The fractions five ninths and two ninths: the denominator is the same, so the fraction with the larger numerator is greater — five ninths is greater than two ninths':'Дроби пять девятых и две девятых: знаменатель одинаковый, значит больше та дробь, у которой больше числитель — пять девятых больше двух девятых',b);
 };
 
 /* ===================== Part B: illustration markers on examples ===================== */
@@ -20713,13 +20760,18 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- N4_CLASSES: 208 054 730 ----------
   SVG_LIB.N4_CLASSES = function(){
+    var EN=getLang()==='en';
     var W=554,H=318,x0=9,cw=58;
-    var cls=[
+    var cls=EN?[
+      {name:'millions class',c:'var(--blue)',s:'var(--blue-soft)',d:['2','0','8'],w1:'two hundred eight',w2:'million'},
+      {name:'thousands class',c:'var(--gold)',s:'var(--gold-soft)',d:['0','5','4'],w1:'fifty-four',w2:'thousand'},
+      {name:'ones class',c:'var(--green)',s:'var(--green-soft)',d:['7','3','0'],w1:'seven hundred thirty',w2:''}
+    ]:[
       {name:'класс миллионов',c:'var(--blue)',s:'var(--blue-soft)',d:['2','0','8'],w1:'двести восемь',w2:'миллионов'},
       {name:'класс тысяч',c:'var(--gold)',s:'var(--gold-soft)',d:['0','5','4'],w1:'пятьдесят четыре',w2:'тысячи'},
       {name:'класс единиц',c:'var(--green)',s:'var(--green-soft)',d:['7','3','0'],w1:'семьсот тридцать',w2:''}
     ];
-    var sub=['сот.','дес.','ед.'];
+    var sub=EN?['h.','t.','o.']:['сот.','дес.','ед.'];
     var b='';
     cls.forEach(function(k,i){
       var gx=x0+i*3*cw+i*6;
@@ -20734,27 +20786,28 @@ SVG_LIB.TRI_ISO = function(){
         }
       }
       b+='<path d="M'+(gx+4)+',130 V138 H'+(gx+3*cw-4)+' V130" fill="none" stroke="'+k.c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
-      b+=TL(gx+1.5*cw,158,'читаем «'+(i===0?'208':i===1?'54':'730')+'»',14,k.c,'middle',true);
+      b+=TL(gx+1.5*cw,158,(EN?'read as &ldquo;':'читаем «')+(i===0?'208':i===1?'54':'730')+(EN?'&rdquo;':'»'),14,k.c,'middle',true);
       b+=TL(gx+1.5*cw,182,k.w1,14,k.c,'middle',true);
       if(k.w2) b+=TL(gx+1.5*cw,200,k.w2,14,k.c,'middle',true);
     });
     b+=L(20,214,W-20,214,'var(--line)',1.5);
     b+='<text x="'+W/2+'" y="254" font-size="34" text-anchor="middle" font-weight="700"><tspan fill="var(--blue)">208</tspan><tspan fill="var(--ink)"> </tspan><tspan fill="var(--gold)">054</tspan><tspan fill="var(--ink)"> </tspan><tspan fill="var(--green)">730</tspan></text>';
-    b+=TL(W/2,288,'Нули (красные) — тоже разряды: они держат место.',14,'var(--red)','middle',true);
-    b+=TL(W/2,308,'Слово «единицы» при чтении не говорим.',13,'var(--muted)');
-    return S(W,H,560,'Таблица классов и разрядов для числа 208 054 730: класс миллионов, класс тысяч, класс единиц; как читать число',b);
+    b+=TL(W/2,288,EN?'Zeros (in red) are places too: they hold a spot.':'Нули (красные) — тоже разряды: они держат место.',14,'var(--red)','middle',true);
+    b+=TL(W/2,308,EN?'We don&rsquo;t say the word &ldquo;ones&rdquo; when reading the number.':'Слово «единицы» при чтении не говорим.',13,'var(--muted)');
+    return S(W,H,560,EN?'A table of classes and places for the number 208,054,730: millions class, thousands class, ones class; how to read the number':'Таблица классов и разрядов для числа 208 054 730: класс миллионов, класс тысяч, класс единиц; как читать число',b);
   };
 
   // ---------- N4_ROUND: округление до тысяч ----------
   SVG_LIB.N4_ROUND = function(){
+    var EN=getLang()==='en';
     var W=540,H=300, xa=40, xb=500, y=130;
     function X(v){ return xa+(v-47000)/1000*(xb-xa); }
     var b='<defs>'+MK('n4round_ar','var(--ink)')+'</defs>';
     // зоны
     b+=R(xa,y-30,X(47500)-xa,30,'var(--blue-soft)','none',0,0);
     b+=R(X(47500),y-30,xb-X(47500),30,'var(--gold-soft)','none',0,0);
-    b+=TL((xa+X(47500))/2,y-38,'ближе к 47 000',14,'var(--blue)','middle',true);
-    b+=TL((X(47500)+xb)/2,y-38,'ближе к 48 000',14,'var(--gold)','middle',true);
+    b+=TL((xa+X(47500))/2,y-38,EN?'closer to 47,000':'ближе к 47 000',14,'var(--blue)','middle',true);
+    b+=TL((X(47500)+xb)/2,y-38,EN?'closer to 48,000':'ближе к 48 000',14,'var(--gold)','middle',true);
     // линия
     b+=L(xa,y,xb,y,'var(--ink)',3);
     for(var v=47000; v<=48000; v+=100){
@@ -20764,7 +20817,7 @@ SVG_LIB.TRI_ISO = function(){
     b+=TL(xa,y+34,'47 000',16,'var(--ink)','middle',true);
     b+=TL(X(47500),y+34,'47 500',16,'var(--ink)','middle',true);
     b+=TL(xb,y+34,'48 000',16,'var(--ink)','middle',true);
-    b+=TL(X(47500),y+54,'середина',13,'var(--muted)');
+    b+=TL(X(47500),y+54,EN?'midpoint':'середина',13,'var(--muted)');
     b+=L(X(47500),y-30,X(47500),y+12,'var(--red)',2.5,' stroke-dasharray="4 3"');
     // точки
     function pt(v,col,lab,up){
@@ -20777,9 +20830,9 @@ SVG_LIB.TRI_ISO = function(){
     b+=TL(X(47685),y-70,'47 685',17,'var(--gold)','middle',true);
     // правило
     b+=R(20,222,W-40,64,'var(--sheet)','var(--line)',10,1.5);
-    b+=TL(W/2,246,'смотрим на цифру сотен (она справа от тысяч)',14,'var(--muted)');
+    b+=TL(W/2,246,EN?'look at the hundreds digit (it&rsquo;s to the right of the thousands)':'смотрим на цифру сотен (она справа от тысяч)',14,'var(--muted)');
     b+='<text x="'+W/2+'" y="272" font-size="16" text-anchor="middle" font-weight="700"><tspan fill="var(--blue)">47 3</tspan><tspan fill="var(--muted)">85</tspan><tspan fill="var(--ink)">: 3 &lt; 5 → 47 000     </tspan><tspan fill="var(--gold)">47 6</tspan><tspan fill="var(--muted)">85</tspan><tspan fill="var(--ink)">: 6 ≥ 5 → 48 000</tspan></text>';
-    return S(W,H,560,'Числовой луч от 47 000 до 48 000: число 47 385 ближе к 47 000, число 47 685 ближе к 48 000; правило округления до тысяч',b);
+    return S(W,H,560,EN?'A number line from 47,000 to 48,000: the number 47,385 is closer to 47,000, the number 47,685 is closer to 48,000; the rule for rounding to the nearest thousand':'Числовой луч от 47 000 до 48 000: число 47 385 ближе к 47 000, число 47 685 ближе к 48 000; правило округления до тысяч',b);
   };
 
   // ---------- N4_ADD: сложение столбиком 48 764 + 35 693 = 84 457 ----------
@@ -20857,10 +20910,11 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- MUL4_COLUMN: 274 · 36 = 9864 ----------
   SVG_LIB.MUL4_COLUMN = function(){
+    var EN=getLang()==='en';
     var W=560,H=316;
     function cx(i){ return 90+i*42; } // 0..3: тысячи, сотни, десятки, единицы
     var b='';
-    var names=['тыс.','сот.','дес.','ед.'];
+    var names=EN?['th.','h.','t.','o.']:['тыс.','сот.','дес.','ед.'];
     for(var i=0;i<4;i++) b+=TL(cx(i),20,names[i],13,'var(--muted)');
     function row(y,digs,start,fill,sz){ digs.split('').forEach(function(d,k){ b+=TL(cx(start+k),y,d,sz||34,fill,'middle',true); }); }
     row(62,'274',1,'var(--ink)');
@@ -20876,18 +20930,18 @@ SVG_LIB.TRI_ISO = function(){
     b+=TL(40,206,'+',30,'var(--muted)','middle',true);
     // пояснения справа
     var lx=300;
-    b+=TL(lx,44,'36 = <tspan fill="var(--blue)">6</tspan> ед. + <tspan fill="var(--red)">3</tspan> дес.',16,'var(--muted)','start');
+    b+=TL(lx,44,EN?'36 = <tspan fill="var(--blue)">6</tspan> ones + <tspan fill="var(--red)">3</tspan> tens':'36 = <tspan fill="var(--blue)">6</tspan> ед. + <tspan fill="var(--red)">3</tspan> дес.',16,'var(--muted)','start');
     b+=L(lx-10,134,lx-10,168,'var(--blue)',4);
     b+=TL(lx,148,'274 · 6 = 1644',18,'var(--blue)','start',true);
-    b+=TL(lx,168,'умножаем на единицы',14,'var(--muted)','start');
+    b+=TL(lx,168,EN?'multiply by the ones':'умножаем на единицы',14,'var(--muted)','start');
     b+=L(lx-10,182,lx-10,216,'var(--red)',4);
     b+=TL(lx,196,'274 · 30 = 8220',18,'var(--red)','start',true);
-    b+=TL(lx,216,'нуль ставим в разряд единиц',14,'var(--muted)','start');
+    b+=TL(lx,216,EN?'put a zero in the ones place':'нуль ставим в разряд единиц',14,'var(--muted)','start');
     b+=L(lx-10,238,lx-10,272,'var(--green)',4);
     b+=TL(lx,252,'1644 + 8220 = 9864',18,'var(--green)','start',true);
-    b+=TL(lx,272,'складываем частичные',14,'var(--muted)','start');
-    b+=TL(lx,290,'произведения',14,'var(--muted)','start');
-    return S(W,H,560,'Умножение столбиком 274 на 36: 274 умножить на 6 равно 1644, 274 умножить на 30 равно 8220, сумма 9864',b);
+    b+=TL(lx,272,EN?'add the partial':'складываем частичные',14,'var(--muted)','start');
+    b+=TL(lx,290,EN?'products':'произведения',14,'var(--muted)','start');
+    return S(W,H,560,EN?'Multiplying in column form, 274 by 36: 274 times 6 equals 1644, 274 times 30 equals 8220, the sum is 9864':'Умножение столбиком 274 на 36: 274 умножить на 6 равно 1644, 274 умножить на 30 равно 8220, сумма 9864',b);
   };
 
   // общий каркас «уголка»
@@ -20940,6 +20994,7 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- MUL4_LONGDIV2: 936 : 24 = 39 ----------
   SVG_LIB.MUL4_LONGDIV2 = function(){
+    var EN=getLang()==='en';
     var W=560,H=250,x0=34,cw=34,rh=38,y0=40;
     function cx(i){ return x0+i*cw+cw/2; }
     function ry(r){ return y0+r*rh; }
@@ -20959,15 +21014,15 @@ SVG_LIB.TRI_ISO = function(){
     b+=TL(cx(2),ry(4),'0',32,IK,'middle',true);
     var lx=270;
     b+=badge(lx,ry(1)-8,'1',BL,'var(--sheet)',12);
-    b+=TL(lx+22,ry(1)-10,'93 : 24 — подбираем цифру:',15,BL,'start',true);
-    b+=TL(lx+22,ry(1)+10,'24 · 3 = 72  (72 ≤ 93, годится)',14,IK,'start');
-    b+=TL(lx+22,ry(1)+28,'24 · 4 = 96  (96 больше 93, много)',14,RD,'start');
-    b+=TL(lx+22,ry(2)+34,'93 − 72 = 21, снесли 6 → 216',14,GD,'start',true);
+    b+=TL(lx+22,ry(1)-10,EN?'93 : 24 — pick a digit:':'93 : 24 — подбираем цифру:',15,BL,'start',true);
+    b+=TL(lx+22,ry(1)+10,EN?'24 · 3 = 72  (72 ≤ 93, works)':'24 · 3 = 72  (72 ≤ 93, годится)',14,IK,'start');
+    b+=TL(lx+22,ry(1)+28,EN?'24 · 4 = 96  (96 is more than 93, too much)':'24 · 4 = 96  (96 больше 93, много)',14,RD,'start');
+    b+=TL(lx+22,ry(2)+34,EN?'93 − 72 = 21, bring down 6 → 216':'93 − 72 = 21, снесли 6 → 216',14,GD,'start',true);
     b+=badge(lx,ry(3)+14,'2',GR,'var(--sheet)',12);
     b+=TL(lx+22,ry(3)+18,'216 : 24 = 9',16,GR,'start',true);
-    b+=TL(lx+22,ry(3)+38,'24 · 9 = 216, остаток 0',14,MU,'start');
-    b+=TL(lx,ry(4)+30,'Проверка: 39 · 24 = 936',14,MU,'start');
-    return S(W,H,560,'Деление уголком 936 на 24 равно 39: подбираем цифру частного умножением 24 на 3 и на 4, потом делим 216 на 24',b);
+    b+=TL(lx+22,ry(3)+38,EN?'24 · 9 = 216, remainder 0':'24 · 9 = 216, остаток 0',14,MU,'start');
+    b+=TL(lx,ry(4)+30,EN?'Check: 39 · 24 = 936':'Проверка: 39 · 24 = 936',14,MU,'start');
+    return S(W,H,560,EN?'Long division of 936 by 24 equals 39: we pick the quotient digit by trying 24 times 3 and 24 times 4, then divide 216 by 24':'Деление уголком 936 на 24 равно 39: подбираем цифру частного умножением 24 на 3 и на 4, потом делим 216 на 24',b);
   };
 })();
 
@@ -20997,6 +21052,7 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- VAL4_LADDERS: лесенки длины и массы ----------
   SVG_LIB.VAL4_LADDERS = function(){
+    var EN=getLang()==='en';
     var W=520,H=318,bw=56,gap=55,x0=10;
     var b='<defs>'+MK('val4_ladders_r','var(--blue)')+MK('val4_ladders_l','var(--red)')+'</defs>';
     function row(y,title,color,soft,names,mult){
@@ -21014,20 +21070,21 @@ SVG_LIB.TRI_ISO = function(){
       });
       return s;
     }
-    b+=row(34,'Длина','var(--blue)','var(--blue-soft)',['км','м','дм','см','мм'],['1000','10','10','10']);
-    b+=row(136,'Масса','var(--gold)','var(--gold-soft)',['т','ц','кг','г'],['10','100','1000']);
-    b+=TL(500,166,'1 т = 1000 кг',14,'var(--muted)','end');
-    b+=TL(500,186,'1 ц = 100 кг',14,'var(--muted)','end');
+    b+=row(34,EN?'Length':'Длина','var(--blue)','var(--blue-soft)',EN?['km','m','dm','cm','mm']:['км','м','дм','см','мм'],['1000','10','10','10']);
+    b+=row(136,EN?'Mass':'Масса','var(--gold)','var(--gold-soft)',EN?['t','cwt','kg','g']:['т','ц','кг','г'],['10','100','1000']);
+    b+=TL(500,166,EN?'1 t = 1000 kg':'1 т = 1000 кг',14,'var(--muted)','end');
+    b+=TL(500,186,EN?'1 cwt = 100 kg':'1 ц = 100 кг',14,'var(--muted)','end');
     b+=R(10,222,500,86,'var(--sheet2)','var(--line)',10,1.5);
-    b+=TL(22,246,'Вправо (к меньшей единице): число растёт — умножаем',14,'var(--blue)','start',true);
-    b+=TL(22,268,'Влево (к большей единице): число уменьшается — делим',14,'var(--red)','start',true);
-    b+=TL(22,296,'3 м 45 см = 345 см',14,'var(--ink)','start');
-    b+=TL(250,296,'2 кг 50 г = 2050 г',14,'var(--ink)','start');
-    return S(W,H,520,'Лесенки единиц длины и массы: км, м, дм, см, мм и т, ц, кг, г, стрелки умножения и деления',b);
+    b+=TL(22,246,EN?'Right (to a smaller unit): the number grows — we multiply':'Вправо (к меньшей единице): число растёт — умножаем',14,'var(--blue)','start',true);
+    b+=TL(22,268,EN?'Left (to a larger unit): the number shrinks — we divide':'Влево (к большей единице): число уменьшается — делим',14,'var(--red)','start',true);
+    b+=TL(22,296,EN?'3 m 45 cm = 345 cm':'3 м 45 см = 345 см',14,'var(--ink)','start');
+    b+=TL(250,296,EN?'2 kg 50 g = 2050 g':'2 кг 50 г = 2050 г',14,'var(--ink)','start');
+    return S(W,H,520,EN?'Ladders of length and mass units: km, m, dm, cm, mm and t, cwt, kg, g, with multiplication and division arrows':'Лесенки единиц длины и массы: км, м, дм, см, мм и т, ц, кг, г, стрелки умножения и деления',b);
   };
 
   // ---------- VAL4_AREA: единицы площади ----------
   SVG_LIB.VAL4_AREA = function(){
+    var EN=getLang()==='en';
     var W=520,H=340;
     var b='<defs>'+MK('val4_area_r','var(--blue)')+MK('val4_area_l','var(--red)')+'</defs>';
     var gx=40,gy=50,cs=15;
@@ -21037,13 +21094,13 @@ SVG_LIB.TRI_ISO = function(){
       b+=L(gx,gy+i*cs,gx+cs*10,gy+i*cs,'var(--blue)',0.8);
     }
     b+=R(gx,gy,cs,cs,'var(--red-soft)','var(--red)',0,2.5);
-    b+=TL(gx+cs*5,gy-10,'1 дм = 10 см',14,'var(--ink)','middle',true);
-    b+=TL(gx+cs*5,gy+cs*10+22,'1 дм² = 10 · 10 = 100 см²',14,'var(--blue)','middle',true);
+    b+=TL(gx+cs*5,gy-10,EN?'1 dm = 10 cm':'1 дм = 10 см',14,'var(--ink)','middle',true);
+    b+=TL(gx+cs*5,gy+cs*10+22,EN?'1 dm² = 10 · 10 = 100 cm²':'1 дм² = 10 · 10 = 100 см²',14,'var(--blue)','middle',true);
     b+=P('M'+(gx+cs+12)+','+(gy+cs+30)+' L'+(gx+cs/2+2)+','+(gy+cs/2+4),'var(--red)',1.8,'none',' marker-end="url(#val4_area_l)"');
-    b+=TL(gx+cs+16,gy+cs+44,'1 см²',14,'var(--red)','start',true);
+    b+=TL(gx+cs+16,gy+cs+44,EN?'1 cm²':'1 см²',14,'var(--red)','start',true);
     // лесенка м² - дм² - см²
     var cx=290,bw=90;
-    var items=[['м²',44],['дм²',134],['см²',224]];
+    var items=EN?[['m²',44],['dm²',134],['cm²',224]]:[['м²',44],['дм²',134],['см²',224]];
     items.forEach(function(it,i){
       b+=R(cx-bw/2,it[1],bw,50,'var(--gold-soft)','var(--gold)',10,2.5)+TL(cx,it[1]+34,it[0],24,'var(--gold)','middle',true);
       if(i<2){
@@ -21055,12 +21112,12 @@ SVG_LIB.TRI_ISO = function(){
       }
     });
     b+=R(10,280,500,52,'var(--sheet2)','var(--line)',8,1.5);
-    b+=TL(260,302,'1 м² = 100 дм² = 10 000 см²',14,'var(--ink)','middle',true);
-    b+=TL(260,322,'1 км² = 1 000 000 м²',14,'var(--ink)','middle',true);
-    b+=TL(490,60,'Не 10, а 100!',14,'var(--red)','end',true);
-    b+=TL(490,80,'Площадь — это',14,'var(--muted)','end');
-    b+=TL(490,98,'«квадратики»',14,'var(--muted)','end');
-    return S(W,H,520,'Единицы площади: квадратный дециметр состоит из 100 квадратных сантиметров, лесенка м², дм², см² с умножением на 100',b);
+    b+=TL(260,302,EN?'1 m² = 100 dm² = 10,000 cm²':'1 м² = 100 дм² = 10 000 см²',14,'var(--ink)','middle',true);
+    b+=TL(260,322,EN?'1 km² = 1,000,000 m²':'1 км² = 1 000 000 м²',14,'var(--ink)','middle',true);
+    b+=TL(490,60,EN?'Not 10, but 100!':'Не 10, а 100!',14,'var(--red)','end',true);
+    b+=TL(490,80,EN?'Area is measured':'Площадь — это',14,'var(--muted)','end');
+    b+=TL(490,98,EN?'in &ldquo;little squares&rdquo;':'«квадратики»',14,'var(--muted)','end');
+    return S(W,H,520,EN?'Units of area: a square decimeter is made up of 100 square centimeters; a ladder of m², dm², cm² with multiplication by 100':'Единицы площади: квадратный дециметр состоит из 100 квадратных сантиметров, лесенка м², дм², см² с умножением на 100',b);
   };
 
   // ---------- VAL4_CLOCK: сколько времени прошло ----------
@@ -21145,62 +21202,64 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- WORD4_BARS: схемы-отрезки ----------
   SVG_LIB.WORD4_BARS = function(){
+    var EN=getLang()==='en';
     var W=520,H=372;
     var b='';
     var x0=70,u=7;
     // Панель А
-    b+=TL(10,20,'А. «На 9 больше»',15,'var(--ink)','start',true);
-    b+=TL(10,42,'В 1-м ящике 24 кг яблок, во 2-м — на 9 кг больше.',14,'var(--muted)','start');
-    b+=TL(10,78,'1-й',14,'var(--muted)','start',true);
+    b+=TL(10,20,EN?'A. &ldquo;9 more&rdquo;':'А. «На 9 больше»',15,'var(--ink)','start',true);
+    b+=TL(10,42,EN?'Box 1 has 24 kg of apples, box 2 has 9 kg more.':'В 1-м ящике 24 кг яблок, во 2-м — на 9 кг больше.',14,'var(--muted)','start');
+    b+=TL(10,78,EN?'1st':'1-й',14,'var(--muted)','start',true);
     b+=R(x0,58,24*u,30,'var(--blue-soft)','var(--blue)',4,2.5)+TL(x0+24*u/2,79,'24',16,'var(--blue)','middle',true);
-    b+=TL(10,122,'2-й',14,'var(--muted)','start',true);
+    b+=TL(10,122,EN?'2nd':'2-й',14,'var(--muted)','start',true);
     b+=R(x0,102,24*u,30,'var(--blue-soft)','var(--blue)',4,2.5)+TL(x0+24*u/2,123,'24',16,'var(--blue)','middle',true);
     b+=R(x0+24*u,102,9*u,30,'var(--red-soft)','var(--red)',4,2.5,' stroke-dasharray="5 3"')+TL(x0+24*u+9*u/2,123,'+9',16,'var(--red)','middle',true);
     b+=P('M'+(x0+33*u+10)+',102 Q'+(x0+33*u+22)+',117 '+(x0+33*u+10)+',132','var(--green)',2.5);
-    b+=TL(x0+33*u+30,123,'? кг',16,'var(--green)','start',true);
-    b+=TL(10,160,'Во 2-м ящике: 24 + 9 = 33 (кг)',14,'var(--ink)','start');
+    b+=TL(x0+33*u+30,123,EN?'? kg':'? кг',16,'var(--green)','start',true);
+    b+=TL(10,160,EN?'Box 2: 24 + 9 = 33 (kg)':'Во 2-м ящике: 24 + 9 = 33 (кг)',14,'var(--ink)','start');
     b+=L(10,176,510,176,'var(--line)',1.5,' stroke-dasharray="4 4"');
     // Панель Б
-    b+=TL(10,200,'Б. «В 3 раза больше»',15,'var(--ink)','start',true);
-    b+=TL(10,222,'Красных шаров 12, а синих — в 3 раза больше.',14,'var(--muted)','start');
-    b+=TL(10,258,'Кр.',14,'var(--muted)','start',true);
+    b+=TL(10,200,EN?'B. &ldquo;3 times more&rdquo;':'Б. «В 3 раза больше»',15,'var(--ink)','start',true);
+    b+=TL(10,222,EN?'There are 12 red balls, and 3 times as many blue ones.':'Красных шаров 12, а синих — в 3 раза больше.',14,'var(--muted)','start');
+    b+=TL(10,258,EN?'Red':'Кр.',14,'var(--muted)','start',true);
     b+=R(x0,238,12*u,30,'var(--red-soft)','var(--red)',4,2.5)+TL(x0+12*u/2,259,'12',16,'var(--red)','middle',true);
-    b+=TL(10,302,'Син.',14,'var(--muted)','start',true);
+    b+=TL(10,302,EN?'Blue':'Син.',14,'var(--muted)','start',true);
     for(var k=0;k<3;k++){
       b+=R(x0+k*12*u,282,12*u,30,'var(--blue-soft)','var(--blue)',4,2.5)+TL(x0+k*12*u+12*u/2,303,'12',16,'var(--blue)','middle',true);
     }
     b+=P('M'+(x0+36*u+10)+',282 Q'+(x0+36*u+22)+',297 '+(x0+36*u+10)+',312','var(--green)',2.5);
-    b+=TL(x0+36*u+30,303,'? шт.',16,'var(--green)','start',true);
-    b+=TL(10,340,'Синих шаров: 12 · 3 = 36 (шт.)',14,'var(--ink)','start');
-    b+=TL(10,362,'Больше на … — прибавляем. Больше в … раз — умножаем.',13,'var(--muted)','start');
-    return S(W,H,520,'Схемы-отрезки: сравнение на 9 больше и в 3 раза больше',b);
+    b+=TL(x0+36*u+30,303,EN?'? pcs.':'? шт.',16,'var(--green)','start',true);
+    b+=TL(10,340,EN?'Blue balls: 12 · 3 = 36 (pcs.)':'Синих шаров: 12 · 3 = 36 (шт.)',14,'var(--ink)','start');
+    b+=TL(10,362,EN?'More by … — we add. More by a factor of … — we multiply.':'Больше на … — прибавляем. Больше в … раз — умножаем.',13,'var(--muted)','start');
+    return S(W,H,520,EN?'Bar diagrams: comparing &ldquo;9 more&rdquo; and &ldquo;3 times more&rdquo;':'Схемы-отрезки: сравнение на 9 больше и в 3 раза больше',b);
   };
 
   // ---------- WORD4_PARTS: задача на части ----------
   SVG_LIB.WORD4_PARTS = function(){
+    var EN=getLang()==='en';
     var W=520,H=340;
     var b='';
     var x0=60,cw=80,y=94;
-    b+=TL(10,20,'В двух мешках 45 кг сахара.',15,'var(--ink)','start',true);
-    b+=TL(10,42,'В 1-м мешке 2 части, во 2-м — 3 такие же части.',14,'var(--muted)','start');
+    b+=TL(10,20,EN?'Two sacks hold 45 kg of sugar.':'В двух мешках 45 кг сахара.',15,'var(--ink)','start',true);
+    b+=TL(10,42,EN?'Sack 1 is 2 parts, sack 2 is 3 of the same parts.':'В 1-м мешке 2 части, во 2-м — 3 такие же части.',14,'var(--muted)','start');
     b+=P('M'+x0+','+(y-8)+' V'+(y-16)+' H'+(x0+5*cw)+' V'+(y-8),'var(--ink)',2.2);
-    b+=TL(x0+2.5*cw,y-24,'всего 45 кг',15,'var(--ink)','middle',true);
+    b+=TL(x0+2.5*cw,y-24,EN?'45 kg total':'всего 45 кг',15,'var(--ink)','middle',true);
     for(var i=0;i<5;i++){
       var first=i<2;
       b+=R(x0+i*cw,y,cw,44,first?'var(--blue-soft)':'var(--gold-soft)',first?'var(--blue)':'var(--gold)',3,2.5);
       b+=TL(x0+i*cw+cw/2,y+29,'9',18,first?'var(--blue)':'var(--gold)','middle',true);
     }
     b+=P('M'+x0+','+(y+54)+' V'+(y+62)+' H'+(x0+2*cw)+' V'+(y+54),'var(--blue)',2.2);
-    b+=TL(x0+cw,y+82,'1-й: 2 части',14,'var(--blue)','middle',true);
+    b+=TL(x0+cw,y+82,EN?'Sack 1: 2 parts':'1-й: 2 части',14,'var(--blue)','middle',true);
     b+=P('M'+(x0+2*cw)+','+(y+54)+' V'+(y+62)+' H'+(x0+5*cw)+' V'+(y+54),'var(--gold)',2.2);
-    b+=TL(x0+3.5*cw,y+82,'2-й: 3 части',14,'var(--gold)','middle',true);
+    b+=TL(x0+3.5*cw,y+82,EN?'Sack 2: 3 parts':'2-й: 3 части',14,'var(--gold)','middle',true);
     b+=R(10,206,500,126,'var(--sheet2)','var(--line)',10,1.5);
-    b+=TL(24,230,'1) 2 + 3 = 5 (частей) — всего',15,'var(--ink)','start');
-    b+=TL(24,254,'2) 45 : 5 = 9 (кг) — одна часть',15,'var(--green)','start',true);
-    b+=TL(24,278,'3) 9 · 2 = 18 (кг) — в 1-м мешке',15,'var(--blue)','start');
-    b+=TL(24,302,'4) 9 · 3 = 27 (кг) — во 2-м мешке',15,'var(--gold)','start');
-    b+=TL(24,324,'Проверка: 18 + 27 = 45',14,'var(--muted)','start');
-    return S(W,H,520,'Схема задачи на части: 45 килограммов делятся на 5 равных частей по 9 килограммов, 2 части и 3 части',b);
+    b+=TL(24,230,EN?'1) 2 + 3 = 5 (parts) — total':'1) 2 + 3 = 5 (частей) — всего',15,'var(--ink)','start');
+    b+=TL(24,254,EN?'2) 45 : 5 = 9 (kg) — one part':'2) 45 : 5 = 9 (кг) — одна часть',15,'var(--green)','start',true);
+    b+=TL(24,278,EN?'3) 9 · 2 = 18 (kg) — in sack 1':'3) 9 · 2 = 18 (кг) — в 1-м мешке',15,'var(--blue)','start');
+    b+=TL(24,302,EN?'4) 9 · 3 = 27 (kg) — in sack 2':'4) 9 · 3 = 27 (кг) — во 2-м мешке',15,'var(--gold)','start');
+    b+=TL(24,324,EN?'Check: 18 + 27 = 45':'Проверка: 18 + 27 = 45',14,'var(--muted)','start');
+    return S(W,H,520,EN?'A &ldquo;parts&rdquo; word-problem diagram: 45 kilograms split into 5 equal parts of 9 kilograms each, 2 parts and 3 parts':'Схема задачи на части: 45 килограммов делятся на 5 равных частей по 9 килограммов, 2 части и 3 части',b);
   };
 })();
 
@@ -21224,8 +21283,14 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- GEO4_ANGLES ----------
   SVG_LIB.GEO4_ANGLES = function(){
+    var EN=getLang()==='en';
     var W=520,H=350,b='';
-    var items=[
+    var items=EN?[
+      {name:'Acute angle',rule:'less than a right angle',deg:50,c:'var(--green)',s:'var(--green-soft)'},
+      {name:'Right angle',rule:'like a notebook corner',deg:90,c:'var(--blue)',s:'var(--blue-soft)'},
+      {name:'Obtuse angle',rule:'between 90° and 180°',deg:135,c:'var(--gold)',s:'var(--gold-soft)'},
+      {name:'Straight angle',rule:'sides form one line',deg:180,c:'var(--red)',s:'var(--red-soft)'}
+    ]:[
       {name:'Острый угол',rule:'меньше прямого',deg:50,c:'var(--green)',s:'var(--green-soft)'},
       {name:'Прямой угол',rule:'как уголок тетради',deg:90,c:'var(--blue)',s:'var(--blue-soft)'},
       {name:'Тупой угол',rule:'между 90° и 180°',deg:135,c:'var(--gold)',s:'var(--gold-soft)'},
@@ -21246,7 +21311,7 @@ SVG_LIB.TRI_ISO = function(){
       b+=L(vx,vy,ex,ey,'var(--ink)',3);
       b+='<circle cx="'+vx+'" cy="'+vy+'" r="4" fill="var(--ink)"/>';
       // подпись градусов
-      var lab = it.deg===180?'180°':(it.deg===90?'90°':(it.deg<90?'меньше 90°':'от 90° до 180°'));
+      var lab = it.deg===180?'180°':(it.deg===90?'90°':(it.deg<90?(EN?'less than 90°':'меньше 90°'):(EN?'90° to 180°':'от 90° до 180°')));
       if(it.deg===50) b+=TL(vx+44,vy-14,'< 90°',14,it.c,'start',true);
       if(it.deg===90) b+=TL(vx+42,vy-14,'90°',14,it.c,'start',true);
       if(it.deg===135) b+=TL(vx+40,vy-24,'> 90°',14,it.c,'start',true);
@@ -21254,18 +21319,28 @@ SVG_LIB.TRI_ISO = function(){
       b+=TL(px+130,py+128,it.name,17,it.c,'middle',true);
       b+=TL(px+130,py+149,it.rule,13,'var(--ink)','middle');
     });
-    return S(W,H,540,'Четыре вида углов: острый меньше 90 градусов, прямой равен 90, тупой больше 90 и меньше 180, развёрнутый равен 180',b);
+    return S(W,H,540,EN?'Four types of angles: acute is less than 90 degrees, right equals 90, obtuse is more than 90 and less than 180, straight equals 180':'Четыре вида углов: острый меньше 90 градусов, прямой равен 90, тупой больше 90 и меньше 180, развёрнутый равен 180',b);
   };
 
   // ---------- GEO4_TRIANGLES ----------
   SVG_LIB.GEO4_TRIANGLES = function(){
+    var EN=getLang()==='en';
     var W=520,H=350,b='';
     function tick(p,q,k,col){
       var mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,dx=q[0]-p[0],dy=q[1]-p[1],l=Math.sqrt(dx*dx+dy*dy),ux=dx/l,uy=dy/l,nx=-uy,ny=ux,s='';
       for(var i=0;i<k;i++){ var o=(i-(k-1)/2)*7; s+=L(mx+ux*o-nx*7,my+uy*o-ny*7,mx+ux*o+nx*7,my+uy*o+ny*7,col,2.5); }
       return s;
     }
-    var items=[
+    var items=EN?[
+      {name:'Equilateral',rule:'all three sides equal',c:'var(--green)',s:'var(--green-soft)',
+        pts:[[45,105],[145,105],[95,105-86.6]],ticks:[1,1,1],tag:'by sides'},
+      {name:'Isosceles',rule:'two sides equal',c:'var(--blue)',s:'var(--blue-soft)',
+        pts:[[35,105],[155,105],[95,30]],ticks:[1,0,1],tag:'by sides'},
+      {name:'Scalene',rule:'all sides different lengths',c:'var(--gold)',s:'var(--gold-soft)',
+        pts:[[30,105],[160,105],[75,28]],ticks:[0,0,0],tag:'by sides'},
+      {name:'Right',rule:'has a right angle',c:'var(--red)',s:'var(--red-soft)',
+        pts:[[50,105],[150,105],[50,35]],ticks:[0,0,0],tag:'by angles',right:true}
+    ]:[
       {name:'Равносторонний',rule:'все три стороны равны',c:'var(--green)',s:'var(--green-soft)',
         pts:[[45,105],[145,105],[95,105-86.6]],ticks:[1,1,1],tag:'по сторонам'},
       {name:'Равнобедренный',rule:'две стороны равны',c:'var(--blue)',s:'var(--blue-soft)',
@@ -21294,7 +21369,7 @@ SVG_LIB.TRI_ISO = function(){
       b+=TL(px+130,py+143,it.name,17,it.c,'middle',true);
       b+=TL(px+130,py+161,it.rule,13,'var(--ink)','middle');
     });
-    return S(W,H,540,'Виды треугольников: равносторонний, равнобедренный, разносторонний и прямоугольный',b);
+    return S(W,H,540,EN?'Types of triangles: equilateral, isosceles, scalene, and right':'Виды треугольников: равносторонний, равнобедренный, разносторонний и прямоугольный',b);
   };
 
   // ---------- GEO4_COMPOSITE ----------
@@ -21366,6 +21441,7 @@ SVG_LIB.TRI_ISO = function(){
 
   // ---------- FRAC4_PARTS ----------
   SVG_LIB.FRAC4_PARTS = function(){
+    var EN=getLang()==='en';
     var W=520,H=440,b='';
     // верх: 3/8
     var x0=20,pw=34,y0=52,h=44;
@@ -21374,29 +21450,29 @@ SVG_LIB.TRI_ISO = function(){
     }
     b+=R(x0,y0,8*pw,h,'none','var(--ink)',0,3);
     b+=brk(x0+3,x0+3*pw-3,y0-8,-1,'var(--red)');
-    b+=TL(x0+1.5*pw,y0-24,'взяли 3 части',14,'var(--red)','middle',true);
+    b+=TL(x0+1.5*pw,y0-24,EN?'took 3 parts':'взяли 3 части',14,'var(--red)','middle',true);
     b+=brk(x0+3,x0+8*pw-3,y0+h+8,1,'var(--blue)');
-    b+=TL(x0+4*pw,y0+h+30,'целое разделили на 8 равных частей',14,'var(--blue)','middle',true);
+    b+=TL(x0+4*pw,y0+h+30,EN?'the whole was split into 8 equal parts':'целое разделили на 8 равных частей',14,'var(--blue)','middle',true);
     // большая дробь
     b+=frac(410,74,3,8,38,'var(--ink)');
     b=b.replace(/(<text[^>]*>3<\/text>)(<line[^>]*\/>)(<text[^>]*>8<\/text>)/,function(m,a,l,c){
       return a.replace('var(--ink)','var(--red)')+l+c.replace('var(--ink)','var(--blue)');
     });
-    b+=TL(410,136,'числитель 3 —',13,'var(--red)','middle',true);
-    b+=TL(410,153,'сколько частей взяли',13,'var(--red)','middle');
-    b+=TL(410,177,'знаменатель 8 —',13,'var(--blue)','middle',true);
-    b+=TL(410,194,'на сколько равных частей',13,'var(--blue)','middle');
-    b+=TL(410,211,'разделили целое',13,'var(--blue)','middle');
+    b+=TL(410,136,EN?'numerator 3 —':'числитель 3 —',13,'var(--red)','middle',true);
+    b+=TL(410,153,EN?'how many parts were taken':'сколько частей взяли',13,'var(--red)','middle');
+    b+=TL(410,177,EN?'denominator 8 —':'знаменатель 8 —',13,'var(--blue)','middle',true);
+    b+=TL(410,194,EN?'how many equal parts':'на сколько равных частей',13,'var(--blue)','middle');
+    b+=TL(410,211,EN?'the whole was split into':'разделили целое',13,'var(--blue)','middle');
     // низ: сравнение долей
     b+=L(20,232,W-20,232,'var(--line)',1.5);
-    b+=TL(20,258,'Чем больше частей, тем меньше каждая часть:',15,'var(--ink)','start',true);
+    b+=TL(20,258,EN?'The more parts, the smaller each part is:':'Чем больше частей, тем меньше каждая часть:',15,'var(--ink)','start',true);
     var rows=[['1','1',1],['1','2',2],['1','3',3],['1','4',4],['1','5',5]], by=276, bh=24, bx=70, bw=400, gap=34;
     rows.forEach(function(r,k){
       var y=by+k*gap, d=r[2];
       if(k===0){
         b+=TL(44,y+bh/2+6,'1',20,'var(--ink)','middle',true);
         b+=R(bx,y,bw,bh,'var(--gold-soft)','var(--ink)',0,2.5);
-        b+=TL(bx+bw/2,y+17,'целое',14,'var(--ink)','middle');
+        b+=TL(bx+bw/2,y+17,EN?'whole':'целое',14,'var(--ink)','middle');
         return;
       }
       b+=frac(44,y+bh/2-2,1,d,14,'var(--ink)');
@@ -21405,11 +21481,12 @@ SVG_LIB.TRI_ISO = function(){
       }
       b+=R(bx,y,bw,bh,'none','var(--ink)',0,2.5);
     });
-    return S(W,H,540,'Дробь три восьмых: целое разделено на 8 равных частей, взяты 3; ниже полосы, разделённые на 1, 2, 3, 4 и 5 равных частей: чем больше частей, тем меньше одна часть',b);
+    return S(W,H,540,EN?'The fraction three eighths: the whole is split into 8 equal parts, 3 are taken; below, strips split into 1, 2, 3, 4, and 5 equal parts: the more parts, the smaller each part is':'Дробь три восьмых: целое разделено на 8 равных частей, взяты 3; ниже полосы, разделённые на 1, 2, 3, 4 и 5 равных частей: чем больше частей, тем меньше одна часть',b);
   };
 
   // ---------- FRAC4_LINE ----------
   SVG_LIB.FRAC4_LINE = function(){
+    var EN=getLang()==='en';
     var W=520,H=230,b='';
     var x0=30,u=230,ay=118; // 1 = 230 px, одна пятая = 46 px
     function X(k){return x0+k*u/5;}
@@ -21417,8 +21494,8 @@ SVG_LIB.TRI_ISO = function(){
     // полосы
     b+=R(X(0),44,X(5)-X(0),34,'var(--blue-soft)','var(--blue)',6,2);
     b+=R(X(5),44,X(10)-X(5),34,'var(--red-soft)','var(--red)',6,2);
-    b+=TL((X(0)+X(5))/2,66,'правильные: меньше 1',14,'var(--blue)','middle',true);
-    b+=TL((X(5)+X(10))/2,66,'неправильные: 1 и больше',14,'var(--red)','middle',true);
+    b+=TL((X(0)+X(5))/2,66,EN?'proper: less than 1':'правильные: меньше 1',14,'var(--blue)','middle',true);
+    b+=TL((X(5)+X(10))/2,66,EN?'improper: 1 and above':'неправильные: 1 и больше',14,'var(--red)','middle',true);
     // ось
     b+=L(x0-10,ay,W-6,ay,'var(--ink)',3,' marker-end="url(#frac4_line_arr)"');
     for(var k=0;k<=10;k++){
@@ -21436,9 +21513,9 @@ SVG_LIB.TRI_ISO = function(){
     });
     b+='<circle cx="'+X(5)+'" cy="'+ay+'" r="7" fill="var(--green)" stroke="var(--sheet)" stroke-width="2"/>';
     b+=TL(X(5),ay+62,'= 5/5',13,'var(--green)','middle',true);
-    b+=TL(W/2,H-8,'Каждое маленькое деление — одна пятая. Целое 1 = пять пятых.',14,'var(--muted)','middle');
+    b+=TL(W/2,H-8,EN?'Each small tick is one fifth. The whole 1 = five fifths.':'Каждое маленькое деление — одна пятая. Целое 1 = пять пятых.',14,'var(--muted)','middle');
     b=b.replace("'= 5/5'","'= 5/5'");
-    return S(W,H,540,'Числовой луч от 0 до 2, каждая единица разделена на пять частей; отмечены дроби 2/5, 4/5, 1 = 5/5 и 7/5',b);
+    return S(W,H,540,EN?'A number line from 0 to 2, each unit split into five parts; marked fractions 2/5, 4/5, 1 = 5/5, and 7/5':'Числовой луч от 0 до 2, каждая единица разделена на пять частей; отмечены дроби 2/5, 4/5, 1 = 5/5 и 7/5',b);
   };
 
   // ---------- FRAC4_OF_NUMBER ----------
@@ -23590,10 +23667,11 @@ SVG_LIB.QUADR_MIDLINE_ANIM = function(){
 
 /* ---------- N4_ADD_ANIM — «Многозначные числа»: 48 764 + 35 693 = 84 457 столбиком, с переносом ---------- */
 SVG_LIB.N4_ADD_ANIM = function(){
+  var EN=getLang()==='en';
   var XS=[165,213,261,309,357];               // дт, т, с, д, е (десятки тысяч ... единицы)
   var LABEL_Y=28, CARRY_Y=54, ROW1_Y=80, ROW2_Y=122, LINE_Y=140, SUM_Y=182;
   var ROW1=['4','8','7','6','4'], ROW2=['3','5','6','9','3'], SUM=['8','4','4','5','7'];
-  var LBL=['дт','т','с','д','е'];
+  var LBL=EN?['tth','th','h','t','o']:['дт','т','с','д','е'];
   function D(x,y,s,attrs,fill){ return AN.t(x,y,s,{size:24,weight:700,fill:fill||'var(--ink)',attrs:attrs}); }
   var b='';
   var i;
@@ -23615,18 +23693,19 @@ SVG_LIB.N4_ADD_ANIM = function(){
   b+=D(XS[2],SUM_Y,SUM[2],'data-in="3" data-hl="5" data-hl-fill="var(--green)"');
   b+=D(XS[1],SUM_Y,SUM[1],'data-in="4" data-hl="5" data-hl-fill="var(--green)"');
   b+=D(XS[0],SUM_Y,SUM[0],'data-in="4" data-hl="5" data-hl-fill="var(--green)"');
-  b+=AN.cap(0,'Разряд под разрядом. Считаем справа налево.',{y:225});
-  b+=AN.cap(1,'Единицы: 4 + 3 = 7.',{y:225});
-  b+=AN.cap(2,'Десятки: 6 + 9 = 15 — пишем 5, 1 в перенос.',{y:225});
-  b+=AN.cap(3,'Сотни: 7 + 6 + 1 = 14 — пишем 4, 1 переносим.',{y:225});
-  b+=AN.cap(4,'Тысячи и десятки тысяч — так же, с переносом.',{y:225});
+  b+=AN.cap(0,EN?'Place under place. We count right to left.':'Разряд под разрядом. Считаем справа налево.',{y:225});
+  b+=AN.cap(1,EN?'Ones: 4 + 3 = 7.':'Единицы: 4 + 3 = 7.',{y:225});
+  b+=AN.cap(2,EN?'Tens: 6 + 9 = 15 — write 5, carry 1.':'Десятки: 6 + 9 = 15 — пишем 5, 1 в перенос.',{y:225});
+  b+=AN.cap(3,EN?'Hundreds: 7 + 6 + 1 = 14 — write 4, carry 1.':'Сотни: 7 + 6 + 1 = 14 — пишем 4, 1 переносим.',{y:225});
+  b+=AN.cap(4,EN?'Thousands and ten-thousands — the same way, with carrying.':'Тысячи и десятки тысяч — так же, с переносом.',{y:225});
   b+=AN.cap(5,'48 764 + 35 693 = 84 457',{y:225,size:18,weight:700,last:true});
   return animFigure(b,{w:520,h:250,steps:6,dur:'3800,4000,4200,4200,3600',
-    label:'Анимация: сложение столбиком 48 764 и 35 693; единицы 4+3=7 без переноса, десятки 6+9=15 — пишем 5, переносим 1 в сотни, сотни 7+6+1=14 — пишем 4, переносим 1 в тысячи, тысячи и десятки тысяч считаются так же; ответ 84 457'});
+    label:EN?'Animation: adding in column form 48,764 and 35,693; ones 4+3=7 with no carry, tens 6+9=15 — write 5, carry 1 to the hundreds, hundreds 7+6+1=14 — write 4, carry 1 to the thousands, thousands and ten-thousands work the same way; the answer is 84,457':'Анимация: сложение столбиком 48 764 и 35 693; единицы 4+3=7 без переноса, десятки 6+9=15 — пишем 5, переносим 1 в сотни, сотни 7+6+1=14 — пишем 4, переносим 1 в тысячи, тысячи и десятки тысяч считаются так же; ответ 84 457'});
 };
 
 /* ---------- MUL4_LONGDIV_ANIM — «Умножение и деление»: 3 618 : 6 = 603 уголком, с нулём в частном ---------- */
 SVG_LIB.MUL4_LONGDIV_ANIM = function(){
+  var EN=getLang()==='en';
   var DX=[190,224,258,292], DIG=['3','6','1','8'];   // цифры делимого
   var ROW_Y=64, BOX_Y=40, BOX_H=36;
   var CORNER_X=325, DIV_X=348, LINE_Y=80, QY=106, QX=[340,358,376];
@@ -23653,24 +23732,25 @@ SVG_LIB.MUL4_LONGDIV_ANIM = function(){
   b+=D(SX,WORK_Y,'36',26,'var(--blue)','data-in="1" data-out="2" data-pop');
   b+=AN.t(SX,NOTE_Y,'36 − 36 = 0',{size:15,fill:'var(--muted)',attrs:'data-in="1" data-out="2"'});
   b+=D(SX,WORK_Y,'1',26,'var(--red)','data-in="2" data-out="3" data-pop');
-  b+=AN.t(SX,NOTE_Y,'1 меньше 6!',{size:16,weight:700,fill:'var(--red)',attrs:'data-in="2" data-out="3"'});
+  b+=AN.t(SX,NOTE_Y,EN?'1 is less than 6!':'1 меньше 6!',{size:16,weight:700,fill:'var(--red)',attrs:'data-in="2" data-out="3"'});
   b+=D(SX,WORK_Y,'18',26,'var(--blue)','data-in="3" data-out="5" data-pop');
   b+=AN.t(SX,NOTE_Y,'18 − 18 = 0',{size:15,fill:'var(--muted)',attrs:'data-in="4" data-out="5"'});
-  b+=AN.cap(0,'3 618 : 6 — уголком, разряд за разрядом.',{y:222});
-  b+=AN.cap(1,'36 : 6 = 6 — первая цифра частного.',{y:222});
-  b+=AN.cap(2,'Сносим 1. Оно меньше 6 — пишем в частном 0!',{y:222});
-  b+=AN.cap(3,'Сносим ещё 8: получилось 18.',{y:222});
-  b+=AN.cap(4,'18 : 6 = 3, остатка нет.',{y:222});
+  b+=AN.cap(0,EN?'3,618 : 6 — long division, one digit at a time.':'3 618 : 6 — уголком, разряд за разрядом.',{y:222});
+  b+=AN.cap(1,EN?'36 : 6 = 6 — the first digit of the quotient.':'36 : 6 = 6 — первая цифра частного.',{y:222});
+  b+=AN.cap(2,EN?'Bring down 1. It&rsquo;s less than 6 — write 0 in the quotient!':'Сносим 1. Оно меньше 6 — пишем в частном 0!',{y:222});
+  b+=AN.cap(3,EN?'Bring down 8 more: we get 18.':'Сносим ещё 8: получилось 18.',{y:222});
+  b+=AN.cap(4,EN?'18 : 6 = 3, no remainder.':'18 : 6 = 3, остатка нет.',{y:222});
   b+=AN.cap(5,'3 618 : 6 = 603',{y:222,size:19,weight:700,last:true});
   return animFigure(b,{w:520,h:248,steps:6,dur:'3800,4200,3800,3600,3800',
-    label:'Анимация: деление уголком 3618 на 6; 36:6=6 — первая цифра частного; сносим 1, оно меньше 6, поэтому в частном пишут 0; сносим 8, получают 18; 18:6=3; частное 603'});
+    label:EN?'Animation: long division of 3618 by 6; 36:6=6 — the first digit of the quotient; bring down 1, it&rsquo;s less than 6, so we write 0 in the quotient; bring down 8, getting 18; 18:6=3; the quotient is 603':'Анимация: деление уголком 3618 на 6; 36:6=6 — первая цифра частного; сносим 1, оно меньше 6, поэтому в частном пишут 0; сносим 8, получают 18; 18:6=3; частное 603'});
 };
 
 /* ---------- VAL4_CLOCK_ANIM — «Величины: время»: сколько прошло с 14:35 до 17:10, прыжки по круглым отметкам ---------- */
 SVG_LIB.VAL4_CLOCK_ANIM = function(){
+  var EN=getLang()==='en';
   var Y=120, xs=[50,190,340,470];
   var labs=['14:35','15:00','17:00','17:10'];
-  var subs=['начало','круглый час','круглый час','конец'];
+  var subs=EN?['start','round hour','round hour','end']:['начало','круглый час','круглый час','конец'];
   var cols=['var(--red)','var(--gold)','var(--gold)','var(--green)'];
   var softs=['var(--red-soft)','var(--gold-soft)','var(--gold-soft)','var(--green-soft)'];
   var b='';
@@ -23690,23 +23770,24 @@ SVG_LIB.VAL4_CLOCK_ANIM = function(){
     return AN.g('data-in="'+k+'"','<path d="M'+x1+','+(Y-10)+' Q'+mx+','+(Y-64)+' '+x2+','+(Y-10)+'" fill="none" stroke="var(--blue)" stroke-width="2.5"/>'
       +AN.t(mx,Y-48,txt,{size:16,weight:700,fill:'var(--blue)'}));
   }
-  b+=jump(1,0,1,'+ 25 мин');
-  b+=jump(2,1,2,'+ 2 ч');
-  b+=jump(3,2,3,'+ 10 мин');
+  b+=jump(1,0,1,EN?'+ 25 min':'+ 25 мин');
+  b+=jump(2,1,2,EN?'+ 2 h':'+ 2 ч');
+  b+=jump(3,2,3,EN?'+ 10 min':'+ 10 мин');
   b+=AN.g('data-in="4" data-pop','<rect x="30" y="196" width="460" height="50" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>'
-    +AN.t(260,220,'25 мин + 2 ч + 10 мин = 2 ч 35 мин',{size:17,weight:700,fill:'var(--green)'})
-    +AN.t(260,239,'Прошло от 14:35 до 17:10',{size:13,fill:'var(--ink)'}));
-  b+=AN.cap(0,'Начало: 14:35. Идём прыжками до круглых отметок.',{y:278});
-  b+=AN.cap(1,'Прыжок 1: до 15:00 — это 25 минут.',{y:278});
-  b+=AN.cap(2,'Прыжок 2: до 17:00 — ещё целых 2 часа.',{y:278});
-  b+=AN.cap(3,'Прыжок 3: до 17:10 — ещё 10 минут.',{y:278});
-  b+=AN.cap(4,'Всего прошло 2 ч 35 мин',{y:278,size:18,weight:700,last:true});
+    +AN.t(260,220,EN?'25 min + 2 h + 10 min = 2 h 35 min':'25 мин + 2 ч + 10 мин = 2 ч 35 мин',{size:17,weight:700,fill:'var(--green)'})
+    +AN.t(260,239,EN?'Elapsed from 14:35 to 17:10':'Прошло от 14:35 до 17:10',{size:13,fill:'var(--ink)'}));
+  b+=AN.cap(0,EN?'Start: 14:35. We move in jumps to round marks.':'Начало: 14:35. Идём прыжками до круглых отметок.',{y:278});
+  b+=AN.cap(1,EN?'Jump 1: to 15:00 — that&rsquo;s 25 minutes.':'Прыжок 1: до 15:00 — это 25 минут.',{y:278});
+  b+=AN.cap(2,EN?'Jump 2: to 17:00 — a full 2 hours more.':'Прыжок 2: до 17:00 — ещё целых 2 часа.',{y:278});
+  b+=AN.cap(3,EN?'Jump 3: to 17:10 — 10 more minutes.':'Прыжок 3: до 17:10 — ещё 10 минут.',{y:278});
+  b+=AN.cap(4,EN?'In total, 2 h 35 min passed':'Всего прошло 2 ч 35 мин',{y:278,size:18,weight:700,last:true});
   return animFigure(b,{w:520,h:296,steps:5,dur:'3800,3800,3800,4200',
-    label:'Анимация: линия времени от 14:35 до 17:10 с тремя прыжками до круглых отметок — 25 минут, 2 часа и 10 минут; всего проходит 2 часа 35 минут'});
+    label:EN?'Animation: a timeline from 14:35 to 17:10 with three jumps to round marks — 25 minutes, 2 hours, and 10 minutes; in total 2 hours 35 minutes pass':'Анимация: линия времени от 14:35 до 17:10 с тремя прыжками до круглых отметок — 25 минут, 2 часа и 10 минут; всего проходит 2 часа 35 минут'});
 };
 
 /* ---------- WORD4_TRIANGLE_ANIM — «Текстовые задачи»: треугольник цена–количество–стоимость, 24 руб · 6 = 144 руб ---------- */
 SVG_LIB.WORD4_TRIANGLE_ANIM = function(){
+  var EN=getLang()==='en';
   var CX=260, APEX_Y=22, HH=196, HW=175, DIV_Y=APEX_Y+104;
   var top=[[CX,APEX_Y],[CX-90,DIV_Y],[CX+90,DIV_Y]];
   var b='';
@@ -23718,28 +23799,29 @@ SVG_LIB.WORD4_TRIANGLE_ANIM = function(){
   }
   b+=cover('var(--gold-soft)','var(--gold)','data-in="1" data-out="4"');
   b+=cover('var(--green-soft)','var(--green)','data-in="4" data-pop');
-  b+=AN.t(CX,APEX_Y+62,'стоимость',{size:14,weight:700,fill:'var(--green)'});
+  b+=AN.t(CX,APEX_Y+62,EN?'cost':'стоимость',{size:14,weight:700,fill:'var(--green)'});
   b+=AN.g('data-in="0" data-out="1"', AN.t(CX,APEX_Y+92,'?',{size:26,weight:700,fill:'var(--muted)'}));
-  b+=AN.g('data-in="4" data-pop', AN.t(CX,APEX_Y+96,'144 руб',{size:20,weight:700,fill:'var(--green)'}));
-  b+=AN.t(CX-75,DIV_Y+52,'цена',{size:14,weight:700,fill:'var(--blue)'});
-  b+=AN.t(CX-75,DIV_Y+82,'24 руб',{size:18,weight:700,fill:'var(--blue)'});
-  b+=AN.t(CX+75,DIV_Y+52,'количество',{size:14,weight:700,fill:'var(--gold)'});
+  b+=AN.g('data-in="4" data-pop', AN.t(CX,APEX_Y+96,EN?'144 rub':'144 руб',{size:20,weight:700,fill:'var(--green)'}));
+  b+=AN.t(CX-75,DIV_Y+52,EN?'price':'цена',{size:14,weight:700,fill:'var(--blue)'});
+  b+=AN.t(CX-75,DIV_Y+82,EN?'24 rub':'24 руб',{size:18,weight:700,fill:'var(--blue)'});
+  b+=AN.t(CX+75,DIV_Y+52,EN?'quantity':'количество',{size:14,weight:700,fill:'var(--gold)'});
   b+=AN.t(CX+75,DIV_Y+82,'6',{size:18,weight:700,fill:'var(--gold)'});
   var FY=252;
-  b+=AN.g('data-in="2" data-out="3"', AN.t(CX,FY,'стоимость = цена · количество',{size:16,weight:700}));
+  b+=AN.g('data-in="2" data-out="3"', AN.t(CX,FY,EN?'cost = price · quantity':'стоимость = цена · количество',{size:16,weight:700}));
   b+=AN.g('data-in="3" data-out="4"', AN.t(CX,FY,'24 · 6 = ?',{size:19,weight:700,fill:'var(--ink)'}));
   b+=AN.g('data-in="4" data-pop', AN.t(CX,FY,'24 · 6 = 144',{size:20,weight:700,fill:'var(--green)'}));
-  b+=AN.cap(0,'Треугольник: стоимость сверху, цена и количество снизу.',{y:280});
-  b+=AN.cap(1,'Закрываем «стоимость» — именно её мы ищем.',{y:280});
-  b+=AN.cap(2,'Остались цена и количество — их умножаем.',{y:280});
-  b+=AN.cap(3,'Подставляем числа: 24 · 6.',{y:280});
-  b+=AN.cap(4,'Стоимость = 144 рубля!',{y:280,size:18,weight:700,last:true});
+  b+=AN.cap(0,EN?'Triangle: cost on top, price and quantity below.':'Треугольник: стоимость сверху, цена и количество снизу.',{y:280});
+  b+=AN.cap(1,EN?'We cover &ldquo;cost&rdquo; — that&rsquo;s exactly what we&rsquo;re looking for.':'Закрываем «стоимость» — именно её мы ищем.',{y:280});
+  b+=AN.cap(2,EN?'What&rsquo;s left is price and quantity — we multiply them.':'Остались цена и количество — их умножаем.',{y:280});
+  b+=AN.cap(3,EN?'Plugging in the numbers: 24 · 6.':'Подставляем числа: 24 · 6.',{y:280});
+  b+=AN.cap(4,EN?'Cost = 144 rubles!':'Стоимость = 144 рубля!',{y:280,size:18,weight:700,last:true});
   return animFigure(b,{w:520,h:296,steps:5,dur:'3800,3600,3800,4000',
-    label:'Анимация: треугольник цена-количество-стоимость; закрываем ячейку стоимость, остаются цена 24 рубля и количество 6 — их перемножаем, 24 умножить на 6 равно 144, значит, стоимость 144 рубля'});
+    label:EN?'Animation: a price-quantity-cost triangle; we cover the cost cell, leaving price 24 rubles and quantity 6 — we multiply them, 24 times 6 equals 144, so the cost is 144 rubles':'Анимация: треугольник цена-количество-стоимость; закрываем ячейку стоимость, остаются цена 24 рубля и количество 6 — их перемножаем, 24 умножить на 6 равно 144, значит, стоимость 144 рубля'});
 };
 
 /* ---------- GEO4_COMPOSITE_ANIM — «Составные фигуры»: Г-фигура = прямоугольник 9×6 см без уголка 5×2 см, площадь 44 см² ---------- */
 SVG_LIB.GEO4_COMPOSITE_ANIM = function(){
+  var EN=getLang()==='en';
   var X0=150, Y0=40, X1=366, XN=246, Y1=136, Y2=184; // outer 9×6 (216×144 px), уголок 5×2 (120×48 px), 24px = 1 см
   var PTS = X0+','+Y0+' '+X1+','+Y0+' '+X1+','+Y1+' '+XN+','+Y1+' '+XN+','+Y2+' '+X0+','+Y2;
   var b='';
@@ -23748,24 +23830,25 @@ SVG_LIB.GEO4_COMPOSITE_ANIM = function(){
   b+='<rect data-in="3" x="'+X0+'" y="'+Y1+'" width="'+(XN-X0)+'" height="'+(Y2-Y1)+'" fill="var(--gold-soft)"/>';
   b+='<polygon points="'+PTS+'" fill="none" stroke="var(--ink)" stroke-width="2.5"/>';
   b+='<line data-in="1" x1="'+X0+'" y1="'+Y1+'" x2="'+XN+'" y2="'+Y1+'" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5,5"/>';
-  b+=AN.t((X0+X1)/2,Y0-12,'9 см',{size:16,weight:700});
-  b+=AN.t(X0-14,(Y0+Y2)/2+5,'6 см',{size:16,weight:700,anchor:'end'});
-  b+=AN.t((XN+X1)/2,Y1+20,'5 см',{size:14,weight:700,fill:'var(--muted)'});
-  b+=AN.t(X1+14,(Y1+Y2)/2+5,'2 см',{size:14,weight:700,fill:'var(--muted)',anchor:'start'});
+  b+=AN.t((X0+X1)/2,Y0-12,EN?'9 cm':'9 см',{size:16,weight:700});
+  b+=AN.t(X0-14,(Y0+Y2)/2+5,EN?'6 cm':'6 см',{size:16,weight:700,anchor:'end'});
+  b+=AN.t((XN+X1)/2,Y1+20,EN?'5 cm':'5 см',{size:14,weight:700,fill:'var(--muted)'});
+  b+=AN.t(X1+14,(Y1+Y2)/2+5,EN?'2 cm':'2 см',{size:14,weight:700,fill:'var(--muted)',anchor:'start'});
   b+=AN.g('data-in="2"',AN.t((X0+X1)/2,(Y0+Y1)/2+6,'9 · 4 = 36',{size:16,weight:700,fill:'var(--blue)'}));
   b+=AN.g('data-in="3"',AN.t((X0+XN)/2,(Y1+Y2)/2+6,'4 · 2 = 8',{size:13,weight:700,fill:'var(--gold)'}));
-  b+=AN.g('data-in="4" data-pop',AN.t((X0+X1)/2,220,'36 + 8 = 44 см²',{size:22,weight:700,fill:'var(--green)'}));
-  b+=AN.cap(0,'Г-фигура: прямоугольник 9×6 см без уголка 5×2 см.',{y:260});
-  b+=AN.cap(1,'Разрежем фигуру на два прямоугольника.',{y:260});
-  b+=AN.cap(2,'Первый прямоугольник: 9 · 4 = 36 см².',{y:260});
-  b+=AN.cap(3,'Второй прямоугольник: 4 · 2 = 8 см².',{y:260});
-  b+=AN.cap(4,'Площадь фигуры: 36 + 8 = 44 см²',{y:260,size:17,weight:700,last:true});
+  b+=AN.g('data-in="4" data-pop',AN.t((X0+X1)/2,220,EN?'36 + 8 = 44 cm²':'36 + 8 = 44 см²',{size:22,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,EN?'An L-shape: a 9×6 cm rectangle minus a 5×2 cm corner.':'Г-фигура: прямоугольник 9×6 см без уголка 5×2 см.',{y:260});
+  b+=AN.cap(1,EN?'Let&rsquo;s cut the figure into two rectangles.':'Разрежем фигуру на два прямоугольника.',{y:260});
+  b+=AN.cap(2,EN?'First rectangle: 9 · 4 = 36 cm².':'Первый прямоугольник: 9 · 4 = 36 см².',{y:260});
+  b+=AN.cap(3,EN?'Second rectangle: 4 · 2 = 8 cm².':'Второй прямоугольник: 4 · 2 = 8 см².',{y:260});
+  b+=AN.cap(4,EN?'Area of the figure: 36 + 8 = 44 cm²':'Площадь фигуры: 36 + 8 = 44 см²',{y:260,size:17,weight:700,last:true});
   return animFigure(b,{w:520,h:290,steps:5,dur:'3800,3800,3800,4000',
-    label:'Анимация: Г-образная фигура — прямоугольник 9 на 6 см с вырезанным уголком 5 на 2 см; фигуру режут на два прямоугольника: 9 на 4 (36 квадратных сантиметров) и 4 на 2 (8 квадратных сантиметров); площадь фигуры равна 36 плюс 8, то есть 44 квадратных сантиметра'});
+    label:EN?'Animation: an L-shaped figure — a 9-by-6-cm rectangle with a 5-by-2-cm corner cut out; the figure is cut into two rectangles: 9 by 4 (36 square centimeters) and 4 by 2 (8 square centimeters); the figure&rsquo;s area equals 36 plus 8, that is 44 square centimeters':'Анимация: Г-образная фигура — прямоугольник 9 на 6 см с вырезанным уголком 5 на 2 см; фигуру режут на два прямоугольника: 9 на 4 (36 квадратных сантиметров) и 4 на 2 (8 квадратных сантиметров); площадь фигуры равна 36 плюс 8, то есть 44 квадратных сантиметра'});
 };
 
 /* ---------- FRAC4_OF_NUMBER_ANIM — «Доля от числа»: 3/5 от 20 = 12 (20 предметов, 5 групп по 4) ---------- */
 SVG_LIB.FRAC4_OF_NUMBER_ANIM = function(){
+  var EN=getLang()==='en';
   var CY=110, OFF=13, R=9;
   var GROUPS=[
     {cx:70,  hl:2, dim:0},
@@ -23787,16 +23870,16 @@ SVG_LIB.FRAC4_OF_NUMBER_ANIM = function(){
     b+=dot(cx+OFF,CY+OFF,'data-in="0"'+da+ha);
     b+=AN.g('data-in="1"'+da, AN.t(cx,CY+50,'4',{size:13,weight:700,fill:'var(--muted)'}));
   }
-  b+=AN.g('data-in="2"',AN.t(70,58,'1 группа = 4',{size:15,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="2"',AN.t(70,58,EN?'1 group = 4':'1 группа = 4',{size:15,weight:700,fill:'var(--gold)'}));
   b+=AN.g('data-in="3"',AN.t(170,190,'4 · 3 = 12',{size:18,weight:700,fill:'var(--green)'}));
-  b+=AN.g('data-in="4" data-pop',AN.t(260,225,'3/5 от 20 = 12',{size:22,weight:700,fill:'var(--green)'}));
-  b+=AN.cap(0,'У нас 20 предметов. Найдём 3/5 от 20.',{y:262});
-  b+=AN.cap(1,'Разделим их на 5 равных групп — по 4 в каждой.',{y:262});
-  b+=AN.cap(2,'Одна группа — это 1/5 от 20, то есть 4.',{y:262});
-  b+=AN.cap(3,'Возьмём 3 такие группы: 4 · 3 = 12.',{y:262});
-  b+=AN.cap(4,'3/5 от 20 равно 12',{y:262,size:17,weight:700,last:true});
+  b+=AN.g('data-in="4" data-pop',AN.t(260,225,EN?'3/5 of 20 = 12':'3/5 от 20 = 12',{size:22,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,EN?'We have 20 items. Let&rsquo;s find 3/5 of 20.':'У нас 20 предметов. Найдём 3/5 от 20.',{y:262});
+  b+=AN.cap(1,EN?'Split them into 5 equal groups — 4 in each.':'Разделим их на 5 равных групп — по 4 в каждой.',{y:262});
+  b+=AN.cap(2,EN?'One group is 1/5 of 20, that is 4.':'Одна группа — это 1/5 от 20, то есть 4.',{y:262});
+  b+=AN.cap(3,EN?'Let&rsquo;s take 3 such groups: 4 · 3 = 12.':'Возьмём 3 такие группы: 4 · 3 = 12.',{y:262});
+  b+=AN.cap(4,EN?'3/5 of 20 equals 12':'3/5 от 20 равно 12',{y:262,size:17,weight:700,last:true});
   return animFigure(b,{w:520,h:300,steps:5,dur:'3600,3800,4000,3800',
-    label:'Анимация: 20 кружков делят на 5 равных групп по 4; сначала выделяется золотым одна группа — это одна пятая, то есть 4; затем выделяются золотым ещё две группы, всего три группы — 4 умножить на 3 равно 12; вывод: три пятых от 20 равно 12'});
+    label:EN?'Animation: 20 circles are split into 5 equal groups of 4; first one group is highlighted in gold — that&rsquo;s one fifth, that is 4; then two more groups are highlighted in gold, three groups in total — 4 times 3 equals 12; conclusion: three fifths of 20 equals 12':'Анимация: 20 кружков делят на 5 равных групп по 4; сначала выделяется золотым одна группа — это одна пятая, то есть 4; затем выделяются золотым ещё две группы, всего три группы — 4 умножить на 3 равно 12; вывод: три пятых от 20 равно 12'});
 };
 
 /* ---------- NEG6_THERMO_ANIM — «Отрицательные числа»: термометр −7 + 12 = 5, затем 5 − 9 = −4 ---------- */
@@ -24134,8 +24217,9 @@ SVG_LIB.STAT6_MEAN_ANIM = function(){
 
 /* ---------- N4_COMPARE_ANIM — «Многозначные числа»: сравнение 6 205 371 и 6 250 137 по разрядам ---------- */
 SVG_LIB.N4_COMPARE_ANIM = function(){
+  var EN=getLang()==='en';
   var XS=[110,170,216,262,322,368,414];        // млн, стс, дтс, тыс, сот, дес, ед
-  var LBL=['млн','стс','дтс','тыс','сот','дес','ед'];
+  var LBL=EN?['mln','hth','tth','th','h','t','o']:['млн','стс','дтс','тыс','сот','дес','ед'];
   var LABEL_Y=22, ROW1_Y=64, ROW2_Y=120, MID_Y=92;
   var ROW1=['6','2','0','5','3','7','1'];       // 6 205 371
   var ROW2=['6','2','5','0','1','3','7'];       // 6 250 137
@@ -24175,17 +24259,18 @@ SVG_LIB.N4_COMPARE_ANIM = function(){
   b+=AN.t(XS[2],MID_Y,'&lt;',{size:18,weight:700,fill:'var(--gold)',attrs:'data-in="3" data-pop'});
   // крупный итоговый знак "<" справа
   b+=AN.t(468,MID_Y+8,'&lt;',{size:38,weight:700,fill:'var(--gold)',attrs:'data-in="4" data-pop'});
-  b+=AN.cap(0,'В обоих числах по 7 цифр — сравниваем слева направо.',{y:158});
-  b+=AN.cap(1,'Миллионы: 6 = 6 — одинаково, идём дальше.',{y:158});
-  b+=AN.cap(2,'Сотни тысяч: 2 = 2 — тоже совпадают.',{y:158});
-  b+=AN.cap(3,'Десятки тысяч: 0 и 5 — вот и различие! 0 &lt; 5.',{y:158});
-  b+=AN.cap(4,'Значит, 6 205 371 &lt; 6 250 137.',{y:158,size:18,weight:700,last:true});
+  b+=AN.cap(0,EN?'Both numbers have 7 digits — we compare left to right.':'В обоих числах по 7 цифр — сравниваем слева направо.',{y:158});
+  b+=AN.cap(1,EN?'Millions: 6 = 6 — the same, let&rsquo;s move on.':'Миллионы: 6 = 6 — одинаково, идём дальше.',{y:158});
+  b+=AN.cap(2,EN?'Hundred thousands: 2 = 2 — also the same.':'Сотни тысяч: 2 = 2 — тоже совпадают.',{y:158});
+  b+=AN.cap(3,EN?'Ten thousands: 0 and 5 — there&rsquo;s the difference! 0 &lt; 5.':'Десятки тысяч: 0 и 5 — вот и различие! 0 &lt; 5.',{y:158});
+  b+=AN.cap(4,EN?'So, 6,205,371 &lt; 6,250,137.':'Значит, 6 205 371 &lt; 6 250 137.',{y:158,size:18,weight:700,last:true});
   return animFigure(b,{w:520,h:185,steps:5,dur:'3600,3600,3600,4000',
-    label:'Анимация: сравнение чисел 6 205 371 и 6 250 137 по разрядам слева направо; миллионы 6=6 совпадают, сотни тысяч 2=2 совпадают, десятки тысяч 0 и 5 — первое различие, 0 меньше 5; вывод: 6 205 371 меньше 6 250 137'});
+    label:EN?'Animation: comparing the numbers 6,205,371 and 6,250,137 by place, left to right; millions 6=6 match, hundred thousands 2=2 match, ten thousands 0 and 5 — the first difference, 0 is less than 5; conclusion: 6,205,371 is less than 6,250,137':'Анимация: сравнение чисел 6 205 371 и 6 250 137 по разрядам слева направо; миллионы 6=6 совпадают, сотни тысяч 2=2 совпадают, десятки тысяч 0 и 5 — первое различие, 0 меньше 5; вывод: 6 205 371 меньше 6 250 137'});
 };
 
 /* ---------- MUL4_SINGLE_ANIM — «Умножение на однозначное число»: 3 128 · 4 = 12 512 столбиком, с переносом ---------- */
 SVG_LIB.MUL4_SINGLE_ANIM = function(){
+  var EN=getLang()==='en';
   var XS=[122,168,214,260,306];                // тт, т, с, д, е (слева направо, 5 разрядов под ответ)
   var CARRY_Y=42, ROW1_Y=72, ROW2_Y=112, LINE_Y=130, PROD_Y=170;
   var TOP=['3','1','2','8'];                    // 3128, под XS[1..4]
@@ -24212,24 +24297,25 @@ SVG_LIB.MUL4_SINGLE_ANIM = function(){
   b+=D(XS[2],PROD_Y,'5','data-in="3" data-pop data-hl="5" data-hl-fill="var(--green)"');
   b+=D(XS[1],PROD_Y,'2','data-in="4" data-pop data-hl="5" data-hl-fill="var(--green)"');
   b+=D(XS[0],PROD_Y,'1','data-in="4" data-pop data-hl="5" data-hl-fill="var(--green)"');
-  b+=AN.cap(0,'3128 × 4 — умножаем столбиком, с единиц.',{y:222});
-  b+=AN.cap(1,'Единицы: 8 × 4 = 32 — пишем 2, 3 запоминаем.',{y:222});
-  b+=AN.cap(2,'Десятки: 2 × 4 = 8, +3 = 11 — пишем 1, 1 в уме.',{y:222});
-  b+=AN.cap(3,'Сотни: 1 × 4 = 4, +1 — это 5.',{y:222});
-  b+=AN.cap(4,'Тысячи: 3 × 4 = 12 — пишем обе цифры сразу.',{y:222});
+  b+=AN.cap(0,EN?'3128 × 4 — we multiply in column form, starting from the ones.':'3128 × 4 — умножаем столбиком, с единиц.',{y:222});
+  b+=AN.cap(1,EN?'Ones: 8 × 4 = 32 — write 2, carry 3.':'Единицы: 8 × 4 = 32 — пишем 2, 3 запоминаем.',{y:222});
+  b+=AN.cap(2,EN?'Tens: 2 × 4 = 8, +3 = 11 — write 1, carry 1.':'Десятки: 2 × 4 = 8, +3 = 11 — пишем 1, 1 в уме.',{y:222});
+  b+=AN.cap(3,EN?'Hundreds: 1 × 4 = 4, +1 — that&rsquo;s 5.':'Сотни: 1 × 4 = 4, +1 — это 5.',{y:222});
+  b+=AN.cap(4,EN?'Thousands: 3 × 4 = 12 — write both digits at once.':'Тысячи: 3 × 4 = 12 — пишем обе цифры сразу.',{y:222});
   b+=AN.cap(5,'3128 × 4 = 12 512',{y:222,size:19,weight:700,last:true});
   return animFigure(b,{w:520,h:248,steps:6,dur:'3800,4000,4200,3800,3800',
-    label:'Анимация: умножение столбиком 3128 на 4; единицы 8×4=32 — пишем 2, запоминаем 3; десятки 2×4=8, плюс 3 равно 11 — пишем 1, запоминаем 1; сотни 1×4=4, плюс 1 равно 5; тысячи 3×4=12 — переносить некуда, пишем обе цифры; ответ 12512'});
+    label:EN?'Animation: multiplying 3128 by 4 in column form; ones 8×4=32 — write 2, carry 3; tens 2×4=8, plus 3 equals 11 — write 1, carry 1; hundreds 1×4=4, plus 1 equals 5; thousands 3×4=12 — nowhere left to carry, so write both digits; the answer is 12,512':'Анимация: умножение столбиком 3128 на 4; единицы 8×4=32 — пишем 2, запоминаем 3; десятки 2×4=8, плюс 3 равно 11 — пишем 1, запоминаем 1; сотни 1×4=4, плюс 1 равно 5; тысячи 3×4=12 — переносить некуда, пишем обе цифры; ответ 12512'});
 };
 
 /* ---------- VAL4_CARRY_ANIM — «Величины: именованные числа»: 3 м 45 см + 2 м 78 см = 6 м 23 см, перенос через 100 см = 1 м ---------- */
 SVG_LIB.VAL4_CARRY_ANIM = function(){
+  var EN=getLang()==='en';
   var XM=205, XC=365, MID=285;
   var LABEL_Y=28, CARRY_Y=54, ROW1_Y=80, ROW2_Y=122, LINE_Y=140, SUM_Y=182;
   function D(x,y,s,attrs,fill,size){ return AN.t(x,y,s,{size:size||24,weight:700,fill:fill||'var(--ink)',attrs:attrs}); }
   var b='';
-  b+=AN.t(XM,LABEL_Y,'м',{size:13,fill:'var(--muted)'});
-  b+=AN.t(XC,LABEL_Y,'см',{size:13,fill:'var(--muted)'});
+  b+=AN.t(XM,LABEL_Y,EN?'m':'м',{size:13,fill:'var(--muted)'});
+  b+=AN.t(XC,LABEL_Y,EN?'cm':'см',{size:13,fill:'var(--muted)'});
   b+='<line x1="'+MID+'" y1="56" x2="'+MID+'" y2="202" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 5"/>';
   // подсветка разряда, который сейчас складываем
   b+='<rect x="'+(XC-50)+'" y="56" width="100" height="146" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" data-in="1" data-out="2"/>';
@@ -24242,22 +24328,23 @@ SVG_LIB.VAL4_CARRY_ANIM = function(){
   b+='<line x1="105" y1="'+LINE_Y+'" x2="415" y2="'+LINE_Y+'" stroke="var(--ink)" stroke-width="2"/>';
   // перенос: сто сантиметров = один метр
   b+=D(XM,CARRY_Y,'1','data-in="2" data-dim="4" data-pop','var(--red)',15);
-  b+=AN.t(MID,CARRY_Y+2,'100см=1м',{size:12,weight:700,fill:'var(--red)',attrs:'data-in="2" data-out="3"'});
+  b+=AN.t(MID,CARRY_Y+2,EN?'100cm=1m':'100см=1м',{size:12,weight:700,fill:'var(--red)',attrs:'data-in="2" data-out="3"'});
   // сумма см: сначала 123 целиком, потом распадается на перенос 1 и остаток 23
   b+=D(XC,SUM_Y,'123','data-in="1" data-out="2"','var(--gold)');
   b+=D(XC,SUM_Y,'23','data-in="2" data-hl="4" data-hl-fill="var(--green)"');
   b+=D(XM,SUM_Y,'6','data-in="3" data-hl="4" data-hl-fill="var(--green)"');
-  b+=AN.cap(0,'Складываем отдельно: метры с метрами, см с см.',{y:225});
-  b+=AN.cap(1,'Сантиметры: 45 + 78 = 123 см.',{y:225});
-  b+=AN.cap(2,'100 см = 1 м! Значит 123 см = 1 м и 23 см.',{y:225});
-  b+=AN.cap(3,'Метры: 3 + 2 = 5, да ещё 1 из см — итого 6.',{y:225});
-  b+=AN.cap(4,'Ответ: 6 м 23 см',{y:225,size:18,weight:700,last:true});
+  b+=AN.cap(0,EN?'We add separately: meters with meters, cm with cm.':'Складываем отдельно: метры с метрами, см с см.',{y:225});
+  b+=AN.cap(1,EN?'Centimeters: 45 + 78 = 123 cm.':'Сантиметры: 45 + 78 = 123 см.',{y:225});
+  b+=AN.cap(2,EN?'100 cm = 1 m! So 123 cm = 1 m and 23 cm.':'100 см = 1 м! Значит 123 см = 1 м и 23 см.',{y:225});
+  b+=AN.cap(3,EN?'Meters: 3 + 2 = 5, plus 1 more from the cm — 6 in total.':'Метры: 3 + 2 = 5, да ещё 1 из см — итого 6.',{y:225});
+  b+=AN.cap(4,EN?'Answer: 6 m 23 cm':'Ответ: 6 м 23 см',{y:225,size:18,weight:700,last:true});
   return animFigure(b,{w:520,h:250,steps:5,dur:'3800,4000,4200,3600',
-    label:'Анимация: сложение именованных чисел 3 м 45 см и 2 м 78 см столбиком по единицам; сначала сантиметры 45+78=123 см, затем перенос — 100 см это 1 м, значит 123 см это 1 м 23 см; потом метры 3+2=5 плюс перенесённый 1 метр равно 6; итоговый ответ 6 м 23 см'});
+    label:EN?'Animation: adding the named numbers 3 m 45 cm and 2 m 78 cm in column form by unit; first the centimeters 45+78=123 cm, then carrying — 100 cm is 1 m, so 123 cm is 1 m 23 cm; then the meters 3+2=5 plus the carried 1 meter equals 6; the final answer is 6 m 23 cm':'Анимация: сложение именованных чисел 3 м 45 см и 2 м 78 см столбиком по единицам; сначала сантиметры 45+78=123 см, затем перенос — 100 см это 1 м, значит 123 см это 1 м 23 см; потом метры 3+2=5 плюс перенесённый 1 метр равно 6; итоговый ответ 6 м 23 см'});
 };
 
 /* ---------- WORD4_MEET_ANIM — «Встречное движение и вдогонку»: навстречу 36 км, 4 и 5 км/ч, встреча через 4 ч; вдогонку 18 км, 15 и 12 км/ч, через 6 ч ---------- */
 SVG_LIB.WORD4_MEET_ANIM = function(){
+  var EN=getLang()==='en';
   var A=60, B=460, RY=112, MX=238;                      // 36 км = 400 px, встреча на 16 км от A (4/9·36)
   var b='';
   function dot(x,y,c,soft){ return '<circle cx="'+x+'" cy="'+y+'" r="11" fill="'+soft+'" stroke="'+c+'" stroke-width="2.5"/>'; }
@@ -24271,17 +24358,17 @@ SVG_LIB.WORD4_MEET_ANIM = function(){
   b+='<line x1="'+A+'" y1="'+RY+'" x2="'+B+'" y2="'+RY+'" stroke="var(--line)" stroke-width="5"/>';
   b+='<line x1="'+A+'" y1="'+(RY-10)+'" x2="'+A+'" y2="'+(RY+10)+'" stroke="var(--ink)" stroke-width="2"/><line x1="'+B+'" y1="'+(RY-10)+'" x2="'+B+'" y2="'+(RY+10)+'" stroke="var(--ink)" stroke-width="2"/>';
   // скорости сверху
-  b+=AN.t(A,30,'4 км/ч →',{size:16,weight:700,fill:'var(--blue)',anchor:'start'});
-  b+=AN.t(B,30,'← 5 км/ч',{size:16,weight:700,fill:'var(--red)',anchor:'end'});
+  b+=AN.t(A,30,EN?'4 km/h →':'4 км/ч →',{size:16,weight:700,fill:'var(--blue)',anchor:'start'});
+  b+=AN.t(B,30,EN?'← 5 km/h':'← 5 км/ч',{size:16,weight:700,fill:'var(--red)',anchor:'end'});
   // расстояние 36 км (видно до начала движения)
-  b+=gap('data-out="1"',A,B,RY+34,'36 км');
+  b+=gap('data-out="1"',A,B,RY+34,EN?'36 km':'36 км');
   // формула скорости сближения (с шага 1)
   b+=AN.g('data-in="1"','<rect x="150" y="52" width="220" height="32" rx="9" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>'
-    +AN.t(260,74,'4 + 5 = 9 км/ч',{size:17,weight:700}));
+    +AN.t(260,74,EN?'4 + 5 = 9 km/h':'4 + 5 = 9 км/ч',{size:17,weight:700}));
   // встреча: вспышка и подпись
   b+=AN.g('data-in="2" data-pop','<line x1="'+MX+'" y1="92" x2="'+MX+'" y2="'+(RY-14)+'" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 4"/>'
     +'<circle cx="'+MX+'" cy="'+RY+'" r="7" fill="var(--gold)"/>');
-  b+=AN.g('data-in="2"',AN.t(MX,RY+34,'встреча! 36 : 9 = 4 ч',{size:16,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="2"',AN.t(MX,RY+34,EN?'they meet! 36 : 9 = 4 h':'встреча! 36 : 9 = 4 ч',{size:16,weight:700,fill:'var(--gold)'}));
   // точки, которые едут навстречу
   b+=AN.g('data-mv="1" style="--tx:'+(MX-11-A)+'px;--ty:0px"',dot(A,RY,'var(--blue)','var(--blue-soft)'));
   b+=AN.g('data-mv="1" style="--tx:'+(MX+11-B)+'px;--ty:0px"',dot(B,RY,'var(--red)','var(--red-soft)'));
@@ -24292,17 +24379,18 @@ SVG_LIB.WORD4_MEET_ANIM = function(){
     +dot(CM,CY,'var(--red)','var(--red-soft)')
     +AN.t(CA,CY-16,'15 →',{size:14,weight:700,fill:'var(--blue)'})
     +AN.t(CM,CY-16,'12 →',{size:14,weight:700,fill:'var(--red)'})
-    +gap('',CA,CM,CY+22,'18 км'));
-  b+=AN.cap(0,'36 км, скорости 4 и 5 км/ч — идут навстречу.',{y:270});
-  b+=AN.cap(1,'Навстречу — расстояние тает на 4 + 5 = 9 км в час.',{y:270});
-  b+=AN.cap(2,'36 : 9 = 4 часа — время до встречи!',{y:270});
-  b+=AN.cap(3,'Вдогонку — вычитаем: 15 − 12 = 3, 18 : 3 = 6 ч.',{y:270,size:17,weight:700,last:true});
+    +gap('',CA,CM,CY+22,EN?'18 km':'18 км'));
+  b+=AN.cap(0,EN?'36 km, speeds 4 and 5 km/h — moving toward each other.':'36 км, скорости 4 и 5 км/ч — идут навстречу.',{y:270});
+  b+=AN.cap(1,EN?'Toward each other — the distance shrinks by 4 + 5 = 9 km each hour.':'Навстречу — расстояние тает на 4 + 5 = 9 км в час.',{y:270});
+  b+=AN.cap(2,EN?'36 : 9 = 4 hours — the time until they meet!':'36 : 9 = 4 часа — время до встречи!',{y:270});
+  b+=AN.cap(3,EN?'Catching up — we subtract: 15 − 12 = 3, 18 : 3 = 6 h.':'Вдогонку — вычитаем: 15 − 12 = 3, 18 : 3 = 6 ч.',{y:270,size:17,weight:700,last:true});
   return animFigure(b,{w:520,h:286,steps:4,dur:'4000,3600,4200',
-    label:'Анимация: два человека идут навстречу друг другу, расстояние 36 км, скорости 4 и 5 км/ч, расстояние уменьшается на 9 км в час, встреча через 4 часа; для сравнения показано движение вдогонку — расстояние 18 км, скорости 15 и 12 км/ч, разность скоростей 3 км/ч, догонит через 6 часов'});
+    label:EN?'Animation: two people walk toward each other, 36 km apart, speeds 4 and 5 km/h, the distance shrinks by 9 km each hour, they meet after 4 hours; for comparison, a catching-up scenario is also shown — 18 km apart, speeds 15 and 12 km/h, the speed difference 3 km/h, catching up after 6 hours':'Анимация: два человека идут навстречу друг другу, расстояние 36 км, скорости 4 и 5 км/ч, расстояние уменьшается на 9 км в час, встреча через 4 часа; для сравнения показано движение вдогонку — расстояние 18 км, скорости 15 и 12 км/ч, разность скоростей 3 км/ч, догонит через 6 часов'});
 };
 
 /* ---------- GEO4_PERIM_AREA_ANIM — «Периметр и площадь»: один прямоугольник 5×3 см — сначала обходим границу (P=16 см), потом считаем клеточки (S=15 см²) ---------- */
 SVG_LIB.GEO4_PERIM_AREA_ANIM = function(){
+  var EN=getLang()==='en';
   var CELL=36, COLS=5, ROWS=3;
   var X0=172, Y0=58, X1=X0+CELL*COLS, Y1=Y0+CELL*ROWS; // 172..352, 58..166
   var MY=(Y0+Y1)/2+5, MX=(X0+X1)/2;
@@ -24321,13 +24409,13 @@ SVG_LIB.GEO4_PERIM_AREA_ANIM = function(){
     + '<line style="transition-delay:.3s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X1+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y1+'"/>'
     + '<line style="transition-delay:.6s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X1+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y1+'"/>'
     + '<line style="transition-delay:.9s" data-in="1" data-out="2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" x1="'+X0+'" y1="'+Y1+'" x2="'+X0+'" y2="'+Y0+'"/>'
-    + AN.g('data-pop style="transition-delay:0s;animation-delay:0s"',AN.t(MX,Y0-14,'5 см',{size:16,weight:700,fill:'var(--gold)'}))
-    + AN.g('data-pop style="transition-delay:.3s;animation-delay:.3s"',AN.t(X1+14,MY,'3 см',{size:16,weight:700,fill:'var(--gold)',anchor:'start'}))
-    + AN.g('data-pop style="transition-delay:.6s;animation-delay:.6s"',AN.t(MX,Y1+22,'5 см',{size:16,weight:700,fill:'var(--gold)'}))
-    + AN.g('data-pop style="transition-delay:.9s;animation-delay:.9s"',AN.t(X0-14,MY,'3 см',{size:16,weight:700,fill:'var(--gold)',anchor:'end'}))
-    + AN.g('data-pop style="transition-delay:1.3s;animation-delay:1.3s"',AN.t(MX,214,'P = 5 + 3 + 5 + 3 = 16 см',{size:17,weight:700,fill:'var(--gold)'})));
+    + AN.g('data-pop style="transition-delay:0s;animation-delay:0s"',AN.t(MX,Y0-14,EN?'5 cm':'5 см',{size:16,weight:700,fill:'var(--gold)'}))
+    + AN.g('data-pop style="transition-delay:.3s;animation-delay:.3s"',AN.t(X1+14,MY,EN?'3 cm':'3 см',{size:16,weight:700,fill:'var(--gold)',anchor:'start'}))
+    + AN.g('data-pop style="transition-delay:.6s;animation-delay:.6s"',AN.t(MX,Y1+22,EN?'5 cm':'5 см',{size:16,weight:700,fill:'var(--gold)'}))
+    + AN.g('data-pop style="transition-delay:.9s;animation-delay:.9s"',AN.t(X0-14,MY,EN?'3 cm':'3 см',{size:16,weight:700,fill:'var(--gold)',anchor:'end'}))
+    + AN.g('data-pop style="transition-delay:1.3s;animation-delay:1.3s"',AN.t(MX,214,EN?'P = 5 + 3 + 5 + 3 = 16 cm':'P = 5 + 3 + 5 + 3 = 16 см',{size:17,weight:700,fill:'var(--gold)'})));
   // --- шаг 2: подписи сторон синим — те же размеры, нужны для площади ---
-  b+=AN.g('data-in="2"',AN.t(MX,Y0-14,'5 см',{size:16,weight:700,fill:'var(--blue)'})+AN.t(X0-14,MY,'3 см',{size:16,weight:700,fill:'var(--blue)',anchor:'end'}));
+  b+=AN.g('data-in="2"',AN.t(MX,Y0-14,EN?'5 cm':'5 см',{size:16,weight:700,fill:'var(--blue)'})+AN.t(X0-14,MY,EN?'3 cm':'3 см',{size:16,weight:700,fill:'var(--blue)',anchor:'end'}));
   // --- шаг 2: клеточки появляются по одной ---
   var cells='', r,c;
   for(r=0;r<ROWS;r++) for(c=0;c<COLS;c++){
@@ -24335,22 +24423,23 @@ SVG_LIB.GEO4_PERIM_AREA_ANIM = function(){
   }
   b+=cells;
   // --- шаг 3: формула площади ---
-  b+=AN.g('data-in="3" data-out="4" data-pop',AN.t(MX,214,'S = 5 · 3 = 15 см²',{size:17,weight:700,fill:'var(--green)'}));
+  b+=AN.g('data-in="3" data-out="4" data-pop',AN.t(MX,214,EN?'S = 5 · 3 = 15 cm²':'S = 5 · 3 = 15 см²',{size:17,weight:700,fill:'var(--green)'}));
   // --- шаг 4: итог — и граница, и клеточки видны сразу, рядом короткие формулы ---
   b+=borderLines('data-in="4"');
-  b+=AN.g('data-in="4" data-pop',AN.t(MX-90,214,'P = 16 см',{size:17,weight:700,fill:'var(--gold)'}));
-  b+=AN.g('data-in="4" data-pop style="animation-delay:.2s"',AN.t(MX+90,214,'S = 15 см²',{size:17,weight:700,fill:'var(--green)'}));
-  b+=AN.cap(0,'Прямоугольник 5 см на 3 см.',{y:246});
-  b+=AN.cap(1,'Периметр — путь вокруг фигуры: 5+3+5+3=16 см.',{y:246});
-  b+=AN.cap(2,'Площадь — считаем клеточки внутри фигуры.',{y:246});
-  b+=AN.cap(3,'5 · 3 = 15 — значит, S = 15 см².',{y:246});
-  b+=AN.cap(4,'Периметр — вокруг (16 см). Площадь — внутри (15 см²).',{y:246,size:15,weight:700,last:true});
+  b+=AN.g('data-in="4" data-pop',AN.t(MX-90,214,EN?'P = 16 cm':'P = 16 см',{size:17,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="4" data-pop style="animation-delay:.2s"',AN.t(MX+90,214,EN?'S = 15 cm²':'S = 15 см²',{size:17,weight:700,fill:'var(--green)'}));
+  b+=AN.cap(0,EN?'A rectangle 5 cm by 3 cm.':'Прямоугольник 5 см на 3 см.',{y:246});
+  b+=AN.cap(1,EN?'Perimeter — the path around the figure: 5+3+5+3=16 cm.':'Периметр — путь вокруг фигуры: 5+3+5+3=16 см.',{y:246});
+  b+=AN.cap(2,EN?'Area — we count the squares inside the figure.':'Площадь — считаем клеточки внутри фигуры.',{y:246});
+  b+=AN.cap(3,EN?'5 · 3 = 15 — so S = 15 cm².':'5 · 3 = 15 — значит, S = 15 см².',{y:246});
+  b+=AN.cap(4,EN?'Perimeter — around (16 cm). Area — inside (15 cm²).':'Периметр — вокруг (16 см). Площадь — внутри (15 см²).',{y:246,size:15,weight:700,last:true});
   return animFigure(b,{w:520,h:266,steps:5,dur:'3400,4000,3800,3400',
-    label:'Анимация: прямоугольник 5 на 3 сантиметра; сначала обходим его границу по сторонам — 5+3+5+3=16 сантиметров, это периметр; затем заполняем тот же прямоугольник клеточками со стороной 1 сантиметр, 5 умножить на 3 равно 15 таких клеточек — это площадь, 15 квадратных сантиметров; итог: периметр — путь вокруг фигуры, 16 см, площадь — место внутри, 15 квадратных сантиметров'});
+    label:EN?'Animation: a rectangle 5 by 3 centimeters; first we trace its border side by side — 5+3+5+3=16 centimeters, that is the perimeter; then we fill the same rectangle with squares 1 centimeter on a side, 5 times 3 equals 15 such squares — that is the area, 15 square centimeters; conclusion: the perimeter is the path around the figure, 16 cm, the area is the space inside, 15 square centimeters':'Анимация: прямоугольник 5 на 3 сантиметра; сначала обходим его границу по сторонам — 5+3+5+3=16 сантиметров, это периметр; затем заполняем тот же прямоугольник клеточками со стороной 1 сантиметр, 5 умножить на 3 равно 15 таких клеточек — это площадь, 15 квадратных сантиметров; итог: периметр — путь вокруг фигуры, 16 см, площадь — место внутри, 15 квадратных сантиметров'});
 };
 
 /* ---------- FRAC4_ADDSUB_ANIM — «Сложение дробей с одинаковым знаменателем»: 2/9 + 5/9 = 7/9 ---------- */
 SVG_LIB.FRAC4_ADDSUB_ANIM = function(){
+  var EN=getLang()==='en';
   var X=53, Y=70, CW=46, CH=70, N=9;
   function cell(i,fill,attrs){ return '<rect '+(attrs||'')+' x="'+(X+i*CW)+'" y="'+Y+'" width="'+CW+'" height="'+CH+'" fill="'+fill+'" stroke="none"/>'; }
   function vl(i,attrs){ var x=X+i*CW; return '<line '+(attrs||'')+' x1="'+x+'" y1="'+Y+'" x2="'+x+'" y2="'+(Y+CH)+'" stroke="var(--ink)" stroke-width="2"/>'; }
@@ -24362,18 +24451,18 @@ SVG_LIB.FRAC4_ADDSUB_ANIM = function(){
   b+=AN.g('data-in="3" data-pop','<rect x="'+(X-4)+'" y="'+(Y-4)+'" width="'+(7*CW+8)+'" height="'+(CH+8)+'" rx="10" fill="none" stroke="var(--gold)" stroke-width="3"/>');
   b+=AN.g('data-in="1" data-out="3"',AN.t(X+CW,Y-16,'2',{size:17,weight:700,fill:'var(--blue)'}));
   b+=AN.g('data-in="2" data-out="3"',AN.t(X+2*CW+2.5*CW,Y-16,'+5',{size:17,weight:700,fill:'var(--green)'}));
-  b+=AN.g('data-in="3"',AN.t(X+3.5*CW,Y-16,'7 из 9',{size:17,weight:700,fill:'var(--gold)'}));
+  b+=AN.g('data-in="3"',AN.t(X+3.5*CW,Y-16,EN?'7 of 9':'7 из 9',{size:17,weight:700,fill:'var(--gold)'}));
   b+=AN.g('data-in="3" data-pop',AN.frac(145,195,2,9,{fill:'var(--blue)',size:20})
     +AN.t(190,215,'+',{size:22,weight:700})
     +AN.frac(230,195,5,9,{fill:'var(--green)',size:20})
     +AN.t(275,215,'=',{size:22,weight:700})
     +AN.frac(315,195,7,9,{fill:'var(--gold)',size:22}));
-  b+=AN.cap(0,'Целое делят на 9 равных частей — девятые доли.');
-  b+=AN.cap(1,'Закрасили синим 2 части — это 2/9.');
-  b+=AN.cap(2,'Добавили ещё 5 частей зелёным — стало 7/9.');
-  b+=AN.cap(3,'Знаменатель не меняется — считаем числители: 2+5=7.',{size:15,weight:700,last:true});
+  b+=AN.cap(0,EN?'The whole is split into 9 equal parts — ninths.':'Целое делят на 9 равных частей — девятые доли.');
+  b+=AN.cap(1,EN?'We shaded 2 parts blue — that&rsquo;s 2/9.':'Закрасили синим 2 части — это 2/9.');
+  b+=AN.cap(2,EN?'We added 5 more parts in green — now it&rsquo;s 7/9.':'Добавили ещё 5 частей зелёным — стало 7/9.');
+  b+=AN.cap(3,EN?'The denominator doesn&rsquo;t change — we add the numerators: 2+5=7.':'Знаменатель не меняется — считаем числители: 2+5=7.',{size:15,weight:700,last:true});
   return animFigure(b,{w:520,h:300,steps:4,dur:'3600,3800,4000',
-    label:'Анимация: полоска разделена на 9 равных частей; сначала закрашиваются синим 2 части — это 2/9; затем ещё 5 частей закрашиваются зелёным, итого 7 из 9 частей; знаменатель остаётся 9, складываются только числители: 2 плюс 5 равно 7, получаем 2/9 плюс 5/9 равно 7/9'});
+    label:EN?'Animation: a strip is split into 9 equal parts; first 2 parts are shaded blue — that&rsquo;s 2/9; then 5 more parts are shaded green, 7 of 9 parts in total; the denominator stays 9, only the numerators are added: 2 plus 5 equals 7, giving 2/9 plus 5/9 equals 7/9':'Анимация: полоска разделена на 9 равных частей; сначала закрашиваются синим 2 части — это 2/9; затем ещё 5 частей закрашиваются зелёным, итого 7 из 9 частей; знаменатель остаётся 9, складываются только числители: 2 плюс 5 равно 7, получаем 2/9 плюс 5/9 равно 7/9'});
 };
 
 /* ---------- TRIG_RATIOS — статичная схема для шпаргалки «Синус, косинус, тангенс» (в. 2.20.0) ----------
@@ -24701,12 +24790,25 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.55.0';
+var APP_VERSION = '2.56.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.55.0",
+ "current": "2.56.0",
  "versions": [
+  {
+   "v": "2.56.0",
+   "date": "2026-11-16",
+   "title": "Английский язык — иллюстрации 4 класса",
+   "items": [
+    "Переведены все 71 иллюстрация 4 класса — темы «Числа и величины» (n4, 9), «Умножение и деление» (mul4, 9), «Величины» (val4, 10), «Текстовые задачи» (word4, 10), «Геометрия» (geo4, 10) и «Дроби» (frac4, 11): классы (единицы/тысячи/миллионы) и разряды многозначных чисел, сравнение и округление, сложение и вычитание столбиком, умножение и деление столбиком (в т.ч. на двузначное число, деление с остатком), перевод единиц длины/массы/времени, сложение с переносом через заём, периметр и площадь прямоугольника, составные фигуры, виды углов и треугольников, доли и дроби, сравнение и сложение/вычитание дробей с одинаковым знаменателем, нахождение доли от числа и числа по доле.",
+    "4 класс — первый, где часть иллюстраций (12 из 71) живёт внутри функций со своим локально затенённым набором мини-хелперов (n/S/TL/R/L/C/MK/badge/poly/frac/brk вместо общепринятых числовых хелперов темы) — приём тот же, что и раньше: var EN=getLang()==='en' в начале функции, дальше тернарники на месте русских строк, но без единого обращения к глобальной функции TL(ru,en) — только к локальным хелперам, как и было в оригинале.",
+    "Также переведены все 12 анимированных иллюстраций класса (AN.t/AN.cap/animFigure) — подписи шагов, финальные подписи и aria-label самой анимации.",
+    "Проверено: 5 функций (N4_ADD, MUL4_LONGDIV, VAL4_CLOCK, GEO4_COMPOSITE, FRAC4_OF_NUMBER) оказались неиспользуемым старым кодом — заменены на *_ANIM-версии и нигде не вызываются (0 совпадений __SVG_<имя>__ в файле); оставлены непереведёнными как мёртвый код, не входящий в задачу.",
+    "Проверено jsdom-тестом (71 из 71 функций — ни кириллицы в английском режиме, ни регрессии в русском) и визуально через Playwright-скриншоты 24 показательных иллюстраций (по 4 на тему — пример, общая схема, 2 анимации) во всех сочетаниях языка и темы (ru/light, en/light, en/dark).",
+    "Итог: 137 из 562 иллюстраций всего приложения (классы 2, 3 и 4 — полностью готовы). Остаются классы 5–9. Следующий шаг — класс 5, по той же договорённости продолжать по классам."
+   ]
+  },
   {
    "v": "2.55.0",
    "date": "2026-11-15",
