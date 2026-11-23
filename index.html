@@ -369,6 +369,17 @@ sup{font-size:.7em;line-height:0}
 .cheat-card .cheat-title{font-weight:700}
 .cheat-card .cheat-sub{font-size:13px;color:var(--muted)}
 .cheat-card .cheat-grade{font-size:11.5px;color:var(--blue);font-weight:600}
+
+/* в. 2.65.0 — Олимпиадный трек: пилот на одном классе, задачи на сообразительность,
+   не привязан к прогрессу по темам (отдельный независимый раздел). */
+.oly-card{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--sheet2);margin-bottom:12px}
+.oly-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.oly-head b{font-size:16px}
+.oly-stars{color:var(--gold);letter-spacing:1px;font-size:13px}
+.oly-statement{margin:8px 0 2px;white-space:pre-line;line-height:1.5}
+.oly-card details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.oly-card summary{cursor:pointer;font-weight:600;color:var(--blue)}
+.oly-card details>div{margin-top:6px;white-space:pre-line;line-height:1.5}
 .opword-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-top:14px}
 .opword-card{border-radius:14px;padding:16px;background:var(--cs);border:2px solid var(--c)}
 .opword-sym{font-size:34px;font-weight:800;color:var(--c);line-height:1}
@@ -25210,12 +25221,32 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.64.0';
+var APP_VERSION = '2.65.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.64.0",
+ "current": "2.65.0",
  "versions": [
+  {
+   "v": "2.65.0",
+   "date": "2026-11-23",
+   "title": "Олимпиадный трек — пилот на 5 классе",
+   "titleEn": "The olympiad track — a Grade 5 pilot",
+   "items": [
+    "Новый раздел «Олимпиада» в навигации — задачи на сообразительность, не из программы класса, не связаны с прогрессом по темам и диагностикой. Решение пользователя: отдельный независимый раздел, доступный в любой момент, а не открывающийся после освоения тем. Пилот — только 5 класс; в остальных классах раздел показывает заглушку «пока только для 5 класса, появится позже по отзывам о пилоте».",
+    "6 оригинальных задач для пилота (var OLYMPIAD, сложность 1–3 звезды): «Какое число дальше?» (числовая закономерность), «Волк, коза и капуста» (классическая переправа), «Задуманное число» (перестановка цифр), «Цвет и питомец» (логическая таблица на 3 подсказках), «Фальшивая монета» (взвешивание), «Трёхзначные числа с суммой цифр 6» (комбинаторика). У каждой — условие, скрываемая подсказка и скрываемое решение с ответом (нативные `<details>`/`<summary>`, без лишнего JS). Источник контента: по договорённости с пользователем — свои задачи Claude сейчас, но структура данных не привязана к CONTENT/TOPICS и рассчитана на то, чтобы позже принять задачи из внешнего сборника в том же формате, без переделки кода.",
+    "Контент сразу двуязычный (titleEn/statementEn/hintEn/solutionEn, резолверы olyTitle()/olyStatement()/olyHint()/olySolution() по приёму TL(ru,en)) — чтобы не создавать новый пробел в переводе сразу после завершения всей переводческой задачи (2.42.0–2.64.0).",
+    "Найдена и исправлена одна недоработка при подключении: страница по умолчанию показывала полную шапку приложения с сегодняшним счётчиком «Освоено X из Y», хотя раздел не влияет на прогресс — это не было ошибкой (шапка не трогалась специально под этот раздел), просто первая проверка показала, что так выглядит нормально, без путаницы; отдельно проверено, что раздел не пишет и не читает прогресс/статистику — просто показывает список задач.",
+    "Проверено: `node --check` на оба `<script>`-блока; jsdom-структурный тест данных OLYMPIAD (все 6 задач имеют все требуемые поля); jsdom-функциональный тест viewOlympiad() для класса 5 (6 карточек, кириллица только в RU) и для другого класса (0 карточек, показана заглушка) в обоих языках; визуальная Playwright-проверка страницы в обоих языках и заглушки для непилотного класса; проверено реальным кликом в браузере, что `<details>`/`<summary>` раскрываются по клику."
+   ],
+   "itemsEn": [
+    "A new “Olympiad” section in the navigation — problems that reward quick thinking, not part of the grade's program and unconnected to topic progress or the diagnostic. Per the user's decision, this is a separate, independent section available any time, rather than one that unlocks after mastering topics. The pilot covers Grade 5 only; other grades see a placeholder saying problems are coming later, based on feedback from the pilot.",
+    "6 original problems for the pilot (var OLYMPIAD, difficulty 1–3 stars): “What number comes next?” (a numeric pattern), “The wolf, the goat, and the cabbage” (the classic river crossing), “The number in Pasha's head” (a digit-swap puzzle), “Color and pet” (a 3-clue logic grid), “The fake coin” (a weighing puzzle), and “Three-digit numbers whose digits add to 6” (combinatorics). Each has a statement, a collapsible hint, and a collapsible solution with the answer (native `<details>`/`<summary>`, no extra JS needed). Content source: per agreement with the user, these are Claude's own problems for now, but the data structure isn't tied to CONTENT/TOPICS and is built to later accept problems from an outside collection in the same format, with no code changes needed.",
+    "The content is bilingual from the start (titleEn/statementEn/hintEn/solutionEn, with olyTitle()/olyStatement()/olyHint()/olySolution() resolvers following the TL(ru,en) pattern) — so as not to create a new translation gap right after finishing the entire translation task (2.42.0–2.64.0).",
+    "Found and addressed one rough edge while wiring this up: the page initially showed the full app header with today's “Mastered X of Y” counter by default, even though this section doesn't affect progress — not a bug exactly (the header wasn't specially adjusted for this section), just something the first check confirmed looked fine and caused no confusion; separately verified that the section neither reads nor writes any progress or stats — it just shows the list of problems.",
+    "Verified: `node --check` on both `<script>` blocks; a jsdom structural test of the OLYMPIAD data (all 6 problems have every required field); a jsdom functional test of viewOlympiad() for Grade 5 (6 cards, Cyrillic only in RU) and for another grade (0 cards, placeholder shown) in both languages; a visual Playwright check of the page in both languages and of the non-pilot-grade placeholder; confirmed with a real in-browser click that `<details>`/`<summary>` expand correctly."
+   ]
+  },
   {
    "v": "2.64.0",
    "date": "2026-11-23",
@@ -26479,28 +26510,26 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Монетизация: нужны решения и настройка от Дмитрия, дальше — усиление платных тарифов",
-  "titleEn": "Monetization: needs Dmitriy's decisions and setup, then strengthening the paid plans",
-  "when": "ожидание цен и настройки Stripe",
-  "whenEn": "awaiting pricing and Stripe setup",
+  "title": "Олимпиада: расширять по отзывам о пилоте; монетизация ждёт шагов Дмитрия",
+  "titleEn": "Olympiad: expand based on pilot feedback; monetization awaits Dmitriy's steps",
+  "when": "ожидание отзыва о пилоте и настройки Stripe",
+  "whenEn": "awaiting pilot feedback and Stripe setup",
   "items": [
-   "Инфраструктура монетизации готова (2.64.0): лендинг с 4 тарифами (плейсхолдер цены), схема базы для платежей/ваучеров, заготовка Stripe, раздел «Ваучеры» в админке. Дальше нужны шаги САМОГО Дмитрия: завести Stripe-аккаунт, создать Product и Price для каждого тарифа, добавить ключи и Price ID в переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js) — без этого оплата не заработает на живом сайте.",
-   "Как только цены определены — заполнить их в var PLANS (index.html) и на самом лендинге вместо «Цена скоро»; решить точное число бесплатных тем/заданий для пробного доступа (пока не зафиксировано); подключить паywall-проверку families.plan/paid_until на самих ограничиваемых разделах (шпаргалки/материалы/диагностика у «Полного» тарифа) — этой версией НЕ сделано, это следующий шаг после появления цен.",
-   "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026), возможно пересекается с монетизацией (новый лендинг уже часть этой работы).",
+   "Олимпиадный трек (2.65.0) — пилот на 5 классе, 6 задач. Дальше: собрать отзыв (понятны ли подсказки, подходит ли сложность, стоит ли расширять), и по его итогам — либо добавить ещё задач 5 классу, либо распространить на другие классы. Структура данных (var OLYMPIAD) готова принять задачи из внешнего сборника, если он найдётся, без переделки кода.",
+   "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
+   "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
+   "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026).",
    "Учебник Л. Г. Петерсон, 4 класс — свериться по темам/заданиям, дописать недостающее, рассмотреть книгу для скачивания."
   ],
   "itemsEn": [
-   "The monetization infrastructure is in place (2.64.0): a landing page with 4 plans (price placeholder), a database schema for payments/vouchers, a Stripe scaffold, and a “Vouchers” section in the admin panel. What's needed next is for Dmitriy himself to: set up a Stripe account, create a Product and Price for each plan, and add the keys and Price IDs to Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js) — payment won't work on the live site without this.",
-   "Once prices are set: fill them into var PLANS (index.html) and on the landing page itself instead of “Price coming soon”; decide the exact number of free topics/tasks for the trial (not yet settled); wire up a paywall check on families.plan/paid_until for the actually gated sections (cheat sheets/materials/diagnostics on the Full plan) — NOT done in this version, it's the next step once prices exist.",
-   "A redesign of the site's look, font, and background, with a designer's input (requested 2026-10-06) — may overlap with monetization, since the new landing page is already part of that work.",
+   "The olympiad track (2.65.0) — a Grade 5 pilot with 6 problems. Next: gather feedback (are the hints clear, is the difficulty right, is it worth expanding), and based on that either add more problems for Grade 5 or roll it out to other grades. The data structure (var OLYMPIAD) is ready to take problems from an outside collection, if one turns up, with no code changes needed.",
+   "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
+   "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
+   "A redesign of the site's look, font, and background, with a designer's input (requested 2026-10-06).",
    "The L. G. Peterson Grade 4 textbook — check it against the app's topics/tasks, write up what's missing, consider it as a downloadable book."
   ],
-  "later": [
-   "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
-  ],
-  "laterEn": [
-   "An olympiad track: problems that reward quick thinking, once the fundamentals are in place."
-  ]
+  "later": [],
+  "laterEn": []
  }
 };
 
@@ -26926,7 +26955,7 @@ function viewVersions(){
     +'<h1>'+TL('Версии','Versions')+'</h1><p class="goal">'+TL('Сейчас у вас версия','You’re on version')+' <span class="vtag">'+esc(CHANGELOG.current)+'</span>. '+TL('Здесь записано, что менялось, и что ждать дальше.','This page records what changed and what’s coming next.')+'</p></div>';
   h+='<div class="sheet" style="margin-top:16px"><div class="nextbox"><h2><span class="vtag next">'+TL('ожидается','expected')+' '+esc(N.v)+'</span>'+esc(verTitle(N))+'</h2>'
     +'<p style="color:var(--muted);margin:4px 0">'+TL('Когда','When')+': '+esc(verWhen(N))+'</p><ul>'+verItems(N).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'
-    +'<h3>'+TL('Дальше в планах','Further down the road')+'</h3><ul>'+verLater(N).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div></div>';
+    +(verLater(N).length?'<h3>'+TL('Дальше в планах','Further down the road')+'</h3><ul>'+verLater(N).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</div></div>';
   h+='<div class="sheet" style="margin-top:16px"><h2>'+TL('История версий','Version history')+'</h2>'
     +CHANGELOG.versions.map(function(v){
       return '<div class="ver"><h3><span class="vtag">'+esc(v.v)+'</span>'+esc(verTitle(v))+(v.date?' <span style="color:var(--muted);font-weight:400;font-size:14px">· '+esc(ruDateStr(v.date))+'</span>':'')+'</h3><ul>'+verItems(v).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';
@@ -28162,6 +28191,97 @@ function viewCheatsheet(){
     +'</div>';
 }
 
+/* в. 2.65.0 — Олимпиадный трек (пилот). Решение пользователя: отдельный независимый
+   раздел, НЕ привязан к прогрессу по темам/диагностике — доступен из навигации в любой
+   момент, ребёнок сам выбирает, когда туда зайти. Контент — одновременно и собственные
+   задачи Claude (ниже), и задел на подключение внешнего сборника позже: структура
+   OLYMPIAD не зависит от CONTENT/TOPICS и может принимать задачи из любого источника,
+   лишь бы они были в этом же формате {id,title,titleEn,statement,statementEn,hint,
+   hintEn,solution,solutionEn,stars}. Пилот — только 5 класс (OLYMPIAD_PILOT_GRADE);
+   остальные классы увидят заглушку «скоро», пока пилот не расширят по отзывам. */
+var OLYMPIAD_PILOT_GRADE = 5;
+var OLYMPIAD = {
+ 5: [
+  {id:'sequence-np1', stars:1,
+   title:'Какое число дальше?',
+   titleEn:'What number comes next?',
+   statement:'Найди следующее число в последовательности и объясни правило:\n2, 6, 12, 20, 30, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n2, 6, 12, 20, 30, …?',
+   hint:'Посмотри не на сами числа, а на разницу между соседними числами — 6−2=4, 12−6=6, 20−12=8… Видишь закономерность и в этих разностях?',
+   hintEn:'Don’t look at the numbers themselves — look at the gap between each pair of neighbors: 6−2=4, 12−6=6, 20−12=8… Do you see a pattern in those gaps too?',
+   solution:'Разности между соседними числами: 4, 6, 8, 10 — они растут на 2 каждый раз, значит следующая разность — 12, и следующее число — 30+12=42.\nОтвет: 42. (Кстати, это числа вида n·(n+1): 1·2=2, 2·3=6, 3·4=12, 4·5=20, 5·6=30, 6·7=42.)',
+   solutionEn:'The gaps between neighboring numbers are 4, 6, 8, 10 — each one is 2 more than the last, so the next gap is 12, and the next number is 30+12=42.\nAnswer: 42. (These are actually numbers of the form n·(n+1): 1·2=2, 2·3=6, 3·4=12, 4·5=20, 5·6=30, 6·7=42.)'},
+  {id:'river-crossing', stars:2,
+   title:'Волк, коза и капуста',
+   titleEn:'The wolf, the goat, and the cabbage',
+   statement:'Фермеру нужно переправить через реку волка, козу и капусту. Лодка маленькая — в неё помещается только сам фермер и что-то одно: волк, коза или капуста. Если оставить волка с козой без присмотра — волк съест козу. Если оставить козу с капустой — коза съест капусту. Как фермеру переправить всех целыми и невредимыми, если плавать туда-обратно можно сколько угодно раз?',
+   statementEn:'A farmer needs to ferry a wolf, a goat, and a cabbage across a river. The boat is small — it only fits the farmer and one more thing: the wolf, the goat, or the cabbage. If the wolf is left alone with the goat, it eats the goat. If the goat is left alone with the cabbage, it eats the cabbage. How can the farmer get everything across safely, crossing back and forth as many times as needed?',
+   hint:'Подумай, что можно взять с собой на тот берег — а потом привезти что-то обратно. Не обязательно каждая поездка должна увозить что-то на другой берег навсегда.',
+   hintEn:'Think about what you can bring across — and then bring back. Not every trip has to leave something on the far bank for good.',
+   solution:'1) Везём козу на другой берег (волк и капуста остаются вместе — волк капусту не ест).\n2) Возвращаемся одни, берём волка, везём его туда же.\n3) Оставлять волка с козой нельзя — забираем козу обратно с собой!\n4) Оставляем козу на первом берегу, берём капусту, везём её к волку.\n5) Возвращаемся одни и в последний раз перевозим козу.\nИтог: 7 переправ, никто никого не съел.',
+   solutionEn:'1) Take the goat across first (the wolf and the cabbage can stay together — the wolf won’t eat the cabbage).\n2) Go back alone, pick up the wolf, take it across.\n3) But the wolf can’t be left with the goat — so bring the goat back with you!\n4) Leave the goat on the first bank, pick up the cabbage, take it across to the wolf.\n5) Go back alone and bring the goat across one last time.\nTotal: 7 crossings, nothing gets eaten.'},
+  {id:'digit-swap', stars:2,
+   title:'Задуманное число',
+   titleEn:'The number in Pasha’s head',
+   statement:'Паша задумал двузначное число. Когда он переставил его цифры местами (десятки на место единиц и наоборот), получилось число на 18 меньше задуманного. Какое число мог задумать Паша? Найди все варианты.',
+   statementEn:'Pasha thought of a two-digit number. When he swapped its digits (the tens digit and the ones digit traded places), he got a number 18 less than the one he started with. What number could Pasha have thought of? Find all the possibilities.',
+   hint:'Обозначь цифру десятков буквой a, цифру единиц — буквой b. Запиши само число и число с переставленными цифрами через a и b, и найди их разность — она сильно упростится.',
+   hintEn:'Call the tens digit a and the ones digit b. Write the original number and the digit-swapped number using a and b, then work out their difference — it simplifies a lot.',
+   solution:'Число = 10a+b, где a — цифра десятков, b — цифра единиц (a от 1 до 9, b от 0 до 9). После перестановки получаем 10b+a. Разность: (10a+b)−(10b+a)=9a−9b=9(a−b). По условию 9(a−b)=18, значит a−b=2.\nПодходит любая пара цифр, где десятки на 2 больше единиц: 20, 31, 42, 53, 64, 75, 86, 97 — всего 8 чисел.',
+   solutionEn:'The number is 10a+b, where a is the tens digit and b is the ones digit (a from 1 to 9, b from 0 to 9). After swapping, it becomes 10b+a. The difference is (10a+b)−(10b+a)=9a−9b=9(a−b). Since this equals 18, a−b=2.\nAny pair of digits where the tens digit is 2 more than the ones digit works: 20, 31, 42, 53, 64, 75, 86, 97 — 8 numbers in total.'},
+  {id:'who-has-what', stars:2,
+   title:'Цвет и питомец',
+   titleEn:'Color and pet',
+   statement:'У трёх подруг — Ани, Веры и Гали — есть любимый цвет (красный, синий или зелёный) и питомец (кот, попугай или рыбка). Известно:\n1) Аня не любит синий цвет.\n2) У девочки с попугаем любимый цвет — красный.\n3) Вера любит зелёный цвет.\n4) У Гали нет кота.\nОпредели цвет и питомца каждой девочки.',
+   statementEn:'Three friends — Anya, Vera, and Galya — each have a favorite color (red, blue, or green) and a pet (a cat, a parrot, or a fish). Here’s what we know:\n1) Anya doesn’t like blue.\n2) The girl with the parrot likes red.\n3) Vera likes green.\n4) Galya doesn’t have a cat.\nWork out each girl’s color and pet.',
+   hint:'Начни с подсказки, которая сразу называет цвет без «не» — она сразу даёт один цвет одной девочке напрямую, без рассуждений.',
+   hintEn:'Start with the one clue that names a color directly, with no “doesn’t” in it — it hands you one color for one girl right away.',
+   solution:'Из подсказки 3 сразу: Вера — зелёный. Из подсказки 1 Аня не синий, значит из оставшихся цветов (красный и синий) ей подходит только красный, а Гале — синий. Из подсказки 2 попугай — у девочки с красным цветом, то есть у Ани. Из подсказки 4 у Гали нет кота, значит из оставшихся питомцев (кот и рыбка) ей подходит только рыбка, а кот — у Веры.\nИтог: Аня — красный, попугай; Вера — зелёный, кот; Галя — синий, рыбка.',
+   solutionEn:'Clue 3 gives it right away: Vera — green. From clue 1, Anya isn’t blue, so of the colors left (red and blue), red must be Anya’s and blue must be Galya’s. From clue 2, the parrot belongs to the girl who likes red, so it’s Anya’s. From clue 4, Galya doesn’t have a cat, so of the pets left (cat and fish), fish must be Galya’s, leaving the cat for Vera.\nAnswer: Anya — red, parrot; Vera — green, cat; Galya — blue, fish.'},
+  {id:'false-coin', stars:3,
+   title:'Фальшивая монета',
+   titleEn:'The fake coin',
+   statement:'Есть 9 одинаковых на вид монет. Одна из них фальшивая и немного легче остальных. Есть чашечные весы без гирь — они только показывают, какая чаша тяжелее, или что чаши равны. Как найти фальшивую монету всего за 2 взвешивания?',
+   statementEn:'There are 9 identical-looking coins. One of them is fake and a little lighter than the rest. You have a balance scale with no weights — it only shows which side is heavier, or that the two sides balance. How can you find the fake coin in just 2 weighings?',
+   hint:'Раздели монеты не на 2, а на 3 равные кучки — так одно взвешивание сразу отбрасывает две трети монет, а не только половину.',
+   hintEn:'Split the coins into three equal piles instead of two — that way one weighing rules out two-thirds of the coins at once, not just half.',
+   solution:'Делим 9 монет на три кучки по 3 монеты.\n1-е взвешивание: кладём на весы любые две кучки. Если они равны — фальшивая монета в третьей, не взвешенной кучке. Если одна чаша легче — фальшивая там. В любом случае теперь известна кучка из 3 монет с фальшивой.\n2-е взвешивание: из этой кучки кладём на весы любые 2 монеты (третью — в сторону). Если одна чаша легче — это и есть фальшивая монета. Если чаши равны — фальшивая та, что отложена в сторону.',
+   solutionEn:'Split the 9 coins into three piles of 3.\nWeighing 1: put any two piles on the scale. If they balance, the fake coin is in the third pile, the one left off the scale. If one side is lighter, the fake coin is there. Either way, you now know which pile of 3 holds the fake coin.\nWeighing 2: take that pile and put any two of its coins on the scale (set the third aside). If one side is lighter, that’s the fake coin. If the two sides balance, the fake coin is the one set aside.'},
+  {id:'three-digit-sum6', stars:3,
+   title:'Трёхзначные числа с суммой цифр 6',
+   titleEn:'Three-digit numbers whose digits add to 6',
+   statement:'Сколько существует трёхзначных чисел, у которых все три цифры различны и их сумма равна 6? (Число не может начинаться с нуля.)',
+   statementEn:'How many three-digit numbers are there whose three digits are all different and add up to 6? (A number can’t start with zero.)',
+   hint:'Сначала найди все тройки различных цифр, которые в сумме дают 6 — их всего несколько. Потом отдельно посчитай, сколько трёхзначных чисел можно составить из каждой тройки, не забывая, что число не может начинаться с нуля.',
+   hintEn:'First find all the triples of different digits that add up to 6 — there are only a few. Then, for each triple, separately count how many three-digit numbers it can make, remembering that a number can’t start with zero.',
+   solution:'Различные цифры от 0 до 9 с суммой 6 — всего три такие тройки: {0,1,5}, {0,2,4}, {1,2,3}.\nДля троек с нулём: всего перестановок 3!=6, но 2 из них начинаются с нуля — подходят 6−2=4 числа из каждой такой тройки.\nДля тройки {1,2,3} (без нуля) подходят все 6 перестановок.\nИтого: 4+4+6=14 чисел.',
+   solutionEn:'The distinct digits from 0–9 that add up to 6 form exactly three triples: {0,1,5}, {0,2,4}, {1,2,3}.\nFor a triple containing 0: there are 3!=6 permutations in total, but 2 of them start with 0 — so 6−2=4 valid numbers come from each such triple.\nFor the triple {1,2,3} (no zero), all 6 permutations are valid.\nTotal: 4+4+6=14 numbers.'}
+ ]
+};
+function olyTitle(p){ return TL(p.title,p.titleEn); }
+function olyStatement(p){ return TL(p.statement,p.statementEn); }
+function olyHint(p){ return TL(p.hint,p.hintEn); }
+function olySolution(p){ return TL(p.solution,p.solutionEn); }
+function olyStars(p){ var n=p.stars||1; return '★★★'.slice(0,n)+'☆☆☆'.slice(0,3-n); }
+function olyCardHTML(p){
+  return '<div class="oly-card"><div class="oly-head"><b>'+esc(olyTitle(p))+'</b><span class="oly-stars" title="'+TL('Сложность','Difficulty')+'">'+olyStars(p)+'</span></div>'
+    +'<p class="oly-statement">'+esc(olyStatement(p))+'</p>'
+    +'<details><summary>'+TL('Показать подсказку','Show a hint')+'</summary><div>'+esc(olyHint(p))+'</div></details>'
+    +'<details><summary>'+TL('Показать решение и ответ','Show the solution and answer')+'</summary><div>'+esc(olySolution(p))+'</div></details>'
+    +'</div>';
+}
+function viewOlympiad(){
+  var kid=KIDS.filter(function(k){return k.id===activeKid})[0];
+  var grade=kid?kid.grade:0;
+  var head='<div class="sheet"><h1>'+TL('Олимпиадный трек','Olympiad track')+'</h1>'
+    +'<p class="goal">'+TL('Задачи на сообразительность — не из программы класса и не влияют на прогресс по темам. Сюда можно заглянуть в любой момент, когда хочется подумать над чем-то необычным.','Problems that reward quick thinking — not part of the grade’s program and they don’t affect topic progress. Come here any time you feel like puzzling over something unusual.')+'</p>';
+  if(grade!==OLYMPIAD_PILOT_GRADE || !OLYMPIAD[grade]){
+    return head+'<p>'+TL('Пока задачи есть только для 5 класса — это пилотная версия раздела. Для твоего класса они появятся позже, по отзывам о пилоте.','So far there are problems only for Grade 5 — this section is a pilot. More grades will follow later, based on feedback from the pilot.')+'</p>'
+      +'<div class="cta"><button class="btn primary" data-nav="home">'+TL('К карте','Back to the map')+'</button></div></div>';
+  }
+  return head+OLYMPIAD[grade].map(olyCardHTML).join('')+'</div>';
+}
+
 /* ======================= ВЕРХНЯЯ ПАНЕЛЬ ======================= */
 function kidName(id){var k=KIDS.filter(function(x){return x.id===id})[0]; return k?k.name:''}
 /* Ребёнок, отключённый администратором (k.active===false), остаётся в данных семьи,
@@ -28176,7 +28296,7 @@ function paintBar(){
     return;
   }
   var o=overall();
-  var nav=[['home',TL('Карта','Map')],['diag',TL('Диагностика','Diagnostic')],['cheats',TL('Шпаргалки','Cheat sheets')],['status',TL('Значки','Badges')],['parent',TL('Родителю','For parents')],['versions',TL('Версии','Versions')]];
+  var nav=[['home',TL('Карта','Map')],['diag',TL('Диагностика','Diagnostic')],['cheats',TL('Шпаргалки','Cheat sheets')],['olympiad',TL('Олимпиада','Olympiad')],['status',TL('Значки','Badges')],['parent',TL('Родителю','For parents')],['versions',TL('Версии','Versions')]];
   var cur=view.name==='topic'||view.name==='soon'?'home':(view.name==='cheatsheet'?'cheats':view.name);
   var sync=dbState==='ok'?TL('сохраняется','saving online'):dbState==='err'?TL('не сохранено онлайн','not saved online'):dbState==='off'?TL('только в этом браузере','only in this browser'):'';
   $('#bar').innerHTML=
@@ -28213,6 +28333,7 @@ function render(){
   else if(view.name==='status') h=viewStatus();
   else if(view.name==='cheats') h=viewCheats();
   else if(view.name==='cheatsheet') h=viewCheatsheet();
+  else if(view.name==='olympiad') h=viewOlympiad();
   else if(view.name==='parent') h=viewParent();
   else if(view.name==='soon') h=viewSoon();
   else if(view.name==='topic') h=viewTopic();
