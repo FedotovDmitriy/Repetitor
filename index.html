@@ -476,6 +476,15 @@ body{padding-bottom:88px}
 .rolecard{border:2px solid var(--line);border-radius:14px;padding:16px;background:var(--sheet);cursor:pointer;font:inherit;font-size:14.5px;color:inherit;text-align:left;line-height:1.45}
 .rolecard:hover,.rolecard:focus-visible{border-color:var(--blue)}
 .rolecard b{display:block;font-size:17px;margin-bottom:6px}
+/* Тарифы на странице-лендинге (в. 2.64.0 — заготовка монетизации, цены пока placeholder) */
+.planGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px;text-align:left}
+.planCard{border:2px solid var(--line);border-radius:14px;padding:16px;background:var(--sheet);text-align:left;line-height:1.45}
+.planCard.full{border-color:var(--gold)}
+.planGrade{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.02em}
+.planTier{font-size:18px;font-weight:700;margin:2px 0 8px}
+.planCard.full .planTier{color:var(--gold)}
+.planDesc{font-size:14px;color:var(--muted);min-height:3.6em}
+.planPrice{margin-top:10px;font-size:15px;font-weight:600}
 .checkrow{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14.5px;text-align:left;line-height:1.45}
 .checkrow input{margin-top:3px;width:18px;height:18px;flex:none}
 .termsbox{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--sheet2);text-align:left;font-size:14.5px;line-height:1.5;margin-top:14px}
@@ -25201,12 +25210,34 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.63.0';
+var APP_VERSION = '2.64.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.63.0",
+ "current": "2.64.0",
  "versions": [
+  {
+   "v": "2.64.0",
+   "date": "2026-11-23",
+   "title": "Монетизация — заготовка инфраструктуры (тарифы, лендинг, Stripe, ваучеры)",
+   "titleEn": "Monetization — infrastructure scaffold (plans, landing page, Stripe, vouchers)",
+   "items": [
+    "Зафиксирована бизнес-модель монетизации (решения пользователя от 23.11.2026, подробности — в статус-документе проекта): 4 тарифа как матрица «классы × функции» (Базовый/Полный × 2–4 класс/5–9 класс), пробный доступ — ограниченное число бесплатных тем/заданий (не таймер), новый публичный лендинг ПЕРЕД текущим экраном входа (не замена его), цены сознательно отложены — вся инфраструктура строится с плейсхолдером «Цена скоро» вместо чисел.",
+    "Новая публичная страница (viewMarketing(), открывается автоматически посторонним посетителям без сессии вместо прежнего прямого показа экрана входа): рассказ о проекте и таблица из 4 тарифов (var PLANS) с карточками «класс/функции/описание/цена-плейсхолдер», кнопки «Попробовать бесплатно»/«Войти» ведут в уже существующий экран входа (viewLanding(), сам вход и регистрация не менялись). Резолверы planName()/planDesc()/planGradeRange()/planTierLabel()/planPriceLabel() по тому же приёму TL(ru,en), что и везде в переведённом интерфейсе.",
+    "Схема D1 (db/schema.sql + ensureSchema() в functions/api/[[route]].js — создаётся сама при первом запросе, вручную ничего делать не нужно): новые таблицы payments (история платежей и Stripe-сессий) и vouchers (коды ваучеров), и две новые колонки у families — plan и paid_until. Цены (amount_cents/currency) оставлены NULL — заполнятся, когда появятся реальные числа, без переделки схемы.",
+    "Заготовка Stripe (functions/api/[[route]].js, без SDK — через fetch и Web Crypto для подписи webhook'а): POST /api/billing/checkout создаёт Checkout Session по Price ID из переменной окружения STRIPE_PRICE_<ТАРИФ>; POST /api/billing/webhook подтверждает оплату (проверка подписи HMAC-SHA256 обязательна) и продлевает families.paid_until; POST /api/billing/redeem-voucher — альтернативный путь без Stripe, по коду ваучера. НЕ заработает на живом сайте, пока Дмитрий не заведёт Stripe-аккаунт и Price для каждого тарифа и не добавит STRIPE_SECRET_KEY/STRIPE_WEBHOOK_SECRET/STRIPE_PRICE_* в переменные окружения Cloudflare Pages — точный список и подсказки в шапке functions/api/[[route]].js, по аналогии с Яндекс/Yahoo OAuth (см. версию 2.39.0).",
+    "Админка (admin/index.html): новый раздел «Ваучеры» — форма создания кода (тариф, срок действия в днях, свой код по желанию, заметка) и таблица всех ваучеров (код/тариф/срок/статус/кем и когда погашен/заметка) с кнопками «Отменить»/«Копировать». Коды генерируются случайно (genVoucherCode(), 8 символов без похожих 0/O/1/I, группами по 4 через дефис), админ может задать свой.",
+    "Проверено: `node --check` на index.html (оба script-блока), functions/api/[[route]].js и admin/index.html; jsdom-функциональный тест viewMarketing() в RU/EN через локальный HTTP-сервер (плейсхолдер цены присутствует, кириллица только в RU, 4 карточки тарифов); визуальная Playwright-проверка лендинга в обоих языках (шапка свёрнута до минимальной — по аналогии с текущим экраном входа, навигация залогиненного пользователя не показывается постороннему посетителю); изолированный vm-юнит-тест серверных функций биллинга — 2000 сгенерированных кодов ваучеров без коллизий и без похожих символов, корректная HMAC-подпись Stripe webhook принимается, неверный секрет и испорченный заголовок отклоняются, параметры Stripe Checkout Session сериализуются в ожидаемую вложенную форму (line_items[0][price], metadata[family_id] и т.п.); jsdom-тест страницы admin/index.html с подменённым fetch — создание ваучера отправляет верные поля (тариф/срок/код/заметка), таблица отрисовывает погашенный/активный/отменённый статусы."
+   ],
+   "itemsEn": [
+    "Settled the monetization business model (the user's decisions from 2026-11-23; details in the project status document): 4 plans as a “grades × features” matrix (Basic/Full × Grades 2–4/Grades 5–9), a free trial as a limited number of free topics/tasks (not a timer), a new public landing page BEFORE the current sign-in screen (not a replacement for it), and prices deliberately deferred — the whole infrastructure is built with a “Price coming soon” placeholder instead of real numbers.",
+    "A new public page (viewMarketing(), now shown automatically to anonymous visitors instead of jumping straight to the sign-in screen): a pitch for the project and a table of the 4 plans (var PLANS) as cards with grade range/tier/description/price placeholder; “Try it for free”/“Sign in” buttons lead into the existing sign-in screen (viewLanding() — sign-in and registration themselves are unchanged). New resolvers planName()/planDesc()/planGradeRange()/planTierLabel()/planPriceLabel() follow the same TL(ru,en) pattern used throughout the translated interface.",
+    "D1 schema (db/schema.sql + ensureSchema() in functions/api/[[route]].js — created automatically on first request, no manual steps needed): new payments table (payment and Stripe-session history) and vouchers table (voucher codes), plus two new columns on families — plan and paid_until. Price fields (amount_cents/currency) are left NULL — they'll be filled in once real numbers exist, with no schema changes needed.",
+    "Stripe scaffold (functions/api/[[route]].js, no SDK — plain fetch plus Web Crypto for webhook signature verification): POST /api/billing/checkout creates a Checkout Session from the Price ID in a STRIPE_PRICE_<PLAN> environment variable; POST /api/billing/webhook confirms payment (HMAC-SHA256 signature verification is mandatory) and extends families.paid_until; POST /api/billing/redeem-voucher is the alternative, Stripe-free path via a voucher code. Will NOT work on the live site until Dmitriy sets up a Stripe account and a Price for each plan and adds STRIPE_SECRET_KEY/STRIPE_WEBHOOK_SECRET/STRIPE_PRICE_* to Cloudflare Pages environment variables — the exact list and pointers are in the header comment of functions/api/[[route]].js, the same pattern as the Yandex/Yahoo OAuth setup (see version 2.39.0).",
+    "Admin panel (admin/index.html): a new “Vouchers” section — a form to create a code (plan, validity in days, an optional custom code, a note) and a table of all vouchers (code/plan/validity/status/redeemed by and when/note) with “Revoke”/“Copy” buttons. Codes are generated randomly (genVoucherCode(), 8 characters excluding the lookalikes 0/O/1/I, in groups of 4 separated by a dash); the admin can also set a custom one.",
+    "Verified: `node --check` on index.html (both script blocks), functions/api/[[route]].js, and admin/index.html; a jsdom functional test of viewMarketing() in RU/EN via a local HTTP server (the price placeholder is present, Cyrillic appears only in RU, all 4 plan cards render); a visual Playwright check of the landing page in both languages (the header collapses to its minimal form, the same as the current sign-in screen — a signed-in user's navigation bar is never shown to an anonymous visitor); an isolated vm-based unit test of the server-side billing functions — 2000 generated voucher codes with no collisions and no lookalike characters, a correct Stripe webhook HMAC signature is accepted while a wrong secret and a malformed header are rejected, and the Stripe Checkout Session parameters serialize into the expected nested form (line_items[0][price], metadata[family_id], etc.); a jsdom test of admin/index.html with a mocked fetch — creating a voucher posts the right fields (plan/validity/code/note), and the table renders the redeemed/active/revoked statuses correctly."
+   ]
+  },
   {
    "v": "2.63.0",
    "date": "2026-11-23",
@@ -26448,17 +26479,21 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Пока нет точного плана следующей версии",
-  "titleEn": "No specific plan for the next version yet",
-  "when": "ожидание следующего запроса",
-  "whenEn": "awaiting the next request",
+  "title": "Монетизация: нужны решения и настройка от Дмитрия, дальше — усиление платных тарифов",
+  "titleEn": "Monetization: needs Dmitriy's decisions and setup, then strengthening the paid plans",
+  "when": "ожидание цен и настройки Stripe",
+  "whenEn": "awaiting pricing and Stripe setup",
   "items": [
-   "Задача «Английский язык» практически завершена: интерфейс, контент всех тем, названия тем и карта классов (2.42.0–2.53.0), иллюстрации во всех 8 классах (2.54.0–2.61.0), страницы /legal/*.html (2.62.0), а также формулы в карточках шпаргалок, модальное окно «Материалы» и история версий (2.63.0) — всё переведено.",
-   "Что переводить или делать дальше — решится по следующему запросу."
+   "Инфраструктура монетизации готова (2.64.0): лендинг с 4 тарифами (плейсхолдер цены), схема базы для платежей/ваучеров, заготовка Stripe, раздел «Ваучеры» в админке. Дальше нужны шаги САМОГО Дмитрия: завести Stripe-аккаунт, создать Product и Price для каждого тарифа, добавить ключи и Price ID в переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js) — без этого оплата не заработает на живом сайте.",
+   "Как только цены определены — заполнить их в var PLANS (index.html) и на самом лендинге вместо «Цена скоро»; решить точное число бесплатных тем/заданий для пробного доступа (пока не зафиксировано); подключить паywall-проверку families.plan/paid_until на самих ограничиваемых разделах (шпаргалки/материалы/диагностика у «Полного» тарифа) — этой версией НЕ сделано, это следующий шаг после появления цен.",
+   "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026), возможно пересекается с монетизацией (новый лендинг уже часть этой работы).",
+   "Учебник Л. Г. Петерсон, 4 класс — свериться по темам/заданиям, дописать недостающее, рассмотреть книгу для скачивания."
   ],
   "itemsEn": [
-   "The “English language” task is essentially complete: the interface, every topic's content, topic names and the grade map (2.42.0–2.53.0), illustrations across all 8 grades (2.54.0–2.61.0), the /legal/*.html pages (2.62.0), and the cheat-sheet card formulas, the “Materials” modal, and the version history (2.63.0) have all been translated.",
-   "What to translate or build next will be decided by the next request."
+   "The monetization infrastructure is in place (2.64.0): a landing page with 4 plans (price placeholder), a database schema for payments/vouchers, a Stripe scaffold, and a “Vouchers” section in the admin panel. What's needed next is for Dmitriy himself to: set up a Stripe account, create a Product and Price for each plan, and add the keys and Price IDs to Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js) — payment won't work on the live site without this.",
+   "Once prices are set: fill them into var PLANS (index.html) and on the landing page itself instead of “Price coming soon”; decide the exact number of free topics/tasks for the trial (not yet settled); wire up a paywall check on families.plan/paid_until for the actually gated sections (cheat sheets/materials/diagnostics on the Full plan) — NOT done in this version, it's the next step once prices exist.",
+   "A redesign of the site's look, font, and background, with a designer's input (requested 2026-10-06) — may overlap with monetization, since the new landing page is already part of that work.",
+   "The L. G. Peterson Grade 4 textbook — check it against the app's topics/tasks, write up what's missing, consider it as a downloadable book."
   ],
   "later": [
    "Олимпиадный трек: задачи на сообразительность после освоения фундамента."
@@ -26685,6 +26720,30 @@ function drawCharModal(){
 
 /* ---- Страница входа ---- */
 var LOGIN_ERR={denied:'Вход отменён.',state:'Не получилось войти — попробуйте ещё раз.',token:'Не удалось подтвердить вход — попробуйте ещё раз.',claims:'Не удалось подтвердить адрес почты.',not_configured:'Этот способ входа ещё не настроен.',disabled:'Эта семья отключена администратором. Если это ошибка — напишите в поддержку.'};
+/* Публичный лендинг (в. 2.64.0) — показывается ДО viewLanding() посторонним
+   посетителям без сессии: рассказ о проекте + таблица тарифов (placeholder-цены,
+   см. PLANS выше). Кнопки ведут в уже существующий viewLanding() (вход через
+   Gmail/Яндекс/Yahoo) — сам вход и создание семьи этой версией не меняются. */
+function viewMarketing(){
+  return '<div class="kidwrap"><div class="kidbox sheet landing" style="max-width:760px">'
+    +'<p class="kick hand" style="margin:0">'+TL('Тетрадь открыта — начнём','The notebook is open — let’s start')+'</p>'
+    +'<h1>'+TL('Математика в клетку','Math in a Grid')+'</h1>'
+    +'<p class="lead">'+TL('Спокойные занятия по математике для 2–9 классов: находим пробелы, объясняем со схемами, тренируем на задачах с подсказками и проверяем тестами. Для русскоязычных семей по всему миру.','Calm math practice for grades 2–9: we find the gaps, explain with diagrams, drill with hinted problems, and check with tests. Built for Russian-speaking families anywhere in the world.')+'</p>'
+    +'<div class="cta" style="justify-content:center;margin:14px 0"><button class="btn primary" data-nav="landing">'+TL('Попробовать бесплатно','Try it for free')+'</button><button class="btn ghost" data-nav="landing">'+TL('У меня уже есть семья — войти','I already have a family — sign in')+'</button></div>'
+    +'<h2 style="margin:24px 0 2px">'+TL('Тарифы','Plans')+'</h2>'
+    +'<p class="legend" style="margin:0">'+TL('Несколько тем и заданий доступны сразу бесплатно, без оплаты.','A few topics and tasks are free right away, no payment needed.')+'</p>'
+    +'<div class="planGrid">'+PLANS.map(planCardHTML).join('')+'</div>'
+    +'<p style="margin-top:14px"><button class="btn ghost small" data-nav="versions">'+TL('Версии и планы','Versions and plans')+'</button></p>'
+    +'</div></div>';
+}
+function planCardHTML(p){
+  return '<div class="planCard'+(p.tier==='full'?' full':'')+'">'
+    +'<div class="planGrade">'+esc(planGradeRange(p))+' '+TL('класс','grade')+'</div>'
+    +'<div class="planTier">'+esc(planTierLabel(p))+'</div>'
+    +'<p class="planDesc">'+esc(planDesc(p))+'</p>'
+    +'<div class="planPrice">'+esc(planPriceLabel(p))+'</div>'
+    +'</div>';
+}
 function viewLanding(){
   return '<div class="kidwrap"><div class="kidbox sheet landing">'
     +'<p class="kick hand" style="margin:0">'+TL('Тетрадь открыта — начнём','The notebook is open — let’s start')+'</p>'
@@ -27079,7 +27138,7 @@ document.addEventListener('copy',function(ev){
   if(popupSelfClose()) return;
   try{
     await cloudInit();
-    if(CLOUD.on && !CLOUD.me){ view={name:'landing'}; render(); return; }
+    if(CLOUD.on && !CLOUD.me){ view={name:'marketing'}; render(); return; }
     var gate=needsGate();
     if(gate){ view={name:gate}; render(); if(gate==='welcome') startOnbPoll(); return; }
     render();
@@ -28109,8 +28168,8 @@ function kidName(id){var k=KIDS.filter(function(x){return x.id===id})[0]; return
    но нигде не показывается и не выбирается — это «мягкое» отключение, а не удаление. */
 function visibleKids(){return KIDS.filter(function(k){return k.active!==false})}
 function paintBar(){
-  if(view.name==='pickkid'||view.name==='landing'||view.name==='welcome'||view.name==='terms'||(view.name==='versions'&&!activeKid)){
-    $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='landing'?'landing':'pickkid')+'"><span class="hand">'+TL('Математика','Math')+'</span><b>'+TL('в клетку','in a Grid')+'</b></button>'
+  if(view.name==='marketing'||view.name==='pickkid'||view.name==='landing'||view.name==='welcome'||view.name==='terms'||(view.name==='versions'&&!activeKid)){
+    $('#bar').innerHTML='<button class="brand" data-nav="'+(view.name==='marketing'?'marketing':view.name==='landing'?'landing':'pickkid')+'"><span class="hand">'+TL('Математика','Math')+'</span><b>'+TL('в клетку','in a Grid')+'</b></button>'
       +'<button class="btn small ghost" style="margin-left:auto" data-lang-toggle title="'+esc(langLabel())+'" aria-label="Язык / Language">'+langIcon()+'</button>'
       +'<button class="btn small ghost" data-theme-toggle title="'+esc(themeLabel())+'" aria-label="'+TL('Тема оформления','Theme')+'">'+themeIcon()+'</button>'
       +'<button class="btn small ghost" data-nav="versions">'+TL('Версии','Versions')+'</button>';
@@ -28143,7 +28202,8 @@ function render(){
   var fr=$('#fabRoot'); if(fr&&!fr.firstChild) fr.innerHTML=fabHTML();
   var h='';
   if(CLOUD.pending){ $('#app').innerHTML='<p class="empty" style="text-align:center;margin-top:20vh">Загрузка…</p>'; return; }
-  if(view.name==='landing') h=viewLanding();
+  if(view.name==='marketing') h=viewMarketing();
+  else if(view.name==='landing') h=viewLanding();
   else if(view.name==='welcome') h=viewWelcome();
   else if(view.name==='terms') h=viewTerms();
   else if(view.name==='versions') h=viewVersions();
@@ -28362,6 +28422,39 @@ var MAT_KIND_LABEL_EN={ref:'reference',geo:'geometry',nine:'9 days'};
 function bookName(b){ return TL(b.name,b.nameEn); }
 function bookDesc(b){ return TL(b.desc,b.descEn); }
 function matKindLabel(kind){ return TL(MAT_KIND_LABEL[kind],MAT_KIND_LABEL_EN[kind])||TL('книга','book'); }
+/* Тарифы монетизации (в. 2.64.0 — заготовка инфраструктуры, см. раздел «Монетизация»
+   в статус-документе проекта). Матрица классы × функции: 2 диапазона классов ×
+   2 уровня функций = 4 тарифа. price:null — цена пока не определена, в таблице на
+   лендинге и в админке рисуется как плейсхолдер «Цена скоро»; как только цены
+   появятся, достаточно заполнить price/currency здесь — переделка кода не нужна. */
+var PLANS = [
+  {id:'basic_2_4', grades:[2,3,4], tier:'basic',
+   name:'Базовый, 2–4 класс', nameEn:'Basic, Grades 2–4',
+   desc:'Темы, задания, тесты, путешествие по Клетке, профиль и достижения.',
+   descEn:'Topics, tasks, tests, the Grid Journey, profile, and achievements.',
+   price:null, currency:null},
+  {id:'full_2_4', grades:[2,3,4], tier:'full',
+   name:'Полный, 2–4 класс', nameEn:'Full, Grades 2–4',
+   desc:'Всё из Базового + шпаргалки и скачиваемые материалы.',
+   descEn:'Everything in Basic, plus cheat sheets and downloadable materials.',
+   price:null, currency:null},
+  {id:'basic_5_9', grades:[5,6,7,8,9], tier:'basic',
+   name:'Базовый, 5–9 класс', nameEn:'Basic, Grades 5–9',
+   desc:'Темы, задания, тесты, путешествие по Клетке, профиль и достижения.',
+   descEn:'Topics, tasks, tests, the Grid Journey, profile, and achievements.',
+   price:null, currency:null},
+  {id:'full_5_9', grades:[5,6,7,8,9], tier:'full',
+   name:'Полный, 5–9 класс', nameEn:'Full, Grades 5–9',
+   desc:'Всё из Базового + шпаргалки, материалы и входная диагностика.',
+   descEn:'Everything in Basic, plus cheat sheets, materials, and the entry diagnostic.',
+   price:null, currency:null}
+];
+function planName(p){ return TL(p.name,p.nameEn); }
+function planDesc(p){ return TL(p.desc,p.descEn); }
+function planGradeRange(p){ var g=p.grades; return g[0]+'–'+g[g.length-1]; }
+function planTierLabel(p){ return p.tier==='full' ? TL('Полный','Full') : TL('Базовый','Basic'); }
+function planPriceLabel(p){ return (p.price==null) ? TL('Цена скоро','Price coming soon') : (p.price+' '+(p.currency||'')); }
+function planById(id){ for(var i=0;i<PLANS.length;i++) if(PLANS[i].id===id) return PLANS[i]; return null; }
 var MAT_ACCENT={blue:{fill:'var(--blue-soft)',ink:'var(--blue)'},green:{fill:'var(--green-soft)',ink:'var(--green)'},gold:{fill:'var(--gold-soft)',ink:'var(--gold)'}};
 /* Обложка книги — своя простая SVG-карточка «в клетку» (без скриншотов PDF: на титульном листе
    книги напечатана версия приложения на момент сборки PDF, и она неизбежно устареет на обложке). */
@@ -28970,6 +29063,7 @@ document.addEventListener('click',function(ev){
   if(nav){
     if(nav==='home'||nav==='diag'||nav==='status'||nav==='cheats'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
     else if(nav==='landing'){ view={name:'landing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
+    else if(nav==='marketing'){ view={name:'marketing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
     else if(nav==='pickkid'){ pkReset(); go('pickkid'); }
     else if(nav==='parentgate'){ pkReset(); go('parent'); }
     else if(nav.indexOf('soon/')===0) go('soon',{id:nav.split('/')[1]});

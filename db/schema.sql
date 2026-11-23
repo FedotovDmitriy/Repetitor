@@ -85,3 +85,51 @@ CREATE TABLE IF NOT EXISTS consents (
   ua          TEXT
 );
 CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role);
+
+-- ========== Монетизация (в. 2.64.0 — заготовка инфраструктуры) ==========
+-- Цены ещё НЕ определены (сознательное решение — см. раздел «Монетизация» в
+-- статус-документе проекта): таблицы и колонки уже созданы, чтобы наполнить их
+-- ценами позже без переделки схемы. Тарифы (id/классы/функции/название) живут
+-- в коде — var PLANS в index.html, — не в базе: сама база хранит только то, что
+-- относится к конкретной семье/платежу/ваучеру.
+
+-- План семьи и до какого момента он оплачен.
+-- plan       — id из PLANS в index.html ('basic_2_4'|'full_2_4'|'basic_5_9'|'full_5_9') или NULL
+--              (NULL = нет активного платного плана, только бесплатный пробный доступ).
+-- paid_until — конец оплаченного периода, unix ms; NULL = нет активной оплаты.
+-- Добавляются как ALTER TABLE к уже существующей families — см. ensureSchema()
+-- в functions/api/[[route]].js, который применяет это сам при первом запросе.
+
+-- История платежей и Stripe-сессий (для сверки с Stripe и для админки).
+CREATE TABLE IF NOT EXISTS payments (
+  id                     INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at             INTEGER NOT NULL,
+  family_id              TEXT NOT NULL,
+  plan                   TEXT NOT NULL,                  -- id из PLANS
+  amount_cents           INTEGER,                         -- NULL, пока цена не определена
+  currency               TEXT,                            -- NULL, пока цена не определена
+  stripe_session_id      TEXT,
+  stripe_payment_intent  TEXT,
+  status                 TEXT NOT NULL DEFAULT 'pending', -- pending | paid | failed | refunded
+  period_start           INTEGER,
+  period_end             INTEGER
+);
+CREATE INDEX IF NOT EXISTS payments_family ON payments(family_id, status);
+CREATE INDEX IF NOT EXISTS payments_session ON payments(stripe_session_id);
+
+-- Коды ваучеров — дают доступ к тарифу без оплаты через Stripe (пилот: школа в
+-- Тбилиси, друзья; в будущем — поощрение активных пользователей, см. бэклог).
+CREATE TABLE IF NOT EXISTS vouchers (
+  id                     INTEGER PRIMARY KEY AUTOINCREMENT,
+  code                   TEXT UNIQUE NOT NULL,
+  created_at             INTEGER NOT NULL,
+  created_by             TEXT,                            -- почта администратора
+  plan                   TEXT NOT NULL,                   -- id из PLANS, какой тариф даёт
+  valid_days             INTEGER NOT NULL,                -- на сколько дней продлевает paid_until при погашении
+  status                 TEXT NOT NULL DEFAULT 'active',  -- active | redeemed | revoked
+  redeemed_by_family_id  TEXT,
+  redeemed_at            INTEGER,
+  note                   TEXT
+);
+CREATE INDEX IF NOT EXISTS vouchers_code ON vouchers(code);
+CREATE INDEX IF NOT EXISTS vouchers_status ON vouchers(status);

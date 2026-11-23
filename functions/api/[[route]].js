@@ -21,6 +21,18 @@
  *   SUPPORT_TO           — куда слать письма поддержки (по умолчанию fnemoy@gmail.com)
  *   MAIL_FROM            — от кого (по умолчанию onboarding@resend.dev)
  *   AUTO_SEND_PINS       — «1»: запрос PIN сразу уходит письмом родителю (нужен свой домен в Resend)
+ *
+ *   --- Монетизация (в. 2.64.0 — заготовка, см. раздел «Монетизация» в статус-документе) ---
+ *   STRIPE_SECRET_KEY       — секретный ключ Stripe (Dashboard → Developers → API keys) (секрет)
+ *   STRIPE_WEBHOOK_SECRET   — секрет подписи вебхука (Dashboard → Developers → Webhooks →
+ *                             эндпоинт https://<ваш-домен>/api/billing/webhook)            (секрет)
+ *   STRIPE_PRICE_BASIC_2_4  — Price ID (Dashboard → Products) для тарифа «Базовый, 2–4 класс»
+ *   STRIPE_PRICE_FULL_2_4   — Price ID для тарифа «Полный, 2–4 класс»
+ *   STRIPE_PRICE_BASIC_5_9  — Price ID для тарифа «Базовый, 5–9 класс»
+ *   STRIPE_PRICE_FULL_5_9   — Price ID для тарифа «Полный, 5–9 класс»
+ *   (без STRIPE_SECRET_KEY оплата отвечает понятной ошибкой 503, ничего не падает; без
+ *   конкретного STRIPE_PRICE_* — 503 только для этого тарифа. Сами цены/валюта настраиваются
+ *   в Stripe Dashboard при создании Price, не здесь и не в index.html.)
  */
 
 const DEFAULT_TO = 'fnemoy@gmail.com';
@@ -131,9 +143,18 @@ function ensureSchema(env) {
         `CREATE INDEX IF NOT EXISTS join_requests_kid ON join_requests(kid_email)`,
         `CREATE TABLE IF NOT EXISTS consents (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, email TEXT NOT NULL, family_id TEXT, role TEXT NOT NULL, doc_version TEXT NOT NULL, ip TEXT, ua TEXT)`,
         `CREATE INDEX IF NOT EXISTS consents_family ON consents(family_id, role)`,
+        // Монетизация (в. 2.64.0 — заготовка, цены пока не определены, см. db/schema.sql)
+        `CREATE TABLE IF NOT EXISTS payments (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, family_id TEXT NOT NULL, plan TEXT NOT NULL, amount_cents INTEGER, currency TEXT, stripe_session_id TEXT, stripe_payment_intent TEXT, status TEXT NOT NULL DEFAULT 'pending', period_start INTEGER, period_end INTEGER)`,
+        `CREATE INDEX IF NOT EXISTS payments_family ON payments(family_id, status)`,
+        `CREATE INDEX IF NOT EXISTS payments_session ON payments(stripe_session_id)`,
+        `CREATE TABLE IF NOT EXISTS vouchers (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT UNIQUE NOT NULL, created_at INTEGER NOT NULL, created_by TEXT, plan TEXT NOT NULL, valid_days INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'active', redeemed_by_family_id TEXT, redeemed_at INTEGER, note TEXT)`,
+        `CREATE INDEX IF NOT EXISTS vouchers_code ON vouchers(code)`,
+        `CREATE INDEX IF NOT EXISTS vouchers_status ON vouchers(status)`,
       ];
       for (const q of stmts) await env.DB.prepare(q).run();
       try { await env.DB.prepare('ALTER TABLE families ADD COLUMN active INTEGER NOT NULL DEFAULT 1').run(); } catch (e) { /* колонка уже есть */ }
+      try { await env.DB.prepare('ALTER TABLE families ADD COLUMN plan TEXT').run(); } catch (e) { /* колонка уже есть */ }
+      try { await env.DB.prepare('ALTER TABLE families ADD COLUMN paid_until INTEGER').run(); } catch (e) { /* колонка уже есть */ }
     })().catch(e => { schemaReady = null; schemaFailedAt = Date.now(); throw e; });
   }
   return schemaReady;
@@ -181,6 +202,15 @@ const tooManyLinks = (text, max) => ((String(text).match(LINK_RE) || []).length 
 
 /* ---------- утилиты семьи ---------- */
 const newId = () => 'f' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
+
+/* Код ваучера — короткий, без похожих друг на друга символов (без 0/O/1/I), группами по 4
+   через дефис (например ABCD-EFGH), чтобы было легко продиктовать вслух или переписать с листа. */
+function genVoucherCode() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for (let i = 0; i < 8; i++) { if (i === 4) s += '-'; s += alphabet[Math.floor(Math.random() * alphabet.length)]; }
+  return s;
+}
 
 /* Кто этот адрес: владелец семьи (родитель), ребёнок из семьи — или ещё никто. */
 async function resolveEmail(env, email, touch) {
@@ -757,6 +787,138 @@ async function adminOverview(env) {
     joins: joins.map(j => ({ id: j.id, createdAt: j.created_at, email: j.kid_email, familyId: j.family_id, name: j.name, grade: j.grade, status: j.status, decidedAt: j.decided_at })) });
 }
 
+/* ============================ Монетизация (в. 2.64.0 — заготовка) ============================
+   Stripe Checkout + webhook + ваучеры. См. раздел «Монетизация» в статус-документе проекта.
+   Тарифы (id, классы, функции, название) описаны в коде клиента — var PLANS в index.html;
+   сервер знает только список допустимых id (PLAN_IDS ниже) и, для каждого, Stripe Price ID
+   из переменной окружения — сама цена настраивается в Stripe Dashboard (Products → Prices),
+   не в этом файле.
+   НЕ заработает на живом сайте, пока Дмитрий не: (1) заведёт Stripe-аккаунт и создаст Product +
+   Price для каждого тарифа; (2) добавит STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET и
+   STRIPE_PRICE_<PLAN_ID большими буквами> (например STRIPE_PRICE_BASIC_2_4) в переменные
+   окружения Cloudflare Pages — по аналогии с Яндекс/Yahoo OAuth, см. версию 2.39.0 в
+   статус-документе, за точной инструкцией «как добавить переменную окружения». До этого все
+   запросы на оплату отвечают понятной ошибкой 503, ничего не падает. */
+const PLAN_IDS = ['basic_2_4', 'full_2_4', 'basic_5_9', 'full_5_9'];
+const stripeConfigured = env => !!env.STRIPE_SECRET_KEY;
+const planPriceEnvKey = planId => 'STRIPE_PRICE_' + planId.toUpperCase();
+
+async function stripeCall(env, path, params) {
+  const body = new URLSearchParams();
+  (function flat(obj, prefix) {
+    for (const k in obj) {
+      const key = prefix ? prefix + '[' + k + ']' : k;
+      const v = obj[k];
+      if (v === undefined || v === null) continue;
+      if (Array.isArray(v)) v.forEach((item, i) => flat({ [i]: item }, key));
+      else if (typeof v === 'object') flat(v, key);
+      else body.append(key, v);
+    }
+  })(params || {}, '');
+  const r = await fetch('https://api.stripe.com/v1' + path, {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded', authorization: 'Bearer ' + env.STRIPE_SECRET_KEY },
+    body: body.toString(),
+  });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error((data && data.error && data.error.message) || 'Stripe error');
+  return data;
+}
+
+/* Проверка подписи Stripe webhook (HMAC-SHA256, схема t=...,v1=... из заголовка
+   stripe-signature) через Web Crypto — доступен в Cloudflare Pages Functions без SDK. */
+async function verifyStripeSignature(payload, sigHeader, secret) {
+  const parts2 = Object.fromEntries(String(sigHeader || '').split(',').map(p => p.split('=')));
+  const t = parts2.t, v1 = parts2.v1;
+  if (!t || !v1) return false;
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sigBuf = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(t + '.' + payload));
+  const expected = [...new Uint8Array(sigBuf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  return expected === v1;
+}
+
+/* Создаёт Stripe Checkout Session для одного тарифа; сохраняет её в payments со
+   статусом 'pending' — webhook ниже переводит её в 'paid' при подтверждении оплаты. */
+async function billingCheckout(req, env, url) {
+  if (req.method !== 'POST') return bad(405, 'Только POST');
+  const s = await getSession(req, env);
+  if (!s || !s.f) return bad(401, 'Нужен вход через семью');
+  if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
+  if (!stripeConfigured(env)) return bad(503, 'Оплата ещё не настроена — попробуйте позже');
+  const b = await req.json().catch(() => ({}));
+  const planId = String(b.plan || '');
+  if (!PLAN_IDS.includes(planId)) return bad(400, 'Неизвестный тариф');
+  const priceId = env[planPriceEnvKey(planId)];
+  if (!priceId) return bad(503, 'Цена этого тарифа ещё не настроена');
+  let session;
+  try {
+    session = await stripeCall(env, '/checkout/sessions', {
+      mode: 'payment',
+      customer_email: s.e,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: url.origin + '/?billing=success',
+      cancel_url: url.origin + '/?billing=cancel',
+      metadata: { family_id: s.f, plan: planId },
+    });
+  } catch (e) {
+    return bad(502, 'Stripe не ответил: ' + String((e && e.message) || e));
+  }
+  await env.DB.prepare('INSERT INTO payments (created_at, family_id, plan, stripe_session_id, status) VALUES (?, ?, ?, ?, ?)')
+    .bind(Date.now(), s.f, planId, session.id, 'pending').run();
+  return json({ ok: true, url: session.url });
+}
+
+/* Webhook Stripe. Период доступа — пока фиксированные 30 дней от подтверждения оплаты
+   (простая разовая оплата на первую версию); переход на управляемый Stripe Subscription
+   период — следующий шаг, когда появится реальная ценовая модель (месяц/год). */
+const BILLING_PERIOD_MS = 30 * 24 * 3600 * 1000;
+async function billingWebhook(req, env) {
+  if (req.method !== 'POST') return bad(405, 'Только POST');
+  if (!env.STRIPE_WEBHOOK_SECRET) return bad(503, 'Webhook ещё не настроен');
+  const payload = await req.text();
+  if (!(await verifyStripeSignature(payload, req.headers.get('stripe-signature'), env.STRIPE_WEBHOOK_SECRET))) {
+    return bad(400, 'Неверная подпись webhook');
+  }
+  let evt; try { evt = JSON.parse(payload); } catch (e) { return bad(400, 'Некорректный JSON'); }
+  if (evt.type === 'checkout.session.completed') {
+    const session = evt.data.object;
+    const familyId = session.metadata && session.metadata.family_id;
+    const plan = session.metadata && session.metadata.plan;
+    if (familyId && plan) {
+      const now = Date.now(), periodEnd = now + BILLING_PERIOD_MS;
+      await env.DB.batch([
+        env.DB.prepare("UPDATE payments SET status = 'paid', stripe_payment_intent = ?, period_start = ?, period_end = ? WHERE stripe_session_id = ?")
+          .bind(session.payment_intent || null, now, periodEnd, session.id),
+        env.DB.prepare('UPDATE families SET plan = ?, paid_until = ? WHERE id = ?').bind(plan, periodEnd, familyId),
+      ]);
+    }
+  }
+  return json({ ok: true, received: true });
+}
+
+/* Погашение кода ваучера семьёй — альтернатива оплате через Stripe (пилот, поощрения). */
+async function redeemVoucher(req, env) {
+  if (req.method !== 'POST') return bad(405, 'Только POST');
+  const s = await getSession(req, env);
+  if (!s || !s.f) return bad(401, 'Нужен вход через семью');
+  if (!(await familyActive(env, s.f))) return bad(403, 'Семья отключена администратором');
+  const b = await req.json().catch(() => ({}));
+  const code = String(b.code || '').trim().toUpperCase();
+  if (!code) return bad(400, 'Введите код ваучера');
+  const vk = 'voucher:' + s.f;
+  if (await tooMany(env, vk, 10, 3600)) return bad(429, 'Слишком много попыток — попробуйте через час');
+  await noteAttempt(env, vk);
+  const v = await env.DB.prepare('SELECT * FROM vouchers WHERE code = ?').bind(code).first();
+  if (!v) return bad(404, 'Ваучер не найден');
+  if (v.status !== 'active') return bad(409, 'Ваучер уже использован или отменён');
+  const now = Date.now(), periodEnd = now + v.valid_days * 24 * 3600 * 1000;
+  await env.DB.batch([
+    env.DB.prepare("UPDATE vouchers SET status = 'redeemed', redeemed_by_family_id = ?, redeemed_at = ? WHERE id = ?").bind(s.f, now, v.id),
+    env.DB.prepare('UPDATE families SET plan = ?, paid_until = ? WHERE id = ?').bind(v.plan, periodEnd, s.f),
+  ]);
+  return json({ ok: true, plan: v.plan, paidUntil: periodEnd });
+}
+
 async function adminRoute(req, env, url, parts) {
   const sub = parts[1] || '';
   if (sub === 'login') return adminLogin(req, env);
@@ -854,6 +1016,31 @@ async function adminRoute(req, env, url, parts) {
     await env.DB.batch(stmts);
     return json({ ok: true, name, renamed: name !== kid.name, emailMoved, to: to.owner_email });
   }
+  /* Ваучеры (в. 2.64.0 — заготовка монетизации, см. комментарий перед adminRoute выше). */
+  if (sub === 'vouchers' && req.method === 'GET') {
+    const rows = (await env.DB.prepare(
+      'SELECT id, code, created_at, created_by, plan, valid_days, status, redeemed_by_family_id, redeemed_at, note FROM vouchers ORDER BY id DESC LIMIT 300'
+    ).all()).results || [];
+    return json({ ok: true, items: rows, planIds: PLAN_IDS });
+  }
+  if (sub === 'vouchers' && req.method === 'POST') {
+    const b = await req.json().catch(() => ({}));
+    const plan = String(b.plan || '');
+    if (!PLAN_IDS.includes(plan)) return bad(400, 'Неизвестный тариф');
+    const validDays = Math.max(1, Math.min(3650, +b.validDays || 30));
+    const code = b.code ? String(b.code).trim().toUpperCase() : genVoucherCode();
+    if (!/^[A-Z0-9-]{4,24}$/.test(code)) return bad(400, 'Код: 4–24 символа, латинские буквы/цифры/дефис');
+    try {
+      await env.DB.prepare('INSERT INTO vouchers (code, created_at, created_by, plan, valid_days, status, note) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(code, Date.now(), 'admin', plan, validDays, 'active', String(b.note || '').slice(0, 200)).run();
+    } catch (e) { return bad(409, 'Такой код уже существует — попробуйте другой'); }
+    return json({ ok: true, code });
+  }
+  if (sub === 'vouchers-revoke' && req.method === 'POST') {
+    const b = await req.json().catch(() => ({}));
+    await env.DB.prepare("UPDATE vouchers SET status = 'revoked' WHERE id = ? AND status = 'active'").bind(+b.id || 0).run();
+    return json({ ok: true });
+  }
   return bad(404, 'Нет такого адреса');
 }
 
@@ -897,6 +1084,9 @@ export async function onRequest(context) {
       if (route === 'doc') return docRoute(req, env, url);
       if (route === 'support') return supportRoute(req, env);
       if (route === 'pin-request') return pinRequest(req, env);
+      if (route === 'billing' && parts[1] === 'checkout') return billingCheckout(req, env, url);
+      if (route === 'billing' && parts[1] === 'webhook') return billingWebhook(req, env);
+      if (route === 'billing' && parts[1] === 'redeem-voucher') return redeemVoucher(req, env);
       if (route === 'admin') return adminRoute(req, env, url, parts);
       return bad(404, 'Нет такого адреса');
     })());
