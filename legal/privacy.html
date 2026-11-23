@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script>(function(){try{if(localStorage.getItem('mvk-lang')==='en')document.documentElement.className='lang-en';}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Политика конфиденциальности — Математика в клетку</title>
+<title data-lang="ru">Политика конфиденциальности — Математика в клетку</title>
+<title data-lang="en">Privacy Policy — Math in a Grid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
@@ -16,6 +18,8 @@ body{margin:0;padding:24px 16px 60px;background:var(--paper);color:var(--ink);fo
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
 .top a.home{color:var(--blue);text-decoration:none;font-weight:700}
 .top a.home b{color:var(--ink)}
+.langbtn{border:1.5px solid var(--line);background:var(--sheet);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.langbtn:hover{border-color:var(--blue);color:var(--blue)}
 .sheet{background:var(--sheet);border:2px solid var(--ink);border-radius:16px;padding:28px 30px;box-shadow:0 6px 18px rgba(20,33,61,.06)}
 h1{font-size:28px;margin:0 0 6px}
 .upd{color:var(--muted);font-size:14px;margin:0 0 22px}
@@ -33,12 +37,18 @@ th{background:var(--blue-soft)}
 .legalnav a{color:var(--muted);text-decoration:underline}
 .legalnav span{margin:0 6px}
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+html:not(.lang-en) [data-lang="en"]{display:none}
+html.lang-en [data-lang="ru"]{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><a class="home" href="/">← <b>Математика</b> в клетку</a></div>
-  <div class="sheet">
+  <div class="top">
+    <a class="home" href="/" data-lang="ru">← <b>Математика</b> в клетку</a>
+    <a class="home" href="/" data-lang="en">← <b>Math</b> in a Grid</a>
+    <button type="button" id="langBtn" class="langbtn" aria-label="Switch language / Переключить язык">RU</button>
+  </div>
+  <div class="sheet" data-lang="ru">
     <h1>Политика конфиденциальности</h1>
     <p class="upd">Действует с 24 сентября 2026 года (версия 2026-09-24)</p>
 
@@ -107,7 +117,101 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
 
     <div class="legalnav"><a href="/legal/terms.html">Пользовательское соглашение</a><span>·</span><a href="/legal/copyright.html">Авторские права</a></div>
   </div>
-  <footer>© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <div class="sheet" data-lang="en">
+    <h1>Privacy Policy</h1>
+    <p class="upd">In effect since September 24, 2026 (version 2026-09-24)</p>
+
+    <h2>1. Who processes the data</h2>
+    <p>The data controller is <b>Dmitriy Fedotov</b>, owner of the site "Math in a Grid" (repetitor-5oz.pages.dev). This policy explains what data we collect, why, and how we handle it. It has been drafted with regard to the Law of Georgia "On Personal Data Protection" (adopted June 14, 2023).</p>
+
+    <h2>2. What data we collect</h2>
+    <table>
+      <tr><th>Data</th><th>From whom and why</th></tr>
+      <tr><td>Email (via Google sign-in)</td><td>Parent and child — for signing in to the site and linking the family to its data.</td></tr>
+      <tr><td>Child's name, grade, PIN code</td><td>Entered by the parent or the child themselves when requesting to join the family — for the profile and for signing in to lessons. The PIN is made up by the child or the parent.</td></tr>
+      <tr><td>Lesson progress</td><td>Automatically, as lessons proceed — which topics are completed, test and diagnostic results, mistakes — to show progress and reports to the parent.</td></tr>
+      <tr><td>Support requests</td><td>If a parent or child writes in through the support button — a question, suggestion, bug report, or request for a forgotten PIN.</td></tr>
+      <tr><td>Fact and date of agreeing to the terms</td><td>When a parent accepts the terms of use — the document version, date, and a technical note (IP address, browser) for the consent log.</td></tr>
+    </table>
+    <p>We do not request or store payment data, identity documents, or any other data beyond what is necessary for the site to function.</p>
+
+    <h2>3. Why we use the data</h2>
+    <ul>
+      <li>To make sign-in and lessons work: authentication, saving and syncing progress across devices.</li>
+      <li>To link a child to a family: processing join requests and their confirmation by the parent.</li>
+      <li>To show the parent the child's progress and results in the parent dashboard.</li>
+      <li>To respond to support requests and send notifications about family join requests (by email).</li>
+      <li>To keep a log of consent to the terms of use.</li>
+    </ul>
+    <p>We do not use the data for advertising, do not sell it, and do not pass it on to third parties for their own marketing purposes.</p>
+
+    <h2>4. Who else sees the data</h2>
+    <p>We use the infrastructure of third-party services that process data on our behalf and under our instruction, without becoming independent owners of it:</p>
+    <ul>
+      <li><b>Cloudflare</b> — site hosting and database.</li>
+      <li><b>Google</b> — sign-in via Google account (OAuth); we only receive the email.</li>
+      <li><b>Resend</b> — sending emails (notifications to the parent, support replies).</li>
+    </ul>
+
+    <h2>5. How long the data is kept</h2>
+    <p>Data is kept for as long as the family is active. If a family's or a child's access is disabled (for example, for violating the terms of use), the data is not deleted — it is kept in an inactive state so that access can be restored. Full deletion of data is possible upon a separate request — see section 7.</p>
+
+    <h2>6. Children and consent</h2>
+    <p>Children use the site under the parent's responsibility. Under Georgian personal data protection law, a person over 16 may consent to the processing of their own data independently; for younger children, the consent of a parent or legal guardian is required. Therefore:</p>
+    <ul>
+      <li>A child gets access to lessons only after the parent confirms them in the parent dashboard (for those invited by the parent, consent is implied by the fact of adding them; for those who joined on their own, by an explicit confirmation of the request).</li>
+      <li>By confirming the request, the parent gives consent for the processing of the child's data and confirms acceptance of the terms of use and this policy.</li>
+    </ul>
+
+    <h2>7. Your rights</h2>
+    <p>Under the law of Georgia, you have the right to:</p>
+    <ul>
+      <li><b>Know and access</b> your own and your child's data that we process.</li>
+      <li><b>Correct</b> inaccurate data.</li>
+      <li><b>Delete</b> data — completely, without keeping it in an inactive state.</li>
+      <li><b>Withdraw consent</b> to data processing at any time — this will result in access to the site being disabled.</li>
+    </ul>
+    <p>To exercise any of these rights, write to <a href="mailto:fnemoy@gmail.com">fnemoy@gmail.com</a>. We will respond within a reasonable time.</p>
+
+    <h2>8. Security</h2>
+    <p>We take reasonable technical and organizational measures to protect data from unauthorized access, alteration, or loss. However, no service can guarantee absolute protection, so please do not share passwords, PINs, or sign-in details with third parties.</p>
+
+    <h2>9. Supervisory authority</h2>
+    <p>If you believe your rights as a data subject have been violated, you may contact Georgia's supervisory authority for personal data protection.</p>
+
+    <h2>10. Changes to the policy</h2>
+    <p>We may update this policy. The date at the top of the document is the date of the last update. For significant changes, the parent will be asked to accept the terms again.</p>
+
+    <p class="note">This document is prepared as a basis for the site in its current form and does not replace consultation with a lawyer specializing in data protection in Georgia.</p>
+
+    <div class="legalnav"><a href="/legal/terms.html">Terms of Use</a><span>·</span><a href="/legal/copyright.html">Copyright</a></div>
+  </div>
+  <footer data-lang="ru">© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <footer data-lang="en">© 2026 Dmitriy Fedotov. All rights reserved.</footer>
 </div>
+<script>
+(function(){
+  function cur(){ try{ return localStorage.getItem('mvk-lang')==='en'?'en':'ru'; }catch(e){ return 'ru'; } }
+  var TITLES={ru:'Политика конфиденциальности — Математика в клетку',en:'Privacy Policy — Math in a Grid'};
+  function paint(){
+    var l=cur();
+    document.documentElement.className = l==='en' ? 'lang-en' : '';
+    document.documentElement.lang = l;
+    document.title = TITLES[l];
+    var b=document.getElementById('langBtn');
+    if(b) b.textContent = l==='en' ? 'EN' : 'RU';
+  }
+  function toggle(){
+    var next = cur()==='en' ? 'ru' : 'en';
+    try{ if(next==='en') localStorage.setItem('mvk-lang','en'); else localStorage.removeItem('mvk-lang'); }catch(e){}
+    paint();
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    paint();
+    var b=document.getElementById('langBtn');
+    if(b) b.addEventListener('click', toggle);
+  });
+})();
+</script>
 </body>
 </html>

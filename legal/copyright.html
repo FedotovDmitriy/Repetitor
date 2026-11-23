@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script>(function(){try{if(localStorage.getItem('mvk-lang')==='en')document.documentElement.className='lang-en';}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Авторские права — Математика в клетку</title>
+<title data-lang="ru">Авторские права — Математика в клетку</title>
+<title data-lang="en">Copyright — Math in a Grid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
@@ -16,6 +18,8 @@ body{margin:0;padding:24px 16px 60px;background:var(--paper);color:var(--ink);fo
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
 .top a.home{color:var(--blue);text-decoration:none;font-weight:700}
 .top a.home b{color:var(--ink)}
+.langbtn{border:1.5px solid var(--line);background:var(--sheet);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.langbtn:hover{border-color:var(--blue);color:var(--blue)}
 .sheet{background:var(--sheet);border:2px solid var(--ink);border-radius:16px;padding:28px 30px;box-shadow:0 6px 18px rgba(20,33,61,.06)}
 h1{font-size:28px;margin:0 0 6px}
 .upd{color:var(--muted);font-size:14px;margin:0 0 22px}
@@ -31,12 +35,18 @@ a{color:var(--blue)}
 .legalnav a{color:var(--muted);text-decoration:underline}
 .legalnav span{margin:0 6px}
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+html:not(.lang-en) [data-lang="en"]{display:none}
+html.lang-en [data-lang="ru"]{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><a class="home" href="/">← <b>Математика</b> в клетку</a></div>
-  <div class="sheet">
+  <div class="top">
+    <a class="home" href="/" data-lang="ru">← <b>Математика</b> в клетку</a>
+    <a class="home" href="/" data-lang="en">← <b>Math</b> in a Grid</a>
+    <button type="button" id="langBtn" class="langbtn" aria-label="Switch language / Переключить язык">RU</button>
+  </div>
+  <div class="sheet" data-lang="ru">
     <span class="badge">© Все права защищены</span>
     <h1>Авторские права</h1>
     <p class="upd">Действует с 24 сентября 2026 года (версия 2026-09-24)</p>
@@ -88,7 +98,84 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
 
     <div class="legalnav"><a href="/legal/terms.html">Пользовательское соглашение</a><span>·</span><a href="/legal/privacy.html">Политика конфиденциальности</a></div>
   </div>
-  <footer>© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <div class="sheet" data-lang="en">
+    <span class="badge">© All rights reserved</span>
+    <h1>Copyright</h1>
+    <p class="upd">In effect since September 24, 2026 (version 2026-09-24)</p>
+
+    <h2>1. Rights holder</h2>
+    <p>All materials on the site "Math in a Grid" (repetitor-5oz.pages.dev) were created by <b>Dmitriy Fedotov</b> or commissioned by him, and belong to him as the author and rights holder. Protection is provided in accordance with the Law of Georgia "On Copyright and Related Rights" and international treaties on the protection of copyright.</p>
+
+    <h2>2. What is protected</h2>
+    <ul>
+      <li>Explanations of topics, problem statements, hints, and solution write-ups;</li>
+      <li>Diagrams, illustrations, and other images on the site;</li>
+      <li>Books and problem collections in PDF format available for download;</li>
+      <li>The site's design, layout, and visual style;</li>
+      <li>The site's program code and its back-end.</li>
+    </ul>
+    <p>Everything listed is an original work compiled by the rights holder himself based on the school curriculum; these are not scanned copies of someone else's textbooks.</p>
+
+    <h2>3. What is allowed</h2>
+    <p>A registered family may use the site's materials for the personal, non-commercial study of math with that family's children: studying online, downloading books for their own use, printing individual pages for lessons at home.</p>
+
+    <h2>4. What is prohibited without the rights holder's written permission</h2>
+    <ul>
+      <li>Copying, reproducing, or publishing the site's materials on other resources;</li>
+      <li>Distributing, forwarding, or posting them publicly, on social networks, messengers, or file-sharing services;</li>
+      <li>Selling the site's materials or access to them, including them in paid or free collections;</li>
+      <li>Using the site's materials (texts, problems, books, illustrations) to train, fine-tune, or test neural networks or other AI models;</li>
+      <li>Modifying, adapting, or creating derivative materials based on the site's content for distribution;</li>
+      <li>Copying or reusing the site's design and program code.</li>
+    </ul>
+    <p>We try to make accidental distribution harder: when text is copied from a page on the site, an attribution notice and a distribution ban are automatically appended to the copied text. This is a technical measure, not a replacement for the rules listed above.</p>
+
+    <h2>5. Term of protection</h2>
+    <p>Under the Law of Georgia on copyright, the economic rights to a work are protected for the author's entire life plus 70 years after their death.</p>
+
+    <h2>6. Liability for violation</h2>
+    <p>Using the site's materials in violation of these terms constitutes a copyright infringement. Georgian law provides for civil liability for this, including:</p>
+    <ul>
+      <li>a demand to stop the infringement (injunction);</li>
+      <li>compensation for damages caused, including the rights holder's lost profit;</li>
+      <li>recovery of income obtained by the infringer as a result of the infringement;</li>
+      <li>seizure and destruction of copies made in violation of copyright.</li>
+    </ul>
+    <p>In addition, if these terms are violated, access to the site for the relevant family or child may be disabled — see the <a href="/legal/terms.html">Terms of Use</a>.</p>
+
+    <h2>7. How to report a violation</h2>
+    <p>If you have discovered that the site's materials are being used or distributed without permission, write to <a href="mailto:fnemoy@gmail.com">fnemoy@gmail.com</a> — please specify exactly what and where you found it.</p>
+
+    <p class="note">This document is prepared as a basis and does not replace consultation with a lawyer on intellectual property protection matters in Georgia.</p>
+
+    <div class="legalnav"><a href="/legal/terms.html">Terms of Use</a><span>·</span><a href="/legal/privacy.html">Privacy Policy</a></div>
+  </div>
+  <footer data-lang="ru">© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <footer data-lang="en">© 2026 Dmitriy Fedotov. All rights reserved.</footer>
 </div>
+<script>
+(function(){
+  function cur(){ try{ return localStorage.getItem('mvk-lang')==='en'?'en':'ru'; }catch(e){ return 'ru'; } }
+  var TITLES={ru:'Авторские права — Математика в клетку',en:'Copyright — Math in a Grid'};
+  function paint(){
+    var l=cur();
+    document.documentElement.className = l==='en' ? 'lang-en' : '';
+    document.documentElement.lang = l;
+    document.title = TITLES[l];
+    var b=document.getElementById('langBtn');
+    if(b) b.textContent = l==='en' ? 'EN' : 'RU';
+  }
+  function toggle(){
+    var next = cur()==='en' ? 'ru' : 'en';
+    try{ if(next==='en') localStorage.setItem('mvk-lang','en'); else localStorage.removeItem('mvk-lang'); }catch(e){}
+    paint();
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    paint();
+    var b=document.getElementById('langBtn');
+    if(b) b.addEventListener('click', toggle);
+  });
+})();
+</script>
 </body>
 </html>

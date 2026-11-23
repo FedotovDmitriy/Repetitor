@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script>(function(){try{if(localStorage.getItem('mvk-lang')==='en')document.documentElement.className='lang-en';}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Пользовательское соглашение — Математика в клетку</title>
+<title data-lang="ru">Пользовательское соглашение — Математика в клетку</title>
+<title data-lang="en">Terms of Use — Math in a Grid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
@@ -16,6 +18,8 @@ body{margin:0;padding:24px 16px 60px;background:var(--paper);color:var(--ink);fo
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
 .top a.home{color:var(--blue);text-decoration:none;font-weight:700}
 .top a.home b{color:var(--ink)}
+.langbtn{border:1.5px solid var(--line);background:var(--sheet);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.langbtn:hover{border-color:var(--blue);color:var(--blue)}
 .sheet{background:var(--sheet);border:2px solid var(--ink);border-radius:16px;padding:28px 30px;box-shadow:0 6px 18px rgba(20,33,61,.06)}
 h1{font-size:28px;margin:0 0 6px}
 .upd{color:var(--muted);font-size:14px;margin:0 0 22px}
@@ -30,12 +34,18 @@ a{color:var(--blue)}
 .legalnav a{color:var(--muted);text-decoration:underline}
 .legalnav span{margin:0 6px}
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+html:not(.lang-en) [data-lang="en"]{display:none}
+html.lang-en [data-lang="ru"]{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><a class="home" href="/">← <b>Математика</b> в клетку</a></div>
-  <div class="sheet">
+  <div class="top">
+    <a class="home" href="/" data-lang="ru">← <b>Математика</b> в клетку</a>
+    <a class="home" href="/" data-lang="en">← <b>Math</b> in a Grid</a>
+    <button type="button" id="langBtn" class="langbtn" aria-label="Switch language / Переключить язык">RU</button>
+  </div>
+  <div class="sheet" data-lang="ru">
     <h1>Пользовательское соглашение</h1>
     <p class="upd">Действует с 24 сентября 2026 года (версия 2026-09-24)</p>
 
@@ -82,7 +92,79 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
 
     <div class="legalnav"><a href="/legal/privacy.html">Политика конфиденциальности</a><span>·</span><a href="/legal/copyright.html">Авторские права</a></div>
   </div>
-  <footer>© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <div class="sheet" data-lang="en">
+    <h1>Terms of Use</h1>
+    <p class="upd">In effect since September 24, 2026 (version 2026-09-24)</p>
+
+    <h2>1. Who we are and what this agreement covers</h2>
+    <p>The site "Math in a Grid" (repetitor-5oz.pages.dev) is an educational web app for practicing math with children in grades 4–9. The rights holder and owner of the site is <b>Dmitriy Fedotov</b> (hereinafter "we", "the rights holder"). By using the site, you agree to the terms of this document. If you do not agree, please do not use the site.</p>
+
+    <h2>2. Who may use the site</h2>
+    <p>The site is used by families: one adult — a parent or legal guardian of the child — creates the family and is responsible for it, while the children study under their supervision.</p>
+    <ul>
+      <li>A <b>parent</b> signs in with their Google account (Gmail), creates the family, and accepts the terms of use on their own behalf and on behalf of the children they add.</li>
+      <li>A <b>child</b> can either receive an invitation from the parent (the parent enters the child's email in the parent dashboard), or independently create a request to join the family by providing the parent's email, their own name, grade, and a PIN code they make up. Until the parent confirms such a request in their dashboard, the child does not get access to lessons.</li>
+    </ul>
+    <p>By confirming a child's request or adding them manually, the parent confirms that they are in fact the child's parent or legal guardian, gives consent for the child to use the site and for their data to be processed to the extent described in the <a href="/legal/privacy.html">Privacy Policy</a>, and takes responsibility for the child's actions on the site.</p>
+
+    <h2>3. What is and isn't allowed</h2>
+    <p>All materials on the site — explanations of topics, problems, hints and solutions, diagrams and illustrations, PDF books, design, and program code — are subject to copyright and protected by law. For details, see the <a href="/legal/copyright.html">copyright terms</a>. In short:</p>
+    <ul>
+      <li>The materials may only be used for the personal study of children in your family.</li>
+      <li>You may not copy, forward, publish, post publicly, sell, or pass the site's materials (texts, problems, books) on to third parties, or use them to train neural networks or other AI models.</li>
+      <li>You may not share access to the family account, children's PINs, book links, or any data obtained through the site with other people.</li>
+      <li>You may not try to bypass the site's technical restrictions, automatically scrape data, disrupt the site's operation, or create excessive load on the server.</li>
+    </ul>
+
+    <h2>4. Liability and limitation of warranties</h2>
+    <p>The site is a supplementary educational tool. It is not an educational institution, does not replace school, a teacher, or in-person lessons, and does not guarantee specific grades, exam results, or a level of mastery of the material. Parents or legal guardians are responsible for the child's learning, academic performance, and safe use of the site.</p>
+    <p>We try to keep the site running without interruptions, but we do not guarantee uninterrupted, error-free operation: technical failures, service interruptions, and errors in the materials are possible. We are not liable for indirect losses related to the use or inability to use the site, to the maximum extent permitted by applicable law.</p>
+
+    <h2>5. Personal data</h2>
+    <p>We collect and process the minimum data necessary — details are in the <a href="/legal/privacy.html">Privacy Policy</a>, which is an integral part of this agreement.</p>
+
+    <h2>6. Violation of terms</h2>
+    <p>If these terms are violated (above all, by copying or distributing the site's materials, or by misusing an account in bad faith), a family's or an individual child's access to the site may be disabled. Disabling means the site can no longer be signed into, but the family's data (progress, PINs, history) is not deleted and can be restored if necessary — for example, if the disabling happened by mistake. The rights holder also reserves the right to protect their rights by other means provided for by law, including claiming damages.</p>
+
+    <h2>7. Changes to the terms</h2>
+    <p>We may update this agreement from time to time — for example, when adding new features to the site. The date at the top of the document and the version (in the parent dashboard) show the last update. If the changes are significant, the parent will be asked to accept the updated terms again on their next sign-in; until then, access to lessons is temporarily suspended pending renewed consent.</p>
+
+    <h2>8. Governing law</h2>
+    <p>The parties' relationship is governed by the law of Georgia. Disputes that cannot be resolved through negotiation are settled in the manner established by the law of Georgia.</p>
+
+    <h2>9. Contact</h2>
+    <p>For any questions related to this agreement, to report a violation, or to request data deletion, write to <a href="mailto:fnemoy@gmail.com">fnemoy@gmail.com</a> or use the support button on the site.</p>
+
+    <p class="note">This document is a basis for using the site in its current form and does not replace legal advice. If you need a legal assessment of your specific situation, please consult a specialist in Georgian law.</p>
+
+    <div class="legalnav"><a href="/legal/privacy.html">Privacy Policy</a><span>·</span><a href="/legal/copyright.html">Copyright</a></div>
+  </div>
+  <footer data-lang="ru">© 2026 Дмитрий Федотов. Все права защищены.</footer>
+  <footer data-lang="en">© 2026 Dmitriy Fedotov. All rights reserved.</footer>
 </div>
+<script>
+(function(){
+  function cur(){ try{ return localStorage.getItem('mvk-lang')==='en'?'en':'ru'; }catch(e){ return 'ru'; } }
+  var TITLES={ru:'Пользовательское соглашение — Математика в клетку',en:'Terms of Use — Math in a Grid'};
+  function paint(){
+    var l=cur();
+    document.documentElement.className = l==='en' ? 'lang-en' : '';
+    document.documentElement.lang = l;
+    document.title = TITLES[l];
+    var b=document.getElementById('langBtn');
+    if(b) b.textContent = l==='en' ? 'EN' : 'RU';
+  }
+  function toggle(){
+    var next = cur()==='en' ? 'ru' : 'en';
+    try{ if(next==='en') localStorage.setItem('mvk-lang','en'); else localStorage.removeItem('mvk-lang'); }catch(e){}
+    paint();
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    paint();
+    var b=document.getElementById('langBtn');
+    if(b) b.addEventListener('click', toggle);
+  });
+})();
+</script>
 </body>
 </html>
