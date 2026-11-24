@@ -795,4 +795,94 @@ CONTENT_EN.frac4.steps = [
     exIdx:6}
 ];
 
+/* v. 2.66.0 — mirrors CONTENT.ineq4 in index.html field for field (same example/task/test
+   counts and order, same ans values). */
+CONTENT_EN.ineq4 = {
+  goal: "After this topic you'll be able to solve inequalities with one variable over the natural numbers: check a number by substitution, find the whole solution set or say that it's infinite or empty, and solve double inequalities.",
+  explain: "<p>An equation links two quantities with the sign &ldquo;=&rdquo;: 5 + 3 = 8. An <b>inequality</b> compares them with one of four signs: &lt;, &gt;, ≤, or ≥. An inequality can have a variable &mdash; a letter standing in for a number that isn't known yet. The inequality t &gt; 7 reads &ldquo;t is greater than seven&rdquo;: it says what the number t must be like, without naming one single value.</p>"
+  + "<h3>What a solution of an inequality is</h3>"
+  + "<p>A value of the variable that turns the inequality into a true numeric statement is called a <b>solution of the inequality</b>. The number 10 is a solution of t &gt; 7, because 10 &gt; 7 is true. But the number 5 is not a solution: 5 &gt; 7 is false.</p>"
+  + "<h3>Checking by substitution</h3>"
+  + "<p>To find out whether a number is a solution, substitute it for the letter and see whether a true statement comes out. Let's check the numbers 3, 6, and 9 against the inequality x &gt; 6: 3 &gt; 6 is false, 6 &gt; 6 is also false (the sign is strict, so the boundary itself doesn't count), and 9 &gt; 6 is true.</p>"
+  + "<div class='figure'>__SVG_INEQ4_LINE__</div>"
+  + "<div class='warn'><span class='hand'>Common mistake</span>The signs ≤ and ≥ include the boundary itself, while &lt; and &gt; don't. For x ≥ 6, the number 6 is already a solution; for x &gt; 6, it isn't.</div>"
+  + "<h3>The solution set</h3>"
+  + "<p>The complete list of every solution of an inequality is called its <b>solution set</b>. For the inequality x &lt; 6 over the natural numbers (counting 0), the solution set is {0, 1, 2, 3, 4, 5} &mdash; it's <b>finite</b>, with exactly 6 numbers in it.</p>"
+  + "<p>But the inequality x &gt; 100 has infinitely many solutions: any number 101, 102, 103, and so on without end will do. A solution set like that is called <b>infinite</b>.</p>"
+  + "<p>Sometimes no number at all fits an inequality. Then the solution set is called <b>empty</b> and is written with the sign ∅. For example, no natural number satisfies x + 10 &lt; 8: the smallest x is 0, and even then the sum is 10, while we need it to be less than 8.</p>"
+  + "<h3>Double inequalities</h3>"
+  + "<p>A <b>double inequality</b> is two conditions at once, for example 3 &lt; x &lt; 9. It means &ldquo;x is greater than 3 AND, at the same time, x is less than 9&rdquo; &mdash; both conditions have to hold together.</p>"
+  + "<div class='figure'>__SVG_INEQ4_DOUBLE__</div>"
+  + "<p>To find the solutions, we try numbers and check both conditions at once. For 3 &lt; x &lt; 9, the numbers 4, 5, 6, 7, 8 all work &mdash; every natural number strictly between 3 and 9 (the boundaries 3 and 9 themselves don't count, since both signs are strict).</p>"
+  + "<h3>Inequalities in everyday life</h3>"
+  + "<p>Inequalities show up everywhere, even when no signs are written down anywhere. &ldquo;You can get in the elevator if there are no more than 8 people in it with you&rdquo; is the inequality n ≤ 8, where the boundary 8 is included. &ldquo;You're allowed on the ride if you're taller than 120 cm&rdquo; is h &gt; 120, and a height of exactly 120 cm doesn't qualify.</p>"
+  + "<div class='note'><span class='hand'>Remember</span>The words &ldquo;no more than&rdquo; and &ldquo;no less than&rdquo; always give a non-strict sign (≤ or ≥) &mdash; the boundary is included in the solution. &ldquo;Greater than&rdquo; and &ldquo;less than&rdquo; on their own give a strict sign &mdash; the boundary isn't included.</div>",
+  examples: [
+    {t:"Check which of the numbers 3, 6, and 9 are solutions of the inequality x > 6.", s:"Substitute them one by one: 3 > 6 is false. 6 > 6 is also false (the sign is strict, so the boundary doesn't count). 9 > 6 is true. Only one of the given numbers is a solution: 9."},
+    {t:"Is the number 15 a solution of the inequality y ≤ 15?", s:"The sign ≤ includes the boundary itself. 15 ≤ 15 is a true statement (a number equals itself), so 15 is a solution."},
+    {t:"Find the whole solution set of the inequality x < 5 over the natural numbers (counting 0).", s:"Work through the natural numbers in order: 0 < 5, 1 < 5, 2 < 5, 3 < 5, 4 < 5 are all true, but 5 < 5 is false. The solution set is {0, 1, 2, 3, 4} — 5 numbers in all."},
+    {t:"Is the solution set of the inequality x > 1000 finite or infinite?", s:"Any natural number greater than 1000 works: 1001, 1002, 1003, and so on — there are infinitely many such numbers, with no largest one among them. The solution set is infinite."},
+    {t:"Find the solution set of the inequality x + 10 < 8 over the natural numbers.", s:"The smallest natural number is 0, which already gives x + 10 = 10, but we need the sum to be less than 8. That can't happen for any x — the sum only grows. The solution set is empty: ∅."},
+    {t:"Solve the double inequality 6 < x < 11.", s:"We need x to be greater than 6 and less than 11 at the same time. Checking: 7, 8, 9, 10 all work. The number 6 doesn't work (the inequality is strict), and neither does 11. Solutions: {7, 8, 9, 10}."},
+    {t:"A bus holds no more than 40 seats. Write this condition as an inequality for the number of passengers n, and say whether exactly 40 passengers can ride.", s:"&ldquo;No more than 40&rdquo; means n ≤ 40 — a non-strict sign, so the boundary is included. That means 40 passengers is also a valid case: the bus is filled right up to the limit."}
+  ],
+  tasks: [
+    {q:"Is the number 9 a solution of the inequality x > 9?", opts:["Yes","No"], ans:1, hint:"The sign is strict — the boundary itself doesn't count as a solution.", sol:"9 > 9 is a false statement (a number can't be greater than itself), so 9 is not a solution."},
+    {q:"Is the number 9 a solution of the inequality x ≥ 9?", opts:["Yes","No"], ans:0, hint:"The sign is non-strict — the boundary is included in the solution.", sol:"9 ≥ 9 is a true statement (the numbers are equal), so 9 is a solution."},
+    {q:"Find the smallest natural number that is a solution of the inequality x > 24.", ans:"25", hint:"Which number comes right after 24?", sol:"The smallest number greater than 24 is 25: 25 > 24 is true, while 24 > 24 is false."},
+    {q:"Find the largest natural number that is a solution of the inequality x < 61.", ans:"60", hint:"Which number comes right before 61?", sol:"The largest number less than 61 is 60."},
+    {q:"How many natural numbers (counting 0) are in the solution set of the inequality x < 9?", ans:"9", hint:"List every number that works, starting from 0.", sol:"0, 1, 2, 3, 4, 5, 6, 7, 8 all work — 9 numbers in all."},
+    {q:"How many natural numbers are in the solution set of the inequality x ≤ 9 (counting 0)?", ans:"10", hint:"The sign is non-strict — the number 9 itself is included too.", sol:"0, 1, …, 9 all work — 10 numbers in all, one more than for x < 9, because the boundary is now included."},
+    {q:"Is the solution set of the inequality x > 500 over the natural numbers finite, infinite, or empty?", opts:["Finite","Infinite","Empty"], ans:1, hint:"Is there a largest natural number?", sol:"Any number greater than 500 works, and there's no largest natural number — the solutions are infinite."},
+    {q:"Is the solution set of the inequality x + 3 < 2 over the natural numbers finite, infinite, or empty?", opts:["Finite","Infinite","Empty"], ans:2, hint:"What's the smallest value x + 3 can take?", sol:"The smallest x is 0, giving x + 3 = 3, but we need the sum to be less than 2. No natural number fits — the set is empty."},
+    {q:"Solve the double inequality 10 < x < 15 — how many solutions does it have?", ans:"4", hint:"List the numbers strictly between 10 and 15.", sol:"11, 12, 13, 14 all work — every number strictly between 10 and 15. There are 4 solutions."},
+    {q:"Solve the double inequality 10 ≤ x ≤ 15 — how many solutions does it have?", ans:"6", hint:"Both signs are non-strict now — the boundaries are included.", sol:"10, 11, 12, 13, 14, 15 all work, since the boundaries are now included. There are 6 solutions."},
+    {q:"An elevator holds no more than 10 people. Find the largest number of people that can be in it.", ans:"10", hint:"&ldquo;No more than&rdquo; is a non-strict sign — the boundary is included.", sol:"&ldquo;No more than 10&rdquo; means n ≤ 10, and the largest number that fits is 10 itself."},
+    {q:"A ride only admits children taller than 120 cm. Does a height of exactly 120 cm qualify?", opts:["Yes","No"], ans:1, hint:"The word &ldquo;taller&rdquo; without &ldquo;or equal to&rdquo; is a strict sign.", sol:"&ldquo;Taller than 120&rdquo; is a strict sign (h > 120), so a height of exactly 120 cm doesn't qualify."},
+    {q:"Find the largest natural solution of the inequality 2 · x < 10.", ans:"4", hint:"Try x = 0, 1, 2, 3, 4, 5 in turn and check which ones give 2·x less than 10.", sol:"2·0=0, 2·1=2, 2·2=4, 2·3=6, 2·4=8 are all less than 10 and work. But 2·5=10 is no longer less than 10. The largest solution is 4."},
+    {q:"A book has no fewer than 80 pages. Does a book of exactly 80 pages satisfy this condition?", opts:["Yes, it does","No, it doesn't"], ans:0, hint:"&ldquo;No fewer than&rdquo; is a non-strict sign.", sol:"&ldquo;No fewer than 80&rdquo; means n ≥ 80 — the boundary is included, so a book of exactly 80 pages qualifies."},
+    {q:"How many solutions does the inequality x < 0 have over the natural numbers (counting 0)?", ans:"0", hint:"Are there any natural numbers less than zero?", sol:"Natural numbers (counting 0) are never negative, and 0 itself isn't less than 0. There are no solutions — the set is empty, so the count is 0."},
+    {q:"How many numbers are in the solution set of the double inequality 5 < x < 9?", ans:"3", hint:"List the numbers strictly between 5 and 9.", sol:"6, 7, 8 all work — three numbers."}
+  ],
+  test: [
+    {q:"Is the number 20 a solution of the inequality x < 20?", opts:["Yes","No"], ans:1, sol:"20 < 20 is false — the sign is strict, so the boundary doesn't count."},
+    {q:"Is the number 20 a solution of the inequality x ≤ 20?", opts:["Yes","No"], ans:0, sol:"20 ≤ 20 is true — the sign is non-strict, so the boundary is included."},
+    {q:"Find the smallest natural solution of the inequality x > 37.", ans:"38", sol:"The number right after 37 is 38."},
+    {q:"How many natural numbers are in the solution set of x < 7 (counting 0)?", ans:"7", sol:"0, 1, 2, 3, 4, 5, 6 all work — 7 numbers."},
+    {q:"Is the solution set of the inequality x > 2026 finite, infinite, or empty?", opts:["Finite","Infinite","Empty"], ans:1, sol:"There's no largest natural number, so there are infinitely many solutions."},
+    {q:"Is the solution set of the inequality x + 1 < 1 over the natural numbers finite, infinite, or empty?", opts:["Finite","Infinite","Empty"], ans:2, sol:"The smallest x is 0, giving x + 1 = 1, but we need it to be less than 1 — no number works."},
+    {q:"How many solutions does the double inequality 8 < x < 13 have?", ans:"4", sol:"9, 10, 11, 12 all work — 4 numbers."},
+    {q:"A bus holds no more than 30 passengers. Does the number 30 qualify?", opts:["Yes","No"], ans:0, sol:"&ldquo;No more than 30&rdquo; is a non-strict sign, so 30 qualifies."}
+  ],
+  bonus: {q:"How many natural numbers x satisfy both the inequality x > 10 and the inequality x < 10 at the same time?", ans:"0", hint:"Can a number be both greater than 10 and less than 10 at once?", sol:"No number can be both greater than 10 and less than 10 at the same time — that condition can never hold for any number. There are 0 solutions; the set is empty."},
+  lab: [
+    {t:"Inequalities around the house", b:"Find three rules at home that involve a number limit: how many people fit in an elevator or a car, what age a movie is allowed from, how many kilograms a shelf can hold. For each one, write down which sign fits — strict (< or >) or non-strict (≤ or ≥) — and explain whether the boundary number itself is allowed."},
+    {t:"The &ldquo;Guess the Number&rdquo; game", b:"Silently think of a natural number from 0 to 50. Have someone at home try to guess it by asking questions like &ldquo;Is the number greater than 25?&rdquo; — you can only answer &ldquo;yes&rdquo; or &ldquo;no&rdquo;. After each answer, the set of possible numbers shrinks. How many questions did it take to guess the number?"},
+    {t:"A number line on the floor", b:"Draw a number line from 0 to 20 on the floor with chalk or tape. Name an inequality, for example x ≥ 14, and have someone step onto every number that fits, counting how many there are. Try a double inequality too, like 6 < x < 15."}
+  ]
+};
+CONTENT_EN.ineq4.steps = [
+  {title:"What an inequality and its solution are", body:
+    "<p>An equation links two quantities with the sign &ldquo;=&rdquo;: 5 + 3 = 8. An <b>inequality</b> compares them with one of four signs: &lt;, &gt;, ≤, or ≥. An inequality can have a variable &mdash; a letter standing in for a number that isn't known yet. The inequality t &gt; 7 reads &ldquo;t is greater than seven&rdquo;: it says what the number t must be like, without naming one single value.</p>"
+    + "<h3>What a solution of an inequality is</h3><p>A value of the variable that turns the inequality into a true numeric statement is called a <b>solution of the inequality</b>. The number 10 is a solution of t &gt; 7, because 10 &gt; 7 is true. But the number 5 is not a solution: 5 &gt; 7 is false.</p>"},
+  {title:"Checking by substitution", body:
+    "<h3>Checking by substitution</h3><p>To find out whether a number is a solution, substitute it for the letter and see whether a true statement comes out. Let's check the numbers 3, 6, and 9 against the inequality x &gt; 6: 3 &gt; 6 is false, 6 &gt; 6 is also false (the sign is strict, so the boundary itself doesn't count), and 9 &gt; 6 is true.</p><div class='figure'>__SVG_INEQ4_LINE__</div>",
+    exIdx:0},
+  {title:"Strict and non-strict signs", body:
+    "<div class='warn'><span class='hand'>Common mistake</span>The signs ≤ and ≥ include the boundary itself, while &lt; and &gt; don't. For x ≥ 6, the number 6 is already a solution; for x &gt; 6, it isn't.</div>",
+    exIdx:1},
+  {title:"Finite and infinite solution sets", body:
+    "<h3>The solution set</h3><p>The complete list of every solution of an inequality is called its <b>solution set</b>. For the inequality x &lt; 6 over the natural numbers (counting 0), the solution set is {0, 1, 2, 3, 4, 5} &mdash; it's <b>finite</b>, with exactly 6 numbers in it.</p><p>But the inequality x &gt; 100 has infinitely many solutions: any number 101, 102, 103, and so on without end will do. A solution set like that is called <b>infinite</b>.</p>",
+    exIdx:2},
+  {title:"The empty solution set", body:
+    "<p>Sometimes no number at all fits an inequality. Then the solution set is called <b>empty</b> and is written with the sign ∅. For example, no natural number satisfies x + 10 &lt; 8: the smallest x is 0, and even then the sum is 10, while we need it to be less than 8.</p>",
+    exIdx:4},
+  {title:"Double inequalities", body:
+    "<h3>Double inequalities</h3><p>A <b>double inequality</b> is two conditions at once, for example 3 &lt; x &lt; 9. It means &ldquo;x is greater than 3 AND, at the same time, x is less than 9&rdquo; &mdash; both conditions have to hold together.</p><div class='figure'>__SVG_INEQ4_DOUBLE__</div><p>To find the solutions, we try numbers and check both conditions at once. For 3 &lt; x &lt; 9, the numbers 4, 5, 6, 7, 8 all work &mdash; every natural number strictly between 3 and 9.</p>",
+    exIdx:5},
+  {title:"Inequalities in everyday life", body:
+    "<h3>Inequalities in everyday life</h3><p>Inequalities show up everywhere, even when no signs are written down anywhere. &ldquo;You can get in the elevator if there are no more than 8 people in it with you&rdquo; is the inequality n ≤ 8, where the boundary 8 is included. &ldquo;You're allowed on the ride if you're taller than 120 cm&rdquo; is h &gt; 120, and a height of exactly 120 cm doesn't qualify.</p><div class='note'><span class='hand'>Remember</span>The words &ldquo;no more than&rdquo; and &ldquo;no less than&rdquo; always give a non-strict sign (≤ or ≥) &mdash; the boundary is included in the solution. &ldquo;Greater than&rdquo; and &ldquo;less than&rdquo; on their own give a strict sign &mdash; the boundary isn't included.</div>",
+    exIdx:6}
+];
+
 })();
