@@ -934,4 +934,91 @@ CONTENT_EN.ineq4.steps = [
     exIdx:6}
 ];
 
+CONTENT_EN.charts4 = {
+  goal: "After this topic you'll be able to read and build bar charts and pictograms (charts made of pictures): find a value from the height of a bar or the number of pictures, compare quantities, find the largest and smallest values, and find a difference or a total from a chart.",
+  explain: "<p>Tables of numbers can be hard to compare at a glance &mdash; especially when there are a lot of numbers. To make a comparison easy to see, numbers are often drawn as a <b>chart</b> &mdash; a picture that shows right away which value is bigger and which is smaller.</p>"
+  + "<h3>Bar charts</h3>"
+  + "<p>In a <b>bar chart</b>, each value gets its own rectangular bar. The bigger the number, the taller the bar. Along one side (usually the left) there are numbers marked &mdash; this is the <b>scale</b>, and it helps you find the height of any bar. Along the other side is a label for what each bar stands for &mdash; for example, the names of months, the names of kids, or kinds of fruit.</p>"
+  + "<div class='figure'>__SVG_CHARTS4_BAR__</div>"
+  + "<h3>Reading a bar chart</h3>"
+  + "<p>To find the value of a bar, find its top edge and see which number on the scale it lines up with. For example, in the chart above the &ldquo;Kiwi&rdquo; bar reaches exactly the mark at 2 &mdash; so 2 people voted for kiwi.</p>"
+  + "<p>The scale doesn't always go up by 1: the step can be 2, 5, 10, or more &mdash; especially when the numbers are big. Then you count how many scale steps fit between zero and the top of the bar, and multiply that count by the size of the step. For example, if the scale step is 5 and the top of the bar sits on the fourth line, the bar's value is 4 &middot; 5 = 20.</p>"
+  + "<div class='warn'><span class='hand'>Common mistake</span>If you compare bars just &ldquo;by eye&rdquo; without looking at the scale, it's easy to get it wrong: a brighter or wider bar can look bigger even though it's actually shorter. Always compare by height relative to the scale, never by color or width.</div>"
+  + "<p>A chart also makes it easy to find other things: the largest value is the tallest bar, the smallest is the shortest one. To find how much bigger one value is than another, subtract the smaller number from the larger one &mdash; just as you would with plain numbers from a table. And to find the total of all the bars, you simply add the numbers up.</p>"
+  + "<h3>Charts made of pictures &mdash; pictograms</h3>"
+  + "<p>Sometimes, instead of bars, people use identical small pictures &mdash; a <b>pictogram</b>. The number of pictures shows the quantity, but for that you need a <b>key</b> (also called a legend): a label like &ldquo;icon = 2 books&rdquo; tells you how many units one picture stands for.</p>"
+  + "<div class='figure'>__SVG_CHARTS4_PICTOGRAM__</div>"
+  + "<p>If one picture in the key stands for, say, 2 books, then half a picture stands for 1 book. Three whole pictures plus a half &mdash; that's 3 &middot; 2 + 1 = 7 books.</p>"
+  + "<div class='note'><span class='hand'>Remember</span>Before reading a pictogram, always find and read the key first &mdash; without it, the pictures don't tell you an exact number.</div>"
+  + "<h3>Building a chart from a table</h3>"
+  + "<p>To build a bar chart yourself from a table of numbers, first choose a scale: look at the biggest number in the table and pick a convenient step &mdash; for example, by 1 if the numbers are small, or by 10 or more if the numbers are big &mdash; so that all the bars fit on the page and are easy to compare. Then draw a bar of the right height for each value and label it.</p>"
+  + "<h3>Charts in everyday life</h3>"
+  + "<p>Charts show up very often: a weather app shows the temperature by day, a sports log shows the number of goals per game, a school survey shows how many kids chose each club. In every case, a chart helps you understand the data quickly, without reading through a long table of numbers.</p>",
+  examples: [
+    {t:"A bar chart of the apple harvest by class: class A &mdash; 30 kg, class B &mdash; 45 kg, class C &mdash; 20 kg. How many kilograms of apples did class B collect?", s:"Find the &ldquo;class B&rdquo; bar and see which mark on the scale it reaches &mdash; 45. So class B collected 45 kg of apples."},
+    {t:"On the same chart (A &mdash; 30 kg, B &mdash; 45 kg, C &mdash; 20 kg), find which class collected the least, and by how much less than class B.", s:"Class C collected the least &mdash; 20 kg. The difference from class B: 45 − 20 = 25 kg."},
+    {t:"The scale of a chart goes up in steps of 5: 0, 5, 10, 15, 20… Anton's bar ends exactly on the fourth line of the scale, counting from zero. How many points does Anton have?", s:"The scale step is 5, and the top of the bar is 4 steps up: 4 · 5 = 20. Anton has 20 points."},
+    {t:"The key of a pictogram: one book icon stands for 4 books. Masha has drawn 2 whole icons. How many books did Masha read?", s:"Each icon is 4 books, and there are 2 icons, so that's 2 · 4 = 8 books."},
+    {t:"The same key (1 icon = 4 books). Petya has drawn 1 whole icon plus a half. How many books does Petya have?", s:"A whole icon is 4 books. Half an icon stands for half of 4, which is 2 books. In total, 4 + 2 = 6 books."},
+    {t:"A chart shows the number of problems solved over five days: 3, 5, 2, 6, 4. How many problems were solved in all that week?", s:"Add up all five numbers: 3 + 5 + 2 + 6 + 4 = 20 problems."},
+    {t:"You need to build a chart from the numbers 40, 85, 60, 95. Which scale step is more convenient &mdash; 1 or 10 &mdash; so the bars fit on the page and are easy to compare?", s:"The numbers are big (up to 95), and a step of 1 would need an extremely tall page with almost a hundred lines. A step of 10 gives only about ten lines and bars that are easy to compare."}
+  ],
+  tasks: [
+    {q:"A bar chart shows how many apples four classes collected: A &mdash; 30, B &mdash; 45, C &mdash; 20, D &mdash; 35. How many apples did class B collect?", ans:"45", hint:"Find the &ldquo;B&rdquo; bar and see which mark on the scale it reaches.", sol:"The &ldquo;B&rdquo; bar reaches the mark at 45 &mdash; so 45 apples were collected."},
+    {q:"On the same chart (A &mdash; 30, B &mdash; 45, C &mdash; 20, D &mdash; 35), which class collected the fewest apples?", opts:["A","B","C","D"], ans:2, hint:"Find the shortest bar.", sol:"The smallest number is 20, which is class C."},
+    {q:"How many more apples did class B collect than class C (B &mdash; 45, C &mdash; 20)?", ans:"25", hint:"Subtract the smaller number from the larger one.", sol:"45 − 20 = 25."},
+    {q:"How many apples in total did all four classes collect (30, 45, 20, 35)?", ans:"130", hint:"Add all four numbers.", sol:"30 + 45 + 20 + 35 = 130."},
+    {q:"The key of a pictogram: 1 icon = 10 kg of apples. Kolya has drawn 3 whole icons. How many kilograms of apples does Kolya have?", ans:"30", hint:"Multiply the number of icons by how many kilograms one icon stands for.", sol:"3 · 10 = 30 kg."},
+    {q:"The same key (1 icon = 10 kg). Ira has drawn 2 whole icons and a half. How many kilograms of apples does she have?", ans:"25", hint:"Half an icon is half of 10 kg.", sol:"2 · 10 + 5 = 25 kg (half an icon is 5 kg)."},
+    {q:"The key of a pictogram: one icon stands for 4 books. How many books does half an icon stand for?", ans:"2", hint:"Divide the number from the key by 2.", sol:"4 : 2 = 2 books."},
+    {q:"The key of a pictogram: 1 icon = 5 cars. A factory has drawn 4 whole icons. How many cars did the factory make?", ans:"20", hint:"Multiply 5 by the number of icons.", sol:"4 · 5 = 20 cars."},
+    {q:"A chart's scale goes up in steps of 2: 0, 2, 4, 6… Sveta's bar ends exactly on the third line of the scale, counting from zero. How many points does Sveta have?", ans:"6", hint:"Count how many scale steps reach the top of the bar, and multiply by the step.", sol:"3 steps of 2: 3 · 2 = 6 points."},
+    {q:"A chart shows the number of problems solved each day this week: Mon &mdash; 3, Tue &mdash; 5, Wed &mdash; 2, Thu &mdash; 6, Fri &mdash; 4. On which day were the most problems solved?", opts:["Mon","Tue","Wed","Thu","Fri"], ans:3, hint:"Find the biggest number.", sol:"The biggest number is 6, which is Thursday."},
+    {q:"On the same chart (3, 5, 2, 6, 4), how many more problems were solved on the best day than on the worst day?", ans:"4", hint:"Subtract the smallest number from the largest.", sol:"Largest 6, smallest 2: 6 − 2 = 4."},
+    {q:"How many problems in total were solved over the five days (3, 5, 2, 6, 4)?", ans:"20", hint:"Add up all five numbers.", sol:"3 + 5 + 2 + 6 + 4 = 20."},
+    {q:"The key of a pictogram: 1 icon = 6 cars. Sasha has drawn 1 whole icon and a half. How many cars does Sasha have?", ans:"9", hint:"Half an icon is half of 6.", sol:"6 + 3 = 9 cars (half an icon is 3 cars)."},
+    {q:"What should you do first to understand how many units each picture stands for on a pictogram?", opts:["Count the pictures","Find and read the key","Compare the sizes of the pictures"], ans:1, hint:"Without this, the pictures don't tell you an exact number.", sol:"You should always find and read the key (the legend) first."},
+    {q:"You need to build a chart from the numbers 40, 85, 60, 95. Which scale step is more convenient?", opts:["1","10"], ans:1, hint:"The numbers are big &mdash; a small step would make the page too tall.", sol:"A step of 10 &mdash; the numbers are big, and a step of 1 would need far too many lines."},
+    {q:"A chart shows the number of pages read: Nastya &mdash; 24, Borya &mdash; 18, and Vasya's value is unknown, but the sum of all three is 70. How many pages did Vasya read?", ans:"28", hint:"Add the two known numbers and subtract from the total.", sol:"24 + 18 = 42. 70 − 42 = 28 pages."}
+  ],
+  test: [
+    {q:"A chart shows the number of medals won by four teams: A &mdash; 12, B &mdash; 18, C &mdash; 7, D &mdash; 15. How many medals does team B have?", ans:"18", sol:"The &ldquo;B&rdquo; bar reaches the mark at 18."},
+    {q:"On the same chart (12, 18, 7, 15), which team finished last by number of medals?", opts:["A","B","C","D"], ans:2, sol:"Team C has the fewest medals &mdash; 7."},
+    {q:"How many more medals does team B have than team A (18 and 12)?", ans:"6", sol:"18 − 12 = 6."},
+    {q:"How many medals in total do all four teams have (12, 18, 7, 15)?", ans:"52", sol:"12 + 18 + 7 + 15 = 52."},
+    {q:"The key of a pictogram: 1 icon = 6 cars. A factory has drawn 3 whole icons. How many cars did the factory make?", ans:"18", sol:"3 · 6 = 18."},
+    {q:"The same key (1 icon = 6 cars). Another factory has drawn 2 whole icons and a half. How many cars does it have?", ans:"15", sol:"2 · 6 + 3 = 15 (half an icon is 3 cars)."},
+    {q:"What should you do first to read a pictogram correctly?", opts:["Count the pictures","Find and read the key","Compare the sizes of the pictures"], ans:1, sol:"Without the key, the pictures don't tell you an exact number &mdash; always look for the key first."},
+    {q:"You need to build a chart from the numbers 3, 7, 2, 5. Which scale step is more convenient?", opts:["1","50"], ans:0, sol:"The numbers are small &mdash; a step of 1 gives bars of clearly different heights, while a step of 50 would make them all nearly invisible."}
+  ],
+  bonus: {q:"A chart shows the points of four players. Three are known &mdash; 12, 9, and 8 &mdash; and the fourth player's bar is shaded a different color, so its exact height can't be seen. The sum of all four is 56, and the fourth player has more points than any of the other three. How many points does the fourth player have?", ans:"27", hint:"Find the sum of the three known values, then subtract it from the total &mdash; and check that the result really is the largest.", sol:"Sum of the known values: 12 + 9 + 8 = 29. The fourth value: 56 − 29 = 27. That's indeed more than 12, 9, and 8 &mdash; the condition holds."},
+  lab: [
+    {t:"A chart of your own family", b:"Find out the ages of three or four members of your family (or the heights of houseplants, or the number of books on different shelves), and build a bar chart on grid paper: pick a convenient scale step, and label the axes and every bar."},
+    {t:"A pictogram of favorite activities", b:"Ask 8-10 people what they like to do in their free time (read, play, go for walks, draw, and so on). Draw a pictogram: invent your own icon and key (for example, 1 icon = 2 people), and show the results using whole icons and halves."},
+    {t:"A week of weather in a chart", b:"Each day for a week, write down the day's temperature (or check a forecast). At the end of the week, build a bar chart of the temperature by day and find which day was warmest and which was coldest."}
+  ]
+};
+CONTENT_EN.charts4.steps = [
+  {title:"Why charts are useful", body:
+    "<p>Tables of numbers can be hard to compare at a glance &mdash; especially when there are a lot of numbers. To make a comparison easy to see, numbers are often drawn as a <b>chart</b> &mdash; a picture that shows right away which value is bigger and which is smaller.</p>"},
+  {title:"Bar charts", body:
+    "<h3>Bar charts</h3><p>In a <b>bar chart</b>, each value gets its own rectangular bar. The bigger the number, the taller the bar. Along one side (usually the left) there are numbers marked &mdash; this is the <b>scale</b>, and it helps you find the height of any bar. Along the other side is a label for what each bar stands for.</p><div class='figure'>__SVG_CHARTS4_BAR__</div>",
+    exIdx:0},
+  {title:"Reading a bar chart", body:
+    "<h3>Reading a bar chart</h3><p>To find the value of a bar, find its top edge and see which number on the scale it lines up with. For example, in the chart above the &ldquo;Kiwi&rdquo; bar reaches exactly the mark at 2 &mdash; so 2 people voted for kiwi.</p><div class='warn'><span class='hand'>Common mistake</span>If you compare bars just &ldquo;by eye&rdquo; without looking at the scale, it's easy to get it wrong: a brighter or wider bar can look bigger even though it's actually shorter. Always compare by height relative to the scale, never by color or width.</div>",
+    exIdx:1},
+  {title:"Scale steps and comparing bars", body:
+    "<p>The scale doesn't always go up by 1: the step can be 2, 5, 10, or more &mdash; especially when the numbers are big. Then you count how many scale steps fit between zero and the top of the bar, and multiply that count by the size of the step.</p><p>A chart also makes it easy to find other things: the largest value is the tallest bar, the smallest is the shortest one. To find how much bigger one value is than another, subtract the smaller number from the larger one. And to find the total of all the bars, you simply add the numbers up.</p>",
+    exIdx:2},
+  {title:"Charts made of pictures &mdash; pictograms", body:
+    "<h3>Charts made of pictures &mdash; pictograms</h3><p>Sometimes, instead of bars, people use identical small pictures &mdash; a <b>pictogram</b>. The number of pictures shows the quantity, but for that you need a <b>key</b>: a label like &ldquo;icon = 2 books&rdquo; tells you how many units one picture stands for.</p><div class='figure'>__SVG_CHARTS4_PICTOGRAM__</div>",
+    exIdx:3},
+  {title:"Half an icon on a pictogram", body:
+    "<p>If one picture in the key stands for, say, 2 books, then half a picture stands for 1 book. Three whole pictures plus a half &mdash; that's 3 &middot; 2 + 1 = 7 books.</p><div class='note'><span class='hand'>Remember</span>Before reading a pictogram, always find and read the key first &mdash; without it, the pictures don't tell you an exact number.</div>",
+    exIdx:4},
+  {title:"Building a chart. Charts in everyday life", body:
+    "<h3>Building a chart from a table</h3><p>To build a bar chart yourself from a table of numbers, first choose a scale: look at the biggest number in the table and pick a convenient step, so that all the bars fit on the page. Then draw a bar of the right height for each value and label it.</p><h3>Charts in everyday life</h3><p>Charts show up very often: a weather app shows the temperature by day, a sports log shows the number of goals per game, a school survey shows how many kids chose each club.</p>",
+    exIdx:6}
+];
+
 })();
