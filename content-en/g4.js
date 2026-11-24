@@ -667,7 +667,7 @@ CONTENT_EN.geo4.steps = [
 ];
 
 CONTENT_EN.frac4 = {
-  goal: "After this topic you'll be able to read and write fractions, compare them, add and subtract fractions with the same denominator, and find a fraction of a number and a number from its fraction.",
+  goal: "After this topic you'll be able to read and write fractions, compare them, add and subtract fractions with the same denominator, find a fraction of a number and a number from its fraction, convert between improper fractions and mixed numbers, and find percent of a number as hundredths.",
   explain: "<p>What do you do if a pie needs to be split between four friends? Each person gets a <i>part</i> of the pie. Shares and fractions were invented exactly for parts like this.</p>"
   + "<h3>What a share is</h3>"
   + "<p>Take a whole: an apple, a chocolate bar, a segment, the number 20. Split it into several <b>equal</b> parts. Each such part is a <b>share</b>. If the whole is split into 2 equal parts, each one is a half, that is, {1|2}. Into 4 equal parts — a quarter, {1|4}. Into 5 parts — one fifth, {1|5}, and so on. The key word here is &ldquo;equal&rdquo;: if the pieces are different sizes, you can't call them shares.</p>"
@@ -690,7 +690,22 @@ CONTENT_EN.frac4 = {
   + "<h3>Proper and improper fractions, the number line</h3>"
   + "<p>A fraction that's less than a whole is called <b>proper</b>: its numerator is less than its denominator, for example {2|5} or {7|9}. A fraction whose numerator equals or exceeds its denominator is called <b>improper</b>: {5|5}, {7|5}, {9|4}. It equals 1 or more than 1. For now, you just need to remember these names — we won't be doing operations with them yet.</p>"
   + "<p>Fractions can be marked on a number line. Take the unit segment from 0 to 1 and split it into 5 equal parts. The first mark is {1|5}, the second is {2|5}, the fifth lands on the point 1, and after that we go past the unit: {7|5} sits two fifths to the right of 1.</p>"
-  + "<div class='figure'>__SVG_FRAC4_LINE__</div>",
+  + "<div class='figure'>__SVG_FRAC4_LINE__</div>"
+  + "<h3>The mixed number</h3>"
+  + "<p>An improper fraction is more convenient to write a different way — as a <b>mixed number</b>: a whole part and a fractional part side by side. Remember the point {7|5} from the diagram earlier: in seven fifths there's a whole {5|5} = 1 plus {2|5} on top, so {7|5} = 1{2|5} (read &ldquo;one and two fifths&rdquo;). The general rule: divide the numerator by the denominator using long division — the quotient becomes the whole part, and the remainder becomes the numerator of the fractional part (the denominator stays the same). For example, 23 : 7 = 3 (remainder 2), so {23|7} = 3{2|7}.</p>"
+  + "<p>Going the other way — from a mixed number to an improper fraction — works like this: multiply the whole part by the denominator and add the numerator, then write the result over the same denominator. 3{2|7}: 3 · 7 + 2 = 23, so 3{2|7} = {23|7}.</p>"
+  + "<div class='figure'>__SVG_FRAC4_MIXED_BAR__</div>"
+  + "<div class='note'><span class='hand'>Remember</span>To compare two mixed numbers, first compare the whole parts. If they're the same, compare only the fractional parts, like ordinary fractions with the same denominator: 2{3|8} is less than 2{5|8}, because {3|8} is less than {5|8}.</div>"
+  + "<h3>Adding and subtracting mixed numbers</h3>"
+  + "<p>Mixed numbers with the same denominator are added part by part: whole parts separately, fractional parts separately. 1{2|9} + 2{5|9} = (1 + 2) + ({2|9} + {5|9}) = 3{7|9}.</p>"
+  + "<p>Sometimes the fractional parts add up to a whole number or more. Then you pull one more whole out of the fractional part and add it to the whole part: 2{3|5} + 1{4|5} = 3 + {7|5} = 3 + 1{2|5} = 4{2|5}.</p>"
+  + "<div class='warn'><span class='hand'>Common mistake</span>Leaving the answer as 3{7|5} — that's wrong, since the fractional part {7|5} is more than one whole, and in a mixed number the fractional part must be a <i>proper</i> fraction (less than 1). Always check: if the fractional part's numerator is no less than the denominator, pull out another whole from it.</div>"
+  + "<h3>Percent — hundredths</h3>"
+  + "<p>If you split a whole into 100 equal parts, one such part is called a <b>percent</b> and is written with the % sign. So 1% is just another share — only a special one, whose denominator is always 100, that is, 1% = {1|100}.</p>"
+  + "<div class='figure'>__SVG_FRAC4_PERCENT_GRID__</div>"
+  + "<p>It's handy to convert percent into fractions you already know: 50% = {50|100} = {1|2} (a half), 25% = {1|4} (a quarter), 10% = {1|10}, 75% = {3|4}. Then you can find percent of a number the way you already know — as a fraction of a number: divide the number by the denominator and multiply by the numerator. For example, 25% of 80 is {1|4} of 80: 80 : 4 = 20.</p>"
+  + "<div class='note'><span class='hand'>Quick trick</span>To find 10% of a number, divide it by 10 — that's &ldquo;one part.&rdquo; To find any &ldquo;round by ten&rdquo; percent — 30%, 70%, and so on — first find 10%, then multiply by the right digit: 30% of 90 is 10% (9) multiplied by 3, giving 27.</div>"
+  + "<p>There's also the reverse problem: both parts are known, and you need to find what percent that is. Divide the part by the whole — you'll get a fraction, and convert the fraction to percent (bring it to a denominator of 100). For example, 15 out of 60 is {15|60} = {1|4} = 25%.</p>",
   examples: [
     {t:"A circle was split into 10 equal parts and 7 were colored in. Write the fraction, name the numerator and the denominator.", s:"{7|10} of the circle is colored (seven tenths). The denominator 10 is how many parts the circle was split into, the numerator 7 is how many parts were colored."},
     {t:"Compare the fractions: {4|9} and {7|9}; {2|5} and {2|3}.", s:"The first pair has the same denominators, so the one with the bigger numerator is bigger: {4|9} is less than {7|9}. The second pair has the same numerators. Fifths are smaller than thirds, so {2|5} is less than {2|3}."},
@@ -698,7 +713,11 @@ CONTENT_EN.frac4 = {
     {t:"Find {1|5} of 45 and {3|5} of 20.", s:"One fifth of 45: 45 : 5 = 9. For {3|5} of 20, first find one fifth: 20 : 5 = 4, then take 3 of those parts: 4 · 3 = 12."},
     {t:"{3|7} of a number equals 18. Find this number.", s:"Three sevenths equal 18, so one seventh equals 18 : 3 = 6. The whole number is 7 such shares: 6 · 7 = 42. Check: {3|7} of 42: 42 : 7 = 6, 6 · 3 = 18."},
     {t:"Which of the fractions {3|5}, {5|5}, {7|4}, {2|9}, {9|8} are proper, and which aren't?", s:"The proper ones are those whose numerator is less than the denominator: {3|5} and {2|9}. Improper: {5|5} (equals 1), {7|4} and {9|8} (more than 1)."},
-    {t:"A box has 24 candies. One eighth of the candies was given away, and three eighths were eaten. How many candies are left?", s:"One eighth of 24: 24 : 8 = 3 candies. 3 were given away, 3 · 3 = 9 were eaten. 24 − 3 − 9 = 12 candies are left. Another way: {1|8} + {3|8} = {4|8} of all the candies were given away or eaten, so {4|8} are left too, that is, 4 · 3 = 12."}
+    {t:"A box has 24 candies. One eighth of the candies was given away, and three eighths were eaten. How many candies are left?", s:"One eighth of 24: 24 : 8 = 3 candies. 3 were given away, 3 · 3 = 9 were eaten. 24 − 3 − 9 = 12 candies are left. Another way: {1|8} + {3|8} = {4|8} of all the candies were given away or eaten, so {4|8} are left too, that is, 4 · 3 = 12."},
+    {t:"Convert {23|7} to a mixed number, then convert the mixed number 3{2|7} back to an improper fraction.", s:"23 : 7 = 3 (remainder 2), so {23|7} = 3{2|7}. The other way: 3 · 7 + 2 = 23, that is, 3{2|7} = {23|7}. The check matches."},
+    {t:"Add the mixed numbers: 2{3|5} + 1{4|5}.", s:"Whole parts and fractional parts separately: (2 + 1) + ({3|5} + {4|5}) = 3 + {7|5}. The fractional part {7|5} is more than one whole, so pull out a whole from it: {7|5} = 1{2|5}. The result: 3 + 1{2|5} = 4{2|5}."},
+    {t:"Find 1%, 10%, and 25% of the number 400.", s:"1% = {1|100} of 400: 400 : 100 = 4. 10% = {1|10} of 400: 400 : 10 = 40. 25% = {1|4} of 400: 400 : 4 = 100."},
+    {t:"There are 60 flowers in a vase, 15 of them are roses. What percent is that?", s:"The share of roses: {15|60} = {1|4} (reduced by dividing by 15). Converting a quarter to percent: {1|4} = {25|100} = 25%. Roses make up 25% of all the flowers."}
   ],
   tasks: [
     {q:"A pizza was cut into 8 equal slices, and Masha ate 3 slices. What fraction of the pizza did Masha eat? Write it as a fraction.", ans:"3/8", reduced:true, hint:"The denominator is how many parts the pizza was cut into, the numerator is how many parts were taken.", sol:"There are 8 equal parts in total, 3 were taken. That's {3|8} of the pizza."},
@@ -721,6 +740,18 @@ CONTENT_EN.frac4 = {
     {q:"Find the value of the sum {2|13} + {7|13} + {4|13}.", ans:"1", hint:"Add up all the numerators, leave the denominator the same.", sol:"2 + 7 + 4 = 13, so the sum equals {13|13} = 1."},
     {q:"Mom gave her daughter {1|5} of her money, and she had 160 rubles left. How many rubles did mom have at first?", ans:"200", hint:"What fraction of the money does mom have left? What's one fifth equal to?", sol:"{4|5} of the money is left, and that's 160 rubles. One fifth: 160 : 4 = 40 rubles. The total was 40 · 5 = 200 rubles. Check: {1|5} of 200 is 40, 200 − 40 = 160."},
     {q:"How many proper fractions are there with denominator 9, if the numerator is a natural number?", ans:"8", hint:"The numerator must be less than the denominator. Start with numerator 1.", sol:"The numerator can be 1, 2, 3, 4, 5, 6, 7, or 8. That's 8 fractions: from {1|9} to {8|9}. The fraction {9|9} equals 1 and is improper."},
+    {q:"Convert the improper fraction {17|5} to a mixed number. Write the answer as a mixed number.", ans:"3 2/5", hint:"Divide the numerator by the denominator with a remainder: the quotient is the whole part, the remainder is the numerator of the fractional part.", sol:"17 : 5 = 3 (remainder 2). So {17|5} = 3{2|5}."},
+    {q:"Convert the mixed number 4{3|8} to an improper fraction. Write the answer as a fraction.", ans:"35/8", hint:"Multiply the whole part by the denominator and add the numerator.", sol:"4 · 8 + 3 = 35. So 4{3|8} = {35|8}."},
+    {q:"Which of these mixed numbers is bigger?", opts:["3{2|9}","3{5|9}"], ans:1, hint:"The whole parts are the same — compare the fractional parts.", sol:"The whole parts are equal (3 and 3), so compare {2|9} and {5|9}. The fraction with the bigger numerator is bigger: {5|9} is bigger than {2|9}. So 3{5|9} is bigger."},
+    {q:"Add the mixed numbers: 2{3|10} + 1{4|10}. Write the answer as a mixed number.", ans:"3 7/10", hint:"Add the whole parts separately, then the fractional parts separately.", sol:"(2 + 1) + ({3|10} + {4|10}) = 3 + {7|10} = 3{7|10}."},
+    {q:"Add the mixed numbers: 1{4|7} + 2{5|7}. Write the answer as a mixed number.", ans:"4 2/7", hint:"The fractional parts will add up to more than one whole — don't forget to pull out another whole.", sol:"(1 + 2) + ({4|7} + {5|7}) = 3 + {9|7} = 3 + 1{2|7} = 4{2|7}."},
+    {q:"A hiker walked 2{3|4} km in the morning and another 1{1|4} km in the evening. How many kilometers did the hiker walk in total?", ans:"4", hint:"Add the whole parts and the fractional parts separately — the fractional parts will add up to a whole.", sol:"(2 + 1) + ({3|4} + {1|4}) = 3 + {4|4} = 3 + 1 = 4 km."},
+    {q:"Find 1% of the number 800.", ans:"8", hint:"1% is one hundredth part.", sol:"800 : 100 = 8."},
+    {q:"Find 10% of the number 420.", ans:"42", hint:"10% is one tenth part.", sol:"420 : 10 = 42."},
+    {q:"Find 25% of the number 160.", ans:"40", hint:"25% = {1|4}.", sol:"160 : 4 = 40."},
+    {q:"Find 50% of the number 96.", ans:"48", hint:"50% = {1|2}.", sol:"96 : 2 = 48."},
+    {q:"Find 30% of the number 90 using the &ldquo;10% first&rdquo; trick.", ans:"27", hint:"First find 10% of 90, then multiply by 3.", sol:"10% of 90: 90 : 10 = 9. 30% is 9 · 3 = 27."},
+    {q:"What percent is the number 12 of the number 48?", ans:"25", hint:"Divide 12 by 48 — you'll get a familiar fraction.", sol:"{12|48} = {1|4} (reduced by dividing by 12), and {1|4} = 25%."},
     {q:"A cake was cut into 9 equal pieces, and the guests ate 4 pieces. What fraction of the cake did the guests eat? Write it as a fraction.", ans:"4/9", reduced:true, hint:"The denominator is how many pieces the cake was cut into, the numerator is how many pieces were eaten.", sol:"The cake is divided into 9 pieces, 4 of them were eaten: that's {4|9} of the cake."},
     {q:"One seventh of a number equals 8. Find this number.", ans:"56", hint:"The whole number consists of 7 such parts.", sol:"The number: 8 · 7 = 56."},
     {q:"There are 28 students in the class. Three quarters of all the students are top students or good students. How many students in the class are top students or good students?", ans:"21", hint:"First find one quarter of 28, then take three such parts.", sol:"One quarter: 28 : 4 = 7. Three quarters: 7 · 3 = 21 students."},
@@ -743,14 +774,20 @@ CONTENT_EN.frac4 = {
     {q:"Find {1|9} of 54.", ans:"6", sol:"54 : 9 = 6."},
     {q:"Find {3|8} of 40.", ans:"15", sol:"One eighth: 40 : 8 = 5. Three eighths: 5 · 3 = 15."},
     {q:"One eighth of a number equals 9. Find the number.", ans:"72", sol:"The number is made of 8 shares of 9: 9 · 8 = 72."},
-    {q:"Which fraction is the smallest of all?", opts:["{5|12}","{5|7}","{5|9}","{5|11}"], ans:0, sol:"The numerators are the same, so the fraction with the bigger denominator is smaller. The biggest denominator is 12: {5|12} is the smallest."}
+    {q:"Which fraction is the smallest of all?", opts:["{5|12}","{5|7}","{5|9}","{5|11}"], ans:0, sol:"The numerators are the same, so the fraction with the bigger denominator is smaller. The biggest denominator is 12: {5|12} is the smallest."},
+    {q:"Convert the improper fraction {13|4} to a mixed number. Write the answer as a mixed number.", ans:"3 1/4", sol:"13 : 4 = 3 (remainder 1). So {13|4} = 3{1|4}."},
+    {q:"Add the mixed numbers: 2{5|6} + 1{4|6}. Write the answer as a mixed number.", ans:"4 1/2", sol:"(2 + 1) + ({5|6} + {4|6}) = 3 + {9|6} = 3 + 1{3|6} = 4{3|6} = 4{1|2} (reducing {3|6} to {1|2})."},
+    {q:"Find 20% of the number 250.", ans:"50", sol:"10% of 250 is 25, 20% is twice that: 25 · 2 = 50."},
+    {q:"What percent is the number 21 of the number 70?", ans:"30", sol:"{21|70} = {3|10} (reduced by dividing by 7), and {3|10} = 30%."}
   ],
   lab: [
     {t:"Paper fraction", b:"Take a strip of paper 24 grid squares long. Fold it in half and in half again — you'll get four equal parts. Color one part red and write the fraction {1|4}. Then fold an identical strip into 8 parts, color 3, and label it {3|8}. Lay the strips one under the other: which colored part is longer, {1|4} or {3|8}? Check the comparison using the rules."},
     {t:"Splitting evenly", b:"Take 20 identical coins, buttons, or candies. Find {1|5} of 20 by hand: lay them out into 5 equal piles and see how many are in one. Then take 3 piles — what does that give you: {3|5} of 20? Repeat with {1|4} and {3|4}. Write down how you reasoned it out, and check by dividing: 20 : 5 = 4."},
     {t:"A number line from a ruler", b:"Draw a line in your notebook 10 cm long: mark 0 and 1 (10 cm apart). Split the segment into 5 equal parts of 2 cm each and label {1|5}, {2|5}, {3|5}, {4|5}. Then extend the line 6 cm past the unit and mark {6|5}, {7|5}. Which fraction ended up furthest to the right of all the ones marked?"},
     {t:"Fractions in the kitchen", b:"Find the words &ldquo;half,&rdquo; &ldquo;quarter,&rdquo; or &ldquo;third&rdquo; in a recipe or on a package. Take a measuring cup or an ordinary glass and pour water up to the halfway mark, then up to the quarter mark. How many times do you need to add a quarter of a glass to fill it up? Write this as {1|4} + {1|4} + {1|4} + {1|4} = 1."},
-    {t:"The family game &ldquo;Find the Share&rdquo;", b:"Write fractions on cards: {1|2}, {1|3}, {1|4}, {1|5}, {3|4}, {2|3}. On other cards write numbers: 12, 20, 24, 30, 60. Draw one card of each kind and find the fraction of the number. Whoever answers correctly first scores a point. For example, {2|3} of 30: 30 : 3 = 10, 10 · 2 = 20."}
+    {t:"The family game &ldquo;Find the Share&rdquo;", b:"Write fractions on cards: {1|2}, {1|3}, {1|4}, {1|5}, {3|4}, {2|3}. On other cards write numbers: 12, 20, 24, 30, 60. Draw one card of each kind and find the fraction of the number. Whoever answers correctly first scores a point. For example, {2|3} of 30: 30 : 3 = 10, 10 · 2 = 20."},
+    {t:"Mixed numbers from paper", b:"Take 2 whole sheets of paper (or 2 identical strips) and one more identical sheet folded into 3 equal parts. Color in one of the three parts of the third sheet. Lay it all out on the table: two whole sheets plus a third of the third sheet is the mixed number 2{1|3}. Label it. Repeat with a different number of parts, say fourths, and write down the resulting mixed number."},
+    {t:"Percent with coins", b:"Take 100 identical coins, buttons, or beans (if you can't find a hundred, use 20 — then 1 piece is 5%, not 1%). Count out 30 of them to one side — that's 30%. Count out 20 more — what percent has been set aside in total now? Check the connection to a fraction you already know: 30% + 20% = 50% = a half. Repeat with other numbers and check each time by dividing by 100 (or by 20)."}
   ]
 };
 
@@ -792,7 +829,19 @@ CONTENT_EN.frac4.steps = [
     exIdx:5},
   {title:"Fractions on the number line", body:
     "<p>Fractions can be marked on a number line. Take the unit segment from 0 to 1 and split it into 5 equal parts. The first mark is {1|5}, the second is {2|5}, the fifth lands on the point 1, and after that we go past the unit: {7|5} sits two fifths to the right of 1.</p><div class='figure'>__SVG_FRAC4_LINE__</div>",
-    exIdx:6}
+    exIdx:6},
+  {title:"The mixed number", body:
+    "<h3>The mixed number</h3><p>An improper fraction is more convenient to write a different way — as a <b>mixed number</b>: a whole part and a fractional part side by side. Remember the point {7|5} from the diagram earlier: in seven fifths there's a whole {5|5} = 1 plus {2|5} on top, so {7|5} = 1{2|5} (read &ldquo;one and two fifths&rdquo;). The general rule: divide the numerator by the denominator using long division — the quotient becomes the whole part, and the remainder becomes the numerator of the fractional part (the denominator stays the same). For example, 23 : 7 = 3 (remainder 2), so {23|7} = 3{2|7}.</p><p>Going the other way — from a mixed number to an improper fraction — works like this: multiply the whole part by the denominator and add the numerator, then write the result over the same denominator. 3{2|7}: 3 · 7 + 2 = 23, so 3{2|7} = {23|7}.</p><div class='figure'>__SVG_FRAC4_MIXED_BAR__</div><div class='note'><span class='hand'>Remember</span>To compare two mixed numbers, first compare the whole parts. If they're the same, compare only the fractional parts, like ordinary fractions with the same denominator: 2{3|8} is less than 2{5|8}, because {3|8} is less than {5|8}.</div>",
+    exIdx:7},
+  {title:"Adding and subtracting mixed numbers", body:
+    "<h3>Adding and subtracting mixed numbers</h3><p>Mixed numbers with the same denominator are added part by part: whole parts separately, fractional parts separately. 1{2|9} + 2{5|9} = (1 + 2) + ({2|9} + {5|9}) = 3{7|9}.</p><p>Sometimes the fractional parts add up to a whole number or more. Then you pull one more whole out of the fractional part and add it to the whole part: 2{3|5} + 1{4|5} = 3 + {7|5} = 3 + 1{2|5} = 4{2|5}.</p><div class='warn'><span class='hand'>Common mistake</span>Leaving the answer as 3{7|5} — that's wrong, since the fractional part {7|5} is more than one whole, and in a mixed number the fractional part must be a <i>proper</i> fraction (less than 1). Always check: if the fractional part's numerator is no less than the denominator, pull out another whole from it.</div>",
+    exIdx:8},
+  {title:"Percent — hundredths", body:
+    "<h3>Percent — hundredths</h3><p>If you split a whole into 100 equal parts, one such part is called a <b>percent</b> and is written with the % sign. So 1% is just another share — only a special one, whose denominator is always 100, that is, 1% = {1|100}.</p><div class='figure'>__SVG_FRAC4_PERCENT_GRID__</div><p>It's handy to convert percent into fractions you already know: 50% = {50|100} = {1|2} (a half), 25% = {1|4} (a quarter), 10% = {1|10}, 75% = {3|4}. Then you can find percent of a number the way you already know — as a fraction of a number: divide the number by the denominator and multiply by the numerator. For example, 25% of 80 is {1|4} of 80: 80 : 4 = 20.</p><div class='note'><span class='hand'>Quick trick</span>To find 10% of a number, divide it by 10 — that's &ldquo;one part.&rdquo; To find any &ldquo;round by ten&rdquo; percent — 30%, 70%, and so on — first find 10%, then multiply by the right digit: 30% of 90 is 10% (9) multiplied by 3, giving 27.</div>",
+    exIdx:9},
+  {title:"Percent of one number in another", body:
+    "<p>There's also the reverse problem: both parts are known, and you need to find what percent that is. Divide the part by the whole — you'll get a fraction, and convert the fraction to percent (bring it to a denominator of 100). For example, 15 out of 60 is {15|60} = {1|4} = 25%.</p>",
+    exIdx:10}
 ];
 
 /* v. 2.66.0 — mirrors CONTENT.ineq4 in index.html field for field (same example/task/test
