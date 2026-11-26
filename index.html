@@ -25827,12 +25827,30 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.69.0';
+var APP_VERSION = '2.70.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.69.0",
+ "current": "2.70.0",
  "versions": [
+  {
+   "v": "2.70.0",
+   "date": "2026-11-26",
+   "title": "Исправлен критический баг: раздел «Олимпиада» не открывался по клику",
+   "titleEn": "Fixed a critical bug: the “Olympiad” section didn't open on click",
+   "items": [
+    "Пользователь сообщил: «При нажатии на олимпиада ничего не происходит». Подтверждено: и кнопка «Олимпиада» в верхней навигации, и кнопка «Перейти к задачам» в карточке олимпиадного трека на главной странице используют `data-nav=\"olympiad\"`, но в общем обработчике кликов по `[data-nav]` (введён версией 2.42.0) значение `'olympiad'` не входило в список значений, которые вызывают переход `go(nav)` — клик обрабатывался диспетчером, не подходил ни под одно условие в цепочке `if/else if`, и просто ничего не происходило.",
+    "Баг существует с версии 2.65.0 (с момента появления самого раздела «Олимпиада») — то есть раздел был полностью недоступен по клику в интерфейсе с момента его создания; это не было поймано тогда, потому что визуальная проверка версии 2.65.0 открывала раздел напрямую через `view={name:'olympiad'}` в тестовом скрипте, а не реальным кликом по кнопке навигации.",
+    "Исправлено одной строкой — `'olympiad'` добавлено в список значений, вызывающих простой переход `go(nav)`, рядом с `'home'`/`'diag'`/`'status'`/`'cheats'`/`'parent'`/`'versions'`/`'report'`.",
+    "Проверено: `node --check`; Playwright-тест реальным кликом (не прямой установкой `view`) по кнопке `[data-nav=\"olympiad\"]` в верхней навигации — до исправления экран оставался на месте, после исправления переход происходит и для профиля без активного ребёнка (корректно уводит на экран выбора профиля — так и задумано), и для активного профиля 5 класса (открывает сам раздел «Олимпиада» с 6 задачами, скриншот подтверждён)."
+   ],
+   "itemsEn": [
+    "The user reported: “clicking Olympiad does nothing.” Confirmed: both the “Olympiad” button in the top navigation and the “Go to the problems” button in the olympiad-track card on the home page use `data-nav=\"olympiad\"`, but the shared click handler for `[data-nav]` buttons (introduced in version 2.42.0) never listed `'olympiad'` among the values that trigger `go(nav)` — the click reached the dispatcher, matched none of the `if/else if` branches, and simply did nothing.",
+    "The bug has existed since version 2.65.0 (ever since the “Olympiad” section itself was introduced) — meaning the section was completely unreachable by clicking anywhere in the interface from the moment it was built. It wasn't caught then because the 2.65.0 visual check opened the section directly via `view={name:'olympiad'}` in the test script, rather than through a real click on the navigation button.",
+    "Fixed with a one-line change — `'olympiad'` was added to the list of values that trigger the plain `go(nav)` redirect, alongside `'home'`/`'diag'`/`'status'`/`'cheats'`/`'parent'`/`'versions'`/`'report'`.",
+    "Verified: `node --check`; a Playwright test using a real click (not a direct `view` assignment) on the `[data-nav=\"olympiad\"]` button in the top navigation — before the fix the screen stayed put, after the fix the navigation works both with no active kid profile (correctly redirects to the profile picker, as intended) and with an active Grade 5 profile (opens the “Olympiad” section itself with its 6 problems, confirmed by screenshot)."
+   ]
+  },
   {
    "v": "2.69.0",
    "date": "2026-11-24",
@@ -27206,14 +27224,14 @@ var CHANGELOG = {
   "whenEn": "as needed",
   "items": [
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты (2.66.0 — неравенства, 2.67.0 — смешанные числа и проценты, 2.68.0 — диаграммы, 2.69.0 — транспортир, площадь прямоугольного треугольника с палеткой и деление на трёхзначное число). Следующих запланированных пробелов по этому учебнику нет.",
-   "Олимпиадный трек (2.65.0) — пилот на 5 классе, 6 задач. Дальше: собрать отзыв (понятны ли подсказки, подходит ли сложность, стоит ли расширять), и по его итогам — либо добавить ещё задач 5 классу, либо распространить на другие классы. Структура данных (var OLYMPIAD) готова принять задачи из внешнего сборника, если он найдётся, без переделки кода.",
+   "Олимпиадный трек (2.65.0) — пилот на 5 классе, 6 задач. Версия 2.70.0 исправила критический баг: раздел был недоступен по клику с самого момента создания (кнопка навигации не была подключена к обработчику переходов) — теперь открывается нормально. Дальше: собрать отзыв (понятны ли подсказки, подходит ли сложность, стоит ли расширять), и по его итогам — либо добавить ещё задач 5 классу, либо распространить на другие классы. Структура данных (var OLYMPIAD) готова принять задачи из внешнего сборника, если он найдётся, без переделки кода.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed (2.66.0 — inequalities, 2.67.0 — mixed numbers and percent, 2.68.0 — charts, 2.69.0 — the protractor, right-triangle area with grid-counting, and division by a three-digit number). No further gaps are planned for this textbook.",
-   "The olympiad track (2.65.0) — a Grade 5 pilot with 6 problems. Next: gather feedback (are the hints clear, is the difficulty right, is it worth expanding), and based on that either add more problems for Grade 5 or roll it out to other grades. The data structure (var OLYMPIAD) is ready to take problems from an outside collection, if one turns up, with no code changes needed.",
+   "The olympiad track (2.65.0) — a Grade 5 pilot with 6 problems. Version 2.70.0 fixed a critical bug: the section had been unreachable by clicking ever since it was built (its navigation button was never wired to the routing handler) — it now opens correctly. Next: gather feedback (are the hints clear, is the difficulty right, is it worth expanding), and based on that either add more problems for Grade 5 or roll it out to other grades. The data structure (var OLYMPIAD) is ready to take problems from an outside collection, if one turns up, with no code changes needed.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
    "A redesign of the site's look, font, and background, with a designer's input (requested 2026-10-06)."
@@ -29873,7 +29891,7 @@ document.addEventListener('click',function(ev){
   }
   var nav=t.getAttribute('data-nav');
   if(nav){
-    if(nav==='home'||nav==='diag'||nav==='status'||nav==='cheats'||nav==='parent'||nav==='versions'||nav==='report') go(nav);
+    if(nav==='home'||nav==='diag'||nav==='status'||nav==='cheats'||nav==='parent'||nav==='versions'||nav==='report'||nav==='olympiad') go(nav);
     else if(nav==='landing'){ view={name:'landing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
     else if(nav==='marketing'){ view={name:'marketing'}; render(); try{window.scrollTo(0,0)}catch(e){} }
     else if(nav==='pickkid'){ pkReset(); go('pickkid'); }
