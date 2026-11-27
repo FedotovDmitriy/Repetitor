@@ -25827,12 +25827,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.71.0';
+var APP_VERSION = '2.72.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.71.0",
+ "current": "2.72.0",
  "versions": [
+  {
+   "v": "2.72.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 3 класс (2 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 3 (2 of 7 remaining grades)",
+   "items": [
+    "Продолжение распространения олимпиадного трека на все классы, начатого версией 2.71.0 (2 класс) — по явному указанию пользователя продолжать сразу для всех оставшихся классов без паузы между версиями. **Эта версия — вторая из семи, класс 3.**",
+    "6 новых оригинальных задач для 3 класса (var OLYMPIAD[3], сложность 1–3 звезды): «Что дальше?» (закономерность удвоения: 1,2,4,8,16,…), «Сколько лет Маше и брату?» (классическая задача на сумму и разность без уравнений — через приём «убери разницу сначала»), «Кто прибежал первым?» (упорядочивание четырёх друзей по двум подсказкам-сравнениям), «Три числа подряд» (сумма трёх последовательных чисел через деление на 3), «Рукопожатия» (комбинаторика пересчётом: 4+3+2+1=10), «Носки в темноте» (вводная задача на принцип Дирихле/худший случай). Ни одна задача не повторяет формулировки из 2 и 5 классов — только по уровню сложности и общему духу (закономерность, логика, комбинаторика) они перекликаются.",
+    "Проверено: `node --check`; jsdom-тест структуры (все 6 новых задач имеют все 10 обязательных полей, звёзды 1–3 в правильном распределении 1/2/2/2/3/3, нет кириллицы в английских полях и наоборот, уникальность `id` по всему `OLYMPIAD` теперь среди классов 2, 3 и 5); jsdom-тест `olyCardHTML()` для каждой задачи; jsdom-тест `viewOlympiad()` — для ребёнка 3 класса показывает все 6 карточек, для ребёнка 4 класса — заглушку с упоминанием «2, 3, 5»; визуальная Playwright-проверка реальным кликом (открытие раздела, раскрытие подсказки кликом по `<summary>`)."
+   ],
+   "itemsEn": [
+    "Continuing the olympiad-track rollout to every grade that began in version 2.71.0 (Grade 2) — per the user's explicit instruction to proceed right away through all remaining grades with no pause between versions. **This version is the second of seven, Grade 3.**",
+    "6 new original problems for Grade 3 (var OLYMPIAD[3], difficulty 1–3 stars): “What comes next?” (a doubling pattern: 1,2,4,8,16,…), “How old are Masha and her brother?” (the classic sum-and-difference puzzle, solved without equations via the “remove the difference first” method), “Who finished first?” (ordering four friends from two comparison clues), “Three numbers in a row” (three consecutive numbers summing to a given total, via division by 3), “Handshakes” (combinatorics by counting: 4+3+2+1=10), and “Socks in the dark” (an introductory pigeonhole/worst-case problem). None of the six repeats wording from the Grade 2 or Grade 5 sets — they echo each other only in spirit (patterns, logic, combinatorics) and difficulty level.",
+    "Verified: `node --check`; a jsdom structural test (all 6 new problems have all 10 required fields, stars 1–3 in the correct 1/2/2/2/3/3 distribution, no Cyrillic in the English fields and vice versa, unique `id`s across the whole `OLYMPIAD` object, now spanning grades 2, 3, and 5); a jsdom test of `olyCardHTML()` for each problem; a jsdom test of `viewOlympiad()` — a Grade 3 child sees all 6 cards, a Grade 4 child sees the placeholder mentioning “2, 3, 5”; a visual Playwright check using a real click (opening the section, expanding a hint by clicking `<summary>`)."
+   ]
+  },
   {
    "v": "2.71.0",
    "date": "2026-11-27",
@@ -27238,19 +27254,19 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Олимпиада распространяется на все классы (2 из 8 готово); монетизация ждёт шагов Дмитрия",
-  "titleEn": "The olympiad track is rolling out to every grade (2 of 8 done); monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (3 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (3 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс). Пользователь решил не ждать отзыва, а сразу распространить раздел на оставшиеся классы — 3, 4, 6, 7, 8, 9, по 6 задач на класс, несколькими версиями подряд. Структура данных (var OLYMPIAD) принимает любой класс без переделки гейта.",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс). Осталось 4 класса: 4, 6, 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2). The user decided not to wait for feedback and instead extend the section to the remaining grades right away — 3, 4, 6, 7, 8, 9, 6 problems per grade, across several versions in a row. The data structure (var OLYMPIAD) accepts any grade with no change to the gating logic.",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3). 4 grades remain: 4, 6, 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
@@ -28987,6 +29003,62 @@ var OLYMPIAD = {
    hintEn:'Choose which digit goes first — there are 3 choices for the first digit. For each choice of first digit, count how many cards are left for the second.',
    solution:'Первой цифрой может быть любая из трёх карточек — 3 варианта. Для каждой первой цифры на вторую карточку остаётся 2 варианта (любая из двух оставшихся). Значит, всего чисел 3·2=6.\nВот они все: 25, 28, 52, 58, 82, 85.',
    solutionEn:'The first digit can be any of the three cards — 3 choices. For each first digit, 2 cards are left for the second digit. So there are 3·2=6 numbers in total.\nHere they all are: 25, 28, 52, 58, 82, 85.'}
+ ],
+ 3: [
+  {id:'g3-doubling', stars:1,
+   title:'Что дальше?',
+   titleEn:'What comes next?',
+   statement:'Найди следующее число в последовательности и объясни правило:\n1, 2, 4, 8, 16, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n1, 2, 4, 8, 16, …?',
+   hint:'Посмотри, как получается каждое следующее число из предыдущего — сложением одного и того же числа или другим действием?',
+   hintEn:'Look at how each next number comes from the one before it — is it the same addition each time, or something else?',
+   solution:'Каждое следующее число ровно в 2 раза больше предыдущего: 1→2→4→8→16 (умножаем на 2). Значит, следующее число: 16·2=32.\nОтвет: 32.',
+   solutionEn:'Each next number is exactly twice the one before it: 1→2→4→8→16 (multiply by 2). So the next number is 16·2=32.\nAnswer: 32.'},
+  {id:'g3-age-sum-diff', stars:2,
+   title:'Сколько лет Маше и брату?',
+   titleEn:'How old are Masha and her brother?',
+   statement:'Маше и её брату вместе 12 лет. Брат старше Маши на 2 года. Сколько лет каждому из них?',
+   statementEn:'Masha and her brother are 12 years old together. Her brother is 2 years older than Masha. How old is each of them?',
+   hint:'Представь, что брат вдруг стал на 2 года младше — тогда они с Машей были бы одного возраста. Сколько лет было бы им вместе в этом случае?',
+   hintEn:'Imagine the brother were suddenly 2 years younger — then he and Masha would be the same age. How many years would they have together in that case?',
+   solution:'Если бы брат был на 2 года младше, он был бы одного возраста с Машей, и вместе у них было бы 12−2=10 лет — то есть по 10:2=5 лет у каждого. Это и есть возраст Маши: 5 лет.\nБрат старше на 2 года, значит ему 5+2=7 лет.\nПроверка: 5+7=12 ✓, и 7 действительно на 2 больше, чем 5 ✓.',
+   solutionEn:'If the brother were 2 years younger, he\'d be the same age as Masha, and together they\'d have 12−2=10 years — that is, 10÷2=5 years each. That\'s Masha\'s age: 5.\nThe brother is 2 years older, so he is 5+2=7.\nCheck: 5+7=12 ✓, and 7 is indeed 2 more than 5 ✓.'},
+  {id:'g3-race-order', stars:2,
+   title:'Кто прибежал первым?',
+   titleEn:'Who finished first?',
+   statement:'Четверо друзей — Аня, Боря, Вера и Гриша — бежали наперегонки. Известно:\n1) Аня прибежала быстрее Бори.\n2) Вера прибежала быстрее Ани, но медленнее Гриши.\nОпредели, кто на каком месте финишировал (места — с 1-го по 4-е, без ничьих).',
+   statementEn:'Four friends — Anya, Borya, Vera, and Grisha — ran a race. Here\'s what we know:\n1) Anya finished faster than Borya.\n2) Vera finished faster than Anya, but slower than Grisha.\nWork out who finished in which place (places 1st through 4th, no ties).',
+   hint:'Выпиши все известные пары «кто быстрее кого» одной цепочкой — должно получиться, что каждый из четверых стоит в ней на своём месте.',
+   hintEn:'Write all the known \'who\'s faster than whom\' pairs as one chain — it should turn out that all four friends each land in their own spot in it.',
+   solution:'Из подсказки 2: Гриша быстрее Веры, и Вера быстрее Ани. Из подсказки 1: Аня быстрее Бори.\nСобираем всё в одну цепочку: Гриша быстрее Веры быстрее Ани быстрее Бори.\nЗначит, места: 1 — Гриша, 2 — Вера, 3 — Аня, 4 — Боря.',
+   solutionEn:'From clue 2: Grisha is faster than Vera, and Vera is faster than Anya. From clue 1: Anya is faster than Borya.\nPutting it all into one chain: Grisha, then Vera, then Anya, then Borya — each faster than the next.\nSo the places are: 1st — Grisha, 2nd — Vera, 3rd — Anya, 4th — Borya.'},
+  {id:'g3-three-consecutive', stars:2,
+   title:'Три числа подряд',
+   titleEn:'Three numbers in a row',
+   statement:'Сумма трёх последовательных чисел равна 144 (например, числа вида 10, 11, 12 — «последовательные», потому что каждое следующее на 1 больше предыдущего). Какие это числа?',
+   statementEn:'Three consecutive numbers (like 10, 11, 12 — each one more than the last) add up to 144. What are the numbers?',
+   hint:'Если число 144 разделить на 3, получится как раз то самое, среднее из трёх чисел.',
+   hintEn:'If you divide 144 by 3, you get exactly the middle one of the three numbers.',
+   solution:'144:3=48 — это среднее число. Тогда первое на 1 меньше, а третье на 1 больше: 47, 48, 49.\nПроверка: 47+48+49=144 ✓.',
+   solutionEn:'144÷3=48 — that\'s the middle number. Then the first is 1 less and the third is 1 more: 47, 48, 49.\nCheck: 47+48+49=144 ✓.'},
+  {id:'g3-handshakes', stars:3,
+   title:'Рукопожатия',
+   titleEn:'Handshakes',
+   statement:'На дне рождения собрались 5 друзей. Каждый пожал руку каждому из остальных ровно один раз. Сколько всего было рукопожатий?',
+   statementEn:'Five friends got together for a birthday party. Each of them shook hands with every other friend exactly once. How many handshakes were there in total?',
+   hint:'Посчитай по очереди: сколько новых рукопожатий добавляет первый друг, сколько — второй (с теми, с кем он ещё не поздоровался), и так далее.',
+   hintEn:'Count one friend at a time: how many new handshakes does the first friend add, how many does the second add (only with people he hasn\'t already greeted), and so on.',
+   solution:'Первый друг жмёт руку всем остальным четверым — это 4 рукопожатия. Второй уже поздоровался с первым, значит он добавляет рукопожатия с оставшимися тремя — ещё 3. Третий добавляет ещё 2 (с теми, с кем ещё не здоровался), четвёртый — ещё 1, а пятому добавлять уже нечего.\nВсего: 4+3+2+1=10 рукопожатий.',
+   solutionEn:'The first friend shakes hands with all four others — that\'s 4 handshakes. The second has already greeted the first, so he adds handshakes with the remaining three — 3 more. The third adds 2 more (with those he hasn\'t greeted yet), the fourth adds 1 more, and the fifth has no one new left.\nTotal: 4+3+2+1=10 handshakes.'},
+  {id:'g3-socks-pigeonhole', stars:3,
+   title:'Носки в темноте',
+   titleEn:'Socks in the dark',
+   statement:'В ящике лежат носки только трёх цветов: красные, синие и зелёные (носков каждого цвета много). В комнате темно, и цвет носка видно, только когда его уже достал. Какое наименьшее количество носков нужно вынуть, чтобы среди них точно нашлась пара одного цвета?',
+   statementEn:'A drawer has socks of only three colors: red, blue, and green (plenty of each color). The room is dark, so you can only see a sock\'s color after you\'ve pulled it out. What is the smallest number of socks you must pull out to be sure two of them match in color?',
+   hint:'Подумай о самом «невезучем» случае: можно ли вытащить несколько носков так, чтобы среди них вообще не было двух одинаковых по цвету? Сколько носков получится в таком случае?',
+   hintEn:'Think about the unluckiest possible case: how many socks could you pull out with no two the same color? How many is that, at most?',
+   solution:'В самом неудачном случае сначала вытащатся по одному носку каждого из трёх цветов — это 3 носка, и среди них пары ещё нет. Но следующий, четвёртый носок обязательно будет одного из уже встретившихся цветов — ведь цветов всего три!\nЗначит, 4 носков хватит всегда, а 3 иногда может не хватить. Ответ: 4.',
+   solutionEn:'In the unluckiest case, you\'d first pull out one sock of each of the three colors — that\'s 3 socks with no match yet. But the next, fourth sock is guaranteed to repeat one of the colors you\'ve already seen — there are only three colors to choose from!\nSo 4 socks are always enough, while 3 sometimes aren\'t. Answer: 4.'}
  ],
  5: [
   {id:'sequence-np1', stars:1,
