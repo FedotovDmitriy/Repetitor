@@ -25827,12 +25827,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.74.0';
+var APP_VERSION = '2.75.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.74.0",
+ "current": "2.75.0",
  "versions": [
+  {
+   "v": "2.75.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 7 класс (5 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 7 (5 of 7 remaining grades)",
+   "items": [
+    "Продолжение распространения олимпиадного трека на все классы — пятая из семи версий, класс 7.",
+    "6 новых оригинальных задач для 7 класса (var OLYMPIAD[7], сложность 1–3 звезды): «Кубы чисел» (закономерность 1,8,27,64,125,…), «Сумма и разность» (система двух линейных уравнений), «Встреча машин» (движение навстречу со сдвигом по времени старта), «Быстрое умножение» (формула сокращённого умножения (a+b)(a−b)=a²−b² как приём устного счёта), «Сумма внешних углов» (инвариант — доказательство, что сумма внешних углов ЛЮБОГО выпуклого многоугольника равна 360°, через «обход по периметру»), «Дни рождения» (принцип Дирихле: 400 учеников, 366 дней в году).",
+    "Проверено: `node --check`; jsdom-тест структуры (10 полей, звёзды 1–3 в распределении 1/2/2/2/3/3, уникальность `id` среди классов 2, 3, 4, 5, 6, 7); jsdom-тест `olyCardHTML()` и `viewOlympiad()` для классов 7 и 8; визуальная Playwright-проверка реальным кликом."
+   ],
+   "itemsEn": [
+    "Continuing the olympiad-track rollout to every grade — the fifth of seven versions, Grade 7.",
+    "6 new original problems for Grade 7 (var OLYMPIAD[7], difficulty 1–3 stars): “Cube numbers” (the pattern 1,8,27,64,125,…), “Sum and difference” (a system of two linear equations), “The meeting cars” (cars closing in with offset start times), “Fast multiplication” (the identity (a+b)(a−b)=a²−b² as a mental-math shortcut), “The sum of exterior angles” (an invariant — proving that the exterior angles of ANY convex polygon sum to 360°, via a “walk around the perimeter” argument), and “Birthdays” (the pigeonhole principle: 400 students, 366 days in a year).",
+    "Verified: `node --check`; a jsdom structural test (10 fields, stars 1–3 in the 1/2/2/2/3/3 distribution, unique `id`s across grades 2, 3, 4, 5, 6, 7); a jsdom test of `olyCardHTML()` and `viewOlympiad()` for grades 7 and 8; a visual Playwright check using a real click."
+   ]
+  },
   {
    "v": "2.74.0",
    "date": "2026-11-27",
@@ -27286,19 +27302,19 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Олимпиада распространяется на все классы (5 из 8 готово); монетизация ждёт шагов Дмитрия",
-  "titleEn": "The olympiad track is rolling out to every grade (5 of 8 done); monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (6 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (6 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс; 2.74.0 — добавлен 6 класс). Осталось 3 класса: 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс; 2.74.0 — добавлен 6 класс; 2.75.0 — добавлен 7 класс). Осталось 2 класса: 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4; 2.74.0 — added Grade 6). 3 grades remain: 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4; 2.74.0 — added Grade 6; 2.75.0 — added Grade 7). 2 grades remain: 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
@@ -29259,6 +29275,62 @@ var OLYMPIAD = {
    hintEn:'Color the stripes one at a time — first the top one (how many choices?), then the middle one (must differ from the top), then the bottom one (it only needs to differ from the middle — forget about the top, they\'re not neighbors).',
    solution:'Верхняя полоса — любая из 4 красок: 4 варианта.\nСредняя полоса должна отличаться от верхней — остаётся 3 варианта.\nНижняя полоса должна отличаться только от средней (с верхней она не соседствует, может совпадать) — тоже 3 варианта.\nВсего способов: 4·3·3=36.',
    solutionEn:'The top stripe can be any of the 4 colors: 4 choices.\nThe middle stripe must differ from the top — 3 choices left.\nThe bottom stripe only needs to differ from the middle (it isn\'t adjacent to the top, so it may match it) — also 3 choices.\nTotal ways: 4·3·3=36.'}
+ ],
+ 7: [
+  {id:'g7-cubes', stars:1,
+   title:'Кубы чисел',
+   titleEn:'Cube numbers',
+   statement:'Найди следующее число в последовательности и объясни правило:\n1, 8, 27, 64, 125, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n1, 8, 27, 64, 125, …?',
+   hint:'Проверь, не получается ли каждое число возведением в куб (то есть умножением числа само на себя три раза): 1=1³, 8=2³…',
+   hintEn:'Check whether each number is a cube (a number multiplied by itself three times): 1=1³, 8=2³…',
+   solution:'Числа — кубы натуральных чисел: 1=1³, 8=2³, 27=3³, 64=4³, 125=5³. Следующее число: 6³=6·6·6=216.\nОтвет: 216.',
+   solutionEn:'The numbers are cubes of natural numbers: 1=1³, 8=2³, 27=3³, 64=4³, 125=5³. The next number is 6³=6·6·6=216.\nAnswer: 216.'},
+  {id:'g7-sum-diff-system', stars:2,
+   title:'Сумма и разность',
+   titleEn:'Sum and difference',
+   statement:'Сумма двух чисел равна 50, а их разность равна 12. Найди эти числа, составив и решив систему уравнений.',
+   statementEn:'The sum of two numbers is 50, and their difference is 12. Find the numbers by setting up and solving a system of equations.',
+   hint:'Обозначь числа x и y: x+y=50, x−y=12. Сложи оба уравнения почленно — что произойдёт с y?',
+   hintEn:'Let the numbers be x and y: x+y=50, x−y=12. Add the two equations together term by term — what happens to y?',
+   solution:'Пусть числа — x и y, причём x>y. Система:\nx+y=50\nx−y=12\nСложим уравнения: (x+y)+(x−y)=50+12 → 2x=62 → x=31.\nПодставим в первое уравнение: 31+y=50 → y=19.\nОтвет: 31 и 19 (проверка: 31+19=50 ✓, 31−19=12 ✓).',
+   solutionEn:'Let the numbers be x and y, with x>y. The system:\nx+y=50\nx−y=12\nAdd the equations: (x+y)+(x−y)=50+12 → 2x=62 → x=31.\nSubstitute into the first equation: 31+y=50 → y=19.\nAnswer: 31 and 19 (check: 31+19=50 ✓, 31−19=12 ✓).'},
+  {id:'g7-meeting-offset', stars:2,
+   title:'Встреча машин',
+   titleEn:'The meeting cars',
+   statement:'Из городов А и Б, расстояние между которыми 300 км, навстречу друг другу выехали два автомобиля. Первый выехал в 8:00 со скоростью 60 км/ч. Второй выехал в 9:00 со скоростью 90 км/ч. В котором часу они встретятся?',
+   statementEn:'Two cars set out toward each other from towns A and B, 300 km apart. The first left at 8:00 at 60 km/h. The second left at 9:00 at 90 km/h. At what time will they meet?',
+   hint:'К 9:00, когда выехал второй автомобиль, первый уже проехал какое-то расстояние в одиночку. Вычти этот путь из 300 км — а дальше считай обычную встречу, но уже для скорости сближения 60+90 км/ч.',
+   hintEn:'By 9:00, when the second car sets out, the first car has already covered some distance on its own. Subtract that from 300 km — then treat the rest as a standard meeting problem with a combined closing speed of 60+90 km/h.',
+   solution:'С 8:00 до 9:00 (1 час) первый автомобиль проехал в одиночку 60·1=60 км. Осталось расстояние: 300−60=240 км.\nС 9:00 оба едут навстречу друг другу со скоростью сближения 60+90=150 км/ч.\nВремя до встречи: 240:150=1,6 часа = 1 час 36 минут.\n9:00 + 1 час 36 минут = 10:36.\nОтвет: встретятся в 10:36.',
+   solutionEn:'From 8:00 to 9:00 (1 hour), the first car travels alone: 60·1=60 km. The remaining distance is 300−60=240 km.\nFrom 9:00 on, both cars close the gap at 60+90=150 km/h.\nTime to meet: 240÷150=1.6 hours = 1 hour 36 minutes.\n9:00 + 1 hour 36 minutes = 10:36.\nAnswer: they meet at 10:36.'},
+  {id:'g7-fsu-trick', stars:2,
+   title:'Быстрое умножение',
+   titleEn:'Fast multiplication',
+   statement:'Вычисли 53·47 без умножения столбиком, используя формулу сокращённого умножения (a+b)(a−b)=a²−b².',
+   statementEn:'Compute 53·47 without long multiplication, using the identity (a+b)(a−b)=a²−b².',
+   hint:'Представь 53 и 47 как (50+3) и (50−3) — тогда их произведение сразу превращается в разность квадратов.',
+   hintEn:'Write 53 and 47 as (50+3) and (50−3) — then their product instantly becomes a difference of squares.',
+   solution:'53=50+3, 47=50−3. По формуле (a+b)(a−b)=a²−b²:\n53·47=(50+3)(50−3)=50²−3²=2500−9=2491.\nОтвет: 2491.',
+   solutionEn:'53=50+3, 47=50−3. By the identity (a+b)(a−b)=a²−b²:\n53·47=(50+3)(50−3)=50²−3²=2500−9=2491.\nAnswer: 2491.'},
+  {id:'g7-exterior-angles', stars:3,
+   title:'Сумма внешних углов',
+   titleEn:'The sum of exterior angles',
+   statement:'Чему равна сумма всех внешних углов выпуклого многоугольника — треугольника, четырёхугольника, пятиугольника — неважно какого? (Внешний угол в каждой вершине — это угол, дополняющий внутренний угол до 180°.) Докажи свой ответ.',
+   statementEn:'What is the sum of all the exterior angles of a convex polygon — a triangle, a quadrilateral, a pentagon, any of them? (The exterior angle at each vertex is the angle that, together with the interior angle, makes 180°.) Prove your answer.',
+   hint:'Представь, что ты идёшь вдоль сторон многоугольника по его периметру и в каждой вершине поворачиваешь ровно на внешний угол. Сколько раз в сумме ты повернёшься, пройдя весь периметр и вернувшись в начальную точку, глядя в ту же сторону, что и вначале?',
+   hintEn:'Imagine walking all the way around the polygon\'s perimeter, turning by the exterior angle at each vertex. After the full walk, you\'re back where you started, facing the same direction as at the start — how many full turns\' worth of turning did you do in total?',
+   solution:'Если идти по периметру многоугольника и в каждой вершине поворачивать на внешний угол, то, обойдя весь периметр и вернувшись в начальную точку лицом в ту же сторону, что и вначале, ты совершишь ровно один полный оборот — то есть повернёшься в сумме на 360°.\nЭто верно для ЛЮБОГО выпуклого многоугольника независимо от числа сторон — потому что полный оборот всегда один и тот же, 360°, сколько бы ни было вершин (поворотов).\nОтвет: сумма внешних углов любого выпуклого многоугольника всегда равна 360°.',
+   solutionEn:'If you walk around the polygon\'s perimeter and turn by the exterior angle at each vertex, then after completing the full walk — back at your starting point, facing the same direction as at the start — you\'ve made exactly one full turn, that is, turned a total of 360°.\nThis holds for ANY convex polygon, no matter how many sides it has — because one full turn is always the same 360°, regardless of how many vertices (turns) it took to get there.\nAnswer: the sum of the exterior angles of any convex polygon is always 360°.'},
+  {id:'g7-birthday-pigeonhole', stars:3,
+   title:'Дни рождения',
+   titleEn:'Birthdays',
+   statement:'В школе учится 400 учеников. Докажи, что хотя бы у двух из них дни рождения приходятся на один и тот же день года.',
+   statementEn:'A school has 400 students. Prove that at least two of them share the same birthday (same day of the year).',
+   hint:'Сколько всего разных дней в году может быть днём рождения (считая и 29 февраля в високосный год)? Сравни это число с количеством учеников.',
+   hintEn:'How many different days of the year can possibly be a birthday (counting February 29 in a leap year)? Compare that number with the number of students.',
+   solution:'В году не больше 366 различных дней (365 в обычном году, 366 в високосном). Если бы у всех 400 учеников дни рождения были РАЗНЫМИ, потребовалось бы как минимум 400 различных дней — но доступно только 366.\nПо принципу Дирихле (если «предметов» больше, чем «ящиков», хотя бы в одном ящике окажется больше одного предмета): раз учеников (400) больше, чем возможных дней (366), хотя бы два ученика обязательно родились в один и тот же день года.\nОтвет: да, это доказано — совпадение гарантировано, даже без знания конкретных дат.',
+   solutionEn:'A year has at most 366 distinct days (365 in a regular year, 366 in a leap year). If all 400 students had DIFFERENT birthdays, that would require at least 400 distinct days — but only 366 are available.\nBy the pigeonhole principle (if there are more \'items\' than \'boxes\', at least one box must hold more than one item): since there are more students (400) than possible days (366), at least two students must share the same birthday.\nAnswer: yes, this is proven — the coincidence is guaranteed, even without knowing anyone\'s actual birth date.'}
  ]
 };
 function olyTitle(p){ return TL(p.title,p.titleEn); }
