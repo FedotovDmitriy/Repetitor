@@ -25827,12 +25827,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.75.0';
+var APP_VERSION = '2.76.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.75.0",
+ "current": "2.76.0",
  "versions": [
+  {
+   "v": "2.76.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 8 класс (6 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 8 (6 of 7 remaining grades)",
+   "items": [
+    "Продолжение распространения олимпиадного трека на все классы — шестая из семи версий, класс 8.",
+    "6 новых оригинальных задач для 8 класса (var OLYMPIAD[8], сложность 1–3 звезды): «Числа Фибоначчи» (закономерность 1,1,2,3,5,8,13,…), «Стороны прямоугольника» (квадратное уравнение из задачи на площадь), «Лестница у стены» (теорема Пифагора), «Что больше?» (сравнение √50 и 7 без калькулятора), «Хорда и центр» (расстояние от центра окружности до хорды через теорему Пифагора), «Делится ли на 6?» (доказательство — n³−n раскладывается на произведение трёх последовательных чисел).",
+    "Проверено: `node --check`; jsdom-тест структуры (10 полей, звёзды 1–3 в распределении 1/2/2/2/3/3, уникальность `id` среди классов 2, 3, 4, 5, 6, 7, 8); jsdom-тест `olyCardHTML()` и `viewOlympiad()` для классов 8 и 9; визуальная Playwright-проверка реальным кликом."
+   ],
+   "itemsEn": [
+    "Continuing the olympiad-track rollout to every grade — the sixth of seven versions, Grade 8.",
+    "6 new original problems for Grade 8 (var OLYMPIAD[8], difficulty 1–3 stars): “Fibonacci numbers” (the pattern 1,1,2,3,5,8,13,…), “Sides of the rectangle” (a quadratic equation from an area problem), “The ladder against the wall” (the Pythagorean theorem), “Which is bigger?” (comparing √50 and 7 without a calculator), “The chord and the center” (the distance from a circle's center to a chord, via the Pythagorean theorem), and “Is it divisible by 6?” (a proof — n³−n factors into a product of three consecutive numbers).",
+    "Verified: `node --check`; a jsdom structural test (10 fields, stars 1–3 in the 1/2/2/2/3/3 distribution, unique `id`s across grades 2, 3, 4, 5, 6, 7, 8); a jsdom test of `olyCardHTML()` and `viewOlympiad()` for grades 8 and 9; a visual Playwright check using a real click."
+   ]
+  },
   {
    "v": "2.75.0",
    "date": "2026-11-27",
@@ -27302,19 +27318,19 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Олимпиада распространяется на все классы (6 из 8 готово); монетизация ждёт шагов Дмитрия",
-  "titleEn": "The olympiad track is rolling out to every grade (6 of 8 done); monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (7 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (7 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс; 2.74.0 — добавлен 6 класс; 2.75.0 — добавлен 7 класс). Осталось 2 класса: 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс; 2.74.0 — добавлен 6 класс; 2.75.0 — добавлен 7 класс; 2.76.0 — добавлен 8 класс). Остался 1 класс: 9 — последняя версия этой серии, завершает задачу целиком.",
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4; 2.74.0 — added Grade 6; 2.75.0 — added Grade 7). 2 grades remain: 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4; 2.74.0 — added Grade 6; 2.75.0 — added Grade 7; 2.76.0 — added Grade 8). 1 grade remains: 9 — the final version in this series, completing the task entirely.",
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
@@ -29331,6 +29347,62 @@ var OLYMPIAD = {
    hintEn:'How many different days of the year can possibly be a birthday (counting February 29 in a leap year)? Compare that number with the number of students.',
    solution:'В году не больше 366 различных дней (365 в обычном году, 366 в високосном). Если бы у всех 400 учеников дни рождения были РАЗНЫМИ, потребовалось бы как минимум 400 различных дней — но доступно только 366.\nПо принципу Дирихле (если «предметов» больше, чем «ящиков», хотя бы в одном ящике окажется больше одного предмета): раз учеников (400) больше, чем возможных дней (366), хотя бы два ученика обязательно родились в один и тот же день года.\nОтвет: да, это доказано — совпадение гарантировано, даже без знания конкретных дат.',
    solutionEn:'A year has at most 366 distinct days (365 in a regular year, 366 in a leap year). If all 400 students had DIFFERENT birthdays, that would require at least 400 distinct days — but only 366 are available.\nBy the pigeonhole principle (if there are more \'items\' than \'boxes\', at least one box must hold more than one item): since there are more students (400) than possible days (366), at least two students must share the same birthday.\nAnswer: yes, this is proven — the coincidence is guaranteed, even without knowing anyone\'s actual birth date.'}
+ ],
+ 8: [
+  {id:'g8-fibonacci', stars:1,
+   title:'Числа Фибоначчи',
+   titleEn:'Fibonacci numbers',
+   statement:'Найди следующее число в последовательности и объясни правило:\n1, 1, 2, 3, 5, 8, 13, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n1, 1, 2, 3, 5, 8, 13, …?',
+   hint:'Посмотри на любые три числа подряд — как связано третье с первыми двумя?',
+   hintEn:'Look at any three numbers in a row — how is the third related to the first two?',
+   solution:'Каждое число — это сумма двух предыдущих: 1+1=2, 1+2=3, 2+3=5, 3+5=8, 5+8=13. Значит, следующее число: 8+13=21.\nОтвет: 21. (Это знаменитая последовательность Фибоначчи.)',
+   solutionEn:'Each number is the sum of the two before it: 1+1=2, 1+2=3, 2+3=5, 3+5=8, 5+8=13. So the next number is 8+13=21.\nAnswer: 21. (This is the famous Fibonacci sequence.)'},
+  {id:'g8-rectangle-quadratic', stars:2,
+   title:'Стороны прямоугольника',
+   titleEn:'Sides of the rectangle',
+   statement:'Длина прямоугольника на 3 см больше его ширины. Площадь прямоугольника равна 70 см². Найди длину и ширину прямоугольника.',
+   statementEn:'The length of a rectangle is 3 cm more than its width. The rectangle\'s area is 70 cm². Find its length and width.',
+   hint:'Обозначь ширину буквой w, тогда длина — (w+3). Составь уравнение для площади: w·(w+3)=70 — и реши его как квадратное.',
+   hintEn:'Let the width be w, so the length is (w+3). Set up the area equation w·(w+3)=70 and solve it as a quadratic.',
+   solution:'Пусть ширина — w см, тогда длина — (w+3) см. Площадь: w(w+3)=70, то есть w²+3w−70=0.\nПо формуле корней квадратного уравнения: w=(−3±√(9+280))/2=(−3±√289)/2=(−3±17)/2.\nПоложительный корень: w=(−3+17)/2=14/2=7.\nЗначит, ширина — 7 см, длина — 7+3=10 см.\nПроверка: 7·10=70 ✓.',
+   solutionEn:'Let the width be w cm, so the length is (w+3) cm. The area: w(w+3)=70, that is, w²+3w−70=0.\nBy the quadratic formula: w=(−3±√(9+280))/2=(−3±√289)/2=(−3±17)/2.\nThe positive root: w=(−3+17)/2=14/2=7.\nSo the width is 7 cm, and the length is 7+3=10 cm.\nCheck: 7·10=70 ✓.'},
+  {id:'g8-ladder-pythagorean', stars:2,
+   title:'Лестница у стены',
+   titleEn:'The ladder against the wall',
+   statement:'Лестница длиной 10 м приставлена к стене так, что её нижний конец находится на расстоянии 6 м от стены. На какой высоте от земли находится верхний конец лестницы (сама лестница при этом прямая, стена строго вертикальна, земля строго горизонтальна)?',
+   statementEn:'A 10 m ladder leans against a wall so that its foot is 6 m from the wall. How high above the ground is the top of the ladder (the ladder is straight, the wall is exactly vertical, and the ground is exactly horizontal)?',
+   hint:'Лестница, стена и земля образуют прямоугольный треугольник, в котором сама лестница — гипотенуза. Примени теорему Пифагора.',
+   hintEn:'The ladder, the wall, and the ground form a right triangle in which the ladder itself is the hypotenuse. Apply the Pythagorean theorem.',
+   solution:'Лестница (10 м) — гипотенуза прямоугольного треугольника, расстояние до стены (6 м) — один катет, высота на стене — другой катет. По теореме Пифагора:\nвысота² = 10²−6² = 100−36 = 64.\nвысота = √64 = 8.\nОтвет: 8 метров.',
+   solutionEn:'The ladder (10 m) is the hypotenuse of a right triangle, the distance from the wall (6 m) is one leg, and the height on the wall is the other leg. By the Pythagorean theorem:\nheight² = 10²−6² = 100−36 = 64.\nheight = √64 = 8.\nAnswer: 8 meters.'},
+  {id:'g8-sqrt-compare', stars:2,
+   title:'Что больше?',
+   titleEn:'Which is bigger?',
+   statement:'Что больше: √50 или 7? Реши без калькулятора.',
+   statementEn:'Which is bigger: √50 or 7? Solve without a calculator.',
+   hint:'Возведи оба числа в квадрат — сравнивать квадраты проще, а порядок при этом не изменится (оба числа положительные).',
+   hintEn:'Square both numbers — comparing the squares is easier, and the order stays the same (both numbers are positive).',
+   solution:'Возведём оба числа в квадрат: (√50)²=50, а 7²=49.\nТак как 50>49, и оба исходных числа положительны, то √50>7.\nОтвет: √50 больше.',
+   solutionEn:'Square both numbers: (√50)²=50, and 7²=49.\nSince 50>49, and both original numbers are positive, √50>7.\nAnswer: √50 is bigger.'},
+  {id:'g8-circle-chord-distance', stars:3,
+   title:'Хорда и центр',
+   titleEn:'The chord and the center',
+   statement:'В окружности радиуса 5 см проведена хорда длиной 8 см. На каком расстоянии от центра окружности находится эта хорда?',
+   statementEn:'A circle has radius 5 cm, and a chord 8 cm long is drawn in it. How far from the circle\'s center is this chord?',
+   hint:'Опусти перпендикуляр из центра окружности на хорду — он делит хорду ровно пополам и образует прямоугольный треугольник с радиусом как гипотенузой.',
+   hintEn:'Drop a perpendicular from the center of the circle to the chord — it bisects the chord exactly and forms a right triangle with the radius as the hypotenuse.',
+   solution:'Перпендикуляр из центра делит хорду пополам: половина хорды = 8:2=4 см. Этот перпендикуляр, половина хорды и радиус образуют прямоугольный треугольник, где радиус (5 см) — гипотенуза.\nПо теореме Пифагора: расстояние² = 5²−4² = 25−16 = 9.\nрасстояние = √9 = 3.\nОтвет: 3 см.',
+   solutionEn:'A perpendicular from the center bisects the chord: half the chord = 8÷2=4 cm. That perpendicular, the half-chord, and the radius form a right triangle, where the radius (5 cm) is the hypotenuse.\nBy the Pythagorean theorem: distance² = 5²−4² = 25−16 = 9.\ndistance = √9 = 3.\nAnswer: 3 cm.'},
+  {id:'g8-cube-minus-n-divisible-6', stars:3,
+   title:'Делится ли на 6?',
+   titleEn:'Is it divisible by 6?',
+   statement:'Докажи, что при любом натуральном числе n значение выражения n³−n всегда делится на 6 без остатка.',
+   statementEn:'Prove that for any natural number n, the value of n³−n is always divisible by 6 with no remainder.',
+   hint:'Разложи n³−n на множители — вынеси n за скобку, а оставшееся выражение тоже разложи на множители. Что за три числа у тебя получится в произведении?',
+   hintEn:'Factor n³−n — pull out n, then factor what\'s left too. What three numbers end up multiplied together?',
+   solution:'Разложим на множители: n³−n = n(n²−1) = n(n−1)(n+1).\nЭто произведение трёх ПОСЛЕДОВАТЕЛЬНЫХ натуральных чисел: (n−1), n, (n+1).\nСреди любых двух последовательных чисел одно обязательно чётное — значит, произведение делится на 2.\nСреди любых трёх последовательных чисел одно обязательно делится на 3 — значит, произведение делится на 3.\nЕсли число делится и на 2, и на 3, оно делится и на их произведение — на 6 (так как 2 и 3 не имеют общих множителей, кроме 1).\nЗначит, n³−n = n(n−1)(n+1) всегда делится на 6.\nОтвет: доказано.',
+   solutionEn:'Factor it: n³−n = n(n²−1) = n(n−1)(n+1).\nThat\'s a product of three CONSECUTIVE natural numbers: (n−1), n, (n+1).\nAmong any two consecutive numbers, one is always even — so the product is divisible by 2.\nAmong any three consecutive numbers, one is always divisible by 3 — so the product is divisible by 3.\nIf a number is divisible by both 2 and 3, it\'s divisible by their product, 6 (since 2 and 3 share no common factor besides 1).\nSo n³−n = n(n−1)(n+1) is always divisible by 6.\nAnswer: proven.'}
  ]
 };
 function olyTitle(p){ return TL(p.title,p.titleEn); }
