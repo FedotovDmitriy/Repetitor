@@ -25827,12 +25827,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.73.0';
+var APP_VERSION = '2.74.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.73.0",
+ "current": "2.74.0",
  "versions": [
+  {
+   "v": "2.74.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 6 класс (4 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 6 (4 of 7 remaining grades)",
+   "items": [
+    "Продолжение распространения олимпиадного трека на все классы — четвёртая из семи версий, класс 6.",
+    "6 новых оригинальных задач для 6 класса (var OLYMPIAD[6], сложность 1–3 звезды): «Какое число дальше?» (закономерность с отрицательными числами), «Сок и вода» (смешивание в отношении 2:3), «Три чётных числа подряд» (сумма через деление на 3), «Четвёртая вершина» (координатная плоскость, прямоугольник), «Часы» (классическая задача про стрелки — 16 4/11 минуты), «Флаг из трёх полос» (комбинаторика с ограничением: соседние полосы разного цвета — 4·3·3=36).",
+    "Проверено: `node --check`; jsdom-тест структуры (10 полей, звёзды 1–3 в распределении 1/2/2/2/3/3, уникальность `id` среди классов 2, 3, 4, 5, 6); jsdom-тест `olyCardHTML()` и `viewOlympiad()` для классов 6 и 7; визуальная Playwright-проверка реальным кликом."
+   ],
+   "itemsEn": [
+    "Continuing the olympiad-track rollout to every grade — the fourth of seven versions, Grade 6.",
+    "6 new original problems for Grade 6 (var OLYMPIAD[6], difficulty 1–3 stars): “What number comes next?” (a pattern with negative numbers), “Juice and water” (mixing in a 2:3 ratio), “Three even numbers in a row” (a sum found via division by 3), “The fourth vertex” (coordinate plane, a rectangle), “The clock hands” (the classic catch-up puzzle — 16 4/11 minutes), and “A three-stripe flag” (constrained combinatorics: adjacent stripes must differ — 4·3·3=36).",
+    "Verified: `node --check`; a jsdom structural test (10 fields, stars 1–3 in the 1/2/2/2/3/3 distribution, unique `id`s across grades 2, 3, 4, 5, 6); a jsdom test of `olyCardHTML()` and `viewOlympiad()` for grades 6 and 7; a visual Playwright check using a real click."
+   ]
+  },
   {
    "v": "2.73.0",
    "date": "2026-11-27",
@@ -27270,19 +27286,19 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Олимпиада распространяется на все классы (4 из 8 готово); монетизация ждёт шагов Дмитрия",
-  "titleEn": "The olympiad track is rolling out to every grade (4 of 8 done); monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (5 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (5 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс). Осталось 3 класса: 6, 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс; 2.74.0 — добавлен 6 класс). Осталось 3 класса: 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4). 3 grades remain: 6, 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4; 2.74.0 — added Grade 6). 3 grades remain: 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
@@ -29187,6 +29203,62 @@ var OLYMPIAD = {
    hintEn:'First find all the triples of different digits that add up to 6 — there are only a few. Then, for each triple, separately count how many three-digit numbers it can make, remembering that a number can’t start with zero.',
    solution:'Различные цифры от 0 до 9 с суммой 6 — всего три такие тройки: {0,1,5}, {0,2,4}, {1,2,3}.\nДля троек с нулём: всего перестановок 3!=6, но 2 из них начинаются с нуля — подходят 6−2=4 числа из каждой такой тройки.\nДля тройки {1,2,3} (без нуля) подходят все 6 перестановок.\nИтого: 4+4+6=14 чисел.',
    solutionEn:'The distinct digits from 0–9 that add up to 6 form exactly three triples: {0,1,5}, {0,2,4}, {1,2,3}.\nFor a triple containing 0: there are 3!=6 permutations in total, but 2 of them start with 0 — so 6−2=4 valid numbers come from each such triple.\nFor the triple {1,2,3} (no zero), all 6 permutations are valid.\nTotal: 4+4+6=14 numbers.'}
+ ],
+ 6: [
+  {id:'g6-negative-sequence', stars:1,
+   title:'Какое число дальше?',
+   titleEn:'What number comes next?',
+   statement:'Найди следующее число в последовательности и объясни правило:\n20, 14, 8, 2, −4, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n20, 14, 8, 2, −4, …?',
+   hint:'Посмотри, на сколько каждое следующее число отличается от предыдущего — это число одинаковое для каждой пары соседей, просто теперь оно отрицательное.',
+   hintEn:'Look at how much each next number differs from the one before it — that difference is the same for every pair of neighbors, it\'s just negative this time.',
+   solution:'Каждое следующее число на 6 меньше предыдущего: 20−6=14, 14−6=8, 8−6=2, 2−6=−4. Значит, следующее число: −4−6=−10.\nОтвет: −10.',
+   solutionEn:'Each next number is 6 less than the one before it: 20−6=14, 14−6=8, 8−6=2, 2−6=−4. So the next number is −4−6=−10.\nAnswer: −10.'},
+  {id:'g6-juice-water-ratio', stars:2,
+   title:'Сок и вода',
+   titleEn:'Juice and water',
+   statement:'В сосуде смешали сок и воду в отношении 2:3 (на каждые 2 части сока приходится 3 части воды). Всего получилось 20 литров смеси. Сколько литров сока и сколько литров воды в этой смеси?',
+   statementEn:'Juice and water were mixed in a ratio of 2:3 (for every 2 parts juice there are 3 parts water), making 20 liters of mixture in total. How many liters of juice and how many liters of water are in this mixture?',
+   hint:'Всего частей в отношении 2:3 — это 2+3=5 частей. Раздели общий объём на число частей, чтобы узнать, сколько литров в одной части.',
+   hintEn:'The total number of parts in the ratio 2:3 is 2+3=5. Divide the total volume by the number of parts to find how many liters are in one part.',
+   solution:'Всего частей: 2+3=5. Одна часть равна 20:5=4 литра.\nСока — 2 части: 2·4=8 литров.\nВоды — 3 части: 3·4=12 литров.\nПроверка: 8+12=20 ✓.',
+   solutionEn:'Total parts: 2+3=5. One part equals 20÷5=4 liters.\nJuice is 2 parts: 2·4=8 liters.\nWater is 3 parts: 3·4=12 liters.\nCheck: 8+12=20 ✓.'},
+  {id:'g6-consecutive-even', stars:2,
+   title:'Три чётных числа подряд',
+   titleEn:'Three even numbers in a row',
+   statement:'Сумма трёх последовательных чётных чисел равна 90 (например, 24, 26, 28 — последовательные чётные числа, потому что каждое следующее на 2 больше предыдущего). Какие это числа?',
+   statementEn:'Three consecutive even numbers (like 24, 26, 28 — each one 2 more than the last) add up to 90. What are the numbers?',
+   hint:'Раздели 90 на 3, чтобы найти среднее из трёх чисел — а дальше вычти и прибавь 2.',
+   hintEn:'Divide 90 by 3 to find the middle of the three numbers — then subtract and add 2.',
+   solution:'90:3=30 — это среднее число. Тогда первое на 2 меньше, а третье на 2 больше: 28, 30, 32.\nПроверка: 28+30+32=90 ✓.',
+   solutionEn:'90÷3=30 — that\'s the middle number. Then the first is 2 less and the third is 2 more: 28, 30, 32.\nCheck: 28+30+32=90 ✓.'},
+  {id:'g6-rectangle-vertex', stars:2,
+   title:'Четвёртая вершина',
+   titleEn:'The fourth vertex',
+   statement:'На координатной плоскости отмечены три вершины прямоугольника: (1,2), (1,5) и (6,5). Найди координаты четвёртой вершины этого прямоугольника.',
+   statementEn:'On the coordinate plane, three vertices of a rectangle are marked: (1,2), (1,5), and (6,5). Find the coordinates of the rectangle\'s fourth vertex.',
+   hint:'У прямоугольника противоположные стороны равны и параллельны осям (если стороны идут вдоль осей). Сравни координаты x и y у уже известных трёх вершин — какие из них должны повторяться у четвёртой?',
+   hintEn:'A rectangle\'s opposite sides are equal and (here) run parallel to the axes. Compare the x- and y-coordinates of the three known vertices — which ones must repeat at the fourth vertex?',
+   solution:'Вершины (1,2) и (1,5) имеют одинаковую координату x=1 — значит, это левая сторона прямоугольника (вертикальная). Вершины (1,5) и (6,5) имеют одинаковую координату y=5 — это верхняя сторона (горизонтальная).\nЧетвёртая вершина должна иметь x от вершины (6,5) (то есть x=6) и y от вершины (1,2) (то есть y=2) — она «закрывает» прямоугольник напротив (1,5).\nОтвет: (6,2).',
+   solutionEn:'The vertices (1,2) and (1,5) share the x-coordinate x=1 — that\'s the (vertical) left side. The vertices (1,5) and (6,5) share the y-coordinate y=5 — that\'s the (horizontal) top side.\nThe fourth vertex must take the x from (6,5) (so x=6) and the y from (1,2) (so y=2) — it\'s the corner opposite (1,5), closing the rectangle.\nAnswer: (6,2).'},
+  {id:'g6-clock-hands', stars:3,
+   title:'Часы',
+   titleEn:'The clock hands',
+   statement:'Сейчас ровно 3 часа дня. Через сколько минут минутная стрелка впервые поравняется с часовой (то есть они окажутся в одном и том же месте на циферблате)?',
+   statementEn:'It\'s exactly 3:00. In how many minutes will the minute hand first catch up with the hour hand (that is, land on exactly the same spot on the clock face)?',
+   hint:'Минутная стрелка проходит 6° в минуту, часовая — 0,5° в минуту (360° за 12 часов = 30° в час = 0,5° в минуту). В 3:00 часовая стрелка уже на 90° впереди. На сколько градусов в минуту минутная стрелка сокращает это отставание?',
+   hintEn:'The minute hand moves 6° per minute; the hour hand moves 0.5° per minute (360° in 12 hours = 30° per hour = 0.5° per minute). At 3:00 the hour hand already has a 90° head start. By how many degrees per minute does the minute hand close that gap?',
+   solution:'Минутная стрелка движется быстрее часовой на 6−0,5=5,5° в минуту. В 3:00 часовая стрелка опережает минутную на 90° (три деления по 30°). Чтобы догнать, минутной нужно наверстать эти 90°, двигаясь быстрее на 5,5° в минуту: время=90:5,5=90:(11/2)=180/11=16 4/11 минуты.\nОтвет: 16 4/11 минуты (это примерно 16 минут 22 секунды).',
+   solutionEn:'The minute hand gains on the hour hand at 6−0.5=5.5° per minute. At 3:00 the hour hand is 90° ahead (three 30° marks). To catch up, the minute hand must close that 90° gap at 5.5° per minute: time=90÷5.5=90÷(11/2)=180/11=16 4/11 minutes.\nAnswer: 16 4/11 minutes (about 16 minutes 22 seconds).'},
+  {id:'g6-flag-coloring', stars:3,
+   title:'Флаг из трёх полос',
+   titleEn:'A three-stripe flag',
+   statement:'Флаг состоит из трёх одинаковых по размеру горизонтальных полос. В наличии 4 краски. Сколькими способами можно раскрасить флаг, если соседние полосы обязательно должны быть разного цвета (а верхняя и нижняя полосы, которые не соседствуют друг с другом, могут быть одинакового цвета)?',
+   statementEn:'A flag has three horizontal stripes of equal size. There are 4 colors available. In how many ways can the flag be colored if neighboring stripes must be different colors (the top and bottom stripes, which aren\'t neighbors, are allowed to match)?',
+   hint:'Раскрашивай полосы по очереди — сначала верхнюю (сколько вариантов?), потом среднюю (она должна отличаться от верхней), потом нижнюю (она должна отличаться только от средней — про верхнюю забудь, они не соседи).',
+   hintEn:'Color the stripes one at a time — first the top one (how many choices?), then the middle one (must differ from the top), then the bottom one (it only needs to differ from the middle — forget about the top, they\'re not neighbors).',
+   solution:'Верхняя полоса — любая из 4 красок: 4 варианта.\nСредняя полоса должна отличаться от верхней — остаётся 3 варианта.\nНижняя полоса должна отличаться только от средней (с верхней она не соседствует, может совпадать) — тоже 3 варианта.\nВсего способов: 4·3·3=36.',
+   solutionEn:'The top stripe can be any of the 4 colors: 4 choices.\nThe middle stripe must differ from the top — 3 choices left.\nThe bottom stripe only needs to differ from the middle (it isn\'t adjacent to the top, so it may match it) — also 3 choices.\nTotal ways: 4·3·3=36.'}
  ]
 };
 function olyTitle(p){ return TL(p.title,p.titleEn); }
