@@ -25827,12 +25827,32 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.70.0';
+var APP_VERSION = '2.71.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.70.0",
+ "current": "2.71.0",
  "versions": [
+  {
+   "v": "2.71.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 2 класс (1 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 2 (1 of 7 remaining grades)",
+   "items": [
+    "После фикса версии 2.70.0 (раздел «Олимпиада» наконец открывается по клику) пользователь решил: вместо того чтобы ждать отзыва по пилоту 5 класса, сразу распространить раздел на все оставшиеся классы (2, 3, 4, 6, 7, 8, 9) — по 6 оригинальных двуязычных задач на класс, несколькими версиями подряд. **Эта версия — первая из семи, класс 2.**",
+    "6 новых задач для 2 класса (var OLYMPIAD[2], сложность 1–3 звезды, подобраны по уровню: простые закономерности, перебор и элементарная комбинаторика, без алгебры с буквами): «Что дальше?» (числовая закономерность, шаг +3), «Утки и кролики» (классическая задача на головы и ноги, решается перебором/заменой, без уравнений), «Какой мешочек тяжелее?» (взвешивание за один раз — облегчённый вариант темы, которая в 5 классе усложняется до «Фальшивой монеты» за два взвешивания), «Сколько есть способов?» (систематический перебор монет по 1 и 2 рубля), «Фрукт и питомец» (логическая таблица на 4 подсказках, 3 мальчика), «Двузначные числа из трёх цифр» (комбинаторика перебором: 3·2=6 чисел). Формат карточек тот же, что в пилоте — условие, скрываемые подсказка и решение (`<details>`/`<summary>`).",
+    "**Убрана жёсткая привязка к одному «пилотному» классу**: переменная `OLYMPIAD_PILOT_GRADE` (сравнение `grade!==OLYMPIAD_PILOT_GRADE`) снята из `viewOlympiad()` — теперь гейт проверяет только наличие `OLYMPIAD[grade]`, что и позволяет нескольким классам сосуществовать без дальнейших правок кода на каждую новую версию. Заглушка «скоро» для класса без задач переписана — раньше она лгала «пока задачи есть только для 5 класса» даже после того, как у второго класса появились свои задачи; теперь она честно перечисляет те классы, для которых задачи уже есть (`olympiadGrades()`).",
+    "**Карточка «Олимпиадный трек» на главной странице тоже была захардкожена** — подпись «пилот — 5 класс» показывалась всем детям всех классов одинаково, независимо от реального состояния раздела. Заменена на новую функцию `olympiadSubtitle()`: при одном классе с задачами по-прежнему пишет «пилот — N класс», при нескольких — «классы: …», а когда задачи появятся во всех 8 классах — «для всех классов, 2–9».",
+    "Проверено: `node --check`; jsdom-тест структуры (все 6 новых задач имеют все 10 обязательных полей, звёзды 1–3, нет кириллицы в английских полях и наоборот, уникальность `id` по всему `OLYMPIAD`); jsdom-тест `olyCardHTML()` для каждой задачи (рендерится без исключений, нет артефакта `undefined`); jsdom-тест `viewOlympiad()` — для ребёнка 2 класса показывает все 6 карточек, для ребёнка 3 класса показывает новую заглушку с упоминанием классов «2, 5» (класс 3 действительно ещё не готов); то же самое в английском режиме — без остаточной кириллицы; визуальная Playwright-проверка реальным кликом: открытие раздела из навигации, раскрытие подсказки/решения кликом по `<summary>`, карточка на главной странице — всё в русском/английском и светлом/тёмном оформлении."
+   ],
+   "itemsEn": [
+    "After the 2.70.0 fix (the “Olympiad” section finally opens on click), the user decided: instead of waiting for feedback on the Grade 5 pilot, extend the section to all 7 remaining grades (2, 3, 4, 6, 7, 8, 9) right away — 6 original bilingual problems per grade, across several versions in a row. **This version is the first of seven, Grade 2.**",
+    "6 new problems for Grade 2 (var OLYMPIAD[2], difficulty 1–3 stars, matched to the grade level: simple patterns, enumeration, and elementary combinatorics, with no letter-based algebra): “What comes next?” (a numeric pattern, step +3), “Ducks and rabbits” (the classic heads-and-legs puzzle, solved by trial/substitution rather than equations), “Which bag is heavier?” (a one-weighing balance puzzle — a lighter version of the theme that grows into Grade 5's two-weighing “The fake coin”), “How many ways are there?” (systematically counting ways to pay with 1- and 2-ruble coins), “Fruit and pet” (a 4-clue logic grid with 3 boys), and “Two-digit numbers from three digits” (combinatorics by enumeration: 3·2=6 numbers). The card format matches the pilot — a statement plus a collapsible hint and solution (`<details>`/`<summary>`).",
+    "**The hardcoded tie to a single “pilot” grade was removed**: the `OLYMPIAD_PILOT_GRADE` variable (the `grade!==OLYMPIAD_PILOT_GRADE` check) is gone from `viewOlympiad()` — the gate now only checks whether `OLYMPIAD[grade]` exists, which lets several grades coexist with no further code changes needed per new version. The “coming soon” placeholder for a grade with no problems yet has been rewritten — it used to falsely claim “there are only problems for Grade 5 so far” even after a second grade got its own problems; it now honestly lists whichever grades already have problems (`olympiadGrades()`).",
+    "**The “Olympiad track” card on the home page was hardcoded too** — the “pilot — grade 5” subtitle was shown identically to every child in every grade, regardless of the section's actual state. Replaced with a new `olympiadSubtitle()` function: with one grade covered it still says “pilot — grade N”; with several, “grades: …”; and once all 8 grades have problems, “for every grade, 2–9”.",
+    "Verified: `node --check`; a jsdom structural test (all 6 new problems have all 10 required fields, stars 1–3, no Cyrillic in the English fields and vice versa, unique `id`s across the whole `OLYMPIAD` object); a jsdom test of `olyCardHTML()` for each problem (renders without throwing, no literal `undefined` artifact); a jsdom test of `viewOlympiad()` — a Grade 2 child sees all 6 cards, a Grade 3 child sees the new placeholder mentioning grades “2, 5” (Grade 3 genuinely isn't ready yet); the same in English mode, with no leftover Cyrillic; a visual Playwright check using real clicks: opening the section from the navigation, expanding a hint/solution by clicking `<summary>`, and the home-page card — all in Russian/English and light/dark themes."
+   ]
+  },
   {
    "v": "2.70.0",
    "date": "2026-11-26",
@@ -27218,20 +27238,20 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Учебник Петерсона (4 класс) полностью сверен; олимпиада ждёт отзыва; монетизация ждёт шагов Дмитрия",
-  "titleEn": "Peterson textbook (Grade 4) check fully complete; olympiad awaits feedback; monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (2 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (2 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты (2.66.0 — неравенства, 2.67.0 — смешанные числа и проценты, 2.68.0 — диаграммы, 2.69.0 — транспортир, площадь прямоугольного треугольника с палеткой и деление на трёхзначное число). Следующих запланированных пробелов по этому учебнику нет.",
-   "Олимпиадный трек (2.65.0) — пилот на 5 классе, 6 задач. Версия 2.70.0 исправила критический баг: раздел был недоступен по клику с самого момента создания (кнопка навигации не была подключена к обработчику переходов) — теперь открывается нормально. Дальше: собрать отзыв (понятны ли подсказки, подходит ли сложность, стоит ли расширять), и по его итогам — либо добавить ещё задач 5 классу, либо распространить на другие классы. Структура данных (var OLYMPIAD) готова принять задачи из внешнего сборника, если он найдётся, без переделки кода.",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс). Пользователь решил не ждать отзыва, а сразу распространить раздел на оставшиеся классы — 3, 4, 6, 7, 8, 9, по 6 задач на класс, несколькими версиями подряд. Структура данных (var OLYMPIAD) принимает любой класс без переделки гейта.",
+   "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed (2.66.0 — inequalities, 2.67.0 — mixed numbers and percent, 2.68.0 — charts, 2.69.0 — the protractor, right-triangle area with grid-counting, and division by a three-digit number). No further gaps are planned for this textbook.",
-   "The olympiad track (2.65.0) — a Grade 5 pilot with 6 problems. Version 2.70.0 fixed a critical bug: the section had been unreachable by clicking ever since it was built (its navigation button was never wired to the routing handler) — it now opens correctly. Next: gather feedback (are the hints clear, is the difficulty right, is it worth expanding), and based on that either add more problems for Grade 5 or roll it out to other grades. The data structure (var OLYMPIAD) is ready to take problems from an outside collection, if one turns up, with no code changes needed.",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2). The user decided not to wait for feedback and instead extend the section to the remaining grades right away — 3, 4, 6, 7, 8, 9, 6 problems per grade, across several versions in a row. The data structure (var OLYMPIAD) accepts any grade with no change to the gating logic.",
+   "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
    "A redesign of the site's look, font, and background, with a designer's input (requested 2026-10-06)."
@@ -28899,16 +28919,75 @@ function viewCheatsheet(){
     +'</div>';
 }
 
-/* в. 2.65.0 — Олимпиадный трек (пилот). Решение пользователя: отдельный независимый
-   раздел, НЕ привязан к прогрессу по темам/диагностике — доступен из навигации в любой
-   момент, ребёнок сам выбирает, когда туда зайти. Контент — одновременно и собственные
-   задачи Claude (ниже), и задел на подключение внешнего сборника позже: структура
-   OLYMPIAD не зависит от CONTENT/TOPICS и может принимать задачи из любого источника,
-   лишь бы они были в этом же формате {id,title,titleEn,statement,statementEn,hint,
-   hintEn,solution,solutionEn,stars}. Пилот — только 5 класс (OLYMPIAD_PILOT_GRADE);
-   остальные классы увидят заглушку «скоро», пока пилот не расширят по отзывам. */
-var OLYMPIAD_PILOT_GRADE = 5;
+/* в. 2.65.0 — Олимпиадный трек (пилот на 5 классе). Решение пользователя: отдельный
+   независимый раздел, НЕ привязан к прогрессу по темам/диагностике — доступен из
+   навигации в любой момент, ребёнок сам выбирает, когда туда зайти. Контент — одновременно
+   и собственные задачи Claude (ниже), и задел на подключение внешнего сборника позже:
+   структура OLYMPIAD не зависит от CONTENT/TOPICS и может принимать задачи из любого
+   источника, лишь бы они были в этом же формате {id,title,titleEn,statement,statementEn,
+   hint,hintEn,solution,solutionEn,stars}. Класс без ключа в OLYMPIAD[grade] видит заглушку
+   «скоро» (см. viewOlympiad()).
+   в. 2.71.0+ — по отзыву о пилоте пользователь решил распространить раздел на все
+   оставшиеся классы (2,3,4,6,7,8,9), по 6 задач на класс, несколькими версиями подряд.
+   Жёсткая привязка к одному «пилотному» классу (var OLYMPIAD_PILOT_GRADE) снята —
+   гейт в viewOlympiad() теперь проверяет только наличие OLYMPIAD[grade]. */
 var OLYMPIAD = {
+ 2: [
+  {id:'g2-sequence', stars:1,
+   title:'Что дальше?',
+   titleEn:'What comes next?',
+   statement:'Найди следующее число в ряду и объясни правило:\n2, 5, 8, 11, 14, …?',
+   statementEn:'Find the next number in the row and explain the rule:\n2, 5, 8, 11, 14, …?',
+   hint:'Посмотри, на сколько каждое следующее число больше предыдущего. Это число одно и то же каждый раз?',
+   hintEn:'Look at how much bigger each next number is than the one before it. Is that amount the same every time?',
+   solution:'Каждое следующее число на 3 больше предыдущего: 5−2=3, 8−5=3, 11−8=3, 14−11=3. Значит, следующее число — 14+3=17.\nОтвет: 17.',
+   solutionEn:'Each next number is 3 more than the one before it: 5−2=3, 8−5=3, 11−8=3, 14−11=3. So the next number is 14+3=17.\nAnswer: 17.'},
+  {id:'g2-ducks-rabbits', stars:2,
+   title:'Утки и кролики',
+   titleEn:'Ducks and rabbits',
+   statement:'Во дворе гуляют утки и кролики — вместе 5 голов и 14 ног. У утки 2 ноги, у кролика 4 ноги. Сколько во дворе уток и сколько кроликов?',
+   statementEn:'Ducks and rabbits are out in the yard — together they have 5 heads and 14 legs. A duck has 2 legs, a rabbit has 4 legs. How many ducks and how many rabbits are there?',
+   hint:'Представь сначала, что все 5 — утки. Сколько тогда было бы ног? На сколько ног не хватает до 14? Что происходит с числом ног, если одну утку «превратить» в кролика?',
+   hintEn:'First imagine all 5 of them are ducks. How many legs would that be? How many legs short of 14 is that? What happens to the leg count if you “turn” one duck into a rabbit?',
+   solution:'Если бы все 5 были утками, ног было бы 5·2=10 — не хватает 14−10=4 ноги. Каждая замена одной утки на кролика добавляет 4−2=2 ноги. Чтобы добавить 4 ноги, нужно заменить 4:2=2 утки на кроликов.\nЗначит, кроликов — 2, уток — 5−2=3. Проверка: 3 утки (6 ног) + 2 кролика (8 ног) = 14 ног, голов 3+2=5. Подходит!',
+   solutionEn:'If all 5 were ducks, there’d be 5·2=10 legs — that’s 14−10=4 legs short. Swapping one duck for a rabbit adds 4−2=2 legs. To add 4 legs, you need to swap 4:2=2 ducks for rabbits.\nSo there are 2 rabbits and 5−2=3 ducks. Check: 3 ducks (6 legs) + 2 rabbits (8 legs) = 14 legs, and 3+2=5 heads. It works!'},
+  {id:'g2-heavier-bag', stars:1,
+   title:'Какой мешочек тяжелее?',
+   titleEn:'Which bag is heavier?',
+   statement:'Есть 3 одинаковых на вид мешочка с монетами. В двух из них монеты весят поровну, а в третьем — чуть тяжелее. Есть чашечные весы без гирь — они только показывают, какая чаша тяжелее, или что чаши равны. Как за ОДНО взвешивание найти тяжёлый мешочек?',
+   statementEn:'There are 3 identical-looking bags of coins. Two of them weigh the same, and the third is a bit heavier. You have a balance scale with no weights — it only shows which side is heavier, or that the two sides are equal. How can you find the heavy bag in just ONE weighing?',
+   hint:'Положи на весы любые два мешочка, а третий оставь в стороне. Подумай, что значит каждый из двух возможных результатов.',
+   hintEn:'Put any two of the bags on the scale and set the third one aside. Think about what each of the two possible results would mean.',
+   solution:'Кладём на весы любые два мешочка, третий оставляем в стороне. Если чаши уравновесились — оба мешочка на весах одинаковые, а тяжёлый — тот, что отложен в сторону. Если одна чаша перевесила — тяжёлый мешочек на ней.\nВ любом случае одного взвешивания достаточно.',
+   solutionEn:'Put any two bags on the scale and set the third one aside. If the two sides balance, the two bags on the scale are the equal ones, and the heavy bag is the one set aside. If one side is heavier, the heavy bag is on that side.\nEither way, one weighing is enough.'},
+  {id:'g2-coin-ways', stars:2,
+   title:'Сколько есть способов?',
+   titleEn:'How many ways are there?',
+   statement:'Есть монеты по 1 рублю и по 2 рубля (тех и других сколько угодно). Сколькими способами можно набрать ровно 5 рублей?',
+   statementEn:'You have 1-ruble coins and 2-ruble coins (as many of each as you like). In how many ways can you make exactly 5 rubles?',
+   hint:'Попробуй по очереди: сначала совсем без монет по 2 рубля, потом с одной такой монетой, потом с двумя — и каждый раз досчитай монетами по 1 рублю. Сколько монет по 2 рубля можно взять, чтобы ещё осталось место для монет по 1 рублю?',
+   hintEn:'Try it one case at a time: first with no 2-ruble coins at all, then with one, then with two — each time finishing with 1-ruble coins. How many 2-ruble coins can you use and still have room left for 1-ruble coins?',
+   solution:'Монет по 2 рубля может быть 0, 1 или 2 (три таких монеты — уже 6 рублей, это больше 5).\n0 монет по 2 рубля → нужно 5 монет по 1 рублю.\n1 монета по 2 рубля (2 рубля) → нужно ещё 3 рубля, то есть 3 монеты по 1 рублю.\n2 монеты по 2 рубля (4 рубля) → нужно ещё 1 рубль, то есть 1 монета по 1 рублю.\nВсего получилось 3 способа.',
+   solutionEn:'There can be 0, 1, or 2 two-ruble coins (three of them would already be 6 rubles, more than 5).\n0 two-ruble coins → need 5 one-ruble coins.\n1 two-ruble coin (2 rubles) → need 3 more rubles, so 3 one-ruble coins.\n2 two-ruble coins (4 rubles) → need 1 more ruble, so 1 one-ruble coin.\nThat makes 3 ways in total.'},
+  {id:'g2-fruit-pet', stars:3,
+   title:'Фрукт и питомец',
+   titleEn:'Fruit and pet',
+   statement:'У трёх мальчиков — Васи, Пети и Серёжи — есть любимый фрукт (яблоко, груша или слива) и домашнее животное (хомяк, черепаха или попугайчик). Известно:\n1) Вася любит грушу.\n2) Мальчик с хомяком любит яблоко.\n3) У Серёжи нет хомяка.\n4) Мальчик с попугайчиком не любит сливу.\nОпредели фрукт и животное каждого мальчика.',
+   statementEn:'Three boys — Vasya, Petya, and Seryozha — each have a favorite fruit (apple, pear, or plum) and a pet (a hamster, a turtle, or a parakeet). Here’s what we know:\n1) Vasya likes pears.\n2) The boy with the hamster likes apples.\n3) Seryozha doesn’t have the hamster.\n4) The boy with the parakeet doesn’t like plums.\nWork out each boy’s fruit and pet.',
+   hint:'Начни с подсказки 1 — она сразу называет фрукт одного мальчика напрямую. Потом подумай, может ли этот мальчик быть тем самым любителем хомяка и яблока из подсказки 2.',
+   hintEn:'Start with clue 1 — it names one boy’s fruit directly. Then think about whether that same boy could be the apple-and-hamster boy from clue 2.',
+   solution:'Из подсказки 1: Вася любит грушу. Из подсказки 3 хомяк не у Серёжи, значит хомяк — у Васи или у Пети. Но хозяин хомяка любит яблоко (подсказка 2), а Вася любит грушу, не яблоко — значит хомяк не у Васи. Хомяк — у Пети, и Петя любит яблоко.\nОставшийся фрукт — слива — достаётся Серёже.\nОстались два животных — черепаха и попугайчик — для Васи и Серёжи. Из подсказки 4 у попугайчика — мальчик, который не любит сливу; Серёжа любит сливу, значит попугайчик не у Серёжи, а у Васи. Тогда черепаха — у Серёжи.\nИтог: Вася — груша, попугайчик; Петя — яблоко, хомяк; Серёжа — слива, черепаха.',
+   solutionEn:'From clue 1: Vasya likes pears. From clue 3, the hamster isn’t Seryozha’s, so it belongs to Vasya or Petya. But the hamster owner likes apples (clue 2), and Vasya likes pears, not apples — so the hamster isn’t Vasya’s either. The hamster is Petya’s, and Petya likes apples.\nThe fruit that’s left — plum — goes to Seryozha.\nTwo pets are left — a turtle and a parakeet — for Vasya and Seryozha. From clue 4, the parakeet owner doesn’t like plums; Seryozha likes plums, so the parakeet isn’t Seryozha’s — it’s Vasya’s. That leaves the turtle for Seryozha.\nFinal answer: Vasya — pear, parakeet; Petya — apple, hamster; Seryozha — plum, turtle.'},
+  {id:'g2-two-digit', stars:2,
+   title:'Двузначные числа из трёх цифр',
+   titleEn:'Two-digit numbers from three digits',
+   statement:'Есть три карточки с цифрами 2, 5 и 8. Сколько разных двузначных чисел можно составить, если в каждом числе цифры не повторяются?',
+   statementEn:'You have three cards with the digits 2, 5, and 8. How many different two-digit numbers can you make if no digit repeats within a number?',
+   hint:'Выбери, какая цифра будет первой — вариантов для первой цифры 3. Для каждой первой цифры посчитай, сколько карточек осталось для второй.',
+   hintEn:'Choose which digit goes first — there are 3 choices for the first digit. For each choice of first digit, count how many cards are left for the second.',
+   solution:'Первой цифрой может быть любая из трёх карточек — 3 варианта. Для каждой первой цифры на вторую карточку остаётся 2 варианта (любая из двух оставшихся). Значит, всего чисел 3·2=6.\nВот они все: 25, 28, 52, 58, 82, 85.',
+   solutionEn:'The first digit can be any of the three cards — 3 choices. For each first digit, 2 cards are left for the second digit. So there are 3·2=6 numbers in total.\nHere they all are: 25, 28, 52, 58, 82, 85.'}
+ ],
  5: [
   {id:'sequence-np1', stars:1,
    title:'Какое число дальше?',
@@ -28971,6 +29050,16 @@ function olyStatement(p){ return TL(p.statement,p.statementEn); }
 function olyHint(p){ return TL(p.hint,p.hintEn); }
 function olySolution(p){ return TL(p.solution,p.solutionEn); }
 function olyStars(p){ var n=p.stars||1; return '★★★'.slice(0,n)+'☆☆☆'.slice(0,3-n); }
+/* в. 2.71.0 — список классов, для которых уже есть задачи, и подпись для карточки на
+   главной странице (раньше было захардкожено «пилот — 5 класс», что стало враньём, как
+   только у второго класса появились свои задачи). */
+function olympiadGrades(){ return Object.keys(OLYMPIAD).map(function(g){return +g}).sort(function(a,b){return a-b}); }
+function olympiadSubtitle(){
+  var gs=olympiadGrades();
+  if(gs.length>=8) return TL('для всех классов, 2–9','for every grade, 2–9');
+  if(gs.length===1) return TL('пилот — '+gs[0]+' класс','pilot — grade '+gs[0]);
+  return TL('классы: '+gs.join(', '),'grades: '+gs.join(', '));
+}
 function olyCardHTML(p){
   return '<div class="oly-card"><div class="oly-head"><b>'+esc(olyTitle(p))+'</b><span class="oly-stars" title="'+TL('Сложность','Difficulty')+'">'+olyStars(p)+'</span></div>'
     +'<p class="oly-statement">'+esc(olyStatement(p))+'</p>'
@@ -28983,8 +29072,8 @@ function viewOlympiad(){
   var grade=kid?kid.grade:0;
   var head='<div class="sheet"><h1>'+TL('Олимпиадный трек','Olympiad track')+'</h1>'
     +'<p class="goal">'+TL('Задачи на сообразительность — не из программы класса и не влияют на прогресс по темам. Сюда можно заглянуть в любой момент, когда хочется подумать над чем-то необычным.','Problems that reward quick thinking — not part of the grade’s program and they don’t affect topic progress. Come here any time you feel like puzzling over something unusual.')+'</p>';
-  if(grade!==OLYMPIAD_PILOT_GRADE || !OLYMPIAD[grade]){
-    return head+'<p>'+TL('Пока задачи есть только для 5 класса — это пилотная версия раздела. Для твоего класса они появятся позже, по отзывам о пилоте.','So far there are problems only for Grade 5 — this section is a pilot. More grades will follow later, based on feedback from the pilot.')+'</p>'
+  if(!OLYMPIAD[grade]){
+    return head+'<p>'+TL('Для твоего класса задачи пока готовятся — скоро появятся здесь. Сейчас задачи есть для: '+olympiadGrades().join(', ')+'.','Problems for your grade are still being prepared — they’ll be here soon. Right now there are problems for: '+olympiadGrades().join(', ')+'.')+'</p>'
       +'<div class="cta"><button class="btn primary" data-nav="home">'+TL('К карте','Back to the map')+'</button></div></div>';
   }
   return head+OLYMPIAD[grade].map(olyCardHTML).join('')+'</div>';
@@ -29428,7 +29517,7 @@ function viewHome(){
     +'<div class="tracks" style="margin-top:16px">'
     +gradeSection(8,0,W)+gradeSection(9,0,W)
     +'</div>'
-    +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>'+TL('Олимпиадный трек','Olympiad track')+'</h2><span class="hand">'+TL('пилот — 5 класс','pilot — grade 5')+'</span></div>'
+    +'<section class="sheet" style="margin-top:16px"><div class="track-h"><h2>'+TL('Олимпиадный трек','Olympiad track')+'</h2><span class="hand">'+olympiadSubtitle()+'</span></div>'
     +'<p class="empty" style="margin:0">'+TL('Задачи на сообразительность, логику и нестандартные приёмы — отдельно от программы класса, доступны в любой момент, без привязки к прогрессу по темам.','Problems on wit, logic, and non-standard tricks — separate from the grade’s program, available any time, with no tie to topic progress.')+'</p>'
     +'<div class="cta" style="margin-top:10px"><button class="btn primary" data-nav="olympiad">'+TL('Перейти к задачам','Go to the problems')+'</button></div></section>';
 }
