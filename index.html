@@ -25827,12 +25827,28 @@ function $$(sel,root){return Array.prototype.slice.call((root||document).querySe
 
 /* ======================= ВЕРСИИ, СЕРВЕР, ПОДДЕРЖКА ======================= */
 var SUPPORT_EMAIL = 'fnemoy@gmail.com';
-var APP_VERSION = '2.72.0';
+var APP_VERSION = '2.73.0';
 /* Версия условий использования — та же дата, что TERMS_VERSION на сервере. */
 var TERMS_VERSION = '2026-09-24';
 var CHANGELOG = {
- "current": "2.72.0",
+ "current": "2.73.0",
  "versions": [
+  {
+   "v": "2.73.0",
+   "date": "2026-11-27",
+   "title": "Олимпиадный трек распространён на 4 класс (3 из 7 оставшихся классов)",
+   "titleEn": "The olympiad track extended to Grade 4 (3 of 7 remaining grades)",
+   "items": [
+    "Продолжение распространения олимпиадного трека на все классы — третья из семи версий, класс 4.",
+    "6 новых оригинальных задач для 4 класса (var OLYMPIAD[4], сложность 1–3 звезды): «Квадраты чисел» (закономерность 1,4,9,16,25,…), «Сколько дней покрасят забор?» (обратная пропорциональность через «маляро-дни», без формального понятия пропорции), «Задуманные числа» (произведение и его изменение при увеличении множителя), «Кто сядет у окна?» (перестановки: 3·2·1=6 способов), «Отмерь 4 литра» (классическая задача на переливание — бидоны 5 и 3 литра), «Можно ли сделать все монеты одинаковыми?» (инвариант чётности — доказательство невозможности).",
+    "Проверено: `node --check`; jsdom-тест структуры (10 полей, звёзды 1–3 в распределении 1/2/2/2/3/3, нет кириллицы в английских полях и наоборот, уникальность `id` среди классов 2, 3, 4 и 5); jsdom-тест `olyCardHTML()` и `viewOlympiad()` для классов 4 и 6; визуальная Playwright-проверка реальным кликом."
+   ],
+   "itemsEn": [
+    "Continuing the olympiad-track rollout to every grade — the third of seven versions, Grade 4.",
+    "6 new original problems for Grade 4 (var OLYMPIAD[4], difficulty 1–3 stars): “Square numbers” (the pattern 1,4,9,16,25,…), “How many days to paint the fence?” (inverse proportionality via “painter-days”, without the formal notion of proportion), “The two numbers” (a product and how it changes when one factor grows), “Who sits by the window?” (permutations: 3·2·1=6 ways), “Measure out 4 liters” (the classic water-pouring puzzle with 5- and 3-liter containers), and “Can all the coins end up the same?” (a parity invariant — proving impossibility).",
+    "Verified: `node --check`; a jsdom structural test (10 fields, stars 1–3 in the 1/2/2/2/3/3 distribution, no Cyrillic in English fields and vice versa, unique `id`s across grades 2, 3, 4, and 5); a jsdom test of `olyCardHTML()` and `viewOlympiad()` for grades 4 and 6; a visual Playwright check using a real click."
+   ]
+  },
   {
    "v": "2.72.0",
    "date": "2026-11-27",
@@ -27254,19 +27270,19 @@ var CHANGELOG = {
  ],
  "next": {
   "v": "—",
-  "title": "Олимпиада распространяется на все классы (3 из 8 готово); монетизация ждёт шагов Дмитрия",
-  "titleEn": "The olympiad track is rolling out to every grade (3 of 8 done); monetization awaits Dmitriy's steps",
+  "title": "Олимпиада распространяется на все классы (4 из 8 готово); монетизация ждёт шагов Дмитрия",
+  "titleEn": "The olympiad track is rolling out to every grade (4 of 8 done); monetization awaits Dmitriy's steps",
   "when": "по мере необходимости",
   "whenEn": "as needed",
   "items": [
-   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс). Осталось 4 класса: 4, 6, 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
+   "Олимпиадный трек расширяется на все 8 классов (2.65.0 — пилот на 5 классе; 2.70.0 — исправлен критический баг недоступности раздела; 2.71.0 — добавлен 2 класс; 2.72.0 — добавлен 3 класс; 2.73.0 — добавлен 4 класс). Осталось 3 класса: 6, 7, 8, 9 — по 6 задач на класс, несколькими версиями подряд, без паузы (по явному указанию пользователя).",
    "Сверка с учебником Л. Г. Петерсона, 4 класс, завершена версией 2.69.0: все 7 найденных пробелов закрыты. Следующих запланированных пробелов по этому учебнику нет.",
    "Монетизация (инфраструктура готова версией 2.64.0) упёрлась в шаги САМОГО Дмитрия: Stripe-аккаунт, Product/Price для каждого тарифа, переменные окружения Cloudflare Pages (точный список — в шапке functions/api/[[route]].js). Без этого оплата не заработает на живом сайте — дальше по ней не продвинуться.",
    "Когда цены определены: заполнить их в var PLANS вместо «Цена скоро»; решить число бесплатных тем/заданий для пробного доступа; подключить паywall-проверку families.plan/paid_until на ограничиваемых разделах — ничего из этого НЕ сделано, это следующий шаг после появления цен.",
    "Пересмотр дизайна, шрифта и фона сайта — с участием дизайнера (запрошено 06.10.2026)."
   ],
   "itemsEn": [
-   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3). 4 grades remain: 4, 6, 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
+   "The olympiad track is being rolled out to all 8 grades (2.65.0 — a Grade 5 pilot; 2.70.0 — fixed a critical bug that made the section unreachable; 2.71.0 — added Grade 2; 2.72.0 — added Grade 3; 2.73.0 — added Grade 4). 3 grades remain: 6, 7, 8, 9 — 6 problems per grade, across several versions in a row, with no pause (per the user's explicit instruction).",
    "The check against L. G. Peterson's Grade 4 textbook was completed in version 2.69.0: all 7 gaps found have been closed. No further gaps are planned for this textbook.",
    "Monetization (the infrastructure is ready as of 2.64.0) is stuck on steps that only Dmitriy himself can take: a Stripe account, a Product/Price for each plan, Cloudflare Pages environment variables (the exact list is in the header comment of functions/api/[[route]].js). Payment won't work on the live site without this — there's nowhere further to take it until then.",
    "Once prices are set: fill them into var PLANS instead of “Price coming soon”; decide the number of free topics/tasks for the trial; wire up a paywall check on families.plan/paid_until for the gated sections — none of this is done yet, it's the next step once prices exist.",
@@ -29059,6 +29075,62 @@ var OLYMPIAD = {
    hintEn:'Think about the unluckiest possible case: how many socks could you pull out with no two the same color? How many is that, at most?',
    solution:'В самом неудачном случае сначала вытащатся по одному носку каждого из трёх цветов — это 3 носка, и среди них пары ещё нет. Но следующий, четвёртый носок обязательно будет одного из уже встретившихся цветов — ведь цветов всего три!\nЗначит, 4 носков хватит всегда, а 3 иногда может не хватить. Ответ: 4.',
    solutionEn:'In the unluckiest case, you\'d first pull out one sock of each of the three colors — that\'s 3 socks with no match yet. But the next, fourth sock is guaranteed to repeat one of the colors you\'ve already seen — there are only three colors to choose from!\nSo 4 socks are always enough, while 3 sometimes aren\'t. Answer: 4.'}
+ ],
+ 4: [
+  {id:'g4-squares', stars:1,
+   title:'Квадраты чисел',
+   titleEn:'Square numbers',
+   statement:'Найди следующее число в последовательности и объясни правило:\n1, 4, 9, 16, 25, …?',
+   statementEn:'Find the next number in the sequence and explain the rule:\n1, 4, 9, 16, 25, …?',
+   hint:'Каждое число в этой последовательности — результат умножения какого-то числа само на себя: 1=1·1, 4=2·2, 9=3·3… Какое число нужно умножить само на себя, чтобы получить следующее по порядку?',
+   hintEn:'Each number in this sequence comes from multiplying some number by itself: 1=1·1, 4=2·2, 9=3·3… Which number, multiplied by itself, gives the next one in line?',
+   solution:'Числа получаются умножением числа само на себя: 1=1·1, 4=2·2, 9=3·3, 16=4·4, 25=5·5. Следующее число: 6·6=36.\nОтвет: 36.',
+   solutionEn:'The numbers come from multiplying a number by itself: 1=1·1, 4=2·2, 9=3·3, 16=4·4, 25=5·5. The next number is 6·6=36.\nAnswer: 36.'},
+  {id:'g4-painters', stars:2,
+   title:'Сколько дней покрасят забор?',
+   titleEn:'How many days to paint the fence?',
+   statement:'Бригада из 3 маляров красит забор за 8 дней, если все работают одинаково быстро. За сколько дней покрасят точно такой же забор 4 маляра (тоже работая одинаково быстро)?',
+   statementEn:'A crew of 3 painters, all working at the same speed, paints a fence in 8 days. How many days would it take 4 painters (also all working at the same speed) to paint an identical fence?',
+   hint:'Посчитай сначала, сколько всего «маляро-дней» работы требует этот забор — то есть сколько дней потребовалось бы одному-единственному маляру, если бы он красил всё один.',
+   hintEn:'First work out the total amount of \'painter-days\' of work the fence requires — that is, how many days it would take a single painter working alone.',
+   solution:'Если 3 маляра красят забор за 8 дней, всего работы — 3·8=24 «маляро-дня» (столько дней потребовалось бы одному маляру одному). Если маляров стало 4, им нужно 24:4=6 дней, чтобы выполнить тот же объём работы.\nОтвет: 6 дней.',
+   solutionEn:'If 3 painters finish the fence in 8 days, the total work is 3·8=24 \'painter-days\' (that\'s how long one single painter would need working alone). With 4 painters, they need 24÷4=6 days to do the same amount of work.\nAnswer: 6 days.'},
+  {id:'g4-product-increase', stars:2,
+   title:'Задуманные числа',
+   titleEn:'The two numbers',
+   statement:'Произведение двух чисел равно 100. Если первое число увеличить на 5 (а второе оставить прежним), произведение станет равно 200. Какие это два числа?',
+   statementEn:'The product of two numbers is 100. If the first number is increased by 5 (keeping the second the same), the product becomes 200. What are the two numbers?',
+   hint:'Увеличение первого числа на 5 добавляет к произведению ровно 5 «копий» второго числа. На сколько выросло произведение? Раздели эту разницу на 5.',
+   hintEn:'Increasing the first number by 5 adds exactly 5 extra \'copies\' of the second number to the product. By how much did the product grow? Divide that difference by 5.',
+   solution:'Произведение выросло со 100 до 200, то есть на 100. Этот рост — ровно 5 «копий» второго числа (потому что первое число увеличилось на 5). Значит, второе число: 100:5=20.\nПервое число тогда: 100:20=5.\nПроверка: 5·20=100 ✓, (5+5)·20=10·20=200 ✓.',
+   solutionEn:'The product grew from 100 to 200 — an increase of 100. That increase equals exactly 5 extra \'copies\' of the second number (since the first number grew by 5). So the second number is 100÷5=20.\nThe first number is then 100÷20=5.\nCheck: 5·20=100 ✓, and (5+5)·20=10·20=200 ✓.'},
+  {id:'g4-window-seat', stars:2,
+   title:'Кто сядет у окна?',
+   titleEn:'Who sits by the window?',
+   statement:'Четверо друзей едут в автобусе и садятся на 4 места в ряд. Петя обязательно хочет сидеть на крайнем месте у окна — есть только одно такое место в этом ряду. Сколькими способами друзья могут рассесться по местам, если место Пети уже известно?',
+   statementEn:'Four friends are riding the bus and sit down in a row of 4 seats. Petya insists on the one window seat at the end of the row — there\'s only one such seat in this row. In how many ways can the friends take their seats, given that Petya\'s seat is already fixed?',
+   hint:'Раз место Пети уже решено, остаётся рассадить троих друзей на три оставшихся места. Сколько вариантов для первого из оставшихся мест? А для следующего?',
+   hintEn:'Since Petya\'s seat is already settled, you just need to seat the remaining three friends in the remaining three seats. How many choices for the first of those seats? And the next?',
+   solution:'Место Пети зафиксировано. На первое из оставшихся трёх мест можно посадить любого из 3 оставшихся друзей — 3 варианта. На следующее место — любого из оставшихся 2 — 2 варианта. На последнее место — оставшийся один — 1 вариант.\nВсего способов: 3·2·1=6.',
+   solutionEn:'Petya\'s seat is fixed. The first of the remaining three seats can go to any of the 3 remaining friends — 3 choices. The next seat can go to either of the remaining 2 — 2 choices. The last seat goes to whoever\'s left — 1 choice.\nTotal ways: 3·2·1=6.'},
+  {id:'g4-water-jugs', stars:3,
+   title:'Отмерь 4 литра',
+   titleEn:'Measure out 4 liters',
+   statement:'Есть два бидона без делений: один вмещает ровно 5 литров, другой — ровно 3 литра, и большая бочка с водой. Как, используя только эти два бидона, отмерить ровно 4 литра воды?',
+   statementEn:'You have two containers with no markings: one holds exactly 5 liters, the other exactly 3 liters, plus a large barrel of water. Using only these two containers, how can you measure out exactly 4 liters of water?',
+   hint:'Начни с того, чтобы наполнить 5-литровый бидон доверху, а потом перелей из него в 3-литровый, пока тот не наполнится. Сколько воды останется в 5-литровом бидоне после этого?',
+   hintEn:'Start by filling the 5-liter container all the way, then pour from it into the 3-liter container until that one is full. How much water is left in the 5-liter container afterward?',
+   solution:'1) Наполни 5-литровый бидон доверху (в нём 5 л).\n2) Перелей из него в 3-литровый, пока тот не наполнится (в 3-литровом — 3 л, в 5-литровом осталось 5−3=2 л).\n3) Вылей всю воду из 3-литрового бидона обратно в бочку (3-литровый теперь пуст).\n4) Перелей оставшиеся 2 л из 5-литрового бидона в пустой 3-литровый (в 3-литровом теперь 2 л).\n5) Снова наполни 5-литровый бидон доверху (в нём 5 л).\n6) Доливай из 5-литрового в 3-литровый, в котором уже есть 2 л — туда войдёт ещё только 1 л, чтобы он стал полным (3 л).\nВ 5-литровом бидоне останется ровно 5−1=4 литра!',
+   solutionEn:'1) Fill the 5-liter container all the way (5 L).\n2) Pour from it into the 3-liter container until that one is full (3-liter has 3 L; 5-liter has 5−3=2 L left).\n3) Empty the 3-liter container completely back into the barrel (it\'s now empty).\n4) Pour the remaining 2 L from the 5-liter container into the now-empty 3-liter container (3-liter now has 2 L).\n5) Fill the 5-liter container all the way again (5 L).\n6) Pour from the 5-liter container into the 3-liter one, which already has 2 L — only 1 more liter fits before it\'s full (3 L).\nThat leaves exactly 5−1=4 liters in the 5-liter container!'},
+  {id:'g4-coin-flip-invariant', stars:3,
+   title:'Можно ли сделать все монеты одинаковыми?',
+   titleEn:'Can all the coins end up the same?',
+   statement:'На столе лежат 10 монет: 7 — орлом вверх, 3 — решкой вверх. За один ход можно перевернуть ровно 4 любые монеты (по своему выбору). Можно ли за несколько таких ходов добиться того, чтобы все 10 монет легли одной и той же стороной вверх (все орлом или все решкой)?',
+   statementEn:'There are 10 coins on a table: 7 heads-up, 3 tails-up. In one move, you may flip exactly 4 coins of your choice. Can you, after several such moves, make all 10 coins land the same side up (all heads or all tails)?',
+   hint:'Подумай, что происходит с количеством «орлов» за один ход. Если среди 4 перевёрнутых монет k штук было орлом, сколько орлов станет решками, а сколько решек — орлами? Чётное или нечётное число орлов прибавляется/убавляется?',
+   hintEn:'Think about what happens to the number of heads-up coins in one move. If k of the 4 flipped coins were heads, how many heads become tails, and how many tails become heads? Is the change in the heads-count always even or always odd?',
+   solution:'Пусть среди 4 перевёрнутых монет k было орлом, тогда 4−k было решкой. После переворота эти k орлов станут решками (орлов станет меньше на k), а эти 4−k решек станут орлами (орлов станет больше на 4−k). Итоговое изменение числа орлов: (4−k)−k=4−2k — это всегда чётное число (при любом k от 0 до 4)!\nЗначит, за один ход количество орлов меняется ровно на чётное число, то есть его чётность (чётное оно или нечётное) никогда не меняется. Сейчас орлов 7 — нечётное число. Значит, после любого числа ходов орлов всегда будет нечётное число.\nНо «все орлом» — это 10 орлов (чётное число), а «все решкой» — это 0 орлов (тоже чётное). Нечётное число никогда не станет чётным!\nОтвет: нет, невозможно.',
+   solutionEn:'Say k of the 4 flipped coins were heads, so 4−k were tails. After flipping, those k heads become tails (heads count drops by k), and those 4−k tails become heads (heads count rises by 4−k). The net change in the heads-count is (4−k)−k=4−2k — which is always an even number, whatever k is (from 0 to 4)!\nSo each move changes the heads-count by an even amount, meaning its parity (whether it\'s even or odd) never changes. Right now there are 7 heads-up coins — an odd number. So after any number of moves, the heads-count will always stay odd.\nBut \'all heads\' means 10 heads-up (an even number), and \'all tails\' means 0 heads-up (also even). An odd number can never become even!\nAnswer: no, it\'s impossible.'}
  ],
  5: [
   {id:'sequence-np1', stars:1,
